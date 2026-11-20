@@ -1,0 +1,13 @@
+/* TEAM */
+Creator: dilaouid
+Site: https://github.com/dilaouid
+
+/* THANKS */
+Sprites: PixelLab (https://pixellab.ai)
+Music: OpenGameArt.org, see assets/music/CREDITS.md
+
+/* SITE */
+Language: Français
+Standards: HTML5, Canvas, JavaScript (no build step)
+Source: https://github.com/dilaouid/aubeval
+License: MIT (code), per-author licenses for the music

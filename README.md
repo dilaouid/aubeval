@@ -115,8 +115,11 @@ index.html        la page et le démarrage du jeu
 config.js         toutes les valeurs d'équilibrage
 data/             bâtiments, ennemis, quêtes, textes, tutoriel…
 js/               les systèmes du jeu (village, combat, raids, ville…)
-assets/           manifeste des images et sprites
+assets/           manifeste des images et sprites, icônes de l'appli (assets/icons)
 docs/             captures d'écran de ce README
+tools/            scripts de génération et de vérification
+og-image.png      l'image d'aperçu des liens partagés (python tools/make_social.py)
+manifest.webmanifest, robots.txt, sitemap.xml, 404.html   référencement et installation
 ```
 
 ## Crédits

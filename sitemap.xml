@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://aubeval.dilaouid.fr/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://aubeval.dilaouid.fr/"/>
+    <image:image>
+      <image:loc>https://aubeval.dilaouid.fr/og-image.png</image:loc>
+      <image:title>Aubeval, un village à bâtir, un héros à armer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://aubeval.dilaouid.fr/docs/village.png</image:loc>
+      <image:title>Le village d'Aubeval et ses chaînes de production</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://aubeval.dilaouid.fr/docs/combat.png</image:loc>
+      <image:title>Un combat de cartes avec parade au timing</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://aubeval.dilaouid.fr/docs/market.png</image:loc>
+      <image:title>Le Marché</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://aubeval.dilaouid.fr/docs/monuments.png</image:loc>
+      <image:title>Cathédrale, château et grand phare en quatre étapes de chantier</image:title>
+    </image:image>
+  </url>
+</urlset>

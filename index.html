@@ -6,10 +6,110 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aubeval</title>
+<title>Aubeval – Jeu de gestion en pixel art, gratuit dans le navigateur</title>
+
+<!-- ---- Search engines ---- -->
+<meta name="description" content="Bâtissez votre village en pixel art isométrique, armez votre héros et repoussez les raids gobelins. Jeu de gestion et de combat gratuit, dans le navigateur.">
+<meta name="keywords" content="Aubeval, jeu navigateur, jeu de gestion, city builder, pixel art, isométrique, jeu de cartes, tour par tour, héros, raids gobelins, gratuit, jeu en ligne">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="dilaouid">
+<link rel="canonical" href="https://aubeval.dilaouid.fr/">
+<link rel="alternate" hreflang="fr" href="https://aubeval.dilaouid.fr/">
+<link rel="alternate" hreflang="x-default" href="https://aubeval.dilaouid.fr/">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="author" href="/humans.txt">
+<!-- Google Search Console: paste the verification tag here if you use the HTML-tag method
+<meta name="google-site-verification" content="..."> -->
+
+<!-- ---- Link previews: Facebook, Discord, Slack, WhatsApp, LinkedIn, Telegram ---- -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Aubeval">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://aubeval.dilaouid.fr/">
+<meta property="og:title" content="Aubeval – Un village à bâtir, un héros à armer">
+<meta property="og:description" content="Jeu de gestion et de combat en pixel art isométrique : faites tourner vos chaînes de production, armez votre héros et repoussez les raids gobelins. Gratuit, dans le navigateur.">
+<meta property="og:image" content="https://aubeval.dilaouid.fr/og-image.png">
+<meta property="og:image:secure_url" content="https://aubeval.dilaouid.fr/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Le logo d'Aubeval devant un château en pixel art isométrique, au milieu d'une forêt d'automne : un village à bâtir, un héros à armer.">
+
+<!-- ---- X / Twitter ---- -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aubeval – Un village à bâtir, un héros à armer">
+<meta name="twitter:description" content="Jeu de gestion et de combat en pixel art isométrique, gratuit, dans le navigateur.">
+<meta name="twitter:image" content="https://aubeval.dilaouid.fr/og-image.png">
+<meta name="twitter:image:alt" content="Le logo d'Aubeval devant un château en pixel art isométrique, au milieu d'une forêt d'automne.">
+
+<!-- ---- Browser and phone ---- -->
+<meta name="theme-color" content="#0d0a14">
+<meta name="color-scheme" content="dark">
+<meta name="application-name" content="Aubeval">
+<meta name="apple-mobile-web-app-title" content="Aubeval">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-TileColor" content="#0d0a14">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- ---- Structured data (Google): the site and the game ---- -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://aubeval.dilaouid.fr/#website",
+      "url": "https://aubeval.dilaouid.fr/",
+      "name": "Aubeval",
+      "description": "Jeu de gestion et de combat en pixel art isométrique, gratuit, dans le navigateur.",
+      "inLanguage": "fr-FR",
+      "publisher": { "@id": "https://aubeval.dilaouid.fr/#author" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://aubeval.dilaouid.fr/#author",
+      "name": "dilaouid",
+      "url": "https://github.com/dilaouid"
+    },
+    {
+      "@type": "VideoGame",
+      "@id": "https://aubeval.dilaouid.fr/#game",
+      "name": "Aubeval",
+      "alternateName": "Aubeval : un village à bâtir, un héros à armer",
+      "url": "https://aubeval.dilaouid.fr/",
+      "description": "Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte générée, faites tourner leurs chaînes de production (bois, planches, pain, café) et armez votre héros pour repousser les raids gobelins. Combat de cartes au tour par tour avec parade au timing, exploration sous brouillard, rangs de cité et grandes œuvres.",
+      "image": "https://aubeval.dilaouid.fr/og-image.png",
+      "screenshot": [
+        { "@type": "ImageObject", "url": "https://aubeval.dilaouid.fr/docs/village.png", "caption": "Le village d'Aubeval et ses chaînes de production" },
+        { "@type": "ImageObject", "url": "https://aubeval.dilaouid.fr/docs/combat.png", "caption": "Un combat de cartes avec parade au timing" },
+        { "@type": "ImageObject", "url": "https://aubeval.dilaouid.fr/docs/market.png", "caption": "Le panneau du Marché" },
+        { "@type": "ImageObject", "url": "https://aubeval.dilaouid.fr/docs/monuments.png", "caption": "Cathédrale, château et grand phare, de l'échafaudage à l'édifice terminé" }
+      ],
+      "genre": ["Gestion", "City builder", "Jeu de cartes", "Stratégie", "Fantasy"],
+      "keywords": "pixel art, isométrique, jeu de gestion, city builder, combat au tour par tour, raids, jeu navigateur",
+      "applicationCategory": "GameApplication",
+      "gamePlatform": "Navigateur web",
+      "operatingSystem": "Tous (navigateur web)",
+      "playMode": "SinglePlayer",
+      "inLanguage": "fr-FR",
+      "isAccessibleForFree": true,
+      "license": "https://github.com/dilaouid/aubeval/blob/main/LICENSE",
+      "codeRepository": "https://github.com/dilaouid/aubeval",
+      "author": { "@id": "https://aubeval.dilaouid.fr/#author" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" },
+      "isPartOf": { "@id": "https://aubeval.dilaouid.fr/#website" }
+    }
+  ]
+}
+</script>
 <style>
   /* Beside the game (a window wider or taller than 16:9): a dark forest from the game's own trees, tiled; its size is set in fit() */
   html, body { margin: 0; height: 100%; background: #0d0a14 url(assets/sprites/backdrop.png); image-rendering: pixelated; overflow: hidden; }
@@ -18,7 +118,24 @@
 </style>
 </head>
 <body>
-<canvas id="game"></canvas>
+<canvas id="game" role="application" aria-label="Aubeval, un jeu de gestion et de combat en pixel art">
+  <!-- Fallback for crawlers, screen readers and browsers without canvas: the game itself is drawn in the canvas -->
+  <h1>Aubeval, un village à bâtir, un héros à armer</h1>
+  <p>Aubeval est un jeu de gestion et de combat en pixel art isométrique, gratuit, qui se joue dans le navigateur.
+  Vous êtes le bourgmestre : posez des bâtiments sur une grande carte générée, faites tourner les chaînes de production
+  (bois, planches, pain, café), armez votre héros et repoussez les raids gobelins.</p>
+  <ul>
+    <li>Des chaînes de production, des citoyens par classe, trois grands chantiers (cathédrale, château, grand phare).</li>
+    <li>Un combat de cartes au tour par tour, avec une parade au timing.</li>
+    <li>Des raids, des pièges, des tours de guet et des remparts, des soldats à envoyer détruire le camp gobelin.</li>
+    <li>Une grande carte à explorer sous le brouillard, et un tutoriel qui suit le jeu.</li>
+  </ul>
+</canvas>
+<noscript>
+  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:#0d0a14;color:#f1e4c3;font:18px/1.5 Georgia,serif;text-align:center">
+    <p><strong>Aubeval</strong> est un jeu en pixel art qui se joue dans le navigateur : il a besoin de JavaScript.<br>Activez-le pour bâtir votre village et armer votre héros.</p>
+  </div>
+</noscript>
 <!--
   Where things live (plain scripts, no build step, plays from a double-click):
     config.js            the global balance knobs (sliders)
