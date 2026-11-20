@@ -66,6 +66,15 @@ const Tuto = (() => {
   const split = e => { const i = e.indexOf(':'); return i < 0 ? [e, ''] : [e.slice(0, i), e.slice(i + 1)]; };
   /** The last one built of a kind: the one a lesson just asked for. */
   const lastOf = kind => state.buildings.reduce((o, b) => b.kind === kind && (!o || b.uid > o.uid) ? b : o, null);
+  /** The building of that kind whose panel is open, or null. */
+  const opened = kind => { const b = ui.panel === 'building' ? Village.byUid(ui.sel) : null; return b && b.kind === kind ? b : null; };
+  /** What a marked button costs, for the building `b` it acts on: « Améliorer », « Tout le rempart », a unit to train. Null when free. */
+  function priceOf(mark, b) {
+    if (mark === 'act:upgrade') return b ? Village.upgradeCost(b) : null;
+    if (mark === 'act:rampart') return b ? Village.rampartCost(Village.rampart(b)) : null;
+    if (mark.startsWith('train:')) return Units.cost(mark.slice(6));
+    return null;
+  }
   /** The one of a kind her arrow points at: the last built whose roof is not behind another building, else the last built. */
   function inSight(kind) {
     const all = state.buildings.filter(b => b.kind === kind).sort((a, b) => b.uid - a.uid);
@@ -236,10 +245,8 @@ const Tuto = (() => {
       const [k, a] = split(e);
       if (k === 'build') { add(Village.cost(a)); const sp = spot(a); if (sp.path.length) add(cardCost('tool:path', sp.path.length)); } // and the bit of path to the place she found
       if (k === 'pick') add(cardCost(a, s.count));
-      if (k === 'building') target = lastOf(a);
-      if (k === 'mark' && a === 'act:upgrade' && target) add(Village.upgradeCost(target));
-      if (k === 'mark' && a === 'act:rampart' && target) add(Village.rampartCost(Village.rampart(target)));
-      if (k === 'mark' && a.startsWith('train:')) add(Units.cost(a.slice(6)));
+      if (k === 'building') target = opened(a) || lastOf(a); // the one the player opened, when it is open: another rampart may cost more
+      if (k === 'mark') { const c = priceOf(a, target); if (c) add(c); }
       if (k === 'mark' && a === 'explore:rose') { const ways = scoutWays().sort((p, q) => p.dist - q.dist); if (ways.length) add(ways[0].cost); } // the nearest trip scouts can make
       if (k === 'mark' && a === 'city:order') { // the order she shows: its goods lent, or (anything else it asks) filled by her, this once
         const o = firstOrder();
@@ -495,7 +502,10 @@ const Tuto = (() => {
     }
     if (k === 'panel') return ui.panel === a ? null : { mark: 'btn:' + a, key: KEYS[a] };
     if (k === 'qtab') return ui.panel === 'quests' && ui.tab === a ? null : { mark: 'qtab:' + a };
-    if (k === 'mark') return { mark: a };
+    if (k === 'mark') { // a button that costs: short of its price (spent meanwhile, or a dearer rampart opened), she lends again
+      const c = priceOf(a, ui.panel === 'building' ? Village.byUid(ui.sel) : null);
+      return c && !Village.canAfford(c) ? short(c) : { mark: a };
+    }
     return null;
   }
   /** Whether a click on the map at a screen point is the one the step asks for. */

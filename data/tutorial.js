@@ -82,8 +82,9 @@
 //   pave    how many tiles of path this step marks, in a row from the end of a street
 //   gift    resources she hands over when the step is done, so the next one never waits
 //   A step with no task is only spoken. The first time a lesson plays, she lends what its task's
-//   price lacks (never on a replay): a building's or a card's price, a delivery's goods, the scouts'
-//   pay. She never lends a great work's stage: those are the game's long haul.
+//   price lacks (never on a replay): a building's or a card's price, an upgrade or a rampart (of the
+//   building opened), a unit's training, a delivery's goods, the scouts' pay; and she tops it up
+//   while the task waits, when it was spent meanwhile. She never lends a great work's stage: those are the game's long haul.
 //
 // Words a line may leave open, filled from the game as it is (js/tutorial.js WORDS): {venue} and
 // {keeper} (the place her arrow points at, who keeps it), {game:<place id>} (its game), {lord} and
