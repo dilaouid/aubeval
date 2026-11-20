@@ -7,10 +7,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aubeval</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-  html, body { margin: 0; height: 100%; background: #0d0a14; overflow: hidden; }
+  /* Beside the game (a window wider or taller than 16:9): a dark forest from the game's own trees, tiled; its size is set in fit() */
+  html, body { margin: 0; height: 100%; background: #0d0a14 url(assets/sprites/backdrop.png); image-rendering: pixelated; overflow: hidden; }
   body { font-variant-numeric: tabular-nums; }
-  canvas { display: block; margin: 0 auto; }
+  canvas { display: block; margin: 0 auto; box-shadow: 0 0 18px 10px rgba(13, 10, 20, .85); } /* the game's edge fades into the forest */
 </style>
 </head>
 <body>
@@ -100,6 +104,7 @@ function fit() {
   canvas.style.width = Math.round(W * k) + 'px'; canvas.style.height = Math.round(H * k) + 'px';
   canvas.style.marginTop = Math.max(0, Math.floor((innerHeight - H * k) / 2)) + 'px';
   canvas.style.imageRendering = 'pixelated';
+  document.body.style.backgroundSize = (192 * ART / dpr) + 'px'; // the backdrop tile (192 art pixels, tools/make_backdrop.py) keeps whole pixels, like the village
   ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0); ctx.imageSmoothingEnabled = false;
 }
 addEventListener('resize', fit); fit();
