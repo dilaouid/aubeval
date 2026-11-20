@@ -188,7 +188,7 @@ DATA.tutorial = {
     { id: 'forge',
       say: [
         { text: 'Du bois, puis des planches : voilà une chaîne. Chaque bâtiment nourrit le suivant.', show: 'res:planks' },
-        'Avec 8 planches, on bâtit la Forge. C’est là que le village arme son héros, Aldric.',
+        'Avec 8 planches, on bâtit la Forge. C’est là que le village arme son héros, {hero}.',
       ],
       task: 'Prenez la carte « Forge » (8 planches), puis posez-la au bord d’un chemin.',
       point: ['build:forge'], near: [-1, 5], goal: { built: { forge: 1 } }, gift: { planks: 6 } },
@@ -197,12 +197,12 @@ DATA.tutorial = {
       task: 'Cliquez la Forge, puis forgez la Lame d’apprenti.',
       point: ['building:forge', 'craft:sword_1'], goal: { has: 'sword_1' } },
     { id: 'equip',
-      say: ['La lame est prête ! Il reste à la mettre dans les mains d’Aldric.'],
+      say: ['La lame est prête ! Il reste à la mettre dans les mains {de_hero}.'],
       task: 'Ouvrez la fiche du Héros, puis équipez la lame.',
       point: ['panel:hero', 'mark:equip:sword_1'], goal: { equip: 'weapon' } },
     { id: 'fight',
       say: [
-        'Aldric est armé par votre village. Deux gobelins rôdent autour des réserves : envoyons-le.',
+        '{hero} est armé par votre village. Deux gobelins rôdent autour des réserves : envoyons-le.',
         'En combat, votre village devient un paquet de cartes : chaque bâtiment envoie la sienne. Trois points de souffle par tour pour en jouer.',
         'Et quand un gobelin frappe, pressez Espace à l’instant où l’anneau touche le cercle doré : c’est une parade !',
       ],
@@ -247,9 +247,9 @@ DATA.tutorial = {
           ] },
         { id: 'duel',
           say: [
-            { text: '« Défier {lord} » : Aldric l’affronte seul, aux cartes. Une seule fois par siège, de la corne jusqu’à la fin.', show: 'siege:duel' },
+            { text: '« Défier {lord} » : {hero} l’affronte seul, aux cartes. Une seule fois par siège, de la corne jusqu’à la fin.', show: 'siege:duel' },
             'Vainqueur, le chef est hors de combat et sa colonne perd courage : moins de vie, moins vite, et des fuyards. Perdu ou pas tenté, il marche avec elle et compte pour {n:warlord_leaks} à votre porte.',
-            'Un siège pille plus qu’un raid, et casse davantage : pièges, soldats et remparts comptent double. Repoussé, il paie une vraie prime. À vous de voir si Aldric est prêt pour le duel !',
+            'Un siège pille plus qu’un raid, et casse davantage : pièges, soldats et remparts comptent double. Repoussé, il paie une vraie prime. À vous de voir si {hero} est prêt pour le duel !',
           ] },
       ] },
 
@@ -353,7 +353,7 @@ DATA.tutorial = {
           point: ['panel:city', 'ctab:orders'], goal: { ctab: 'orders' } },
         { id: 'read',
           say: [
-            { text: 'Une commande dit qui demande, quoi, et où vous en êtes. En bas, sa paie : de l’or, et de la popularité pour Aldric.', show: 'city:order' },
+            { text: 'Une commande dit qui demande, quoi, et où vous en êtes. En bas, sa paie : de l’or, et de la popularité pour {hero}.', show: 'city:order' },
             'Livrer des marchandises, bâtir, embellir une rue, élever une maison ; repousser un raid, gagner un combat, raser le camp ; jouer chez un tenancier, explorer un lieu : il y en a pour tous les goûts.',
             { text: '« Refuser » renvoie une commande qui ne vous dit rien : une autre arrive {t:order_wait} plus tard. Un seul refus toutes les {t:order_refuse_cd}.', show: 'city:refuse' },
           ] },
@@ -375,7 +375,7 @@ DATA.tutorial = {
         { id: 'plates',
           say: [
             'Une maison qui manque de pain porte une plaque rouge au-dessus de son toit. Ces plaques disent toujours ce qui manque : un chemin, une ressource, un service.',
-            'Le pain sert aussi Aldric : la Boulangerie lui envoie une carte de Ration en combat.',
+            'Le pain sert aussi {hero} : la Boulangerie lui envoie une carte de Ration en combat.',
           ] },
       ] },
 
@@ -383,12 +383,12 @@ DATA.tutorial = {
       covers: ['ctab:rank', 'do:popularity'],
       steps: [
         { id: 'gauge',
-          say: [{ text: 'Une commande honorée, et Aldric est un peu plus populaire. Sa jauge est là, sous la quête, à côté du rang de la ville.', show: 'hud:city' }],
+          say: [{ text: 'Une commande honorée, et {hero} est un peu plus populaire. Sa jauge est là, sous la quête, à côté du rang de la ville.', show: 'hud:city' }],
           task: 'Ouvrez la Cité, onglet « Rang ».',
           point: ['panel:city', 'ctab:rank'], goal: { ctab: 'rank' } },
         { id: 'gives',
           say: [
-            { text: 'De 0 à 100. Plus Aldric est aimé, mieux l’impôt rentre, meilleurs sont les prix du Marché, et chaque maison loge un habitant de plus tous les {n:pop_house_step} points.', show: 'city:pop' },
+            { text: 'De 0 à 100. Plus {hero} est aimé, mieux l’impôt rentre, meilleurs sont les prix du Marché, et chaque maison loge un habitant de plus tous les {n:pop_house_step} points.', show: 'city:pop' },
             { text: 'Elle monte avec les commandes, les raids repoussés, les quêtes, les combats, les jeux des tenanciers, les lieux explorés et les grands chantiers. Un raid perdu la fait chuter.', show: 'city:pop' },
             { text: 'Et elle s’effrite toute seule, minute après minute ; plus elle est haute, plus elle monte lentement. « D’où elle vient », juste en dessous, garde ses derniers gains.', show: 'city:pop' },
           ] },
@@ -461,18 +461,18 @@ DATA.tutorial = {
           task: 'Ouvrez l’onglet « Missions ».',
           point: ['qtab:missions'], goal: { qtab: 'missions' } },
         { id: 'mission',
-          say: ['Une mission envoie Aldric seul un moment : il revient avec de l’XP et du butin, même jeu fermé. Pendant ce temps, il ne défend pas le village.'],
+          say: ['Une mission envoie {hero} seul un moment : il revient avec de l’XP et du butin, même jeu fermé. Pendant ce temps, il ne défend pas le village.'],
           task: 'Lancez la mission « Patrouille des lisières ».',
           point: ['mark:mission:patrol'], unless: { away: true }, goal: { away: true } },
         { id: 'contracts',
           say: [{ text: 'Les contrats arrivent avec la quête « Tenir le village » : chaque victoire en élève le rang, sans limite.', show: 'qtab:contracts' }] },
       ] },
 
-    { id: 'hero', title: 'Le paquet d’Aldric', about: 'Les cartes du héros, ses touches de combat, la forge.', when: { after: 'quests' },
+    { id: 'hero', get title() { return 'Le paquet ' + heroName(true); }, about: 'Les cartes du héros, ses touches de combat, la forge.', when: { after: 'quests' },
       covers: ['do:deck', 'do:intent'],
       steps: [
         { id: 'sheet',
-          say: ['En combat, Aldric joue les cartes que lui envoient vos bâtiments. Plus le village grandit, plus son paquet est riche.'],
+          say: ['En combat, {hero} joue les cartes que lui envoient vos bâtiments. Plus le village grandit, plus son paquet est riche.'],
           task: 'Ouvrez la fiche du Héros.',
           point: ['panel:hero'], goal: { panel: 'hero' } },
         { id: 'deck',
@@ -490,7 +490,7 @@ DATA.tutorial = {
           say: [
             'Trois bâtiments se visitent : le Café, le Marché et la Forge. À l’intérieur, leur tenancier vous attend… avec un jeu.',
             'Au Café, « {game:cafe} » : servir les bonnes tasses. Au Marché, « {game:market} » : arrêter l’aiguille au bon moment. À la Forge, « {game:forge} » : frapper en rythme.',
-            'Une médaille de bronze, d’argent ou d’or rend Aldric plus populaire, et laisse un cadeau pendant {t:venue_buff_time} : de meilleurs prix, une forge plus vive, une lame mieux battue…',
+            'Une médaille de bronze, d’argent ou d’or rend {hero} plus populaire, et laisse un cadeau pendant {t:venue_buff_time} : de meilleurs prix, une forge plus vive, une lame mieux battue…',
             'Chaque jeu se repose {t:venue_wait} après une partie, et se corse à chaque victoire. On n’entre pas pendant un raid. Une fois dedans, je me tais : {keeper} explique son jeu lui-même.',
           ],
           task: 'Cliquez « {venue} », puis « Entrer ».',
@@ -503,7 +503,7 @@ DATA.tutorial = {
         { id: 'open',
           say: [
             'Regardez au loin : une brume couvre les terres. Dessous, rien ne se bâtit, ne se plante ni ne se récolte.',
-            'Vos bâtiments la repoussent autour d’eux ; vos soldats et Aldric la lèvent en marchant. Et pour aller loin, il y a les éclaireurs.',
+            'Vos bâtiments la repoussent autour d’eux ; vos soldats et {hero} la lèvent en marchant. Et pour aller loin, il y a les éclaireurs.',
             { text: 'L’Exploration s’ouvre ici, ou avec la touche E.', show: 'btn:explore' },
           ],
           task: 'Ouvrez l’Exploration.',
@@ -559,7 +559,7 @@ DATA.tutorial = {
         { id: 'attack',
           say: [
             { text: '« Attaquer le camp » y envoie tous vos soldats ; un clic droit sur le camp, soldats choisis, fait de même. Sa garnison sort les combattre, puis ils abattent sa palissade.', show: 'camp:attack' },
-            'Aldric les rejoint s’il est au village. Rasé, le camp laisse du butin et aucun raid ne vient pendant {t:camp_respite}… puis un autre se dresse plus loin, plus fort, un chef à sa tête.',
+            '{hero} les rejoint s’il est au village. Rasé, le camp laisse du butin et aucun raid ne vient pendant {t:camp_respite}… puis un autre se dresse plus loin, plus fort, un chef à sa tête.',
             { text: 'L’hôtel de ville s’améliore aussi : chaque niveau protège mieux vos réserves et élargit la zone sûre.', show: 'act:upgrade' },
           ] },
       ] },
@@ -604,7 +604,7 @@ DATA.tutorial = {
           say: [
             'Quatre sortes de lieux. Une ruine : un seul combat, et elle est explorée pour de bon. Une tanière : vidée, elle se repeuple, plus forte à chaque fois.',
             'Un hameau : un premier présent ouvre une route de commerce, et chaque livraison grossit sa paie. Un gisement : revendiqué, il envoie sa récolte chaque minute, et se creuse.',
-            { text: 'Aldric doit d’abord s’y rendre : pendant le trajet, il ne garde plus le village. Sur place, rien ne part tout seul : un combat ne commence que sur « Combattre ». Et « Rentrer » le rappelle à tout moment.', show: 'explore:act' },
+            { text: '{hero} doit d’abord s’y rendre : pendant le trajet, il ne garde plus le village. Sur place, rien ne part tout seul : un combat ne commence que sur « Combattre ». Et « Rentrer » le rappelle à tout moment.', show: 'explore:act' },
           ] },
         { id: 'go',
           say: ['Envoyons-le voir.'],
@@ -618,7 +618,7 @@ DATA.tutorial = {
           say: [
             { text: 'Son expédition se suit ici : où il en est, et le temps qu’il reste.', show: 'explore:trip' },
             { text: '« Rentrer » : il fait demi-tour, et reprend sa garde devant l’hôtel de ville en arrivant.', show: 'explore:recall' },
-            'Les routes et les gisements rapportent chaque minute, même jeu fermé. Bonne route, Aldric !',
+            'Les routes et les gisements rapportent chaque minute, même jeu fermé. Bonne route, {hero} !',
           ] },
       ] },
 
@@ -632,7 +632,7 @@ DATA.tutorial = {
         { id: 'chief',
           say: [
             { text: 'Le voici : son nom, sa vie, et ce que sa tête ajoute au butin. Il se tient devant la porte du camp, plus coriace que ses gardes, et frappe plus fort à chaque camp.', show: 'camp:chief' },
-            { text: 'La palissade ne tombe qu’une fois la garnison à terre, chef compris. Envoyez assez de soldats ; Aldric les rejoint s’il est au village.', show: 'camp:attack' },
+            { text: 'La palissade ne tombe qu’une fois la garnison à terre, chef compris. Envoyez assez de soldats ; {hero} les rejoint s’il est au village.', show: 'camp:attack' },
           ] },
       ] },
 
@@ -682,7 +682,7 @@ DATA.tutorial = {
         { id: 'levels',
           say: [
             { text: 'Une ligne par classe, trois niveaux. Chaque bouton affiche ce que la classe paierait par minute à ce niveau.', show: 'city:tax' },
-            { text: 'Élevé : plus d’or tout de suite. Mais la satisfaction plafonne, ces maisons ne s’élèvent plus, et Aldric y perd de la popularité, minute après minute.', show: 'city:tax:high' },
+            { text: 'Élevé : plus d’or tout de suite. Mais la satisfaction plafonne, ces maisons ne s’élèvent plus, et {hero} y perd de la popularité, minute après minute.', show: 'city:tax:high' },
             { text: 'Bas : moins d’or, mais la satisfaction monte {n:tax_low_sat} fois plus vite, et la classe s’élève plus tôt. Parfait avant de faire monter des maisons.', show: 'city:tax:low' },
           ],
           task: 'Choisissez un niveau pour cette classe : Bas, Normal ou Élevé.',
@@ -756,7 +756,7 @@ DATA.tutorial = {
         { id: 'stages',
           say: [
             { text: 'Quatre étapes : Fondations, Murs, Toiture, Achèvement. Chacune coûte des milliers de ressources, change le monument sur la carte, et ajoute à ce qu’il donne. Ce bouton paie la suivante.', show: 'city:work' },
-            'La Cathédrale rend les repas plus heureux et retient la popularité d’Aldric ; le Château met vos réserves à l’abri et endurcit vos soldats ; le Phare améliore les prix du Marché, la vue dans la brume et les expéditions.',
+            'La Cathédrale rend les repas plus heureux et retient la popularité {de_hero} ; le Château met vos réserves à l’abri et endurcit vos soldats ; le Phare améliore les prix du Marché, la vue dans la brume et les expéditions.',
             'Achevé, le chantier continue : des embellissements, sans fin, chacun un peu plus cher, chacun un peu de bonus en plus. La Cité (G), onglet « Chantiers », réunit les trois monuments.',
           ] },
         { id: 'build',
@@ -791,7 +791,7 @@ DATA.tutorial = {
         { id: 'start',
           say: [
             { text: 'Un nouveau départ échange ce village contre de la Renommée : tant pour l’or gagné, tant pour le rang atteint. C’est le même bouton que celui du registre du Village (V).', show: 'city:newstart' },
-            'Restent : Aldric, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers. Rien ne presse : il demande deux clics, et je ne vous le fais pas presser.',
+            'Restent : {hero}, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers. Rien ne presse : il demande deux clics, et je ne vous le fais pas presser.',
             { text: 'La Renommée ne se perd jamais, et chaque point ajoute à toute la production. Dépensée ici, elle achète en plus des bonus qui valent pour ce village et tous les suivants.', show: 'city:legacy' },
             'Trois branches : Prospérité, Armes, Horizons. Un nœud s’ouvre quand celui d’avant a le niveau demandé, et chaque niveau coûte un peu plus.',
           ] },

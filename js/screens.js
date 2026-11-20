@@ -809,7 +809,7 @@ const scenes = (() => {
   }
   function drawHero() {
     const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48;
-    UI.panel(P.x, P.y, P.w, P.h, tr('hero_title') + ' · ' + DATA.hero.name, closePanel);
+    UI.panel(P.x, P.y, P.w, P.h, tr('hero_title') + ' · ' + heroName(), closePanel);
     UI.sprite('hero.battle', x, P.y + 56, 2, Hero.weaponTier());
     const sx = x + 100; let y = P.y + 72;
     text(tr('level', { n: h.lvl }), sx, y, 20, C.gold, 'left', true);
@@ -947,7 +947,7 @@ const scenes = (() => {
     Tuto.mark('menu:prestige', x, y, w, 38);
     const armed = ui.wipeArm > state.t;
     UI.button(x, P.y + P.h - 60, w, 36, armed ? tr('wipe_confirm') : tr('wipe'), () => {
-      if (armed) { Save.wipe(); reset(); Save.begin(); } else ui.wipeArm = state.t + 4;
+      if (armed) { Save.wipe(); reset(); openNaming(); } else ui.wipeArm = state.t + 4; // a new game: the hero is named first
     }, { size: 14 });
   }
   /** The Livre des leçons: every lesson of Aveline's, to follow or play again (js/tutorial.js draws its lines). */
@@ -1084,8 +1084,70 @@ const scenes = (() => {
 
   // ---- The other screens ----
   function titleStart() {
-    if (!Save.has() || !Save.load()) { reset(); Save.begin(); }
-    scene = 'play';
+    if (Save.has() && Save.load()) scene = 'play';
+    else { reset(); openNaming(); } // a new game: the hero is named first
+  }
+
+  // ---- Naming the hero, before a new game ----
+  // The name is typed into a real text field laid over the canvas (accents, paste, a phone's
+  // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name.
+  const NAME_BOX = { x: 470, y: 330, w: 420, h: 56 }; // the field, in logical units
+  let nameField = null;
+  function field() {
+    if (nameField) return nameField;
+    const f = nameField = document.createElement('input');
+    Object.assign(f, { type: 'text', autocomplete: 'off', spellcheck: false, placeholder: DATA.hero.name });
+    f.setAttribute('autocapitalize', 'words'); f.setAttribute('enterkeyhint', 'done'); f.setAttribute('aria-label', tr('name_ask'));
+    Object.assign(f.style, { position: 'fixed', display: 'none', boxSizing: 'border-box', margin: 0, padding: '0 12px', border: 'none', outline: 'none',
+      background: 'transparent', color: UI.C.text, caretColor: UI.C.gold, textAlign: 'center', fontFamily: FONT, fontWeight: 'bold', zIndex: 2 });
+    f.addEventListener('input', () => { // what a name cannot hold never gets in, nor more than its length (Hero.nameChars)
+      const v = Hero.nameChars(f.value);
+      if (v !== f.value) { const at = Math.max(0, f.selectionStart - (f.value.length - v.length)); f.value = v; f.setSelectionRange(at, at); sfx('error'); }
+      ui.nameWhy = null;
+    });
+    f.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); nameConfirm(); }
+      else if (e.key === 'Escape') { e.preventDefault(); nameBack(); }
+    });
+    document.body.appendChild(f);
+    return f;
+  }
+  function openNaming() {
+    const f = field();
+    scene = 'naming'; ui.nameWhy = null;
+    f.value = state.hero.name || DATA.hero.name; // the default, ready to keep with Entrée or to type over
+    f.style.display = 'block'; placeField(); f.focus(); f.select();
+  }
+  function closeNaming() { if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
+  /** Lays the text field over its box on the canvas, at the canvas's present size. */
+  function placeField() {
+    const r = canvas.getBoundingClientRect(), k = r.width / W, b = NAME_BOX, s = nameField.style;
+    s.left = (r.left + (b.x + 4) * k) + 'px'; s.top = (r.top + (b.y + 4) * k) + 'px';
+    s.width = ((b.w - 8) * k) + 'px'; s.height = ((b.h - 8) * k) + 'px'; s.fontSize = (26 * k) + 'px';
+  }
+  function nameConfirm() {
+    const r = Hero.cleanName(nameField.value);
+    if (r.why) { ui.nameWhy = r.why; sfx('error'); nameField.focus(); return; }
+    state.hero.name = r.name; closeNaming();
+    Save.begin(); scene = 'play'; sfx('click');
+  }
+  function nameBack() { closeNaming(); scene = 'title'; ui.titleWipe = 0; }
+  function drawNaming() {
+    World.draw({ dim: 0.62 });
+    const px = 330, py = 150, pw = 620, ph = 400, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax };
+    UI.panel(px, py, pw, ph, tr('name_title'));
+    UI.sprite('hero.battle', px + 34, b.y - 60, 2, 1);
+    UI.label(tr('name_ask'), b.x + b.w / 2, b.y - 36, 20, C.text);
+    UI.box(b.x, b.y, b.w, b.h, '#1b1420', ui.nameWhy ? C.bad : document.activeElement === f ? C.gold : C.lineL);
+    UI.region(b.x, b.y, b.w, b.h, () => f.focus());
+    const n = [...f.value.replace(/\s+/g, ' ').trim()].length;
+    text(n + ' / ' + lim.max, b.x + b.w, b.y + b.h + 16, 13, n > lim.max ? C.bad : C.dim, 'right');
+    UI.wrap(ui.nameWhy ? tr(ui.nameWhy, lim) : tr('name_rule', lim), 640, b.y + b.h + 40, pw - 60, 14, ui.nameWhy ? C.bad : C.dim, 18, false, 'center');
+    const by = py + ph - 96;
+    UI.button(px + 40, by, 200, 46, tr('name_back'), nameBack, { size: 17 });
+    UI.button(px + pw - 300, by, 260, 46, tr('name_ok'), nameConfirm, { size: 18, primary: true });
+    text(tr('name_keys'), 640, by + 68, 13, C.dim, 'center');
+    placeField();
   }
   function drawTitle() {
     World.draw({ dim: 0.62 });
@@ -1141,7 +1203,7 @@ const scenes = (() => {
       shadowText(names[i], x, y + 16, 15, C.text, 'center');
     });
     const en = DATA.enemies;
-    row(['hero.battle', 'enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk'], 230, 180, 230, [DATA.hero.name + ' (héros)', en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name], 1);
+    row(['hero.battle', 'enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk'], 230, 180, 230, [heroName() + ' (héros)', en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name], 1);
     ['hero', 'villager', 'gobelin', 'brute', 'chaman', 'grakk'].forEach((kind, i) => { // the map's figures, facing the player
       const s = World.unitSprite(kind, 0, 1, false, 0), x = 150 + i * 196;
       blit(s, x - s.width * PX / 2, 340 - s.height * PX);
@@ -1241,6 +1303,15 @@ const scenes = (() => {
         if (pressed('Enter') || pressed('Space') || pressed('NumpadEnter') || clicks.some(c => c.button === 0)) titleStart();
       },
       draw: drawTitle,
+    },
+    naming: { // the hero's name, before a new game: typed into the field, Entrée starts, Échap goes back
+      update(dt) {
+        ui.titleT += dt;
+        if (pressed('Enter') || pressed('NumpadEnter')) nameConfirm();
+        else if (pressed('Escape')) nameBack();
+        else if (clicks.length && document.activeElement !== nameField) setTimeout(() => nameField && scene === 'naming' && nameField.focus(), 0); // a click beside the field gives it the keys back
+      },
+      draw: drawNaming,
     },
     play: { update: playUpdate, draw: playDraw },
     battle: { update(dt) { background(dt); Battle.update(dt); }, draw() { Battle.draw(); } },

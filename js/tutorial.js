@@ -134,6 +134,7 @@ const Tuto = (() => {
   /**
    * The words a line of data/tutorial.js leaves open, filled from the game as it is now:
    *   {venue} {keeper}   the place her arrow points at and who keeps it · {game:<place>} a place's game
+   *   {hero} {de_hero}  the hero's name, as the player chose it, alone or with « de » (« d’Aldric »)
    *   {lord} {trait}     the warlord of the siege announced, and what he changes · {chief} the camp's chief
    *   {n:<key>} {t:<key>}   a number, or a time, of config.js
    */
@@ -143,6 +144,8 @@ const Tuto = (() => {
     game: a => DATA.venues[a].title,
     lord: () => { const sg = Raid.siege(); return (DATA.warlords.find(w => sg && w.id === sg.lord) || DATA.warlords[0]).name; },
     trait: () => { const sg = Raid.siege(); return (DATA.warlords.find(w => sg && w.id === sg.lord) || DATA.warlords[0]).trait; },
+    hero: () => heroName(),
+    de_hero: () => heroName(true),
     chief: () => Camp.chiefName((state.raid.camp && state.raid.camp.lvl) || 0) || DATA.camp.chiefs[0],
     n: a => fmtNum(tune[a]),
     t: a => span(tune[a]),

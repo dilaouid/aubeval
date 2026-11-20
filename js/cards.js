@@ -47,7 +47,7 @@ const Cards = (() => {
     h.bench[id] = true; return true;
   }
   /** Where a card comes from, in words: "Forge · niv. 2", or the hero's name. */
-  function origin(e) { return e.c.from === 'hero' ? DATA.hero.name : B[e.c.from].card + (e.lvl > 1 ? ' · niv. ' + e.lvl : ''); }
+  function origin(e) { return e.c.from === 'hero' ? heroName() : B[e.c.from].card + (e.lvl > 1 ? ' · niv. ' + e.lvl : ''); }
 
   /**
    * What a card does, one short line per effect, with its numbers as they are now.

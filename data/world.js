@@ -100,5 +100,6 @@ DATA.resourceOrder = ['wood', 'planks', 'stone', 'wheat', 'bread', 'beans', 'cof
 DATA.pillaged = ['wood', 'planks', 'stone', 'wheat', 'bread', 'beans', 'coffee', 'spice', 'wool', 'cloth', 'jewel', 'gold']; // what a raider can steal
 
 // The hero at level 1, before gear. Growth per level is in config.js.
-DATA.hero = { name: 'Aldric', hp: 40, atk: 5, def: 1, spd: 10 };
+DATA.hero = { name: 'Aldric', nameMin: 2, nameMax: 14, hp: 40, // name: the default, the one a player can keep; nameMin/nameMax: what the naming screen accepts (js/hero.js cleanName)
+  atk: 5, def: 1, spd: 10 };
 // His battle cards, and the ones his village sends him, are in data/cards.js.

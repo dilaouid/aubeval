@@ -32,9 +32,9 @@ DATA.chapters = [
       { id: 'p4', title: 'Le feu de la forge', type: 'objective', goal: { built: { forge: 1 } },
         hint: 'Posez la Forge (8 planches).',
         text: 'Avec des planches, on bâtit une forge. Avec une forge, on arme un héros.', reward: { xp: 2 } },
-      { id: 'p5', title: 'Une lame pour Aldric', type: 'objective', goal: { equip: 'weapon' },
+      { id: 'p5', get title() { return 'Une lame pour ' + heroName(); }, type: 'objective', goal: { equip: 'weapon' },
         hint: "Cliquez la Forge, forgez la Lame d'apprenti, puis équipez-la (H).",
-        text: 'Aldric attend devant la porte, les mains vides.', reward: { xp: 2 } },
+        get text() { return heroName() + ' attend devant la porte, les mains vides.'; }, reward: { xp: 2 } },
     ],
   },
   {

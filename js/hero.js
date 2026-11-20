@@ -77,5 +77,26 @@ const Hero = (() => {
     toast(tr('mission_back', { title: m.title }) + ' ' + lines.join(', '), UI.C.good); sfx('coin');
   }
 
-  return { itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick };
+  /**
+   * A name as typed, made ready to keep: spaces trimmed and single, the straight apostrophe made
+   * typographic, the case as the player typed it (« d’Artagnan » stays so). Returns { name } when it can be kept, else { name, why }
+   * (a key of data/strings.js). A name is letters (accents welcome), with single spaces, hyphens or
+   * apostrophes between them, from DATA.hero.nameMin to nameMax characters.
+   */
+  function cleanName(raw) {
+    let name = String(raw || '').replace(/\s+/g, ' ').trim().replace(/'/g, '’');
+    const len = [...name].length;
+    if (len < DATA.hero.nameMin) return { name, why: len ? 'name_short' : 'name_empty' };
+    if (len > DATA.hero.nameMax) return { name, why: 'name_long' };
+    if (!/^[\p{L}\p{M}]+(?:[ ’-][\p{L}\p{M}]+)*$/u.test(name)) return { name, why: /[^\p{L}\p{M} ’-]/u.test(name) ? 'name_chars' : 'name_marks' };
+    return { name };
+  }
+  /**
+   * A name as it is typed: only what a name may hold (letters, spaces, hyphens, apostrophes), no
+   * space at the start or twice in a row, and no more than DATA.hero.nameMax characters, so the
+   * limit counts what will be kept, not stray spaces.
+   */
+  const nameChars = raw => [...String(raw || '').replace(/[^\p{L}\p{M}\s'’-]/gu, '').replace(/\s+/g, ' ').replace(/^ /, '')].slice(0, DATA.hero.nameMax).join('');
+
+  return { itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
 })();

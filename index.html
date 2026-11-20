@@ -123,6 +123,7 @@ const down = new Set(), hit = new Set();
 const pressed = code => hit.has(code); // true for one step after the key goes down
 addEventListener('keydown', e => {
   startAudio();
+  if (e.target && e.target.tagName === 'INPUT') return; // typed into the hero's name (js/screens.js): the field's keys, not the game's
   if (!e.repeat) { down.add(e.code); hit.add(e.code); }
   if (e.code === 'Space' || e.code.startsWith('Arrow')) e.preventDefault();
 });

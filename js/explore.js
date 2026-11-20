@@ -327,9 +327,9 @@ const Explore = (() => {
   /** The hero reaches the place: its action opens (a fight never starts by itself). */
   function arrive(tp) {
     const s = byId.get(tp.site);
-    if (!s || !usable(s)) { toast(tr('ex_lost', { hero: DATA.hero.name }), UI.C.bad); setTrip(tp.site, 'back', home()); return; }
+    if (!s || !usable(s)) { toast(tr('ex_lost', { hero: heroName() }), UI.C.bad); setTrip(tp.site, 'back', home()); return; }
     tp.phase = 'there'; tp.t = tp.total;
-    toast(tr('ex_arrived', { hero: DATA.hero.name, name: s.name }), UI.C.gold); sfx('level');
+    toast(tr('ex_arrived', { hero: heroName(), name: s.name }), UI.C.gold); sfx('level');
     // its page opens when the player's hands are free: never over a placement, another panel or a lesson
     if (scene === 'play' && !ui.placing && !ui.moving && !ui.tool && (!ui.panel || ui.panel === 'explore') && !Tuto.active()) openSite(s.id);
   }
@@ -446,7 +446,7 @@ const Explore = (() => {
     const e = state.explore, tp = e.trip;
     if (tp && tp.phase !== 'there') {
       tp.t += dt;
-      if (tp.t >= tp.total) { if (tp.phase === 'back') { e.trip = null; toast(tr('ex_home', { hero: DATA.hero.name }), UI.C.text); } else arrive(tp); }
+      if (tp.t >= tp.total) { if (tp.phase === 'back') { e.trip = null; toast(tr('ex_home', { hero: heroName() }), UI.C.text); } else arrive(tp); }
     }
     for (let i = e.scouts.length - 1; i >= 0; i--) {
       const sc = e.scouts[i]; sc.t += dt;

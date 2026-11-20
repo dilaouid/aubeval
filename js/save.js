@@ -79,7 +79,7 @@ const Save = (() => {
     } catch (e) { return false; }
   }
   function begin() { live = true; persist(); }
-  function wipe() { try { localStorage.removeItem(KEY); } catch (e) { /* nothing to remove */ } }
+  function wipe() { live = false; try { localStorage.removeItem(KEY); } catch (e) { /* nothing to remove */ } } // nothing is saved again until begin(): the next game is named first
   /** Downloads the save as a file. */
   function exportFile() {
     state.savedAt = Date.now(); state.seed = seed;

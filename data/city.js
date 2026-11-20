@@ -217,7 +217,7 @@ DATA.legacy = [
     stock: { wood: 150, planks: 80, stone: 40, bread: 30, gold: 100 }, desc: 'Un nouveau départ commence avec des réserves.' },
   { id: 'orders', branch: 'Prospérité', name: 'Carnet d’adresses', key: 'orders', per: 0.1, max: 5, cost: 2, step: 2, after: { stock: 1 },
     desc: 'Les commandes paient mieux.' },
-  { id: 'xp', branch: 'Armes', name: 'Chroniques d’Aldric', key: 'xp', per: 0.1, max: 5, cost: 2, step: 2,
+  { id: 'xp', branch: 'Armes', get name() { return 'Chroniques ' + heroName(true); }, key: 'xp', per: 0.1, max: 5, cost: 2, step: 2,
     desc: 'Le héros apprend plus vite.' },
   { id: 'bounty', branch: 'Armes', name: 'Primes de guerre', key: 'bounty', per: 0.15, max: 6, cost: 2, step: 1, after: { xp: 1 },
     desc: 'Un raid repoussé rapporte plus.' },

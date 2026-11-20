@@ -13,7 +13,7 @@
 //             warlord (data/enemies.js); and every mechanic listed in DATA.tutorial.mechanics
 //   unknown   a `covers` id the game no longer has
 //   broken    a step, a page or a condition that names something the game no longer has: a place an
-//             arrow points at, a card, a tab, a lesson, a word left open ({lord}, {t:<config key>})
+//             arrow points at, a card, a tab, a lesson, a word left open ({lord}, {hero}, {t:<config key>})
 'use strict';
 
 const TutoCheck = (() => {
@@ -103,7 +103,7 @@ const TutoCheck = (() => {
     /** The words a line leaves open ({venue}, {game:cafe}, {t:venue_wait}...): each must still mean something. */
     function words(str, where) {
       String(str).replace(/\{(\w+)(?::(\w+))?\}/g, (m, k, a) => {
-        const ok = ['venue', 'keeper', 'lord', 'trait', 'chief'].includes(k) ? !a
+        const ok = ['venue', 'keeper', 'lord', 'trait', 'chief', 'hero', 'de_hero'].includes(k) ? !a
           : k === 'game' ? !!(D.venues || {})[a]
           : k === 'n' || k === 't' ? !CFG || (!!CFG[a] && typeof CFG[a].value === 'number')
           : false;

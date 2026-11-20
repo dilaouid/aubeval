@@ -44,7 +44,7 @@ const Battle = (() => {
     const st = Hero.stats(), scale = opts.scale || 1, spots = SPOTS[Math.min(3, enemies.length)], deck = Cards.deck();
     b = {
       opts, enemies: enemies.slice(0, 3), phase: 'intro', timer: 0.7, t: 0, round: 0, shake: 0, help: false,
-      hero: { isHero: true, name: DATA.hero.name, pos: HERO_AT, hp: st.hp, max: st.hp, ghost: st.hp, atk: st.atk, def: st.def, // st.atk already carries the forge's gift (Hero.stats, Venue.buff('atk'))
+      hero: { isHero: true, name: heroName(), pos: HERO_AT, hp: st.hp, max: st.hp, ghost: st.hp, atk: st.atk, def: st.def, // st.atk already carries the forge's gift (Hero.stats, Venue.buff('atk'))
         block: 0, thorns: 0, buff: null, bless: false, wide: false, ally: null, echo: false, flash: 0, lunge: 0, reach: 0 },
       foes: enemies.slice(0, 3).map((id, i) => mkFoe(id, spots[i], scale)),
       draw: shuffle(deck.slice()), hand: [], discard: [], gone: [], energy: 0, target: 0,

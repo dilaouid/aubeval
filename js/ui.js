@@ -5,12 +5,22 @@
 // a clickable region, and the next step sends the waiting clicks to the regions (UI.click).
 'use strict';
 
-/** A string from data/strings.js, with {holes} filled from vars. */
+/**
+ * The hero's name, as the player chose it (state.hero.name), or the default before a game is under way.
+ * of: with « de » before it, elided before a vowel or a mute h (« d’Aldric », « de Bertrand »).
+ */
+function heroName(of) {
+  const n = (typeof state !== 'undefined' && state && state.hero && state.hero.name) || DATA.hero.name;
+  return of ? (/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'd’' : 'de ') + n : n;
+}
+/** Fills {hero} and {de_hero} in a line of text. */
+function withHero(s) { return s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName()); }
+/** A string from data/strings.js, with {holes} filled from vars, and the hero's name in its place. */
 function tr(key, vars) {
   let s = DATA.strings[key];
   if (s == null) return key;
   if (vars) for (const k in vars) s = s.split('{' + k + '}').join(vars[k]);
-  return s;
+  return typeof s === 'string' ? withHero(s) : s;
 }
 /** Big numbers keep short names: 12 400 -> "12,4 k". */
 function fmt(n) {
