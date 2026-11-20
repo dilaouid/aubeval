@@ -540,9 +540,9 @@ const Battle = (() => {
     b.note = null;
     if (playing || b.phase === 'intro' || b.phase === 'over') drawHand();
     else if (b.phase === 'foes') {
-      UI.plate(330, 560, 620, 86);
-      UI.label(tr('parry_title'), 640, 588, 20, C.gold);
-      UI.label(tr('parry_how'), 640, 620, 15, C.text, 'center', false);
+      UI.plate(330, 550, 620, 100);
+      UI.label(tr('parry_title'), 640, 580, 20, C.gold);
+      UI.wrap(tr('parry_how'), 640, 599, 540, 15, C.text, 19, false, 'center');
     }
 
     if (b.note && !b.help) drawNote(b.note);

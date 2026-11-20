@@ -217,18 +217,18 @@ const UI = (() => {
     } else label(lab, x + w / 2, y + h / 2 + 1, size, col, 'center');
     return hov;
   }
-  /** Word-wrapped text. Returns the y under the last line. */
-  function wrap(str, x, y, maxW, size, color, lineH, bold) {
+  /** Word-wrapped text. `align` 'center' makes x the middle of the block. Returns the y under the last line. */
+  function wrap(str, x, y, maxW, size, color, lineH, bold, align = 'left') {
     ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`;
     lineH = lineH || Math.round(size * 1.35);
     for (const para of String(str).split('\n')) {
       let line = '';
       for (const word of para.split(' ')) {
         const t = line ? line + ' ' + word : word;
-        if (ctx.measureText(t).width > maxW && line) { text(line, x, y + lineH / 2, size, color, 'left', bold); y += lineH; line = word; }
+        if (ctx.measureText(t).width > maxW && line) { text(line, x, y + lineH / 2, size, color, align, bold); y += lineH; line = word; }
         else line = t;
       }
-      text(line, x, y + lineH / 2, size, color, 'left', bold); y += lineH;
+      text(line, x, y + lineH / 2, size, color, align, bold); y += lineH;
     }
     return y;
   }
