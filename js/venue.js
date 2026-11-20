@@ -712,5 +712,5 @@ const Venue = (() => {
     if (v.game.done) { finish(); v.res.t = 1; console.log(`venue ${id} · série ${v.res.before} · score ${v.res.score} · médaille ${v.res.medal} · popularité +${v.res.pop}`); }
   }
 
-  return { fresh, adopt, tick, away, has, buff, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; } };
+  return { fresh, adopt, tick, away, has, buff, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; }, get id() { return v ? v.id : null; } };
 })();

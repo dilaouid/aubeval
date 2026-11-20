@@ -10,6 +10,7 @@
 window.CONFIG = {
   seed: 1, // every gameplay random call reads rng(), seeded from this (or ?seed= in the address)
   volume: { value: 0.5, min: 0, max: 1, step: 0.05 },
+  music: { value: 0.55, min: 0, max: 1, step: 0.05 }, // the music's share of the volume (js/music.js)
 
   // ---- The first minute ----
   click_wood: { value: 1, min: 1, max: 5, step: 1 },                 // wood per click on a tree

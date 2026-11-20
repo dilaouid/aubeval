@@ -123,6 +123,8 @@ docs/             captures d'écran de ce README
 
 Les sprites sont générés avec [PixelLab](https://pixellab.ai).
 
+Les musiques viennent d'[OpenGameArt](https://opengameart.org), par mrpoly, Scott Elliott (Scrabbit), Cleyton Kauffman, RandomMind et Johan Brodd. Titres, licences et sources : [assets/music/CREDITS.md](assets/music/CREDITS.md).
+
 ## Licence
 
-MIT, voir [LICENSE](LICENSE).
+Le code est sous licence MIT, voir [LICENSE](LICENSE). Les musiques de `assets/music/` gardent chacune la licence de leur auteur (CC0, CC BY 3.0 ou CC BY 4.0), détaillée dans [assets/music/CREDITS.md](assets/music/CREDITS.md).

@@ -44,6 +44,7 @@
     js/tuto-check.js     whether that teaching still covers the whole game (also: node tools/check-tutorial.js)
     js/siting.js         where she suggests building, scored against the village as it is (also: node tools/check-siting.js)
     js/screens.js        the screens: title, village, battle, pause, figures
+    js/music.js          the music: which track each screen plays, crossfaded (assets/music, credits in assets/music/CREDITS.md)
 -->
 <script src="config.js"></script>
 <script src="data/world.js"></script>
@@ -236,6 +237,7 @@ let scene, state;
 <script src="js/siting.js"></script>
 <script src="js/tutorial.js"></script>
 <script src="js/screens.js"></script>
+<script src="js/music.js"></script>
 <script>
 'use strict';
 function reset() {
@@ -256,6 +258,7 @@ function step() {
   // meets the screen as it is now.
   if (clicks.length && uiStale) drawFrame();
   scenes[scene].update(STEP);
+  Music.update(STEP);
   hit.clear(); clicks.length = 0; mouse.ddx = 0; mouse.ddy = 0; mouse.wheel = 0; uiStale = true;
 }
 let last, acc = 0, ALPHA = 1; // ALPHA: how far the frame is between the last two steps
