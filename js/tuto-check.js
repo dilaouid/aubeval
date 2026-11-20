@@ -145,7 +145,7 @@ const TutoCheck = (() => {
         for (const p of s.say || []) { if (p && p.show && !place(p.show)) broken.push(`${where}: show ${p.show}`); words(typeof p === 'string' ? p : p.text, where); }
         if (s.task) words(s.task, where);
         for (const r in s.gift || {}) if (!D.resources[r]) broken.push(`${where}: gift ${r}`);
-        cond(s.goal, where); cond(s.unless, where + ' (unless)');
+        cond(s.goal, where); cond(s.unless, where + ' (unless)'); cond(s.already, where + ' (already)');
       }
     }
     return { features: feats.length, missing, unknown, broken };

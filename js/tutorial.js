@@ -9,6 +9,8 @@
 // Village panel) plays any of them again. What she has taught is saved (state.tuto).
 // A lesson never waits: the first time it plays she lends what its task lacks, and a step whose
 // task cannot be done now (`unless: { stuck }`) is passed over, its lines having been said before.
+// A step whose task the player already did (`already`: a farm built before its lesson) keeps its
+// lines, but not its task: she says them (not the pages marked `todo`) and goes on.
 //
 // The screens name the places an arrow can point at while they draw (Tuto.mark), and ask before
 // they act on a click, a key or a tile of a stroke (Tuto.click, Tuto.keyOk, Tuto.tileOk).
@@ -58,7 +60,9 @@ const Tuto = (() => {
   const step = () => course().steps[at()];
   const tasks = () => course().steps.filter(s => s.task);
   const keyOf = () => course().id + ':' + at();
-  const pageOf = s => { const p = s.say[cur.page]; return typeof p === 'string' ? { text: fill(p) } : { text: fill(p.text), show: p.show }; };
+  /** Her lines for the step as it runs: a task already done drops the pages about doing it (`todo`). */
+  const says = s => !s.say ? [] : cur && cur.skip ? s.say.filter(p => !p.todo) : s.say;
+  const pageOf = s => { const p = says(s)[cur.page]; return typeof p === 'string' ? { text: fill(p) } : { text: fill(p.text), show: p.show }; };
   const inside = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
   const grow = (r, n) => ({ x: r.x - n, y: r.y - n, w: r.w + 2 * n, h: r.h + 2 * n });
   const tileOf = (x, y) => { const p = World.toWorld(x, y); return { tx: Math.floor(p.x / T), ty: Math.floor(p.y / T) }; };
@@ -224,7 +228,9 @@ const Tuto = (() => {
     if (!course()) return;
     if (at() >= course().steps.length) { complete(); return; }
     const s = step(), c = state.cam, g = s.goal || {};
-    cur = { key: keyOf(), page: 0, shown: 0, t: 0, moved: 0, cam: { x: c.x, y: c.y }, talk: !!(s.say && s.say.length), tiles: null, trees: null, spot: null, glide: null, base: {}, sig: g.changed ? sig(g.changed) : null };
+    cur = { key: keyOf(), page: 0, shown: 0, t: 0, moved: 0, cam: { x: c.x, y: c.y }, skip: !!(s.task && s.already && holds(s.already)), tiles: null, trees: null, spot: null, glide: null, base: {}, sig: g.changed ? sig(g.changed) : null };
+    cur.talk = says(s).length > 0;
+    if (cur.skip) return; // the task is done already: nothing to lend, no place to show
     for (const k in g.gain || {}) cur.base[k] = tally(k);
     if (s.pave) cur.tiles = paveRun(s.pave);
     const [first, arg] = split(s.point ? s.point[0] : ''), h = Village.hallMid();
@@ -267,7 +273,7 @@ const Tuto = (() => {
       for (const r in s.gift) Village.gain(r, s.gift[r]);
       toast(tr('tuto_gift', { name: D.guide.name, list: Object.keys(s.gift).map(r => `+${s.gift[r]} ${RES[r].name.toLowerCase()}`).join(', ') }), C.gold);
     }
-    if (s.task) { cheer = { t: 0 }; burst(230, TOP + 60); sfx('unlock'); }
+    if (s.task && !cur.skip) { cheer = { t: 0 }; burst(230, TOP + 60); sfx('unlock'); }
     Object.assign(ui, { placing: null, tool: null, moving: null }); // in a lesson the open panel stays: the next step often goes on in it
     if (isStart()) Object.assign(ui, { panel: null, sel: null });
     events.push({ type: 'tuto', course: course().id, step: s.id });
@@ -309,9 +315,9 @@ const Tuto = (() => {
     const s = step(), full = pageOf(s).text.length;
     if (cur.shown < full) { cur.shown = full; return; }
     sfx('click'); cur.page++; cur.shown = 0;
-    if (cur.page < s.say.length) return;
+    if (cur.page < says(s).length) return;
     cur.talk = false; cur.t = 0;
-    if (!s.task) finish();
+    if (!s.task || cur.skip) finish();
   }
 
   // ---- When a step is done ----
@@ -578,6 +584,7 @@ const Tuto = (() => {
       if (active() && (pressed('Space') || pressed('Enter') || pressed('NumpadEnter'))) turn();
       return;
     }
+    if (cur.skip) { finish(); return; } // a task already done, with no line left to say
     if (cur.order != null) { const o = state.city.orders.find(q => q.id === cur.order); if (o) o.have = o.n; } // the order she filled stays full until it is handed in (a street's beauty is read again every second)
     let t = resolve();
     if (t && t.note && !isStart() && !state.tuto.replay) { lend(s); t = resolve(); } // a lesson's first play: her loan topped up when a workshop ate it meanwhile
@@ -682,7 +689,7 @@ const Tuto = (() => {
     lines.forEach((l, i) => { const part = l.slice(0, Math.max(0, left)); left -= l.length + 1; if (part) text(part, tx, by + 62 + i * 25, 18, C.text, 'left'); });
     const done = cur.shown >= pg.text.length;
     if (done && Math.sin(state.t * 7) > -0.3) UI.label(tr('tuto_next'), bx + bw - 26, by + bh - 22, 13, C.gold, 'right');
-    text(`${cur.page + 1} / ${s.say.length}`, tx, by + bh - 22, 12, C.dim, 'left');
+    text(`${cur.page + 1} / ${says(s).length}`, tx, by + bh - 22, 12, C.dim, 'left');
     skipButton(bx + bw - 158, by + 14, 136, 28, 'tuto_skip', 12);
   }
   /** The task: only what the arrow shows is lit, and her box says what to do, top left. */
@@ -738,7 +745,7 @@ const Tuto = (() => {
   function draw() {
     if (running()) {
       if (!cur || cur.key !== keyOf()) enter(); // drawn before its first step: a save just loaded
-      if (running() && cur) { const s = step(); if (cur.talk) drawTalk(s); else drawTask(s, resolve()); }
+      if (running() && cur) { const s = step(); if (cur.talk) drawTalk(s); else if (!cur.skip) drawTask(s, resolve()); }
     } else if (offer && scene === 'play') drawOffer(offer);
     for (const b of bits) { ctx.globalAlpha = clamp((1.2 - b.t) * 2, 0, 1); ctx.fillStyle = b.c; ctx.fillRect(Math.round(b.x), Math.round(b.y), b.s, b.s); }
     ctx.globalAlpha = 1;
@@ -815,7 +822,7 @@ const Tuto = (() => {
     after();
   }
   function after() {
-    if (params.get('say') === '0') { enter(); if (cur && step() && step().task) cur.talk = false; } // &say=0: straight to the step's task, her lines skipped (a step with no task keeps them)
+    if (params.get('say') === '0') { enter(); if (cur && step() && step().task && !cur.skip) cur.talk = false; } // &say=0: straight to the step's task, her lines skipped (a step with no task keeps them)
     if (params.has('pick') && cur) { // &pick: what the step builds or paves with already in hand, the pointer in the middle of the view
       const [k, a] = split((step().point || [''])[0]);
       if (k === 'build') { if (spot(a).path.some(t => !isPaved(t))) Object.assign(ui, { tool: 'path', bar: 'land' }); else ui.placing = a; } // the path tool first when her place needs a bit of path

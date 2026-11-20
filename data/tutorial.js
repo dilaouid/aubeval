@@ -36,8 +36,9 @@
 // A step, played in this order: she speaks (`say`), then the player does one thing (`task`).
 //   id      a name, for the address option ?tuto=<id> (the start) and for reading the code
 //   say     what she says before the task, a page at a time (a click or Space turns the page).
-//           A page is a string, or { text, show } where `show` is something an arrow points at
-//           while she speaks: a place on the screen (see "Places" below).
+//           A page is a string, or { text, show, todo } where `show` is something an arrow points at
+//           while she speaks: a place on the screen (see "Places" below), and `todo: true` keeps the
+//           page for when the task is to be done (not said when `already` holds).
 //   task    one line: what to do now. Stays on screen until `goal` holds.
 //   point   where to click, as a list read left to right: the arrow goes to the first entry that
 //           is still to do, and ONLY that can be clicked (the rest of the screen is dimmed):
@@ -75,6 +76,9 @@
 //           And: stuck: 'order' | 'proclaim' | 'work:<monument>' | 'legacy' | 'scout' | 'go': the task
 //           cannot be done now (js/tutorial.js stuck). What such a step teaches is said in the step
 //           before it, so nothing is lost when it is passed over.
+//   already a condition (as `when`): the player did the task before the lesson came (its building
+//           stands). She still says the step's lines, but not its `todo` pages, and the task is
+//           passed over: nothing lent, no second one to build.
 //   count   for a 'pick' step: how many she lends the price of
 //   near    for a 'build' step of the start: where the place she lights is drawn to, in tiles from
 //           the hall's corner [right, down] (config.js siting_near). Left out, the place is chosen by
@@ -316,7 +320,7 @@ DATA.tutorial = {
         { id: 'farm',
           say: ['Vos Paysans auront faim de pain. Le pain commence au champ : la Ferme cultive le blé.'],
           task: 'Onglet Production : posez une « Ferme » sur la place qui brille.',
-          point: ['build:farm'], goal: { gain: { 'b:farm': 1 } } },
+          point: ['build:farm'], already: { built: { farm: 1 } }, goal: { gain: { 'b:farm': 1 } } },
         { id: 'next',
           say: ['À 8 habitants, la Boulangerie changera ce blé en pain. Je reviendrai vous la montrer.'] },
       ] },
@@ -372,7 +376,7 @@ DATA.tutorial = {
         { id: 'bakery',
           say: ['Huit habitants : la Boulangerie s’ouvre. Elle cuit le blé de vos fermes en pain, le besoin de toutes vos maisons.'],
           task: 'Onglet Production : posez une « Boulangerie » sur la place qui brille.',
-          point: ['build:bakery'], goal: { gain: { 'b:bakery': 1 } } },
+          point: ['build:bakery'], already: { built: { bakery: 1 } }, goal: { gain: { 'b:bakery': 1 } } },
         { id: 'plates',
           say: [
             'Une maison qui manque de pain porte une plaque rouge au-dessus de son toit. Ces plaques disent toujours ce qui manque : un chemin, une ressource, un service.',
@@ -529,7 +533,7 @@ DATA.tutorial = {
         { id: 'build',
           say: ['Les tours ne suffiront pas toujours. La Caserne forme vos habitants libres en soldats.'],
           task: 'Onglet Défense : posez la « Caserne » sur la place qui brille.',
-          point: ['build:barracks'], unless: { built: { barracks: 1 } }, goal: { gain: { 'b:barracks': 1 } } },
+          point: ['build:barracks'], already: { built: { barracks: 1 } }, goal: { gain: { 'b:barracks': 1 } } },
         { id: 'train',
           say: [{ text: 'Un clic sur la Caserne ouvre ses Soldats. Le Milicien barre la route : les pillards doivent s’arrêter pour le combattre. L’Archer et le Chevalier viendront avec les classes plus hautes.' }],
           task: 'Cliquez la Caserne, puis formez un « Milicien ».',
@@ -643,10 +647,11 @@ DATA.tutorial = {
         { id: 'quarry',
           say: [
             'Douze habitants : la Carrière s’ouvre. Elle taille la pierre des chapelles, des tours de mage et des armes du deuxième palier.',
-            'Elle est bruyante : elle enlaidit les maisons autour. Je vous ai trouvé une place à l’écart, avec les autres ateliers ; s’il le faut, on y mène un bout de chemin.',
+            'Elle est bruyante : elle enlaidit les maisons autour.',
+            { text: 'Je vous ai trouvé une place à l’écart, avec les autres ateliers ; s’il le faut, on y mène un bout de chemin.', todo: true },
           ],
           task: 'Onglet Production : posez une « Carrière » sur la place qui brille, à l’écart des maisons.',
-          point: ['build:quarry'], goal: { gain: { 'b:quarry': 1 } } },
+          point: ['build:quarry'], already: { built: { quarry: 1 } }, goal: { gain: { 'b:quarry': 1 } } },
         { id: 'rocks',
           say: ['Les Mineurs, formés depuis le Peuple, rapportent aussi la pierre des rochers ; un clic sur un rocher en donne un peu à la main.'] },
       ] },
@@ -661,7 +666,7 @@ DATA.tutorial = {
             { text: 'Le Café est un service : il sert les maisons dans son rayon. En le tenant, vous verrez ce rayon et les maisons servies encadrées.', show: 'card:cafe' },
           ],
           task: 'Onglet Habitat : posez un « Café » sur la place qui brille, parmi vos maisons.',
-          point: ['build:cafe'], goal: { gain: { 'b:cafe': 1 } } },
+          point: ['build:cafe'], already: { built: { cafe: 1 } }, goal: { gain: { 'b:cafe': 1 } } },
         { id: 'house',
           say: ['Quand une maison a tout ce qu’il lui faut, sa satisfaction se remplit.'],
           task: 'Cliquez une maison, onglet « Habitants ».',
@@ -701,7 +706,7 @@ DATA.tutorial = {
             'Le Marché achète et vend vos réserves contre de l’or, et ses caravanes importent les épices des Bourgeois.',
           ],
           task: 'Onglet Habitat : posez un « Marché » sur la place qui brille.',
-          point: ['build:market'], goal: { gain: { 'b:market': 1 } } },
+          point: ['build:market'], already: { built: { market: 1 } }, goal: { gain: { 'b:market': 1 } } },
         { id: 'stalls',
           say: ['Voyons ses étals.'],
           task: 'Cliquez le Marché, onglet « Commerce ».',
@@ -724,7 +729,7 @@ DATA.tutorial = {
             'Les étoffes font des Négociants, qui veulent aussi le Marché à portée, une rue plaisante, et une ville au rang de Ville.',
           ],
           task: 'Onglet Production : posez une « Bergerie » sur la place qui brille.',
-          point: ['build:sheep_farm'], goal: { gain: { 'b:sheep_farm': 1 } } },
+          point: ['build:sheep_farm'], already: { built: { sheep_farm: 1 } }, goal: { gain: { 'b:sheep_farm': 1 } } },
         { id: 'weaver',
           say: [{ text: 'Puis l’Atelier de tissage, à côté : il mange deux laines pour une étoffe.', show: 'card:weaver' }] },
       ] },
@@ -746,10 +751,10 @@ DATA.tutorial = {
           say: [
             'Aubeval est une Ville : elle peut voir grand. Un grand chantier avale vos surplus pendant des heures, et donne en échange un bonus permanent à toute la ville.',
             { text: 'Ils ont leur onglet : la Cathédrale d’abord, le Château au rang de Cité, le Grand phare à celui de Capitale. Un seul de chaque.', show: 'bar:works' },
-            'La poser, c’est couler ses fondations. Je vous montre une place digne d’elle : large, près des maisons qu’elle embellira.',
+            { text: 'La poser, c’est couler ses fondations. Je vous montre une place digne d’elle : large, près des maisons qu’elle embellira.', todo: true },
           ],
           task: 'Onglet Chantiers : posez la « Cathédrale » sur la place qui brille (ou ailleurs).',
-          point: ['pick:cathedral'], unless: { built: { cathedral: 1 } }, goal: { gain: { 'b:cathedral': 1 } } },
+          point: ['pick:cathedral'], already: { built: { cathedral: 1 } }, goal: { gain: { 'b:cathedral': 1 } } },
         { id: 'open',
           say: ['Les fondations sont coulées. Voyons le chantier.'],
           task: 'Cliquez la Cathédrale, onglet « Chantier ».',

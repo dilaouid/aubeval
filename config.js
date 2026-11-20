@@ -257,7 +257,7 @@ window.CONFIG = {
   // ---- The tutorial (data/tutorial.js) ----
   tuto_type_cps: { value: 70, min: 10, max: 400, step: 5 },          // letters per second as the guide's line is written out
   tuto_dim: { value: 0.55, min: 0, max: 0.9, step: 0.05 },           // how dark the part of the screen that cannot be clicked gets
-  tuto_gap: { value: 10, min: 0, max: 120, step: 1 },                // seconds between a lesson (or the start) ending and the next lesson offered
+  tuto_gap: { value: 3, min: 0, max: 120, step: 1 },               // seconds between a lesson (or the start) ending and the next lesson offered
   tuto_later: { value: 240, min: 30, max: 1800, step: 30 },          // seconds a lesson put off (« Plus tard ») waits before it is offered again
 
   // ---- Where she suggests building (js/siting.js): what a place costs, lower is better ----
