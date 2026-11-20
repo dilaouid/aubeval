@@ -1307,9 +1307,13 @@ const scenes = (() => {
     naming: { // the hero's name, before a new game: typed into the field, Entrée starts, Échap goes back
       update(dt) {
         ui.titleT += dt;
-        if (pressed('Enter') || pressed('NumpadEnter')) nameConfirm();
-        else if (pressed('Escape')) nameBack();
-        else if (clicks.length && document.activeElement !== nameField) setTimeout(() => nameField && scene === 'naming' && nameField.focus(), 0); // a click beside the field gives it the keys back
+        if (pressed('Enter') || pressed('NumpadEnter')) { nameConfirm(); return; }
+        if (pressed('Escape')) { nameBack(); return; }
+        for (const c of clicks) { // the buttons are the panel's: a click on one is its own (as in the village, playUpdate)
+          if (c.button !== 0) continue;
+          if (UI.click(c.x, c.y)) { if (scene !== 'naming') return; continue; }
+          setTimeout(() => nameField && scene === 'naming' && nameField.focus(), 0); // a click beside them gives the field the keys back
+        }
       },
       draw: drawNaming,
     },
