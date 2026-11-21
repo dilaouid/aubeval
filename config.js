@@ -49,8 +49,8 @@ window.CONFIG = {
   worker_search: { value: 40, min: 8, max: 120, step: 1 },           // tiles around his drop-off where a worker looks for a tree, a rock or a farm
   worker_fear: { value: 7, min: 0, max: 30, step: 1 },               // tiles: a raider this close sends a worker running to the town hall
   soldier_aggro: { value: 6, min: 1, max: 20, step: 0.5 },           // tiles around the point he guards within which a soldier goes for a raider
-  soldier_recover: { value: 25, min: 2, max: 300, step: 1 },         // seconds a soldier struck down rests at the barracks before he stands again
-  soldier_level_step: { value: 0.1, min: 0, max: 1, step: 0.01 },    // each barracks level adds this share to every soldier's health and damage
+  barracks_queue: { value: 8, min: 0, max: 30, step: 1 },            // recruits the barracks keeps waiting in its line, besides the one at drill
+  soldier_level_step: { value: 0.05, min: 0, max: 1, step: 0.01 },   // each barracks level adds this share to every soldier's health and damage
 
   // ---- Trade (data/people.js) ----
   trade_lot: { value: 10, min: 1, max: 100, step: 1 },               // units bought or sold by one click at the market

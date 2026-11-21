@@ -198,19 +198,26 @@ I18N.add('en', {
   'strings.dismiss_tip': 'Send one of these home: they become a free inhabitant again.', // Renvoyer un de ceux-ci chez lui : il redevient un habitant libre.
   'strings.no_citizen': 'No free inhabitants: build or raise houses.', // Aucun habitant libre : bâtissez ou élevez des maisons.
   'strings.need_barracks': 'You need Barracks.', // Il faut une Caserne.
-  'strings.train_busy': 'The Barracks is already training a recruit.', // La Caserne forme déjà une recrue.
+  'strings.queue_full': 'The Barracks’ line is full.', // La file de la Caserne est pleine.
   'strings.train_title': 'Recruits', // Recrues
   'strings.training': 'In training: {name}', // À l’exercice : {name}
+  'strings.train_idle': 'Nobody in training.', // Personne à l’exercice.
   'strings.unit_ready': '{name} ready, in front of the Barracks.', // {name} prêt, devant la Caserne.
-  'strings.unit_down': 'Down!', // À terre !
+  'strings.unit_ready_rally': '{name} ready: off to the rally point.', // {name} prêt : il rejoint le point de ralliement.
+  'strings.unit_dead': 'Fallen!', // Tombé !
+  'strings.train_many_tip': 'Shift + click: order 5 in a row.', // Maj + clic : en commander 5 à la file.
+  'strings.train_cancel_tip': 'Click: cancel this recruit and get their price back.', // Clic : annuler cette recrue et récupérer son prix.
+  'strings.rally_help': 'Right-click on the map with this panel open: recruits will go there as they come out.', // Clic droit sur la carte, ce panneau ouvert : les recrues s’y rendront en sortant.
+  'strings.rally_set': 'Rally point set: recruits will go there.', // Point de ralliement posé : les recrues s’y rendront.
+  'strings.rally_on': 'Rally point set.', // Point de ralliement posé.
+  'strings.rally_clear': 'Remove the rally point', // Enlever le ralliement
   'strings.soldiers': 'Soldiers', // Soldats
   'strings.soldiers_none': 'Build Barracks (Defence tab) to train soldiers.', // Bâtissez une Caserne (onglet Défense) pour former des soldats.
-  'strings.soldiers_down': '{n} down', // {n} à terre
   'strings.soldiers_help': 'Click a soldier or Shift + drag to select, right-click to send. They hold the spot and charge any raider who comes near.', // Clic sur un soldat ou Maj + glisser pour choisir, clic droit pour envoyer. Ils gardent l’endroit et chargent les pillards qui s’en approchent.
   'strings.select_all': 'All soldiers', // Tous les soldats
   'strings.recall': 'Recall', // Rappel
   'strings.recall_tip': 'All soldiers return to the Barracks.', // Tous les soldats reviennent devant la Caserne.
-  'strings.no_soldiers': 'No soldier standing.', // Aucun soldat debout.
+  'strings.no_soldiers': 'No soldiers.', // Aucun soldat.
   'strings.sel_hint': 'Soldiers selected: {n} · right-click: send them · Esc: release', // Soldats choisis : {n} · clic droit : les envoyer · Échap : lâcher
   'strings.trade_title': 'Trade (lots of {n})', // Commerce (par {n})
   'strings.buy': 'Buy {p} gold', // Acheter {p} or
@@ -243,6 +250,7 @@ I18N.add('en', {
   'strings.raid_warn': 'The horn sounds: a raid leaves the goblin camp, from {dir}! Lay your traps (Defence tab).', // La corne sonne : un raid quitte le camp gobelin, par {dir} ! Posez vos pièges (onglet Défense).
   'strings.raid_start': 'The raiders are coming!', // Les pillards arrivent !
   'strings.raid_won': 'Raid repelled! Bounty: {gold} gold', // Raid repoussé ! Prime : {gold} or
+  'strings.raid_losses': 'Soldiers fallen: {n}.', // Soldats tombés : {n}.
   'strings.raid_lost': 'Raid lost: stores plundered. Repair, then strengthen your ramparts.', // Raid perdu : réserves pillées. Réparez, puis renforcez vos remparts.
   'strings.pillage': 'Plundered!', // Pillé !
   'strings.victory': 'Victory!', // Victoire !

@@ -58,7 +58,7 @@ I18N.add('en', {
   'buildings.goldsmith.desc': 'Turns gold and fine stone into jewels, the Nobles’ luxury.', // Change l’or et la pierre fine en bijoux, le luxe des Nobles.
   'buildings.barracks.name': 'Barracks', // Caserne
   'buildings.barracks.card': 'Barracks', // Caserne
-  'buildings.barracks.desc': 'Trains your inhabitants as soldiers. Each level makes them stronger; a fallen soldier rises again there.', // Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.
+  'buildings.barracks.desc': 'Trains your inhabitants as soldiers, one after another. Each level makes them stronger. A fallen soldier is lost: another must be trained.', // Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.
   'buildings.watchtower.name': 'Watchtower', // Tour de guet
   'buildings.watchtower.card': 'Watchtower', // Tour de guet
   'buildings.watchtower.desc': 'An archer shoots at raiders within range. Raids always set out from the goblin camp: post your towers on their road.', // Un archer tire sur les pillards à portée. Les raids partent toujours du camp gobelin : postez vos tours sur leur route.

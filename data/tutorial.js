@@ -551,7 +551,7 @@ DATA.tutorial = {
           task: 'Faites un clic droit sur la carte pour les y envoyer.',
           point: ['free'], goal: { changed: 'orders' } },
         { id: 'hold',
-          say: ['Ils gardent l’endroit et chargent les pillards qui approchent. Échap les lâche ; « Rappel » les ramène devant la Caserne. Un soldat à terre se relève à la Caserne.'] },
+          say: ['Ils gardent l’endroit et chargent les pillards qui approchent. Échap les lâche ; « Rappel » les ramène devant la Caserne. Un soldat tombé est perdu : il faut en former un autre.'] },
       ] },
 
     { id: 'camp', title: 'Le camp gobelin', about: 'Raser le camp gobelin avec ses soldats ; l’hôtel de ville.', when: { after: 'barracks' },

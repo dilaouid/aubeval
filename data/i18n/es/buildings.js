@@ -58,7 +58,7 @@ I18N.add('es', {
   'buildings.goldsmith.desc': 'Convierte el oro y la piedra fina en joyas, el lujo de los Nobles.', // Change l’or et la pierre fine en bijoux, le luxe des Nobles.
   'buildings.barracks.name': 'Cuartel', // Caserne
   'buildings.barracks.card': 'Cuartel', // Caserne
-  'buildings.barracks.desc': 'Convierte a sus habitantes en soldados. Cada nivel los hace más fuertes; un soldado caído se levanta allí.', // Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.
+  'buildings.barracks.desc': 'Convierte a sus habitantes en soldados, uno tras otro. Cada nivel los hace más fuertes. Un soldado caído se pierde: hay que formar otro.', // Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.
   'buildings.watchtower.name': 'Atalaya', // Tour de guet
   'buildings.watchtower.card': 'Atalaya', // Tour de guet
   'buildings.watchtower.desc': 'Un arquero dispara a los saqueadores a su alcance. Las incursiones siempre salen del campamento goblin: aposte sus torres en su camino.', // Un archer tire sur les pillards à portée. Les raids partent toujours du camp gobelin : postez vos tours sur leur route.

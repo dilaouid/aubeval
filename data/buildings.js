@@ -143,7 +143,7 @@ DATA.buildings = {
   barracks: {
     name: 'Caserne', card: 'Caserne', sprite: 'iso.barracks', w: 3, h: 2,
     cost: { wood: 40, planks: 25, gold: 20 }, unique: true, train: true, unlock: { quest: 'm1' }, keeper: 'captain', beauty: -1,
-    desc: 'Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.',
+    desc: 'Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.',
   },
   watchtower: {
     name: 'Tour de guet', card: 'Tour de guet', sprite: 'iso.watchtower', w: 1, h: 1,

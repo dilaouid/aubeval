@@ -198,19 +198,26 @@ I18N.add('es', {
   'strings.dismiss_tip': 'Mandar a uno de ellos a casa: vuelve a ser un habitante libre.', // Renvoyer un de ceux-ci chez lui : il redevient un habitant libre.
   'strings.no_citizen': 'Ningún habitante libre: construya o ascienda casas.', // Aucun habitant libre : bâtissez ou élevez des maisons.
   'strings.need_barracks': 'Hace falta un Cuartel.', // Il faut une Caserne.
-  'strings.train_busy': 'El Cuartel ya está formando a un recluta.', // La Caserne forme déjà une recrue.
+  'strings.queue_full': 'La cola del Cuartel está llena.', // La file de la Caserne est pleine.
   'strings.train_title': 'Reclutas', // Recrues
   'strings.training': 'En instrucción: {name}', // À l’exercice : {name}
+  'strings.train_idle': 'Nadie en instrucción.', // Personne à l’exercice.
   'strings.unit_ready': '{name} listo, ante el Cuartel.', // {name} prêt, devant la Caserne.
-  'strings.unit_down': '¡Caído!', // À terre !
+  'strings.unit_ready_rally': '{name} listo: va al punto de reunión.', // {name} prêt : il rejoint le point de ralliement.
+  'strings.unit_dead': '¡Caído!', // Tombé !
+  'strings.train_many_tip': 'Mayús + clic: encargar 5 seguidos.', // Maj + clic : en commander 5 à la file.
+  'strings.train_cancel_tip': 'Clic: cancelar este recluta y recuperar su precio.', // Clic : annuler cette recrue et récupérer son prix.
+  'strings.rally_help': 'Clic derecho en el mapa, con este panel abierto: los reclutas irán allí al salir.', // Clic droit sur la carte, ce panneau ouvert : les recrues s’y rendront en sortant.
+  'strings.rally_set': 'Punto de reunión fijado: los reclutas irán allí.', // Point de ralliement posé : les recrues s’y rendront.
+  'strings.rally_on': 'Punto de reunión fijado.', // Point de ralliement posé.
+  'strings.rally_clear': 'Quitar el punto de reunión', // Enlever le ralliement
   'strings.soldiers': 'Soldados', // Soldats
   'strings.soldiers_none': 'Construya un Cuartel (pestaña Defensa) para formar soldados.', // Bâtissez une Caserne (onglet Défense) pour former des soldats.
-  'strings.soldiers_down': '{n} caídos', // {n} à terre
   'strings.soldiers_help': 'Clic en un soldado o Mayús + arrastrar para elegir, clic derecho para enviar. Guardan el lugar y cargan contra los saqueadores que se acercan.', // Clic sur un soldat ou Maj + glisser pour choisir, clic droit pour envoyer. Ils gardent l’endroit et chargent les pillards qui s’en approchent.
   'strings.select_all': 'Todos los soldados', // Tous les soldats
   'strings.recall': 'Reagrupar', // Rappel
   'strings.recall_tip': 'Todos los soldados vuelven ante el Cuartel.', // Tous les soldats reviennent devant la Caserne.
-  'strings.no_soldiers': 'Ningún soldado en pie.', // Aucun soldat debout.
+  'strings.no_soldiers': 'Ningún soldado.', // Aucun soldat.
   'strings.sel_hint': 'Soldados elegidos: {n} · clic derecho: enviarlos · Esc: soltar', // Soldats choisis : {n} · clic droit : les envoyer · Échap : lâcher
   'strings.trade_title': 'Comercio (lotes de {n})', // Commerce (par {n})
   'strings.buy': 'Comprar {p} oro', // Acheter {p} or
@@ -243,6 +250,7 @@ I18N.add('es', {
   'strings.raid_warn': 'Suena el cuerno: ¡una incursión sale del campamento goblin, por {dir}! Coloque sus trampas (pestaña Defensa).', // La corne sonne : un raid quitte le camp gobelin, par {dir} ! Posez vos pièges (onglet Défense).
   'strings.raid_start': '¡Llegan los saqueadores!', // Les pillards arrivent !
   'strings.raid_won': '¡Incursión rechazada! Prima: {gold} oro', // Raid repoussé ! Prime : {gold} or
+  'strings.raid_losses': 'Soldados caídos: {n}.', // Soldats tombés : {n}.
   'strings.raid_lost': 'Incursión perdida: reservas saqueadas. Repare y luego refuerce sus murallas.', // Raid perdu : réserves pillées. Réparez, puis renforcez vos remparts.
   'strings.pillage': '¡Saqueado!', // Pillé !
   'strings.victory': '¡Victoria!', // Victoire !

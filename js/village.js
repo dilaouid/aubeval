@@ -274,7 +274,7 @@ const Village = (() => {
       buildings: [], nextUid: 1, unlocked: {},
       hero: { name: DATA.hero.name, lvl: 1, xp: 0, equip: { weapon: null, armor: null }, inv: [], plus: {}, bench: {} }, // bench: the battle cards left at home (js/cards.js)
       quests: { done: {}, tiers: {} },
-      counters: { raidsWon: 0, raidsLost: 0, battlesWon: 0, chops: 0, campsDown: 0, cleared: 0, planted: 0, traps: 0 }, // cleared, planted, traps: what the tutorial's lessons watch grow
+      counters: { raidsWon: 0, raidsLost: 0, battlesWon: 0, chops: 0, campsDown: 0, cleared: 0, planted: 0, traps: 0, soldiersLost: 0 }, // cleared, planted, traps: what the tutorial's lessons watch grow
       raid: { n: 0, timer: null, warned: false, active: null, from: null, traps: [], camp: null }, // from: where the next raid comes out, in map pixels; traps: [{ kind, x, y, uses }] laid for this raid; camp: the goblin camp's top-left tile, found once
       units: [], nextUnit: 1,                    // the citizens trained as workers and soldiers (js/units.js)
       mission: null,
@@ -607,6 +607,7 @@ const Village = (() => {
   }
   function demolish(b) {
     if (B[b.kind].fixed) return;
+    if (B[b.kind].train) Units.refund(b); // the recruits in its line are paid back
     const r = refund(b); for (const k in r) state.res[k] += r[k];
     state.buildings.splice(state.buildings.indexOf(b), 1); stamp(b); Raid.touch(); touchTown(); Units.touch(); sfx('chop');
   }

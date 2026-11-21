@@ -61,14 +61,22 @@ const scenes = (() => {
   function turnable() { const mv = ui.moving && Village.byUid(ui.moving), k = ui.placing || (mv && mv.kind); return !!k && Village.canTurn(k); }
   const shift = () => down.has('ShiftLeft') || down.has('ShiftRight');
   // ---- Soldiers: chosen with a click or a box, sent with the right button ----
-  const standing = () => Units.soldiers().filter(u => !(u.down > 0));
-  function selectAll() { ui.selU = standing().map(u => u.id); if (!ui.selU.length) { toast(tr('no_soldiers'), C.bad); sfx('error'); } else sfx('click'); }
+  function selectAll() { ui.selU = Units.soldiers().map(u => u.id); if (!ui.selU.length) { toast(tr('no_soldiers'), C.bad); sfx('error'); } else sfx('click'); }
   /** Sends the selected soldiers to the map point under a screen point. False when there is nobody to send, or something else is in hand. */
   function orderAt(x, y) {
     if (!ui.selU.length || ui.placing || ui.moving || ui.tool || ui.wall || UI.hitAt(x, y)) return false;
     let p = World.toWorld(x, y);
     if (Camp.standing() && Camp.covers(p.x, p.y)) { p = Camp.gate(); toast(tr('camp_sent', { n: ui.selU.length }), C.accent); } // on the goblin camp: an assault, from its gate
     return Units.order(ui.selU, p.x, p.y);
+  }
+  /** Plants the barracks' rally point under a screen point: its panel open, no soldier chosen, nothing in hand. False otherwise. */
+  function rallyAt(x, y) {
+    const b = ui.panel === 'building' && Village.byUid(ui.sel);
+    if (!b || !B[b.kind].train || ui.selU.length || ui.placing || ui.moving || ui.tool || ui.wall || UI.hitAt(x, y)) return false;
+    const p = World.toWorld(x, y);
+    if (!Units.setRally(p.x, p.y)) return false;
+    World.ping(p.x, p.y); toast(tr('rally_set'), C.good); sfx('click');
+    return true;
   }
   /**
    * The tiles of the rampart being drawn, from where the button went down to the pointer, in the
@@ -143,7 +151,7 @@ const scenes = (() => {
   function playUpdate(dt) {
     const modal = ui.away || ui.banner, tut = Tuto.active(); // tut: the tutorial decides what a click, a key or a stroke may do
     for (const c of clicks) {
-      if (c.button === 2) { if (modal || !orderAt(c.x, c.y)) cancel(); continue; } // the right button: an order to the chosen soldiers, else it backs out
+      if (c.button === 2) { if (modal || !(orderAt(c.x, c.y) || rallyAt(c.x, c.y))) cancel(); continue; } // the right button: an order to the chosen soldiers, or the open barracks' rally point, else it backs out
       if (tut && !Tuto.click(c.x, c.y)) continue; // not what the guide is showing: the click is lost
       if (UI.click(c.x, c.y)) { if (scene !== 'play') return; continue; }
       if (!modal) worldClick(c.x, c.y);
@@ -159,12 +167,12 @@ const scenes = (() => {
     if (key('KeyG')) togglePanel('city');
     if (key('KeyE')) togglePanel('explore');
     if (key('KeyT')) selectAll();
-    if (ui.selU.length) ui.selU = ui.selU.filter(id => { const u = Units.byId(id); return u && !(u.down > 0); });
+    if (ui.selU.length) ui.selU = ui.selU.filter(id => Units.byId(id));
     if (ui.tool && ui.tool.startsWith('trap:') && !Raid.trapsOpen()) ui.tool = null; // the raid is over: the traps go back in the cart
     // the selection box: Shift held, the button down on the map with nothing in hand, and a slide
     if (ui.box && !mouse.down) {
       const bx = ui.box, x0 = Math.min(bx.x, bx.x1), x1 = Math.max(bx.x, bx.x1), y0 = Math.min(bx.y, bx.y1), y1 = Math.max(bx.y, bx.y1);
-      ui.selU = standing().filter(u => { const p = World.toScreen(u.x, u.y, 8); return p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1; }).map(u => u.id);
+      ui.selU = Units.soldiers().filter(u => { const p = World.toScreen(u.x, u.y, 8); return p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1; }).map(u => u.id);
       if (ui.selU.length) sfx('click');
       ui.box = null;
     } else if (ui.box) { ui.box.x1 = mouse.x; ui.box.y1 = mouse.y; }
@@ -745,8 +753,8 @@ const scenes = (() => {
     y = UI.wrap(tr('camp_force', { n: cp.guards.length, all: Camp.roster(cp.lvl).length, hp: fmtNum(Math.max(0, cp.hp)), max: fmtNum(cp.max), fell: state.counters.campsDown || 0 }), x, y + 2, w, 14, C.dim);
     { const chief = Camp.chiefLine && Camp.chiefLine(); if (chief) { const top = y + 2; y = UI.wrap(chief, x, top, w, 14, C.accent); Tuto.mark('camp:chief', x, top, w, y - top); } } // THREAT hook: the chief of a camp risen after one fell (js/camp.js)
     y = UI.wrap(tr('camp_how'), x, y + 2, w, 13, C.dim) + 4;
-    const none = !Units.soldiers().some(u => !(u.down > 0));
-    UI.button(x, y, w, 34, tr('camp_attack'), () => { if (Camp.attack()) { ui.selU = standing().map(u => u.id); Object.assign(state.cam, World.camOn(c.x, c.y)); } }, { primary: true, size: 14, icon: 'icon.raid', disabled: none, tip: none ? tr('camp_no_soldiers') : null });
+    const none = !Units.soldiers().length;
+    UI.button(x, y, w, 34, tr('camp_attack'), () => { if (Camp.attack()) { ui.selU = Units.soldiers().map(u => u.id); Object.assign(state.cam, World.camOn(c.x, c.y)); } }, { primary: true, size: 14, icon: 'icon.raid', disabled: none, tip: none ? tr('camp_no_soldiers') : null });
     Tuto.mark('camp:attack', x, y, w, 34);
     y += 42;
     UI.button(x, y, w, 32, tr('camp_show'), () => { Object.assign(state.cam, World.camOn(c.x, c.y)); }, { size: 13, icon: 'icon.raid' });
@@ -782,7 +790,7 @@ const scenes = (() => {
     }
     return y;
   }
-  /** One kind of unit on a line: how many, its price, the button that trains one and the one that sends one home. */
+  /** One kind of unit on a line: how many, its price, the button that trains one (a soldier: with Shift, five) and the one that sends one home. */
   function unitRow(k, x, y, w, stats) {
     const d = U[k], miss = Quests.describe(d.unlock).filter(p => !p.ok);
     if (miss.length) { UI.icon('icon.lock', x + 8, y + 13, 16); text(`${d.name} · ${miss.map(p => p.text).join(', ')}`, x + 26, y + 13, 13, C.dim, 'left'); return y + 26; }
@@ -790,17 +798,38 @@ const scenes = (() => {
     if (stats) text(stats, x + w - 126, y + 11, 13, C.good, 'right');
     UI.cost(Units.cost(k), x, y + 31, { size: 13, gap: 6 });
     const why = Units.blocked(k);
-    UI.button(x + w - 118, y + 3, 84, 36, tr('train'), () => Units.train(k), { size: 14, primary: !why, disabled: !!why, tip: d.name + '\n' + d.desc + (why ? '\n' + why : '') });
+    UI.button(x + w - 118, y + 3, 84, 36, tr('train'), () => Units.train(k, d.role === 'soldier' && shift() ? 5 : 1), { size: 14, primary: !why, disabled: !!why, tip: d.name + '\n' + d.desc + (d.role === 'soldier' ? '\n' + tr('train_many_tip') : '') + (why ? '\n' + why : '') });
     Tuto.mark('train:' + k, x + w - 118, y + 3, 84, 36);
     UI.button(x + w - 30, y + 3, 30, 36, '−', () => Units.dismiss(k), { size: 18, disabled: !Units.count(k), tip: tr('dismiss_tip') });
     return y + 44;
   }
-  /** The barracks: the recruit at drill, a line per kind of soldier, and the two orders for all of them. */
+  /**
+   * The barracks' training line, in boxes: the recruit at drill first, with his bar, then those
+   * waiting. A click on a box takes that recruit out and gives his price back. Returns the y under it.
+   */
+  function drawLine(b, x, y, w) {
+    const line = Units.line(b), S = 42, G = 4, per = Math.max(1, Math.floor((w + G) / (S + G)));
+    text(tr(line.length ? 'training' : 'train_idle', { name: line.length ? U[line[0].kind].name : '' }), x, y + 9, 14, line.length ? C.accent : C.dim, 'left', true);
+    text(`${line.length} / ${Units.lineMax()}`, x + w, y + 9, 13, C.dim, 'right'); y += 22;
+    line.forEach((r, i) => {
+      const bx = x + (i % per) * (S + G), by = y + Math.floor(i / per) * (S + G), s = World.unitSprite(U[r.kind].sprite, 0, 1, false, 0);
+      UI.button(bx, by, S, S, '', () => Units.cancel(i), { on: i === 0, tip: U[r.kind].name + '\n' + tr('train_cancel_tip') });
+      ctx.globalAlpha = i === 0 ? 1 : 0.6; blit(s, bx + (S - s.width) / 2, by + (S - 4 - s.height) / 2, 1 / PX); ctx.globalAlpha = 1; // at its own size, not the map's
+      if (i === 0) { ctx.fillStyle = C.ink; ctx.fillRect(bx + 3, by + S - 8, S - 6, 5); ctx.fillStyle = C.accent; ctx.fillRect(bx + 4, by + S - 7, Math.round((S - 8) * r.frac), 3); } // how far his drill is
+    });
+    return y + Math.max(1, Math.ceil(line.length / per)) * (S + G) + 2;
+  }
+  /** The barracks: its training line, a row per kind of soldier, its rally point, and the two orders for all of them. */
   function drawBarracks(b, x, y, w) {
     const free = Units.free();
     text(tr('train_title'), x, y + 10, 15, C.gold, 'left', true); text(tr('pop_free', { n: free }), x + w, y + 10, 13, free > 0 ? C.good : C.bad, 'right', true); y += 24;
-    if (b.train) { text(tr('training', { name: U[b.train.kind].name }), x, y + 9, 14, C.accent, 'left', true); UI.bar(x + 190, y, w - 190, 16, 1 - b.train.left / b.train.total, C.accent); y += 24; }
+    y = drawLine(b, x, y, w);
     for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(U[k].atk * Units.drill()) }));
+    if (b.rally) { // where the recruits go: said, and a button to take it away
+      text(tr('rally_on'), x, y + 15, 13, C.good, 'left', true);
+      UI.button(x + w - 150, y + 2, 150, 28, tr('rally_clear'), Units.clearRally, { size: 12, tip: tr('rally_help') });
+      y += 34;
+    } else y = UI.wrap(tr('rally_help'), x, y + 2, w, 12, C.dim, 16) + 4;
     return armyButtons(x, y + 2, w);
   }
   function armyButtons(x, y, w) {
@@ -837,8 +866,7 @@ const scenes = (() => {
     if (idle) y = UI.wrap(tr('workers_idle', { n: idle }), x, y, w, 13, C.bad);
     text(tr('soldiers'), x, y + 12, 15, C.gold, 'left', true); y += 24;
     if (!Units.barracks()) return UI.wrap(tr('soldiers_none'), x, y, w, 13, C.dim);
-    const down = Units.soldiers().filter(u => u.down > 0).length;
-    text(DATA.unitOrder.filter(k => U[k].role === 'soldier').map(k => `${U[k].plural} ${Units.count(k)}`).join(' · ') + (down ? ' · ' + tr('soldiers_down', { n: down }) : ''), x, y + 9, 13, C.text, 'left'); y += 22;
+    text(DATA.unitOrder.filter(k => U[k].role === 'soldier').map(k => `${U[k].plural} ${Units.count(k)}`).join(' · '), x, y + 9, 13, C.text, 'left'); y += 22;
     y = armyButtons(x, y, w);
     return UI.wrap(tr('soldiers_help'), x, y, w, 12, C.dim, 16);
   }
@@ -1436,7 +1464,7 @@ function buildDemo() {
   Object.assign(state.cam, World.camOn(m.x, m.y + 40));
   if (params.get('look') === 'raid') Object.assign(state.cam, World.camOn(stand.x + ux * 48, stand.y + uy * 48)); // ?look=raid: the view on the guard and the traps
   }
-  if (params.has('sel')) ui.selU = Units.soldiers().filter(u => !(u.down > 0)).map(u => u.id);               // ?sel: the guard selected
+  if (params.has('sel')) ui.selU = Units.soldiers().map(u => u.id);                                           // ?sel: the guard selected
   if (params.get('look') === 'camp') { const c = Village.campMid(); Object.assign(state.cam, World.camOn(c.x, c.y)); } // ?look=camp: the view on the goblin camp
   if (params.get('look') === 'houses') { const hs = state.buildings.filter(b => b.kind === 'house'), b = hs[2] || hs[0]; Object.assign(state.cam, World.camOn((b.x + 1) * 16, (b.y + 1) * 16)); } // ?look=houses
   if (params.get('place') && B[params.get('place')]) { ui.placing = params.get('place'); mouse.x = 560; mouse.y = 300; } // ?place=cafe: that building on the pointer, at the middle of the view

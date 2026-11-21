@@ -207,7 +207,7 @@ const Tuto = (() => {
     if (k === 'b') return Village.count(a);
     if (k === 'lvl') return state.buildings.reduce((n, b) => n + (b.kind === a ? b.lvl : 0), 0);
     if (k === 'u') return Units.count(a);
-    if (k === 'drill') { const b = Units.barracks(); return Units.count(a) + (b && b.train && b.train.kind === a ? 1 : 0); }
+    if (k === 'drill') return Units.count(a) + Units.line().filter(r => r.kind === a).length; // on his feet, at drill or waiting in the line
     if (k === 'orders') return state.city.done;
     if (k === 'rank') return state.city.rank;
     if (k === 'scouts') return state.explore.reach.reduce((n, r) => n + r, 0);
