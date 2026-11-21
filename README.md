@@ -59,7 +59,7 @@ Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte g
 
 <div align="center">
 
-<img src="docs/combat.png" alt="Un combat avec parade au timing" width="900">
+<img src="docs/combat.gif" alt="Un combat avec parade au timing" width="900">
 
 </div>
 
