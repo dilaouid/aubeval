@@ -1172,8 +1172,15 @@ const scenes = (() => {
   // ---- Naming the hero, before a new game ----
   // The name is typed into a real text field laid over the canvas (accents, paste, a phone's
   // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name.
-  const NAME_BOX = { x: 470, y: 330, w: 420, h: 56 }; // the field, in logical units
+  const NAME_BOX = { x: 500, y: 400, w: 420, h: 56 }; // the field, in logical units
   let nameField = null;
+  /** Goes to hero `id` (ui.heroPick): the field follows unless the player typed a name of his own (Hero.nameFor). */
+  function pickHero(id) {
+    if (!DATA.heroes.some(h => h.id === id) || id === ui.heroPick) return;
+    ui.heroPick = id; ui.nameWhy = null; nameField.value = Hero.nameFor(nameField.value, id); sfx('click');
+  }
+  /** The next hero (d = 1) or the one before (d = -1), round the four. */
+  function stepHero(d) { const n = DATA.heroes.length, i = DATA.heroes.findIndex(h => h.id === heroLook().id); pickHero(DATA.heroes[(i + d + n) % n].id); }
   function field() {
     if (nameField) return nameField;
     const f = nameField = document.createElement('input');
@@ -1186,20 +1193,23 @@ const scenes = (() => {
       if (v !== f.value) { const at = Math.max(0, f.selectionStart - (f.value.length - v.length)); f.value = v; f.setSelectionRange(at, at); sfx('error'); }
       ui.nameWhy = null;
     });
-    f.addEventListener('keydown', e => {
+    f.addEventListener('keydown', e => { // the global keys skip an <input>, so the arrows are read here
       if (e.key === 'Enter') { e.preventDefault(); nameConfirm(); }
       else if (e.key === 'Escape') { e.preventDefault(); nameBack(); }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); stepHero(e.key === 'ArrowUp' ? -1 : 1); }
     });
     document.body.appendChild(f);
     return f;
   }
-  function openNaming() {
+  /** opts.edit: the retouching of a hero already in the game (kept in ui.nameEdit; the screen for it comes later). */
+  function openNaming(opts) {
     const f = field();
-    scene = 'naming'; ui.nameWhy = null;
-    f.value = state.hero.name || DATA.hero.name; // the default, ready to keep with Entrée or to type over
+    scene = 'naming'; ui.nameWhy = null; ui.nameEdit = !!(opts && opts.edit);
+    ui.heroPick = ui.nameEdit ? heroLook().id : DATA.heroes[0].id; // a new game starts on the first hero
+    f.value = ui.nameEdit ? state.hero.name : DATA.heroes[0].name; // the default, ready to keep with Entrée or to type over
     f.style.display = 'block'; placeField(); f.focus(); f.select();
   }
-  function closeNaming() { if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
+  function closeNaming() { ui.heroPick = null; ui.nameEdit = false; if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
   /** Lays the text field over its box on the canvas, at the canvas's present size. */
   function placeField() {
     const r = canvas.getBoundingClientRect(), k = r.width / W, b = NAME_BOX, s = nameField.style;
@@ -1209,17 +1219,32 @@ const scenes = (() => {
   function nameConfirm() {
     const r = Hero.cleanName(nameField.value);
     if (r.why) { ui.nameWhy = r.why; sfx('error'); nameField.focus(); return; }
-    state.hero.name = r.name; closeNaming();
+    state.hero.name = r.name; state.hero.look = heroLook().id; closeNaming(); // only now is the choice written
     Save.begin(); scene = 'play'; sfx('click');
   }
   function nameBack() { closeNaming(); scene = 'title'; ui.titleWipe = 0; }
+  /** Another land: reset() makes a new game, but the hero being picked and the name being typed are kept. */
+  function otherMap() { const pick = ui.heroPick, edit = ui.nameEdit, v = nameField.value; reset(Village.drawSeed(false)); ui.heroPick = pick; ui.nameEdit = edit; nameField.value = v; }
   function drawNaming() {
     World.draw({ dim: 0.62 });
-    const px = 330, py = 150, pw = 620, ph = 400, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax };
+    const px = 290, py = 40, pw = 700, ph = 620, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax }, pick = heroLook().id;
     UI.panel(px, py, pw, ph, tr('name_title'));
-    UI.sprite('hero.battle', px + 34, b.y - 60, 2, 1);
-    text(tr('map_no', { n: state.mapSeed }), b.x, py + 72, 15, C.gold, 'left', true); // the land behind the panel, and another one to start on
-    UI.button(b.x + b.w - 170, py + 50, 170, 32, tr('map_other'), () => reset(Village.drawSeed(false)), { size: 13 });
+    DATA.heroes.forEach((h, i) => { // the four, side by side: the portrait alive, the proposed name; the chosen one framed in gold
+      const cx = px + 26 + i * 166, cy = py + 66, on = h.id === pick, hov = UI.over(cx, cy, 150, 176);
+      UI.box(cx, cy, 150, 176, hov && !on ? '#2a2030' : '#1b1420', on ? C.gold : C.lineL);
+      if (on) { ctx.strokeStyle = C.gold; ctx.lineWidth = 2; ctx.strokeRect(cx + 3, cy + 3, 144, 170); }
+      const pid = Hero.art('portrait', h.id), sh = pid && Art.sheet(pid); // no portrait yet: the hero's battle sprite
+      const s = sh ? Art.get(pid, Math.floor(ui.titleT * tune.portrait_fps) % sh.cols) : Art.get(Hero.art('battle', h.id), 1), k = Math.min(1, 128 / (Math.max(s.width, s.height) * PX));
+      blit(s, cx + 75 - s.width * PX * k / 2, cy + 8 + 128 - s.height * PX * k, k);
+      UI.label(h.name, cx + 75, cy + 156, 17, on ? C.gold : C.text);
+      UI.region(cx, cy, 150, 176, () => { pickHero(h.id); nameField.focus(); });
+    });
+    const sy = b.y - 74; // beside the field: the hero in battle, and walking on the spot
+    UI.sprite(Hero.art('battle'), px + 36, sy, 2, 1);
+    const w = World.unitSprite('hero', 0, 1, true, ui.titleT);
+    blit(w, px + 136, sy + 128 - w.height * PX, 1);
+    text(tr('map_no', { n: state.mapSeed }), b.x, py + 288, 15, C.gold, 'left', true); // the land behind the panel, and another one to start on
+    UI.button(b.x + b.w - 170, py + 272, 170, 32, tr('map_other'), otherMap, { size: 13 });
     UI.label(tr('name_ask'), b.x + b.w / 2, b.y - 36, 20, C.text);
     UI.box(b.x, b.y, b.w, b.h, '#1b1420', ui.nameWhy ? C.bad : document.activeElement === f ? C.gold : C.lineL);
     UI.region(b.x, b.y, b.w, b.h, () => f.focus());

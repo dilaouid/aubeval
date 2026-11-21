@@ -15,12 +15,12 @@ I18N.add('en', {
   'strings.start_continue': 'Enter or click: return to your village', // Entrée ou clic : reprendre votre village
   'strings.start_wipe': 'N: new game (erases the save)', // N : nouvelle partie (efface la sauvegarde)
   'strings.start_wipe_confirm': 'N once more to confirm', // N encore une fois pour confirmer
-  'strings.name_title': 'Your hero', // Votre héros
-  'strings.name_ask': 'What is your hero’s name?', // Quel est le nom de votre héros ?
+  'strings.name_title': 'Your hero', // {g:Votre héros|Votre héroïne}
+  'strings.name_ask': 'What is your hero’s name?', // Quel est le nom de {g:votre héros|votre héroïne} ?
   'strings.name_rule': '{min} to {max} characters: letters, spaces, hyphens, apostrophes.', // De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.
   'strings.name_ok': 'Begin', // Commencer
   'strings.name_back': 'Back', // Retour
-  'strings.name_keys': 'Enter: begin · Esc: back', // Entrée : commencer · Échap : retour
+  'strings.name_keys': 'Enter: begin · ↑ ↓: change hero · Esc: back', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
   'strings.name_empty': 'Your hero needs a name.', // Votre héros a besoin d’un nom.
   'strings.name_short': 'A little short: at least {min} characters.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Too long: {max} characters at most.', // Trop long : {max} caractères au plus.

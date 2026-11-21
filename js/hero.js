@@ -114,7 +114,7 @@ const Hero = (() => {
   function nameFor(current, id) {
     const c = String(current || '').trim();
     if (c && !DATA.heroes.some(h => h.name === c)) return current;
-    return DATA.heroes.find(h => h.id === id).name;
+    return (DATA.heroes.find(h => h.id === id) || DATA.heroes[0]).name; // an id nobody knows is the first hero, as in heroLook
   }
 
   return { art, nameFor, forgeLevel, plusBonus, itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };

@@ -15,12 +15,12 @@ I18N.add('es', {
   'strings.start_continue': 'Intro o clic: volver a su aldea', // Entrée ou clic : reprendre votre village
   'strings.start_wipe': 'N: nueva partida (borra la partida guardada)', // N : nouvelle partie (efface la sauvegarde)
   'strings.start_wipe_confirm': 'N otra vez para confirmar', // N encore une fois pour confirmer
-  'strings.name_title': 'Su héroe', // Votre héros
-  'strings.name_ask': '¿Cómo se llama su héroe?', // Quel est le nom de votre héros ?
+  'strings.name_title': '{g:Su héroe|Su heroína}', // {g:Votre héros|Votre héroïne}
+  'strings.name_ask': '¿Cómo se llama {g:su héroe|su heroína}?', // Quel est le nom de {g:votre héros|votre héroïne} ?
   'strings.name_rule': 'De {min} a {max} caracteres: letras, espacios, guiones, apóstrofos.', // De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.
   'strings.name_ok': 'Empezar', // Commencer
   'strings.name_back': 'Volver', // Retour
-  'strings.name_keys': 'Intro: empezar · Esc: volver', // Entrée : commencer · Échap : retour
+  'strings.name_keys': 'Intro: empezar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
   'strings.name_empty': 'Su héroe necesita un nombre.', // Votre héros a besoin d’un nom.
   'strings.name_short': 'Algo corto: al menos {min} caracteres.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Demasiado largo: {max} caracteres como máximo.', // Trop long : {max} caractères au plus.

@@ -75,6 +75,8 @@ test('Hero.nameFor keeps a typed name', () => {
   assert.strictEqual(Hero.nameFor('Tancrède', 'aldric'), 'Aldric');
   assert.strictEqual(Hero.nameFor('Bea', 'isaure'), 'Bea');
   assert.strictEqual(Hero.nameFor('aldric', 'isaure'), 'aldric');
+  assert.strictEqual(Hero.nameFor('Bea', 'nobody'), 'Bea');
+  assert.strictEqual(Hero.nameFor('', 'nobody'), 'Aldric');
 });
 
 let bad = 0;
