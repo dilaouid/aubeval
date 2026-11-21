@@ -101,7 +101,9 @@ window.ASSETS = {
   // west, south-west), the first column standing, then the walk. Without its line here a figure
   // falls back on its two drawn frames (unit.<kind>, below).
   'iso.unit.hero': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 },
-  'iso.unit.hero.aldric': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 }, // the other heroes' lines come with their images
+  'iso.unit.hero.aldric': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 },
+  // the other heroes on the map (data/world.js DATA.heroes, js/hero.js Hero.art): tools/make_heroes.py makes their sheets
+  ...Object.fromEntries(['tancrede', 'isaure', 'maelle'].map(k => ['iso.unit.hero.' + k, { sheet: `sprites/iso/unit_hero_${k}.png`, cols: 7, rows: 8 }])),
   'iso.unit.villager': { sheet: 'sprites/iso/unit_villager.png', cols: 7, rows: 8 },
   'iso.unit.gobelin': { sheet: 'sprites/iso/unit_gobelin.png', cols: 7, rows: 8 },
   'iso.unit.brute': { sheet: 'sprites/iso/unit_brute.png', cols: 7, rows: 8 },
