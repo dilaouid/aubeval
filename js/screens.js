@@ -7,7 +7,7 @@
 
 const ui = {};
 // placing: a building's id on the pointer; tool: a land tool on it ('path', 'clear' or 'plant:<flora id>');
-// bar: the build bar's open tab; stroke: the last tile a held pointer drew on.
+// bar: the build bar's open tab; stroke: the last tile a held pointer drew on (the axe: the last screen point it swept).
 // rot: 1 when the building on the pointer is turned (R); wall: the tile a rampart being drawn starts
 // from (the pointer held down); wallVoid: that drawing was called off, until the button comes up.
 // selU: the ids of the soldiers the player has selected; box: the selection box being drawn (Shift + drag).
@@ -183,7 +183,18 @@ const scenes = (() => {
     if (ui.wall && mouse.down) ui.wallShape = wallPlan(); // what is built on release is what was last shown, whatever Shift does as the button comes up
     // a path or a row of trees, drawn by holding the button and sliding: every tile the pointer crosses
     const drawing = ui.tool || wallKind;
-    if (ui.tool && mouse.down && mouse.drag && !UI.hitAt(mouse.px, mouse.py)) {
+    if (ui.tool === 'clear' && mouse.down && mouse.drag && !UI.hitAt(mouse.px, mouse.py)) {
+      // the axe, held down: every tree the pointer sweeps over, picked by its drawn pixels as a click does (a tall tree is hit above its tile)
+      const a = ui.stroke || { x: mouse.px, y: mouse.py, first: true }, b = { x: mouse.x, y: mouse.y };
+      const n = Math.max(1, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 6));
+      for (let i = a.first ? 0 : 1; i <= n; i++) {
+        const sx = a.x + (b.x - a.x) * i / n, sy = a.y + (b.y - a.y) * i / n;
+        if (UI.hitAt(sx, sy)) continue;
+        const p = World.toWorld(sx, sy), t = World.pickFlora(p.x, p.y) || tileAt(sx, sy);
+        if (!tut || Tuto.tileOk(t.tx, t.ty)) Village.clearTile(t.tx, t.ty);
+      }
+      ui.stroke = { x: b.x, y: b.y, first: false };
+    } else if (ui.tool && mouse.down && mouse.drag && !UI.hitAt(mouse.px, mouse.py)) {
       const to = tileAt(mouse.x, mouse.y);
       if (!ui.stroke) ui.stroke = Object.assign(tileAt(mouse.px, mouse.py), { first: true });
       const s = ui.stroke, n = Math.max(Math.abs(to.tx - s.tx), Math.abs(to.ty - s.ty));
