@@ -2,7 +2,7 @@
 // Question: Faire tourner les chaînes du village pour armer le héros, puis le voir gagner ses combats et repousser un raid, donne-t-il envie de revenir pendant vingt minutes ?
 // Date: 2026-11-20
 // The city: what keeps the game going after the Nobles. Its rank (proclaimed by the player, without
-// a ceiling), the citizens' orders (three always on offer), the hero's popularity (0 to 100: it
+// a ceiling), the citizens' orders (three on offer, more as the city rises), the hero's popularity (0 to 100: it
 // weighs on taxes, market prices and how many people a house holds), the taxes of each class, the
 // great works (three monuments whose stages swallow the surplus) and the legacy tree (permanent
 // bonuses bought with Renown, kept through every new start). Content: data/city.js. Knobs:
@@ -37,7 +37,7 @@ const City = (() => {
       rank: 0,                                         // its place in the ranks (data/city.js), from 0, without a ceiling
       pop: tune.pop_start, log: [],                    // the hero's popularity, 0 to 100, and where it came from lately: [{ n, why }]
       tax,                                             // the tax level of each class, by class id
-      orders: D.firstWaits.map(w => ({ wait: w })),    // three slots: an order ({ id, tpl, kind, n, have, gold, pop, bonus, ... }) or { wait: seconds until the next }
+      orders: D.firstWaits.map(w => ({ wait: w })),    // the slots (three, more with the rank: slotsAt): an order ({ id, tpl, kind, n, have, gold, pop, bonus, ... }) or { wait: seconds until the next }
       seq: 0, done: 0, refuse: 0,                      // orders drawn, orders honoured, seconds until one may be refused again
       raids: 0, camps: 0,                              // raids repelled and camps razed by this village (the ranks count them)
       works: {},                                       // monument kind -> the highest level its works reached (kept if it is demolished)
@@ -51,7 +51,8 @@ const City = (() => {
     const base = fresh(), c = data.city && typeof data.city === 'object' ? data.city : {};
     for (const k in base) if (c[k] === undefined) c[k] = base[k];
     for (const cl of CL) if (c.tax[cl.id] == null) c.tax[cl.id] = 1;
-    c.orders = base.orders.map((s, i) => { const o = (c.orders || [])[i]; return o && (o.kind ? !!tplOf(o) : o.wait != null) ? o : s; }); // an order whose template is gone: a new one comes
+    const old = c.orders || [];
+    c.orders = (old.length > base.orders.length ? old : base.orders).map((s, i) => { const o = old[i]; return o && (o.kind ? !!tplOf(o) : o.wait != null) ? o : base.orders[i] || { wait: 1 }; }); // an order whose template is gone: a new one comes
     data.city = c;
     const p = data.prestige;
     if (!p.tree) p.tree = {};
@@ -156,6 +157,7 @@ const City = (() => {
   /** What a rank opens: the classes and the buildings that ask for it, then its own line. */
   function opensOf(n) {
     const d = rankDef(n), list = CL.filter(c => c.rank === n && n > 0).map(c => c.name).concat(DATA.buildOrder.filter(k => (B[k].unlock || {}).rank === n).map(k => B[k].name));
+    if (n > 0 && slotsAt(n) > slotsAt(n - 1)) list.push(tr('city_opens_slot', { n: slotsAt(n) }));
     if (d.opens) list.push(d.opens);
     list.push(tr('city_rank_out', { pct: pct(tune.rank_output_step) }));
     return list;
@@ -175,6 +177,12 @@ const City = (() => {
   }
 
   // ---- The orders ----
+  /** How many orders are on offer at once at rank n (data/city.js slots, the last for every rank above). */
+  const slotsAt = n => D.slots[Math.min(n, D.slots.length - 1)];
+  /** The wait before an order replaces one honoured or refused: shorter with every rank. */
+  const waitNow = () => tune.order_wait * Math.max(tune.order_wait_floor, 1 - rank() * tune.order_wait_rank);
+  /** How many honoured orders an order counts for (a great one: several). */
+  const worthOf = o => (tplOf(o) || {}).worth || 1;
   const houses = () => state.buildings.filter(b => B[b.kind].pop);
   /** What the village makes of each resource, per second, before anything eats it: an order never asks for goods nothing makes. */
   function makes() {
@@ -206,7 +214,7 @@ const City = (() => {
     deliver(t, pick, live) {
       const m = makes(), rs = t.res.filter(r => m[r] > 0 && !live.some(o => o.res === r));
       if (!rs.length) return null;
-      const res = pick(rs), n = nice(Math.max(t.min * (1 + rank() * tune.order_rank_step), m[res] * 60 * tune.order_minutes) * (0.75 + 0.5 * rng()));
+      const res = pick(rs), n = nice(Math.max(t.min * (1 + rank() * tune.order_rank_step), m[res] * 60 * tune.order_minutes) * (t.scale || 1) * (0.75 + 0.5 * rng()));
       return { res, n };
     },
     build(t, pick) { const ks = t.of.filter(k => B[k] && Village.isUnlocked(k) && !B[k].unique); return ks.length ? { of: pick(ks), n: amount(t) } : null; },
@@ -248,8 +256,9 @@ const City = (() => {
     if (o.kind === 'deliver') state.res[o.res] -= o.n;
     const lines = Quests.grant({ gold: o.gold, res: o.bonus || {} });
     gainPop(o.pop, tr('city_why_order'));
-    c.done++; c.orders[i] = { wait: tune.order_wait };
-    toast(tr('city_order_done', { title: tplOf(o).title }) + ' · ' + lines.join(', '), C.gold); sfx('coin');
+    const worth = worthOf(o);
+    c.done += worth; c.orders[i] = { wait: waitNow() };
+    toast(tr('city_order_done', { title: tplOf(o).title }) + (worth > 1 ? ' (×' + worth + ')' : '') + ' · ' + lines.join(', '), C.gold); sfx('coin');
     events.push({ type: 'order', kind: o.kind });
     return true;
   }
@@ -257,7 +266,7 @@ const City = (() => {
   function refuse(i) {
     const c = state.city;
     if (c.refuse > 0 || !c.orders[i].kind) { sfx('error'); return false; }
-    c.orders[i] = { wait: tune.order_wait }; c.refuse = tune.order_refuse_cd;
+    c.orders[i] = { wait: waitNow() }; c.refuse = tune.order_refuse_cd;
     return true;
   }
 
@@ -355,6 +364,7 @@ const City = (() => {
     c.pop = c.pop > fl ? Math.max(fl, c.pop - (tune.pop_decay + squeezed * tune.tax_high_pop_drain) * dt / 60) : fl;
     if (c.refuse > 0) c.refuse = Math.max(0, c.refuse - dt);
     if (!isOpen) return;
+    while (c.orders.length < slotsAt(c.rank)) c.orders.push({ wait: 1 }); // a rank that opens a slot: its first order comes at once
     for (let i = 0; i < c.orders.length; i++) {
       const o = c.orders[i];
       if (o.kind) continue;
@@ -476,7 +486,7 @@ const City = (() => {
     Tuto.mark('city:proclaim', x, y, w, 38);
     return y + 46;
   }
-  /** The Commandes tab: the three slots, each an order with its progress, its pay and its two buttons, or the wait for the next one. */
+  /** The Commandes tab: the slots, each an order with its progress, its pay and its two buttons, or the wait for the next one. */
   function ordersBody(x, y, w) {
     const c = state.city;
     text(tr('city_orders_done', { n: c.done }), x, y + 9, 14, C.text, 'left', true);
@@ -492,7 +502,7 @@ const City = (() => {
       }
       const t = tplOf(o), body = orderText(o), h = 86 + linesOf(body, w - 24, 13) * 17, rdy = ready(o), have = haveOf(o);
       UI.plate(x, y, w, h);
-      UI.label(t.title, x + 12, y + 16, 14, C.gold, 'left'); text(t.from, x + w - 12, y + 16, 12, C.dim, 'right');
+      UI.label(t.title, x + 12, y + 16, 14, C.gold, 'left'); text(worthOf(o) > 1 ? tr('city_order_worth', { n: worthOf(o) }) : t.from, x + w - 12, y + 16, 12, worthOf(o) > 1 ? C.gold : C.dim, 'right');
       let cy = UI.wrap(body, x + 12, y + 27, w - 24, 13, C.text, 17) + 3;
       UI.bar(x + 12, cy, w - 24 - 96, 14, have / o.n, rdy ? C.gold : C.accent);
       text(`${fmt(have)} / ${fmt(o.n)}`, x + w - 12, cy + 8, 12, rdy ? C.gold : C.text, 'right', true);
@@ -503,7 +513,7 @@ const City = (() => {
       for (const r in o.bonus || {}) pay(RES[r].icon, '+' + o.bonus[r]);
       const bx = x + w - 12 - 180;
       UI.button(bx, cy, 98, 30, tr(o.kind === 'deliver' ? 'city_deliver' : 'city_honour'), () => honour(i), { primary: rdy, disabled: !rdy, size: 13, tip: rdy ? null : tr('city_order_no') });
-      UI.button(bx + 102, cy, 78, 30, tr('city_refuse'), () => refuse(i), { size: 12, disabled: c.refuse > 0, tip: tr('city_refuse_tip', { wait: fmtTime(tune.order_wait), cd: fmtTime(tune.order_refuse_cd) }) });
+      UI.button(bx + 102, cy, 78, 30, tr('city_refuse'), () => refuse(i), { size: 12, disabled: c.refuse > 0, tip: tr('city_refuse_tip', { wait: fmtTime(waitNow()), cd: fmtTime(tune.order_refuse_cd) }) });
       if (!marked) { marked = true; Tuto.mark('city:order', bx, cy, 98, 30); Tuto.mark('city:refuse', bx + 102, cy, 78, 30); }
       y += h + 6;
     });

@@ -351,7 +351,7 @@ DATA.tutorial = {
       steps: [
         { id: 'open',
           say: [
-            'Vos habitants ont une demande ! Ils passent commande à la ville : trois à la fois, et il en viendra toujours.',
+            'Vos habitants ont une demande ! Ils passent commande à la ville : trois à la fois (davantage quand la cité grandit), et il en viendra toujours.',
             { text: 'Tout cela se tient dans la Cité : ce bouton, ou la touche G.', show: 'btn:city' },
           ],
           task: 'Ouvrez la Cité, puis l’onglet « Commandes ».',

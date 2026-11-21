@@ -997,8 +997,9 @@ const scenes = (() => {
     UI.scrollBox('lessons', x, P.y + 56, w, P.h - 72, y => Tuto.book(x, y, w));
   }
   function drawToasts() {
+    const el = Raid.elite ? Raid.elite().length : 0, top = Tuto.running() ? 190 : (state.raid.siege && (state.raid.warned || state.raid.active) ? 216 : 130) + (el ? 36 + el * 18 : 0); // under the guide's task box, or the siege's and the elite raid's plates
     ui.toasts.forEach((t, i) => {
-      const w = Math.min(820, UI.width(t.msg, 15, true) + 40), y = (Tuto.running() ? 190 : state.raid.siege && (state.raid.warned || state.raid.active) ? 216 : 130) + i * 40; // under the guide's task box
+      const w = Math.min(820, UI.width(t.msg, 15, true) + 40), y = top + i * 40;
       ctx.globalAlpha = clamp((5 - t.t) * 2, 0, 1);
       UI.plate(640 - w / 2, y, w, 36); UI.label(t.msg, 640, y + 19, 15, t.color);
       ctx.globalAlpha = 1;

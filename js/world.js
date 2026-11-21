@@ -544,7 +544,7 @@ const World = (() => {
         if (Raid.drawFigure && Raid.drawFigure(wg, e, X - cx, Y + 2 - cy, t)) return; // THREAT hook: a siege's warlord draws himself (js/raid.js)
         const s = unitSprite(e.kind, e.dx || 0, e.dy == null ? 1 : e.dy, true, t * (e.hitting ? 1.6 : 1) + e.id * 0.31);
         const x = X - (s.width >> 1) - cx, y = Y + 2 - s.height - cy;
-        if (!(e.flash > 0)) wg.drawImage(s, x, y);
+        if (!(e.flash > 0)) wg.drawImage(Raid.tint ? Raid.tint(s) : s, x, y); // an elite raid's colour (js/raid.js)
         if (e.hp < e.max) { wg.fillStyle = PAL.ink; wg.fillRect(x, y - 3, s.width, 3); wg.fillStyle = PAL.red; wg.fillRect(x + 1, y - 2, Math.round((s.width - 2) * clamp(e.hp / e.max, 0, 1)), 1); }
       } });
     }

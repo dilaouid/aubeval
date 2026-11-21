@@ -100,6 +100,32 @@ for (const w of DATA.warlords) {
   DATA.enemies[w.id] = { name: `${w.name} ${w.title}`, sprite: 'enemy.warlord', alt: 'enemy.grakk', icon: 'unit.grakk', boss: true, warlord: true, how: w.how, battle: w.battle };
 }
 
+// The elite raids (js/raid.js): from the city rank config.js elite_rank, every raid (a siege too) comes
+// with one of these scourges, more as the city keeps rising (elite_more_every, elite_max). Drawn at
+// the horn, so the defence can be changed before the column leaves.
+//   name, short, trait   what it is called, in a few words for the HUD, in a sentence for its tip
+//   tint         the colour laid over its raiders on the map (none: drawn as usual)
+//   burn         each raider sets fire to the first production building he passes by (config.js elite_burn_max a raid)
+//   armor        + this to every raider's armor        speed, gap   x their speed, x the time between two leaving the camp
+//   size         x how many come                       split  half the column comes out somewhere else, on another side
+DATA.elites = [
+  { id: 'fire', name: 'Incendiaires', tint: '#ff5a1f', burn: true,
+    short: 'Ils brûlent les ateliers qu’ils frôlent.',
+    trait: 'Chaque pillard met le feu au premier bâtiment de production qu’il longe. Tenez-les loin des ateliers : remparts, tours, soldats en avant.' },
+  { id: 'armor', name: 'Blindés', tint: '#7fa8d6', armor: 2,
+    short: 'Armure +2 : il faut percer.',
+    trait: 'Chaque pillard porte 2 points d’armure de plus : les flèches des tours de guet glissent. Tours de mage, pièges et soldats font la différence.' },
+  { id: 'swift', name: 'Coureurs', tint: '#d4e83a', speed: 1.35, gap: 0.5,
+    short: 'Plus rapides, en rangs serrés.',
+    trait: 'La colonne court un tiers plus vite et sort du camp en rangs serrés : les tours ont moins de temps pour tirer.' },
+  { id: 'horde', name: 'Horde', size: 1.5,
+    short: 'Moitié plus nombreux.',
+    trait: 'Une colonne moitié plus nombreuse que d’habitude.' },
+  { id: 'flank', name: 'Deux fronts', split: true,
+    short: 'Deux colonnes, deux côtés.',
+    trait: 'La moitié des pillards prend un autre chemin et arrive par un autre côté du village.' },
+];
+
 // Raids: who comes, raid by raid. After the last line, each further raid adds `each` (fractions add up).
 DATA.raids = {
   waves: [

@@ -151,6 +151,8 @@ window.CONFIG = {
   tax_high_sat_cap: { value: 0.8, min: 0.1, max: 1, step: 0.05 },    // ... its satisfaction stops here (under raise_sat: it cannot rise) ...
   tax_high_pop_drain: { value: 0.15, min: 0, max: 2, step: 0.05 },   // ... and the hero loses this much popularity per minute, for each class squeezed
   order_wait: { value: 90, min: 5, max: 900, step: 5 },              // seconds before a new order replaces one honoured or refused
+  order_wait_rank: { value: 0.15, min: 0, max: 0.5, step: 0.01 },   // each city rank takes this share off order_wait ...
+  order_wait_floor: { value: 0.4, min: 0.1, max: 1, step: 0.05 },   // ... never under this share of it
   order_refuse_cd: { value: 240, min: 0, max: 1800, step: 10 },      // seconds after a refusal before another order can be refused
   order_minutes: { value: 2, min: 0.25, max: 15, step: 0.25 },       // a delivery asks for about this many minutes of what the village makes of that good
   order_gold_mult: { value: 1.6, min: 1, max: 3, step: 0.05 },       // a delivery pays its goods this many times the market's selling price (under its buying price: never worth buying for)
@@ -240,6 +242,12 @@ window.CONFIG = {
   duel_rout_hp: { value: 0.3, min: 0, max: 0.9, step: 0.05 },        // the duel won: share of its health every raider of the column loses
   duel_rout_speed: { value: 0.2, min: 0, max: 0.8, step: 0.05 },     // ... share of its speed
   duel_rout_flee: { value: 0.25, min: 0, max: 0.9, step: 0.05 },     // ... and share of the raiders that flee at once
+  elite_rank: { value: 3, min: 0, max: 12, step: 1 },                // the city rank from which every raid comes with a scourge (data/enemies.js DATA.elites; 3: the Cité)
+  elite_more_every: { value: 2, min: 1, max: 10, step: 1 },          // one more scourge every this many ranks above it ...
+  elite_max: { value: 3, min: 1, max: 5, step: 1 },                  // ... this many at most
+  elite_bounty: { value: 0.4, min: 0, max: 3, step: 0.05 },          // a raid repelled pays +this share of its bounty for each scourge it had
+  elite_burn_max: { value: 6, min: 0, max: 30, step: 1 },            // buildings the Incendiaires may set fire to in one raid
+  raid_rank_hp: { value: 0.2, min: 0, max: 1, step: 0.01 },          // raiders' health +this share for every city rank above the Ville: the threat keeps up with the town
   duel_pop: { value: 6, min: 0, max: 50, step: 1 },                  // popularity the hero gains for a warlord beaten in a duel
   camp_chief_hp: { value: 0.6, min: 0.1, max: 5, step: 0.05 },       // a camp's chief: x the warlord's health (data/enemies.js), then the camp's growth
   camp_chief_gold: { value: 100, min: 0, max: 2000, step: 10 },      // gold more a fallen camp leaves for its chief, times the camps fallen before it

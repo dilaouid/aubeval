@@ -27,6 +27,13 @@
 //           column), fled (raiders gone with the rout). The warlord is a raider of kind 'warlord'
 //           with `lord` (his id) and `lvl`.
 // state.flags.siegeTold: the first siege was explained once.
+//
+// Elite raids. From the city rank `elite_rank`, every raid (a siege too) comes with scourges
+// (data/enemies.js DATA.elites), drawn at the horn: burning, armoured, running, a horde, two fronts.
+// The raiders also gain health with every rank above the Ville (raid_rank_hp).
+//   elite   the scourges of raid n: { n, mods: [ids] }; from2: where a raid on two fronts' second column comes out
+//   active  also gets: elite (the ids), armor (added to every raider's), burn, burnt, tint
+// state.flags.eliteTold: the elite raids were explained once.
 'use strict';
 
 const Raid = (() => {
@@ -63,6 +70,69 @@ const Raid = (() => {
     if (state.flags.siegeTold) return;
     state.flags.siegeTold = true;
     ui.banner = { title: tr('siege_banner_title'), sub: tr('siege_banner_sub', { name: E[sg.lord].name, lvl: sg.lvl + 1 }), text: tr('siege_banner_text', { trait: lordData(sg.lord).trait }) };
+  }
+
+  // ---- Elite raids: the scourges a risen city draws ----
+  const eliteData = id => DATA.elites.find(x => x.id === id);
+  /** How many scourges a raid comes with at the city's rank now. */
+  function eliteCount() { const k = City.rank() - tune.elite_rank; return k < 0 ? 0 : Math.min(tune.elite_max, 1 + Math.floor(k / Math.max(1, tune.elite_more_every))); }
+  /** The scourges of the raid announced or going on: their ids, none for an ordinary raid. */
+  function elite() { const r = state.raid; return r.elite && r.elite.n === r.n && (r.warned || r.active) ? r.elite.mods : []; }
+  /** At the horn or the start of raid r.n: its scourges, drawn once (?elite=fire,armor forces them, for screenshots). */
+  function drawElite() {
+    const r = state.raid;
+    if (r.elite && r.elite.n === r.n) return r.elite.mods;
+    const mods = String(params.get('elite') || '').split(',').filter(eliteData);
+    if (!mods.length) { const pool = DATA.elites.map(x => x.id); for (let k = eliteCount(); k > 0 && pool.length; k--) mods.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]); }
+    r.elite = { n: r.n, mods };
+    return mods;
+  }
+  /** The first of these scourges that has `key`, or null. */
+  const eliteWith = (mods, key) => mods.map(eliteData).find(x => x && x[key]) || null;
+  /** The elite raids, explained once in a banner (not over another one: then the next raid tells it). */
+  function tellElite(mods) {
+    if (state.flags.eliteTold || ui.banner || !mods.length) return;
+    state.flags.eliteTold = true;
+    const d = eliteData(mods[0]);
+    ui.banner = { title: tr('elite_banner_title'), sub: tr('elite_banner_sub'), text: tr('elite_banner_text', { name: d.name, trait: d.trait, pct: Math.round(tune.elite_bounty * 100) }) };
+  }
+  /** Where the second column of a raid on two fronts comes out: as far out as the first, on another side, with a way to the hall. Null when there is none. */
+  function pickFlank(from) {
+    if (stale || !field) buildField();
+    const h = Village.hallMid(), a0 = Math.atan2(from.y - h.y, from.x - h.x), R = Math.hypot(from.x - h.x, from.y - h.y) / T, rMin = Village.safeRadius() + tune.raid_spawn_margin;
+    for (const turn of [Math.PI, 2.6, -2.6, 2.1, -2.1, 1.6, -1.6]) for (let r = R; r >= rMin; r -= 2) {
+      const tx = Math.floor(h.x / T + Math.cos(a0 + turn) * r), ty = Math.floor(h.y / T + Math.sin(a0 + turn) * r);
+      if (Village.inMap(tx, ty) && Village.walkable(tx, ty) && Village.occ[Village.idx(tx, ty)] <= 0 && distAt(tx, ty) < Infinity) return { x: tx * T + 8, y: ty * T + 8 };
+    }
+    return null;
+  }
+  /** An Incendiaire walks by: the first production building beside him catches fire (it is damaged). Once per raider, elite_burn_max a raid. */
+  function torch(a, e, tx, ty) {
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const X = tx + dx, Y = ty + dy;
+      if (!Village.inMap(X, Y)) continue;
+      const o = Village.occ[Village.idx(X, Y)], b = o > 0 ? state.buildings.find(q => q.uid === o) : null, d = b && B[b.kind];
+      if (!d || b.damaged || !d.produces || d.pop || d.fixed || d.wall || d.decor || d.monument || b.kind === 'hall') continue;
+      b.damaged = true; e.burned = true; a.burnt = (a.burnt || 0) + 1;
+      const p = pos(e); World.dust(b); floatText(p.x, p.y, tr('elite_burn'), UI.C.bad, 14, 14); sfx('chop');
+      stale = true; Village.touchTown();
+      return;
+    }
+  }
+  const tints = new WeakMap(); // sprite -> { colour: the sprite under that colour }
+  /** A raider's sprite under his raid's colour (its first scourge that has one): js/world.js draws it. */
+  function tint(s) {
+    const a = state.raid.active, c = a && a.tint;
+    if (!c || !s) return s;
+    let m = tints.get(s);
+    if (!m) tints.set(s, m = {});
+    if (!m[c]) {
+      const k = document.createElement('canvas'), g = k.getContext('2d');
+      k.width = s.width; k.height = s.height; g.drawImage(s, 0, 0);
+      g.globalCompositeOperation = 'source-atop'; g.globalAlpha = 0.5; g.fillStyle = c; g.fillRect(0, 0, k.width, k.height);
+      m[c] = k;
+    }
+    return m[c];
   }
 
   /**
@@ -197,12 +267,23 @@ const Raid = (() => {
     const sg = announce();
     if (sg) { toast(tr('siege_warn', { dir: compass(r.from), name: E[sg.lord].name }), UI.C.bad); tellFirst(sg); }
     else toast(tr('raid_warn', { dir: compass(r.from) }), UI.C.accent);
+    const mods = drawElite();
+    if (mods.length) {
+      r.from2 = eliteWith(mods, 'split') ? pickFlank(r.from) : null;
+      toast(tr('elite_warn', { list: mods.map(m => eliteData(m).name).join(', ') }), UI.C.bad);
+      if (r.from2) toast(tr('elite_flank', { dir: compass(r.from2) }), UI.C.bad);
+      tellElite(mods);
+    }
     sfx('horn');
   }
   function start(early) {
     const r = state.raid, sg = announce(), mods = sg ? lordData(sg.lord).siege : {}, routed = !!sg && sg.duel === 'won';
-    const comp = composition(r.n), hpK = (1 + tune.raid_hp_growth * r.n) * (sg ? tune.siege_hp * (mods.hp || 1) : 1);
+    const el = drawElite(), size = (eliteWith(el, 'size') || {}).size || 1, split = !!eliteWith(el, 'split');
+    const comp = composition(r.n), hpK = (1 + tune.raid_hp_growth * r.n) * (sg ? tune.siege_hp * (mods.hp || 1) : 1) * (1 + tune.raid_rank_hp * Math.max(0, City.rank() - 2));
+    if (size !== 1) for (const k in comp) comp[k] = Math.round(comp[k] * size); // a horde
     if (!r.from) r.from = pickFrom();
+    if (split && !r.from2) r.from2 = pickFlank(r.from); // two fronts, called before the horn
+    const gap = tune.raid_spawn_gap * ((eliteWith(el, 'gap') || {}).gap || 1), two = split && !!r.from2;
     const gob = comp.gobelin || 0, order = [];
     for (let i = 0; i < (comp.brute || 0); i++) order.push('brute');           // the shields walk in front
     if (sg && !routed) order.push('warlord');                                  // the warlord right behind them, unless the hero beat him
@@ -212,13 +293,19 @@ const Raid = (() => {
     r.active = {
       raiders: order.map((kind, i) => {
         const lord = kind === 'warlord', hp = Math.round(E[kind].raid.hp * (lord ? lordPower(sg.lvl) : hpK));
-        const e = { id: i, kind, hp, max: hp, x: r.from.x, y: r.from.y, dx: 0, dy: 1, wait: i * tune.raid_spawn_gap };
+        const at = two && i % 2 ? r.from2 : r.from; // two fronts: every other raider takes the second way
+        const e = { id: i, kind, hp, max: hp, x: at.x, y: at.y, dx: 0, dy: 1, wait: (two ? Math.floor(i / 2) : i) * gap };
         if (lord) { e.lord = sg.lord; e.lvl = sg.lvl; }
         return e;
       }),
       leaks: 0, killed: 0, total: order.length, early: !!early,
     };
     if (sg) Object.assign(r.active, { siege: true, wallK: mods.wall || 1, healK: mods.heal || 1, speedK: mods.speed || 1, fled: 0 });
+    if (el.length) { // the scourges
+      const ds = el.map(eliteData), a = r.active;
+      Object.assign(a, { elite: el.slice(), armor: ds.reduce((n, d) => n + (d.armor || 0), 0), burn: ds.some(d => d.burn), burnt: 0, tint: (ds.find(d => d.tint) || {}).tint || null });
+      a.speedK = (a.speedK || 1) * ds.reduce((k, d) => k * (d.speed || 1), 1);
+    }
     if (routed) rout(r.active); // beaten before his column left: it comes without him, and without heart
     r.timer = null; r.warned = false; stale = true;
     if (sg) { toast(tr(routed ? 'siege_start_routed' : 'siege_start', { name: lordData(sg.lord).name }), UI.C.bad); tellFirst(sg); }
@@ -229,7 +316,7 @@ const Raid = (() => {
   function hurt(a, e, dmg, pierce) {
     const s = E[e.kind].raid, lord = e.kind === 'warlord', chief = lord ? null : lordOf(a);
     const guard = chief && Math.hypot(chief.x - e.x, chief.y - e.y) <= tune.warlord_aura ? 1 - tune.warlord_aura_guard : 1; // near his warlord, a raider is tougher
-    const n = Math.max(1, Math.round((dmg - (pierce ? 0 : s.armor)) * guard));
+    const n = Math.max(1, Math.round((dmg - (pierce ? 0 : s.armor + (a.armor || 0))) * guard)); // the Blindés: more armour
     e.hp -= n; e.flash = 0.12;
     if (e.hp <= 0 && !e.dead) {
       e.dead = true; a.killed++;
@@ -304,7 +391,26 @@ const Raid = (() => {
    */
   function hudExtra(x, y, w) {
     const sg = siege();
-    if (!sg) return;
+    if (sg) { siegePlate(sg, x, y, w); y += 96; }
+    elitePlate(x, y, w);
+  }
+  /** Under the raid plate (and the siege's), from the horn to the end of an elite raid: its scourges, each in a few words. */
+  function elitePlate(x, y, w) {
+    const mods = elite();
+    if (!mods.length) return;
+    const C = UI.C, ds = mods.map(eliteData), h = 30 + ds.length * 18;
+    UI.region(x, y, w, h, null, tr('elite_tip', { list: ds.map(d => d.name + ' : ' + d.trait).join('\n'), pct: Math.round(tune.elite_bounty * 100 * ds.length) }));
+    UI.plate(x, y, w, h, 'bad');
+    UI.icon('icon.raid', x + 20, y + 15, 16);
+    UI.label(tr('elite_hud'), x + 34, y + 16, 14, C.gold, 'left');
+    ds.forEach((d, i) => {
+      const ly = y + 34 + i * 18;
+      if (d.tint) { ctx.fillStyle = d.tint; ctx.fillRect(x + 14, ly - 5, 8, 8); }
+      UI.label(d.name + ' · ' + d.short, x + 28, ly, 12, C.text, 'left', false);
+    });
+  }
+  /** The siege's plate: who leads it, what he changes, and the button that challenges him. */
+  function siegePlate(sg, x, y, w) {
     const C = UI.C, d = lordData(sg.lord), a = state.raid.active, on = lordOf(a), why = duelBlocked(), h = 90;
     const tip = tr('lord_tip', { name: E[d.id].name, lvl: sg.lvl + 1, trait: d.trait, pct: Math.round(tune.warlord_aura_guard * 100), n: tune.warlord_leaks });
     UI.region(x, y, w, h, null, tip);
@@ -437,11 +543,11 @@ const Raid = (() => {
     if (!won) { state.counters.raidsLost++; state.gained = tr(sg ? 'siege_lost' : 'raid_lost'); toast(state.gained, UI.C.bad); sfx('lose'); }
     else { // the raid's bounty, a siege's on top (bigger with every siege seen), more for a raid called early and for the city's bounty bonus
       const base = tune.raid_bounty * (r.n + 1) + (sg ? tune.siege_bounty * (siegeNo(r.n) + 1) : 0);
-      const gold = Math.round(base * (a.early ? 1 + tune.raid_call_bonus : 1) * (1 + City.bonus('bounty')));
+      const gold = Math.round(base * (a.early ? 1 + tune.raid_call_bonus : 1) * (1 + City.bonus('bounty')) * (1 + tune.elite_bounty * (a.elite || []).length));
       Village.gain('gold', gold); state.counters.raidsWon++;
       state.gained = tr(sg ? 'siege_won' : 'raid_won', { gold }); toast(state.gained, UI.C.good); sfx('fanfare');
     }
-    r.n++; r.active = null; r.timer = tune.raid_interval; r.warned = false; r.from = null; r.siege = null;
+    r.n++; r.active = null; r.timer = tune.raid_interval; r.warned = false; r.from = null; r.from2 = null; r.siege = null; r.elite = null;
     r.traps = []; Units.afterRaid(); // the traps are cleared away, the soldiers on their feet again
     City.event('raid', { won, siege: sg }); // the city's orders and the hero's popularity read it
     Save.persist();
@@ -497,7 +603,10 @@ const Raid = (() => {
       if (e.slowT > 0) e.slowT -= dt;
       const s = E[e.kind].raid, tx = Math.floor(e.x / T), ty = Math.floor(e.y / T);
       const power = e.kind === 'warlord' ? lordPower(e.lvl) : 1, breakDps = s.wallDps * (a.wallK || 1) * power; // a warlord's blows grow with his level; his trait may speed every raider's breaking
-      if (e.tile !== ty * M.w + tx) { e.tile = ty * M.w + tx; spring(a, e, tx, ty); if (e.dead) continue; } // a new tile under his feet: its trap
+      if (e.tile !== ty * M.w + tx) { // a new tile under his feet: its trap, and the Incendiaires' torch
+        e.tile = ty * M.w + tx; spring(a, e, tx, ty); if (e.dead) continue;
+        if (a.burn && !e.burned && a.burnt < tune.elite_burn_max) torch(a, e, tx, ty);
+      }
       const foe = Units.blocker(e), n = foe ? null : nextTile(tx, ty);
       let gx = hall.x, gy = hall.y; // off the raiders' map: straight for the hall
       e.hitting = false;
@@ -549,5 +658,5 @@ const Raid = (() => {
   function callNow() { if (!state.raid.active && state.raid.timer != null && Camp.standing()) start(true); }
 
   return { tick, start, callNow, composition, heroPost, hero, pos, shots, reset, touch, compass, hurt: hurtNow, trapsOpen, trapAt, canTrap, layTrap, route, fieldRadius,
-    isSiege, siege, duel, duelBlocked, hudExtra, hudKey, drawFigure, demo };
+    isSiege, siege, duel, duelBlocked, hudExtra, hudKey, drawFigure, demo, elite, tint };
 })();

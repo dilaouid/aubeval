@@ -34,7 +34,7 @@ Object.assign(DATA.strings, {
   // the Commandes tab
   city_orders_done: 'Commandes honorées : {n}', city_refuse_in: 'Refus possible dans {time}',
   city_orders_closed: 'Les commandes des habitants arrivent avec la première maison.',
-  city_order_wait: 'Une nouvelle commande arrive dans {time}', city_deliver: 'Livrer', city_honour: 'Honorer', city_refuse: 'Refuser',
+  city_order_wait: 'Une nouvelle commande arrive dans {time}', city_order_worth: '×{n} commandes', city_opens_slot: '{n} commandes à la fois', city_deliver: 'Livrer', city_honour: 'Honorer', city_refuse: 'Refuser',
   city_refuse_tip: 'Refuser\nLa commande part, une autre arrive dans {wait}. Un seul refus toutes les {cd}.',
   city_order_no: 'Pas encore remplie.', city_order_done: 'Commande honorée : {title}', city_medals: ['', 'bronze', 'argent', 'or'],
   // the Impôts tab
@@ -75,10 +75,10 @@ Object.assign(DATA.strings, {
 //   4:15   Cité                 260 inhabitants, 8 Négociant houses, popularity 45, 45 orders, 14 raids,
 //                               the cathedral's walls (2 stages of great works)
 //   5:15   first Nobles         14 Négociant houses, popularity 50, beauty 10, 30 000 gold and 60 jewels
-//   7:00+  Capitale             6 Noble houses, popularity 60, 90 orders, 24 raids, 6 stages, a camp razed
+//   7:00+  Capitale             6 Noble houses, popularity 60, 75 orders, 24 raids, 6 stages, a camp razed
 //   then   Capitale II, III...  DATA.city.endless, for ever
-// What holds the pace are counts that grow at a bounded rate: orders (three at a time, config.js
-// order_wait between two), raids (config.js raid_interval), the popularity (it decays) and the great
+// What holds the pace are counts that grow at a bounded rate: orders (three at a time, more from the
+// Ville: DATA.city.slots; config.js order_wait between two, shorter with every rank; a great order counts for several), raids (config.js raid_interval), the popularity (it decays) and the great
 // works (thousands of several goods). config.js city_pace multiplies the orders and raids asked.
 
 DATA.city = {
@@ -98,7 +98,7 @@ DATA.city = {
     { name: 'Cité', needs: { pop: 260, cls: { merchant: 8 }, popularity: 45, orders: 45, raids: 14, works: 2 },
       reward: { gold: 12000, res: { cloth: 100, shard: 3 }, pop: 8 },
       text: 'Les négociants y tiennent comptoir, et la cathédrale sort de terre.' },
-    { name: 'Capitale', needs: { pop: 500, cls: { noble: 6 }, popularity: 60, orders: 90, raids: 24, works: 6, camps: 1 },
+    { name: 'Capitale', needs: { pop: 500, cls: { noble: 6 }, popularity: 60, orders: 75, raids: 24, works: 6, camps: 1 },
       reward: { gold: 60000, res: { jewel: 60, shard: 5 }, pop: 10 },
       text: 'Le royaume se gouverne désormais depuis Aubeval.', opens: 'les rangs sans fin : Capitale II, III…' },
   ],
@@ -106,7 +106,7 @@ DATA.city = {
   // rank, more per rank after it]; popularity has a ceiling; the gold reward is [base, x per rank].
   endless: {
     name: 'Capitale', text: 'Aubeval grandit encore, et tout le royaume le sait.', opens: 'un rang de plus, toujours',
-    pop: [500, 100], cls: { noble: [6, 3] }, popularity: [60, 5, 85], orders: [90, 40], raids: [24, 8], works: [6, 3], camps: [1, 1],
+    pop: [500, 100], cls: { noble: [6, 3] }, popularity: [60, 5, 85], orders: [75, 30], raids: [24, 8], works: [6, 3], camps: [1, 1],
     reward: { gold: [60000, 1.5], res: { jewel: [60, 20], shard: [5, 1] }, pop: 10 },
   },
 
@@ -115,7 +115,7 @@ DATA.city = {
   fame: { raid: 3, siege: 6, raidLost: -4, camp: 0, quest: 2, battle: 1, boss: 4, cls: 1, site: 0, game: [0, 0, 0, 0], stage: 4, embel: 1 }, // camp, site, game: 0 here: js/camp.js, js/explore.js and js/venue.js give their own (config.js camp_pop, data/explore.js, data/venues.js)
   logLines: 5,                       // lines of « D'où elle vient » kept and shown
 
-  // The orders. Three are on offer at once, drawn by weight `w` among those the village can do now.
+  // The orders. Three are on offer at once (more as the city rises: slots), drawn by weight `w` among those the village can do now.
   //   kind     deliver (res: the goods it may ask for, only those a standing building makes; min: the
   //            least, before the rank scales it) | build (of: buildings, only unlocked ones; n) |
   //            raise (n houses) | beauty (step: points above the prettiest street) | raid | battle |
@@ -126,6 +126,7 @@ DATA.city = {
   //            the town's taxes. A delivery pays its goods above the market's price instead
   //            (config.js order_gold_mult), `gold` at least.
   //   pop      popularity gained · bonus, chance: a rare resource, and how often it comes with it
+  //   worth    how many honoured orders it counts for, for the ranks (1 when not said) · scale: x its amount
   //   text     holes: {n} how many, {res} the goods, {name} the building or the venue, {score} the medal
   orders: [
     { id: 'feast', kind: 'deliver', w: 4, res: ['bread', 'wheat', 'coffee', 'spice', 'beans'], min: 20, gold: 30, pop: 2,
@@ -152,8 +153,12 @@ DATA.city = {
       title: 'On vous attend', from: 'Gaspard', text: 'Allez jouer une partie : {name}, médaille de {score} au moins.' },
     { id: 'site', kind: 'site', w: 3, gold: 150, mins: 2, pop: 4, bonus: { shard: 1 }, chance: 0.5,
       title: 'Ce qu’on a trouvé là-bas', from: 'Les éclaireurs', text: 'Menez à bien un lieu découvert en explorant (E).' },
+    // the great orders: from the Cité, a big delivery that counts for three
+    { id: 'convoy', kind: 'deliver', w: 3, rank: 3, res: ['planks', 'stone', 'bread', 'coffee', 'cloth', 'spice', 'wool', 'jewel'], min: 60, scale: 3, worth: 3, gold: 400, pop: 6, bonus: { shard: 1 }, chance: 0.6,
+      title: 'Le convoi royal', from: 'L’intendant du roi', text: 'La cour lève un convoi : {n} {res}. Une grande commande, elle compte triple.' },
   ],
-  firstWaits: [5, 45, 90],           // seconds before each of the three slots gets its first order
+  slots: [3, 3, 4, 5],               // orders on offer at once, by city rank (Hameau, Bourg, Ville, Cité…); the last holds for every rank above
+  firstWaits: [5, 45, 90],           // seconds before each of the first three slots gets its first order (a slot the rank opens gets its first at once)
   retry: 15,                         // seconds an empty slot waits again when nothing can be asked yet
   beautyCap: 40,                     // no order asks for a street prettier than this
 
