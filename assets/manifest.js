@@ -101,6 +101,7 @@ window.ASSETS = {
   // west, south-west), the first column standing, then the walk. Without its line here a figure
   // falls back on its two drawn frames (unit.<kind>, below).
   'iso.unit.hero': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 },
+  'iso.unit.hero.aldric': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 }, // the other heroes' lines come with their images
   'iso.unit.villager': { sheet: 'sprites/iso/unit_villager.png', cols: 7, rows: 8 },
   'iso.unit.gobelin': { sheet: 'sprites/iso/unit_gobelin.png', cols: 7, rows: 8 },
   'iso.unit.brute': { sheet: 'sprites/iso/unit_brute.png', cols: 7, rows: 8 },
@@ -133,6 +134,7 @@ window.ASSETS = {
   'enemy.warlord': { file: 'sprites/enemy_warlord.png', w: 96, h: 89 }, // the warlord in his duel: pixel for pixel, larger than Grakk
   // un seul dessin pour les quatre armes, en attendant hero_battle_t0 / _t2 / _t3 (voir imagegen/PROMPTS.md, section 11)
   'hero.battle': 'sprites/hero_battle.png',
+  'hero.battle.aldric': { file: 'sprites/hero_battle.png', w: 44, h: 50 }, // w and h: with no drawn sprite to size it, the file's own size comes out four times too big
   'unit.brute': 'sprites/unit_brute.png',
   'unit.chaman': 'sprites/unit_chaman.png',
   'unit.gobelin': 'sprites/unit_gobelin.png',

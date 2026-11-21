@@ -102,5 +102,20 @@ const Hero = (() => {
    */
   const nameChars = raw => [...String(raw || '').replace(/[^\p{L}\p{M}\s'’-]/gu, '').replace(/\s+/g, ' ').replace(/^ /, '')].slice(0, DATA.hero.nameMax).join('');
 
-  return { forgeLevel, plusBonus, itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
+  // ---- Which hero ----
+  const ART = { portrait: ['portrait.hero.', null], battle: ['hero.battle.', 'hero.battle'], unit: ['iso.unit.hero.', 'iso.unit.hero'] };
+  /** The sprite id to draw for hero `id` (the chosen one by default): his or hers if the image is there, else Aldric's, else the old one (null for a portrait). */
+  function art(kind, id) {
+    const [pre, old] = ART[kind];
+    for (const k of [id || heroLook().id, 'aldric']) if (Art.loaded(pre + k)) return pre + k;
+    return old;
+  }
+  /** The name the field shows once it goes to hero `id`: his or hers if the field is empty or holds a hero's proposed name, else what the player typed. */
+  function nameFor(current, id) {
+    const c = String(current || '').trim();
+    if (c && !DATA.heroes.some(h => h.name === c)) return current;
+    return DATA.heroes.find(h => h.id === id).name;
+  }
+
+  return { art, nameFor, forgeLevel, plusBonus, itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
 })();

@@ -19,13 +19,25 @@ const Save = (() => {
   // ?nosave plays without touching the save; ?demo=1 shows a made-up village and must never overwrite a real one.
   const enabled = !(params.has('nosave') || params.has('demo'));
   let live = false; // true once the player is in their village: the title's backdrop is never saved
+  let seen; // the saved hero hero() read: undefined until read, then { look, name } or null
 
   function has() { try { return enabled && !!localStorage.getItem(KEY); } catch (e) { return false; } }
   /** Writes the save now. */
   function persist() {
     if (!enabled || !live) return false;
     state.savedAt = Date.now(); state.seed = seed;
+    seen = undefined; // the saved hero may have changed: read it again
     try { localStorage.setItem(KEY, JSON.stringify(state)); return true; } catch (e) { return false; }
+  }
+  /** The saved hero, { look, name }, read without loading the save (the title screen shows him or her); null with no save. Kept after the first read. */
+  function hero() {
+    if (seen !== undefined) return seen;
+    seen = null;
+    try {
+      const h = enabled && JSON.parse(localStorage.getItem(KEY)).hero;
+      if (h) seen = { look: h.look, name: h.name };
+    } catch (e) { /* no save, or one that cannot be read */ }
+    return seen;
   }
   /** Fills a loaded save with any field a newer version added, so old saves keep working. */
   function adopt(data) {
@@ -79,7 +91,7 @@ const Save = (() => {
     } catch (e) { return false; }
   }
   function begin() { live = true; persist(); }
-  function wipe() { live = false; try { localStorage.removeItem(KEY); } catch (e) { /* nothing to remove */ } } // nothing is saved again until begin(): the next game is named first
+  function wipe() { live = false; seen = undefined; try { localStorage.removeItem(KEY); } catch (e) { /* nothing to remove */ } } // nothing is saved again until begin(): the next game is named first
   /** Downloads the save as a file. */
   function exportFile() {
     state.savedAt = Date.now(); state.seed = seed;
@@ -110,5 +122,5 @@ const Save = (() => {
   addEventListener('pagehide', persist);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persist(); });
 
-  return { has, persist, load, begin, wipe, exportFile, importFile, get enabled() { return enabled; } };
+  return { has, hero, persist, load, begin, wipe, exportFile, importFile, get enabled() { return enabled; } };
 })();

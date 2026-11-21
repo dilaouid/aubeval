@@ -105,4 +105,12 @@ DATA.pillaged = ['wood', 'planks', 'stone', 'wheat', 'bread', 'beans', 'coffee',
 // The hero at level 1, before gear. Growth per level is in config.js.
 DATA.hero = { name: 'Aldric', nameMin: 2, nameMax: 14, hp: 40, // name: the default, the one a player can keep; nameMin/nameMax: what the naming screen accepts (js/hero.js cleanName)
   atk: 5, def: 1, spd: 10 };
+// The four heroes a player can choose among, in the order of the choice. id: what the sprites and the save call him or her
+// (state.hero.look); name: the one proposed; g: 'm' or 'f', which side of a {g:masculine|feminine} hole a text takes (js/i18n.js).
+DATA.heroes = [
+  { id: 'aldric', name: 'Aldric', g: 'm' },
+  { id: 'tancrede', name: 'Tancrède', g: 'm' },
+  { id: 'isaure', name: 'Isaure', g: 'f' },
+  { id: 'maelle', name: 'Maëlle', g: 'f' },
+];
 // His battle cards, and the ones his village sends him, are in data/cards.js.

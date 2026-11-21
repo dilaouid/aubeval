@@ -272,7 +272,7 @@ const Village = (() => {
       land: { cut: {}, planted: {}, paved: {} }, // what the player changed on it, by tile index: felled, planted (flora id), paved
       res: {}, totals: {},                       // stock, and all that was ever gained in this village
       buildings: [], nextUid: 1, unlocked: {},
-      hero: { name: DATA.hero.name, lvl: 1, xp: 0, equip: { weapon: null, armor: null }, inv: [], plus: {}, bench: {} }, // bench: the battle cards left at home (js/cards.js)
+      hero: { name: DATA.hero.name, look: 'aldric', lvl: 1, xp: 0, equip: { weapon: null, armor: null }, inv: [], plus: {}, bench: {} }, // bench: the battle cards left at home (js/cards.js)
       quests: { done: {}, tiers: {} },
       counters: { raidsWon: 0, raidsLost: 0, battlesWon: 0, chops: 0, campsDown: 0, cleared: 0, planted: 0, traps: 0, soldiersLost: 0 }, // cleared, planted, traps: what the tutorial's lessons watch grow
       raid: { n: 0, timer: null, warned: false, active: null, from: null, traps: [], camp: null }, // from: where the next raid comes out, in map pixels; traps: [{ kind, x, y, uses }] laid for this raid; camp: the goblin camp's top-left tile, found once

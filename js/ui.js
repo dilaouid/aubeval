@@ -13,8 +13,22 @@ function heroName(of) {
   const n = (typeof state !== 'undefined' && state && state.hero && state.hero.name) || DATA.hero.name;
   return of ? DATA.strings[/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'hero_of_vowel' : 'hero_of'].split('{name}').join(n) : n;
 }
-/** Fills {hero} and {de_hero} in a line of text. */
-function withHero(s) { return s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName()); }
+/**
+ * The hero the player looks at, { id, name, g } from DATA.heroes: the one being named (ui.heroPick), else the
+ * saved one on the title screen (read without loading the save), else the one of the game under way.
+ * An id nobody knows, or none, is Aldric.
+ */
+function heroLook() {
+  let id;
+  if (typeof ui !== 'undefined' && ui && ui.heroPick) id = ui.heroPick;
+  else if (typeof scene !== 'undefined' && scene === 'title' && typeof Save !== 'undefined') { const s = Save.hero(); id = s && s.look; }
+  else if (typeof state !== 'undefined' && state && state.hero) id = state.hero.look;
+  return DATA.heroes.find(h => h.id === id) || DATA.heroes[0];
+}
+/** Resolves the {g:masculine|feminine} holes of a text for the hero's gender. */
+function gendered(s) { return typeof s === 'string' && s.indexOf('{g:') >= 0 ? I18N.gender(s, heroLook().g) : s; }
+/** Fills {hero} and {de_hero} in a line of text, then its gender holes. */
+function withHero(s) { return gendered(s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName())); }
 /** A string from data/strings.js, with {holes} filled from vars, and the hero's name in its place. */
 function tr(key, vars) {
   let s = DATA.strings[key];
