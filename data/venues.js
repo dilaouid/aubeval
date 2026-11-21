@@ -9,7 +9,7 @@ window.DATA = window.DATA || {};
 
 Object.assign(DATA.strings, {
   // the place
-  vn_pop: 'Popularité', vn_pop_tip: 'La popularité du héros\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.',
+  vn_pop: 'Popularité', vn_pop_tip: 'La popularité {g:du héros|de l’héroïne}\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.',
   vn_play: 'Jouer : {title}', vn_play_wait: 'Prêt dans {t}', vn_play_tip: '{title}\n{how}', vn_wait_tip: '{title}\n{name} reprend son souffle : le jeu sera prêt dans {t}.',
   vn_talk: 'Discuter', vn_talk_tip: 'Discuter\nUn mot de {name}, et ce qui se dit en ville.',
   vn_leave: 'Sortir (Échap)', vn_leave_tip: 'Sortir\nRetour au village.',
@@ -25,7 +25,7 @@ Object.assign(DATA.strings, {
   vn_pause: 'Pause', vn_pause_text: 'Abandonner compte comme une partie perdue.', vn_resume: 'Reprendre (Échap)', vn_quit: 'Abandonner',
   vn_res_0: 'Perdu…', vn_res_1: 'Médaille de bronze', vn_res_2: 'Médaille d’argent', vn_res_3: 'Médaille d’or !',
   vn_res_score: '{n} {unit}', vn_res_best: 'Nouveau record !', vn_res_best_old: 'Record : {n}',
-  vn_res_pop: 'Popularité du héros +{n}', vn_res_nopop: 'Pas de popularité cette fois.',
+  vn_res_pop: 'Popularité {g:du héros|de l’héroïne} +{n}', vn_res_nopop: 'Pas de popularité cette fois.',
   vn_res_gift: '{text} pendant {t}', vn_res_kept: '{text} : le cadeau en cours, meilleur, est gardé',
   vn_res_streak_up: 'Série : {n}. La prochaine partie sera plus dure, et paiera mieux.', vn_res_streak_same: 'Série : {n}.', vn_res_streak_down: 'Série retombée à {n} : le jeu redevient plus doux.',
   vn_res_wait: 'Prochaine partie ici dans {t}.', vn_res_ok: 'Continuer (Entrée)',
@@ -37,8 +37,8 @@ Object.assign(DATA.strings, {
   vn_tip_damaged: '{intro} {n} bâtiment(s) attendent encore des réparations.',
   vn_tip_starved: '{intro} un atelier ne tourne plus ({name}) : il manque de {res}.',
   vn_tip_raid: '{intro} les gobelins se rassemblent. Gardez vos soldats près des portes.',
-  vn_tip_pop_low: '{intro} l’on parle peu du héros en ce moment. Un jeu ou deux, et les langues se délient.',
-  vn_tip_pop_high: '{intro} tout le monde n’a que le nom du héros à la bouche. L’impôt rentre mieux quand on l’aime.',
+  vn_tip_pop_low: '{intro} l’on parle peu {g:du héros|de l’héroïne} en ce moment. Un jeu ou deux, et les langues se délient.',
+  vn_tip_pop_high: '{intro} tout le monde n’a que le nom {g:du héros|de l’héroïne} à la bouche. L’impôt rentre mieux quand on l’aime.',
   vn_tip_game: '{intro} {name} a un jeu tout prêt pour vous ({place}).',
   vn_tip_fine: '{intro} la ville tourne rond. Profitez-en pour voir plus grand.',
   // Le coup de feu
@@ -63,7 +63,7 @@ DATA.venueBuffs = {
   pop: { name: 'La tournée de Gaspard', text: 'Popularité des jeux +{n} %', short: 'jeux +{n} %', icon: 'icon.popularity', alt: 'icon.hero' },
   buy: { name: 'Prix d’amie', text: 'Achats au marché −{n} %', short: 'achats −{n} %', icon: 'icon.trade', alt: 'icon.gold' },
   sell: { name: 'Prix d’amie', text: 'Ventes au marché +{n} %', short: 'ventes +{n} %', icon: 'icon.trade', alt: 'icon.gold' },
-  atk: { name: 'Lame bien battue', text: 'Attaque du héros +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
+  atk: { name: 'Lame bien battue', text: 'Attaque {g:du héros|de l’héroïne} +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
   forge: { name: 'Feu vif', text: 'Forge {n} % plus rapide', short: 'forge +{n} %', icon: 'icon.time', alt: 'icon.time' },
 };
 
@@ -106,13 +106,13 @@ DATA.venues = {
     guests: ['baker', 'captain', 'steward', 'smith', 'merchant', 'guide'], // who comes for a cup: the town's own faces (portrait.<id>)
     thanks: ['Merci !', 'Parfait.', 'Ah, enfin !', 'Fameux.'], leaves: ['Trop long !', 'Je m’en vais !', 'Tant pis.'],
     greet: 'Entrez, entrez ! Ici on sert chaud et on parle fort. Quand la salle se remplit, un coup de main derrière le comptoir ne se refuse pas.',
-    ready: ['La salle se remplit, héros. Vous passez derrière le comptoir ?', 'Ça va être le coup de feu. Un tablier vous attend.', 'Les tasses sont chaudes, les clients arrivent. On y va ?'],
+    ready: ['La salle se remplit, {g:héros|héroïne}. Vous passez derrière le comptoir ?', 'Ça va être le coup de feu. Un tablier vous attend.', 'Les tasses sont chaudes, les clients arrivent. On y va ?'],
     wait: ['Laissez-moi essuyer mes tasses, on remet ça tout à l’heure.', 'La salle souffle un peu. Revenez dans un moment.'],
     chat: ['Une tasse noire et serrée, et la journée commence.', 'Un artisan sans café, c’est un paysan qui bâille.', 'Ici, on refait le monde. Et le village, parfois.',
-      'Quand le héros sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.', 'Maître Odon prend toujours un crème. Il dit que c’est pour les registres.'],
+      'Quand {g:le héros|l’héroïne} sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.', 'Maître Odon prend toujours un crème. Il dit que c’est pour les registres.'],
     tips: ['On dit au comptoir que', 'Entre deux tasses, j’ai entendu que', 'Tendez l’oreille :'],
     glad: ['Et un de servi !', 'Bien joué !', 'Ça tourne !', 'Voilà !'], cross: ['Pas celle-là !', 'Aïe, la commande !', 'Non, non !'], lost: ['Encore un de parti…', 'Il reviendra. Peut-être.'],
-    after: ['La salle s’est vidée, et pas en bien… On réessaiera.', 'Pas mal pour un héros ! Les clients ont souri.', 'Beau service ! On va parler de vous dans toute la rue.', 'Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.'],
+    after: ['La salle s’est vidée, et pas en bien… On réessaiera.', 'Pas mal pour {g:un héros|une héroïne} ! Les clients ont souri.', 'Beau service ! On va parler de vous dans toute la rue.', 'Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.'],
   },
   market: {
     keeper: 'merchant', name: 'La Halle du Marché', line: 0.78, tall: 0.72, faces: { glad: 2, cross: 4 }, faces64: { glad: 1, cross: 0 },
@@ -136,7 +136,7 @@ DATA.venues = {
     ready: ['J’ai une belle affaire sur la table. Vous osez marchander ?', 'Un lot vient d’arriver. Faites-moi votre prix, qu’on rie un peu.', 'Voyons si vous comptez aussi bien que vous bâtissez.'],
     wait: ['Pas d’affaire pour l’instant, mon ami. La prochaine caravane arrive bientôt.', 'Laissez-moi refaire mes comptes. Revenez tout à l’heure.'],
     chat: ['Tout s’achète, mon ami. Surtout ce qui manque.', 'Mes épices viennent de plus loin que vos cartes.', 'Je vends cher, j’achète bas : c’est un métier.',
-      'Un héros qu’on aime paie moins cher. Les marchands aussi lisent les visages.', 'Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.'],
+      '{g:Un héros|Une héroïne} qu’on aime paie moins cher. Les marchands aussi lisent les visages.', 'Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.'],
     tips: ['Entre nous,', 'Mes clients bavardent :', 'Une marchande entend tout :'],
     glad: ['Hmpf. Joli coup.', 'Vous m’étranglez !', 'D’où sortez-vous ce talent ?'], cross: ['Ha ! Non.', 'Vous rêvez.', 'À ce prix-là ? Jamais.'],
     okay: ['Soit…', 'Bon, bon.', 'Vous êtes dur.'], pushed: ['Encore ?!', 'Vous abusez…', 'Ma patience a un prix.'],
@@ -159,11 +159,11 @@ DATA.venues = {
       { tier: 1, bar: 'x.x.xxx.' }, { tier: 2, bar: 'xxx.x.x.' }, { tier: 3, bar: 'x.xxx.x.' },
       { tier: 5, bar: 'xxx.xxx.' }, { tier: 7, bar: 'x.xxxxx.' }, { tier: 9, bar: 'xxxxx.xx' },
     ],
-    greet: 'Ah, le héros ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.',
+    greet: 'Ah, {g:le héros|l’héroïne} ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.',
     ready: ['Le fer est au rouge. Vous frappez, je tiens ?', 'J’ai une lame qui attend son marteau. Le vôtre ?', 'Le feu est bon. Montrez-moi ce bras.'],
     wait: ['Le fer refroidit, laissez-le reposer. On reforgera tout à l’heure.', 'Mes bras aussi ont besoin d’une pause. Revenez plus tard.'],
-    chat: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', 'Le héros casse, moi je répare.',
-      'Un héros qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.', 'Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.'],
+    chat: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', '{g:Le héros|L’héroïne} casse, moi je répare.',
+      '{g:Un héros|Une héroïne} qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.', 'Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.'],
     tips: ['Entre deux coups de marteau, j’entends que', 'Les gardes me l’ont dit :', 'Ça se sait à la forge :'],
     glad: ['Voilà !', 'Bien frappé !', 'Ça chante !'], cross: ['Raté !', 'Le rythme !', 'Écoutez le fer !'],
     chain: ['Ça, c’est forger !', 'Elle chante !'], cold: 'Trop froid ! Le soufflet !', hot: 'Ça brûle ! Doucement !',

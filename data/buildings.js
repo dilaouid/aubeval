@@ -65,7 +65,7 @@ DATA.buildings = {
   forge: {
     name: 'Forge', card: 'Forge', sprite: 'iso.forge', w: 2, h: 2,
     cost: { planks: 8 }, unique: true, craft: true, unlock: { built: { sawmill: 1 } }, glow: true, beauty: -1, smoke: [[26, 2], [26, 2], [26, 2], [27, 4]], keeper: 'smith',
-    desc: 'Forge les armes et les armures du héros avec ce que le village produit.',
+    desc: 'Forge les armes et les armures {g:du héros|de l’héroïne} avec ce que le village produit.',
   },
   house: {
     name: 'Maison', card: 'Maison', sprite: 'iso.house', w: 2, h: 2, looks: 'class',
@@ -84,7 +84,7 @@ DATA.buildings = {
     name: 'Boulangerie', card: 'Boulangerie', sprite: 'iso.bakery', w: 2, h: 2,
     cost: { wood: 20, planks: 25 }, growth: 1.4, consumes: { wheat: 2 }, produces: { bread: 1 }, cycle: 3,
     unlock: { pop: 8 }, glow: true, smoke: [[52, 2], [52, 2], [55, 2], [50, 2]], keeper: 'baker',
-    desc: 'Cuit le blé en pain : le besoin de toutes vos maisons, et les rations du héros.',
+    desc: 'Cuit le blé en pain : le besoin de toutes vos maisons, et les rations {g:du héros|de l’héroïne}.',
   },
   quarry: {
     name: 'Carrière', card: 'Carrière', sprite: 'iso.quarry', w: 3, h: 2,
@@ -170,7 +170,7 @@ DATA.buildings = {
   cathedral: {
     name: 'Cathédrale', card: 'Cathédrale', sprite: 'iso.cathedral', w: 4, h: 4, monument: true, unique: true, looks: 'stage',
     cost: { stone: 600, planks: 400, gold: 1500 }, unlock: { rank: 2 }, beauty: 6,
-    desc: 'Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité du héros de tomber trop bas.',
+    desc: 'Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité {g:du héros|de l’héroïne} de tomber trop bas.',
   },
   castle: {
     name: 'Château', card: 'Château', sprite: 'iso.castle', w: 5, h: 5, monument: true, unique: true, looks: 'stage',

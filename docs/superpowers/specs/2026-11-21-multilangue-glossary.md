@@ -77,6 +77,26 @@ Gaspard, Cafetier → Gaspard, Café Keeper | Gaspard, Cafetero; Dame Ysolde, Ma
 Capitaine Hilde, Capitaine de la garde → Captain Hilde, Captain of the Guard | Capitana Hilde, Capitana de la guardia;
 Aveline (guide) stays Aveline.
 
+## The hero’s gender: {g:masculine|feminine}
+The player chooses among four heroes, two of them women (Isaure, Maëlle). A French text that speaks of
+the hero with a gendered word carries both forms in a hole `{g:masculin|féminin}`: exactly two forms, no
+brace inside either (never `{hero}` in a hole); the first is shown for a hero, the second for a heroine
+(js/i18n.js gender). An empty form is allowed (`prêt{g:|e}`), but whole words read better for a translator.
+Put the hole around the smallest unit that reads naturally, and read the sentence once per gender.
+When to write one: the role word (héros), a pronoun standing for the hero (il, le), and a participle or
+adjective that agrees with the hero (arrivé, seul, prêt, aimé, blessé). Labels too: « Héros (H) », « Héros niveau {n} ».
+Not for the player: the player is the mayor (bourgmestre), and a line that addresses the player (« messire »,
+« mon ami ») is not a line about the hero. Not for anyone else: a soldier, a raider, a keeper, a warlord, or an impersonal « il ».
+A text shown before any hero is chosen that speaks of heroes in general (the title’s tagline, the naming
+screen’s « changer de héros ») keeps the masculine as the generic.
+Usual pairs: le héros / l’héroïne; du héros / de l’héroïne; au héros / à l’héroïne; un héros / une héroïne;
+votre héros / votre héroïne; son héros / son héroïne; il / elle; le / la (envoyez-le / envoyez-la); s’il / si elle;
+lui stays lui as an indirect object (« lui envoie »), elle after a preposition; messire / madame (only if a line
+ever addresses the hero). Mind the elisions: « héros » has an aspirated h (le héros, de héros), « héroïne » a mute one (l’héroïne, d’héroïne).
+EN: "hero" does not change (never "heroine" as a role word), but its pronouns do: {g:he|she}, {g:him|her}, {g:his|her}.
+ES: héroe / heroína, el héroe / la heroína, él / ella, and the agreeing adjectives (listo / lista).
+`node tools/i18n.js gender fr` lists the French texts still written for one gender (tools/i18n.js GENDER, GENDER_OK).
+
 ## Numbers and special keys (data/strings.js)
 num_dec: EN '.' | ES ','. num_units: EN ['k', 'M', 'B', 'T', 'Qa'] | ES ['k', 'M', 'mM', 'B', 'mB'].
 hero_of and hero_of_vowel (the hero’s name with « de »): EN both '{name}’s' | ES both 'de {name}'.

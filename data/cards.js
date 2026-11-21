@@ -75,7 +75,7 @@ DATA.cards = {
   volley: { name: 'Volée de flèches', from: 'watchtower', max: 2, cost: 1, target: 'random', flat: 4, hits: 3,
     flavor: 'Les archers des tours de guet tirent par-dessus son épaule.' },
   spikes: { name: 'Pieux', from: 'palisade', cost: 1, target: 'self', block: 4, thorns: 3,
-    flavor: 'Qui le frappe s’empale sur la palissade.' },
+    flavor: 'Qui {g:le|la} frappe s’empale sur la palissade.' },
   bolt: { name: 'Éclair', from: 'mage_tower', cost: 2, target: 'all', flat: 8, pierce: true,
     flavor: 'La tour de mage foudroie toute la bande.' },
   militia: { name: 'Renfort de la milice', from: 'barracks', cost: 1, target: 'self', ally: { dmg: 5, turns: 3 }, exhaust: true,

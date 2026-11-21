@@ -193,7 +193,7 @@ DATA.tutorial = {
     { id: 'forge',
       say: [
         { text: 'Du bois, puis des planches : voilà une chaîne. Chaque bâtiment nourrit le suivant.', show: 'res:planks' },
-        'Avec 8 planches, on bâtit la Forge. C’est là que le village arme son héros, {hero}.',
+        'Avec 8 planches, on bâtit la Forge. C’est là que le village arme {g:son héros|son héroïne}, {hero}.',
       ],
       task: 'Prenez la carte « Forge » (8 planches), puis posez-la au bord d’un chemin.',
       point: ['build:forge'], near: [-1, 5], goal: { built: { forge: 1 } }, gift: { planks: 6 } },
@@ -203,11 +203,11 @@ DATA.tutorial = {
       point: ['building:forge', 'craft:sword_1'], goal: { has: 'sword_1' } },
     { id: 'equip',
       say: ['La lame est prête ! Il reste à la mettre dans les mains {de_hero}.'],
-      task: 'Ouvrez la fiche du Héros, puis équipez la lame.',
+      task: 'Ouvrez la fiche {g:du Héros|de l’Héroïne}, puis équipez la lame.',
       point: ['panel:hero', 'mark:equip:sword_1'], goal: { equip: 'weapon' } },
     { id: 'fight',
       say: [
-        '{hero} est armé par votre village. Deux gobelins rôdent autour des réserves : envoyons-le.',
+        '{hero} est {g:armé|armée} par votre village. Deux gobelins rôdent autour des réserves : envoyons-{g:le|la}.',
         'En combat, votre village devient un paquet de cartes : chaque bâtiment envoie la sienne. Trois points de souffle par tour pour en jouer.',
         'Et quand un gobelin frappe, pressez Espace à l’instant où l’anneau touche le cercle doré : c’est une parade !',
       ],
@@ -252,9 +252,9 @@ DATA.tutorial = {
           ] },
         { id: 'duel',
           say: [
-            { text: '« Défier {lord} » : {hero} l’affronte seul, aux cartes. Une seule fois par siège, de la corne jusqu’à la fin.', show: 'siege:duel' },
+            { text: '« Défier {lord} » : {hero} l’affronte {g:seul|seule}, aux cartes. Une seule fois par siège, de la corne jusqu’à la fin.', show: 'siege:duel' },
             'Vainqueur, le chef est hors de combat et sa colonne perd courage : moins de vie, moins vite, et des fuyards. Perdu ou pas tenté, il marche avec elle et compte pour {n:warlord_leaks} à votre porte.',
-            'Un siège pille plus qu’un raid, et casse davantage : pièges, soldats et remparts comptent double. Repoussé, il paie une vraie prime. À vous de voir si {hero} est prêt pour le duel !',
+            'Un siège pille plus qu’un raid, et casse davantage : pièges, soldats et remparts comptent double. Repoussé, il paie une vraie prime. À vous de voir si {hero} est {g:prêt|prête} pour le duel !',
           ] },
       ] },
 
@@ -384,7 +384,7 @@ DATA.tutorial = {
           ] },
       ] },
 
-    { id: 'popularity', title: 'La popularité du héros', about: 'La jauge de popularité : ce qu’elle donne, d’où elle vient, pourquoi elle s’effrite.', when: { after: 'orders', orders: 1 },
+    { id: 'popularity', title: 'La popularité {g:du héros|de l’héroïne}', about: 'La jauge de popularité : ce qu’elle donne, d’où elle vient, pourquoi elle s’effrite.', when: { after: 'orders', orders: 1 },
       covers: ['ctab:rank', 'do:popularity'],
       steps: [
         { id: 'gauge',
@@ -393,7 +393,7 @@ DATA.tutorial = {
           point: ['panel:city', 'ctab:rank'], goal: { ctab: 'rank' } },
         { id: 'gives',
           say: [
-            { text: 'De 0 à 100. Plus {hero} est aimé, mieux l’impôt rentre, meilleurs sont les prix du Marché, et chaque maison loge un habitant de plus tous les {n:pop_house_step} points.', show: 'city:pop' },
+            { text: 'De 0 à 100. Plus {hero} est {g:aimé|aimée}, mieux l’impôt rentre, meilleurs sont les prix du Marché, et chaque maison loge un habitant de plus tous les {n:pop_house_step} points.', show: 'city:pop' },
             { text: 'Elle monte avec les commandes, les raids repoussés, les quêtes, les combats, les jeux des tenanciers, les lieux explorés et les grands chantiers. Un raid perdu la fait chuter.', show: 'city:pop' },
             { text: 'Et elle s’effrite toute seule, minute après minute ; plus elle est haute, plus elle monte lentement. « D’où elle vient », juste en dessous, garde ses derniers gains.', show: 'city:pop' },
           ] },
@@ -454,7 +454,7 @@ DATA.tutorial = {
           say: ['Chemins, défrichage et plantations se tracent aussi en glissant, case après case. Et Défricher retire un chemin posé par erreur.'] },
       ] },
 
-    { id: 'quests', title: 'Le livre des quêtes', about: 'Quêtes secondaires, missions du héros et contrats.', when: { after: 'defense' },
+    { id: 'quests', title: 'Le livre des quêtes', about: 'Quêtes secondaires, missions {g:du héros|de l’héroïne} et contrats.', when: { after: 'defense' },
       covers: ['qtab:side', 'qtab:missions', 'qtab:contracts', 'do:mission', 'do:contract'],
       steps: [
         { id: 'book',
@@ -466,19 +466,19 @@ DATA.tutorial = {
           task: 'Ouvrez l’onglet « Missions ».',
           point: ['qtab:missions'], goal: { qtab: 'missions' } },
         { id: 'mission',
-          say: ['Une mission envoie {hero} seul un moment : il revient avec de l’XP et du butin, même jeu fermé. Pendant ce temps, il ne défend pas le village.'],
+          say: ['Une mission envoie {hero} {g:seul|seule} un moment : {g:il|elle} revient avec de l’XP et du butin, même jeu fermé. Pendant ce temps, {g:il|elle} ne défend pas le village.'],
           task: 'Lancez la mission « Patrouille des lisières ».',
           point: ['mark:mission:patrol'], unless: { away: true }, goal: { away: true } },
         { id: 'contracts',
           say: [{ text: 'Les contrats arrivent avec la quête « Tenir le village » : chaque victoire en élève le rang, sans limite.', show: 'qtab:contracts' }] },
       ] },
 
-    { id: 'hero', get title() { return 'Le paquet ' + heroName(true); }, about: 'Les cartes du héros, ses touches de combat, la forge.', when: { after: 'quests' },
+    { id: 'hero', get title() { return 'Le paquet ' + heroName(true); }, about: 'Les cartes {g:du héros|de l’héroïne}, ses touches de combat, la forge.', when: { after: 'quests' },
       covers: ['do:deck', 'do:intent'],
       steps: [
         { id: 'sheet',
           say: ['En combat, {hero} joue les cartes que lui envoient vos bâtiments. Plus le village grandit, plus son paquet est riche.'],
-          task: 'Ouvrez la fiche du Héros.',
+          task: 'Ouvrez la fiche {g:du Héros|de l’Héroïne}.',
           point: ['panel:hero'], goal: { panel: 'hero' } },
         { id: 'deck',
           say: [
@@ -564,7 +564,7 @@ DATA.tutorial = {
         { id: 'attack',
           say: [
             { text: '« Attaquer le camp » y envoie tous vos soldats ; un clic droit sur le camp, soldats choisis, fait de même. Sa garnison sort les combattre, puis ils abattent sa palissade.', show: 'camp:attack' },
-            '{hero} les rejoint s’il est au village. Rasé, le camp laisse du butin et aucun raid ne vient pendant {t:camp_respite}… puis un autre se dresse plus loin, plus fort, un chef à sa tête.',
+            '{hero} les rejoint {g:s’il|si elle} est au village. Rasé, le camp laisse du butin et aucun raid ne vient pendant {t:camp_respite}… puis un autre se dresse plus loin, plus fort, un chef à sa tête.',
             { text: 'L’hôtel de ville s’améliore aussi : chaque niveau protège mieux vos réserves et élargit la zone sûre.', show: 'act:upgrade' },
           ] },
       ] },
@@ -590,7 +590,7 @@ DATA.tutorial = {
           say: ['Rien ne presse jamais : un rang se proclame quand vous le voulez, et se garde… jusqu’à un nouveau départ.'] },
       ] },
 
-    { id: 'site', title: 'Un lieu trouvé', about: 'Ruines, tanières, hameaux et gisements : y envoyer le héros, et le rappeler.', when: { after: 'fog', site: true },
+    { id: 'site', title: 'Un lieu trouvé', about: 'Ruines, tanières, hameaux et gisements : y envoyer {g:le héros|l’héroïne}, et {g:le|la} rappeler.', when: { after: 'fog', site: true },
       covers: ['site:ruin', 'site:lair', 'site:hamlet', 'site:deposit', 'do:trip', 'do:home'],
       steps: [
         { id: 'open',
@@ -609,10 +609,10 @@ DATA.tutorial = {
           say: [
             'Quatre sortes de lieux. Une ruine : un seul combat, et elle est explorée pour de bon. Une tanière : vidée, elle se repeuple, plus forte à chaque fois.',
             'Un hameau : un premier présent ouvre une route de commerce, et chaque livraison grossit sa paie. Un gisement : revendiqué, il envoie sa récolte chaque minute, et se creuse.',
-            { text: '{hero} doit d’abord s’y rendre : pendant le trajet, il ne garde plus le village. Sur place, rien ne part tout seul : un combat ne commence que sur « Combattre ». Et « Rentrer » le rappelle à tout moment.', show: 'explore:act' },
+            { text: '{hero} doit d’abord s’y rendre : pendant le trajet, {g:il|elle} ne garde plus le village. Sur place, rien ne part tout seul : un combat ne commence que sur « Combattre ». Et « Rentrer » {g:le|la} rappelle à tout moment.', show: 'explore:act' },
           ] },
         { id: 'go',
-          say: ['Envoyons-le voir.'],
+          say: ['Envoyons-{g:le|la} voir.'],
           task: 'Cliquez « Y aller ».',
           point: ['panel:explore', 'mark:explore:act'], unless: { stuck: 'go' }, goal: { trip: true } },
         { id: 'back',
@@ -621,8 +621,8 @@ DATA.tutorial = {
           point: ['panel:explore', 'mark:explore:back'], unless: { exsite: false }, goal: { exsite: false } },
         { id: 'trip', unless: { trip: false },
           say: [
-            { text: 'Son expédition se suit ici : où il en est, et le temps qu’il reste.', show: 'explore:trip' },
-            { text: '« Rentrer » : il fait demi-tour, et reprend sa garde devant l’hôtel de ville en arrivant.', show: 'explore:recall' },
+            { text: 'Son expédition se suit ici : où {g:il|elle} en est, et le temps qu’il reste.', show: 'explore:trip' },
+            { text: '« Rentrer » : {g:il|elle} fait demi-tour, et reprend sa garde devant l’hôtel de ville en arrivant.', show: 'explore:recall' },
             'Les routes et les gisements rapportent chaque minute, même jeu fermé. Bonne route, {hero} !',
           ] },
       ] },
@@ -637,7 +637,7 @@ DATA.tutorial = {
         { id: 'chief',
           say: [
             { text: 'Le voici : son nom, sa vie, et ce que sa tête ajoute au butin. Il se tient devant la porte du camp, plus coriace que ses gardes, et frappe plus fort à chaque camp.', show: 'camp:chief' },
-            { text: 'La palissade ne tombe qu’une fois la garnison à terre, chef compris. Envoyez assez de soldats ; {hero} les rejoint s’il est au village.', show: 'camp:attack' },
+            { text: 'La palissade ne tombe qu’une fois la garnison à terre, chef compris. Envoyez assez de soldats ; {hero} les rejoint {g:s’il|si elle} est au village.', show: 'camp:attack' },
           ] },
       ] },
 
@@ -740,7 +740,7 @@ DATA.tutorial = {
         { id: 'goldsmith',
           say: [
             { text: 'Quatre maisons de Négociants : l’Orfèvre change l’or et la pierre en bijoux.', show: 'card:goldsmith' },
-            'Les bijoux, avec une rue superbe — fontaines, statues, arbres et fleurs —, font des Nobles, la plus haute classe d’Aubeval. Il leur faut le rang de Cité, et un héros populaire.',
+            'Les bijoux, avec une rue superbe — fontaines, statues, arbres et fleurs —, font des Nobles, la plus haute classe d’Aubeval. Il leur faut le rang de Cité, et {g:un héros|une héroïne} populaire.',
           ] },
       ] },
 

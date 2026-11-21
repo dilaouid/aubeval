@@ -133,6 +133,14 @@ test('check reports a malformed gender hole as kind gender', () => {
   assert.ok(errs.some(e => e.kind === 'gender' && e.path === 'strings.x'));
   assert.ok(!errs.some(e => e.path === 'strings.y')); // a gender hole on one side only is no difference of holes
 });
+test('no bare « héros » in the French texts', () => {
+  const found = [...T.paths(T.loadData())].filter(([p, t]) => T.GENDER.fr.bare.test(T.unholed(t)) && !T.genderOk('fr', p));
+  assert.strictEqual(found.length, 0, found.length + ' found:\n' + found.slice(0, 40).map(([p, t]) => p + '  ' + t).join('\n'));
+});
+test('French gender suspects are all accounted for', () => {
+  const left = T.genderSuspects('fr').filter(x => !T.genderOk('fr', x.path));
+  assert.strictEqual(left.length, 0, left.length + ' left:\n' + left.slice(0, 40).map(x => x.path + '  ' + x.text).join('\n'));
+});
 
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

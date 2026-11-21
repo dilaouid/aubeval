@@ -15,7 +15,7 @@ DATA.items = {
   sword_1: {
     name: "Lame d'apprenti", slot: 'weapon', tier: 1, atk: 5,
     recipe: { cost: { planks: 6 }, time: 5 },
-    desc: 'Une lame simple sur un manche de frêne. Elle double la force du héros.',
+    desc: 'Une lame simple sur un manche de frêne. Elle double la force {g:du héros|de l’héroïne}.',
   },
   armor_1: {
     name: 'Pavois de chêne', slot: 'armor', tier: 1, def: 2, hp: 8,
