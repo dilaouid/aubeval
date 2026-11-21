@@ -531,7 +531,10 @@ const scenes = (() => {
     }
     // ---- the body, which scrolls; the actions stay below it
     const by = P.y + P.h - 58;
-    const wall = d.wall && !b.damaged ? Village.rampart(b) : null, row = wall && wall.length > 1 ? 48 : 0; // a wall in a rampart: one more row, « Tout le rempart »
+    // a wall in a rampart: one more row, « Tout le rempart » (one level up); and below it, when pieces are broken or it can come down, one for « Tout réparer » and « Tout démolir »
+    const wall = d.wall && !b.damaged ? Village.rampart(b) : null, whole = d.wall ? Village.rampartAll(b) : [b];
+    const up = wall && wall.length > 1, broken = whole.filter(o => o.damaged), canRepair = broken.length > (b.damaged ? 1 : 0), canRazeAll = whole.length > 1;
+    const row = (up ? 48 : 0) + (canRepair || canRazeAll ? 48 : 0);
     UI.scrollBox('bld', x, top, w, by - 34 - row - top, y0 => {
       const t = ui.btab;
       if (t === 'info') return infoTab(b, d, x, y0, w);
@@ -548,8 +551,25 @@ const scenes = (() => {
     });
     const ly = by - 18;
     ctx.fillStyle = C.lineL; ctx.fillRect(x, ly - 14, w, 1);
-    if (row) { // every palisade of this rampart at its level, one level up, in one click
-      const c = Village.rampartCost(wall), ry = by - 74;
+    const list = c => Object.keys(c).map(r => c[r] + ' ' + lower(RES[r].name)).join(', ');
+    let ry = by - 74;
+    if (canRepair || canRazeAll) { // the whole rampart at once: its broken pieces mended, or all of it pulled down (a second click confirms)
+      ctx.fillStyle = C.lineL; ctx.fillRect(x, ry - 6, w, 1);
+      const both = canRepair && canRazeAll, bw = both ? 174 : 196, bx = x + (both ? bw + 8 : 0);
+      if (canRepair) {
+        const c = Village.rampartRepairCost(whole);
+        UI.button(x, ry, bw, 36, tr('rampart_repair_all', { n: broken.length }), () => Village.repairRampart(b), { disabled: !Village.canAfford(c), size: 14, icon: 'icon.build', tip: tr('rampart_repair_tip', { n: broken.length }) + '\n' + list(c) });
+      }
+      if (canRazeAll) {
+        const armed = ui.rampArm && ui.rampArm.uid === b.uid && ui.rampArm.until > state.t;
+        UI.button(canRepair ? bx : x, ry, bw, 36, tr(armed ? 'rampart_demolish_sure' : 'rampart_demolish_all', { n: whole.length }), () => {
+          if (armed) { Village.demolishRampart(b); ui.rampArm = null; closePanel(); } else ui.rampArm = { uid: b.uid, until: state.t + 4 };
+        }, { size: 14, icon: 'icon.demolish', tip: tr('rampart_demolish_tip', { n: whole.length }) + `\n${lower(tr('refund'))} ${list(Village.rampartRefund(whole))}` });
+      }
+      ry -= 48;
+    }
+    if (up) { // every palisade of this rampart at its level, one level up, in one click
+      const c = Village.rampartCost(wall);
       ctx.fillStyle = C.lineL; ctx.fillRect(x, ry - 6, w, 1);
       UI.button(x, ry, 196, 36, tr('rampart_all', { n: wall.length }), () => Village.upgradeRampart(b), { disabled: !Village.canAfford(c), size: 14, icon: 'icon.upgrade', tip: tr('rampart_tip', { n: wall.length, lvl: b.lvl, next: b.lvl + 1 }) });
       Tuto.mark('act:rampart', x, ry, 196, 36);

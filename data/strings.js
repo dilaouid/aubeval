@@ -183,6 +183,8 @@ DATA.strings = {
   st_can_raise: 'Prête à s’élever : {name}', st_happy: 'Satisfaits', st_paused: 'En pause', st_starved: 'En attente de : {res}', st_serves: 'Sert {n} maisons', st_working: 'Au travail',
   house_head: '{n} habitants · {gold} or toutes les {t} s',
   upgrade_to: 'Niveau {n}', next_level: 'Niveau suivant',
+  rampart_repair_all: 'Tout réparer ({n})', rampart_repair_tip: 'Tout réparer\nLes {n} palissades brisées de ce rempart sont relevées d’un coup.',
+  rampart_demolish_all: 'Tout démolir ({n})', rampart_demolish_tip: 'Démolir tout le rempart\nLes {n} palissades reliées, de tout niveau, disparaissent.', rampart_demolish_sure: 'Cliquez encore ({n})',
   rampart_all: 'Tout le rempart ({n})', rampart_tip: 'Tout le rempart\nLes {n} palissades reliées à celle-ci et au niveau {lvl} passent au niveau {next}.\nRempart plus solide',
   up_house: '+2 habitants, impôt plus fort', up_prod: '+{pct} % de production', up_tower: '+{pct} % de dégâts', up_wall: 'Rempart plus solide', up_army: 'Soldats +{pct} %',
   up_service: '+{n} case de portée', up_hall: 'Moins de pillage, zone sûre plus large', up_double: 'Palier : production ×2 !', up_look: 'Nouvelle apparence',

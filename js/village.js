@@ -626,14 +626,40 @@ const Village = (() => {
    */
   function rampart(b) {
     if (!B[b.kind].wall || b.damaged) return [b];
+    return joined(b, true).filter(o => o.lvl === b.lvl);
+  }
+  /** Every wall of b's kind joined to it side to side, itself first; `standing`: the broken ones are gaps and do not join. */
+  function joined(b, standing) {
     const at = new Map(), key = (x, y) => x + ',' + y;
-    for (const o of state.buildings) if (o.kind === b.kind && !o.damaged) at.set(key(o.x, o.y), o);
+    for (const o of state.buildings) if (o.kind === b.kind && !(standing && o.damaged)) at.set(key(o.x, o.y), o);
     const seen = new Set([b]), todo = [b];
     while (todo.length) {
       const o = todo.pop();
       for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) { const n = at.get(key(o.x + dx, o.y + dy)); if (n && !seen.has(n)) { seen.add(n); todo.push(n); } }
     }
-    return [...seen].filter(o => o.lvl === b.lvl);
+    return [...seen];
+  }
+  /** The whole rampart this wall belongs to: standing and broken pieces, of any level. Just itself when it is no wall. */
+  function rampartAll(b) { return B[b.kind].wall ? joined(b, false) : [b]; }
+  const sumCosts = (list, f) => { const c = {}; for (const o of list) { const u = f(o); for (const r in u) c[r] = (c[r] || 0) + u[r]; } return c; };
+  /** What repairing every broken piece of the rampart costs, and what pulling the whole of it down gives back. */
+  const rampartRepairCost = list => sumCosts(list.filter(o => o.damaged), repairCost);
+  const rampartRefund = list => sumCosts(list, refund);
+  /** Repairs every broken piece of this wall's rampart, all or none. */
+  function repairRampart(b) {
+    const list = rampartAll(b).filter(o => o.damaged);
+    if (!list.length) return false;
+    if (!pay(rampartRepairCost(list))) { toast(tr('no_funds'), UI.C.bad); return false; }
+    for (const o of list) { o.damaged = false; o.siege = 0; o.hp = wallMax(o); stamp(o, o.uid); }
+    sfx('place'); Raid.touch(); touchTown();
+    return true;
+  }
+  /** Pulls the whole rampart of this wall down, and gives back the refund of each piece. */
+  function demolishRampart(b) {
+    const list = rampartAll(b), r = rampartRefund(list);
+    for (const k in r) state.res[k] += r[k];
+    for (const o of list) { state.buildings.splice(state.buildings.indexOf(o), 1); stamp(o); }
+    Raid.touch(); touchTown(); Units.touch(); sfx('chop');
   }
   /** What raising all of them one level costs: the sum of their upgrades. */
   function rampartCost(list) {
@@ -687,7 +713,7 @@ const Village = (() => {
     sync, fresh, drawSeed, sharedSeed, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
     safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, repairCost, canAfford, pay, gain,
     levelMult, milestoneMult, renownMult, outMult, wallMax, pillagePct, isUnlocked, refreshUnlocks, nextPopUnlock,
-    size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartCost, upgradeRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,
+    size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartAll, rampartCost, rampartRepairCost, rampartRefund, upgradeRampart, repairRampart, demolishRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,
     needsRoad, onRoad, roadAt, serviceRadius, refreshTown, touchTown, autoRoads, servicesOf, servicesAt, missingServices, beauty, beautyAt, beautyMult, raiseSteps, campMid, raiseCamp, CAMP,
     idx, inMap, groundAt, floraAt, walkable, biomeAt, hallMid, flora, occ, shakes, net,
     GROUND, FLORA,
