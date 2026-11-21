@@ -13,7 +13,7 @@ Object.assign(DATA.strings, {
   city_hud_tip: '{name} · popularité du héros {n} / 100\nCliquez pour ouvrir la Cité (G).', city_hud_tip_order: 'Une commande peut être honorée.', city_hud_tip_rank: 'Le rang suivant peut être proclamé.',
   // conditions (js/quests.js describe reads them through City.describe)
   city_need_rank: 'Rang de cité : {name} (ici : {have})', city_need_pop: 'Popularité du héros {n} (ici : {have})',
-  city_need_orders: 'Commandes honorées ({have}/{n})', city_need_raids: 'Raids repoussés par ce village ({have}/{n})',
+  city_need_orders: 'Commandes honorées ({have}/{n})', city_need_raids: 'Raids repoussés par ce village ({have}/{n})', city_need_raids_camp: ' · un camp rasé en vaut {k}',
   city_need_works: 'Étapes de grands chantiers ({have}/{n})', city_need_camps: 'Camps gobelins rasés ({have}/{n})',
   // the Rang tab
   city_rank_n: 'Rang {n}', city_rank_gives: 'production et impôts +{pct} %',
