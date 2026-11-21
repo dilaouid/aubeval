@@ -389,7 +389,18 @@ function tick() {
   drawFrame();
 }
 function drawFrame() { UI.begin(); scenes[scene].draw(); UI.end(); uiStale = false; }
-function frame() { tick(); requestAnimationFrame(frame); }
+// At most 60 frames a second: the game steps at 60, and a 120 or 144 Hz screen would otherwise
+// draw it twice as often for nothing, which a laptop's graphics feel. A frame comes a little early
+// or late; what is skipped is carried over, so a 144 Hz screen still draws close to 60.
+const FRAME_MS = 1000 / 60;
+let lastFrame = -1e9;
+function frame(ts) {
+  requestAnimationFrame(frame);
+  const gap = ts - lastFrame;
+  if (gap < FRAME_MS - 1) return;
+  lastFrame = gap >= FRAME_MS && gap < FRAME_MS * 2 ? ts - gap % FRAME_MS : ts; // after a long stall, start again from now
+  tick();
+}
 // A headless browser on a time budget runs timers but almost no animation frames: a timer
 // ticks when no frame has come for 100 ms on a visible page; a hidden tab stays paused.
 function timer() { if (document.visibilityState === 'visible' && clock.now() - last > 0.1) tick(); }
@@ -408,7 +419,7 @@ window.game = {
 };
 
 reset();
-Art.loadOverrides(id => { if (id.startsWith('iso.tile')) World.reset(); }); // a ground image just loaded: the painted ground is painted again
+Art.loadOverrides(id => { World.forgetFlora(); if (id.startsWith('iso.tile')) World.reset(); }); // an image just loaded: the trees are placed again with it, a ground image's ground painted again
 scene = params.get('scene') || 'title';
 if (params.get('demo')) { buildDemo(); if (scene === 'title') scene = 'play'; }
 if (params.get('tuto')) { Tuto.jump(params.get('tuto')); if (scene === 'title') scene = 'play'; } // ?tuto=forge: a new game opened at that step of the tutorial

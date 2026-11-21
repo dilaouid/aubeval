@@ -35,6 +35,7 @@ const World = (() => {
   const wg = wc.getContext('2d'); wg.imageSmoothingEnabled = false;
   const chunks = new Map();                         // piece number -> { cv, used }
   let frameN = 0;
+  let inView = 0;                                   // pieces of ground on screen this frame: the caches never keep fewer, or a big screen zoomed out would paint them again every frame
   const puffs = []; // dust where something was just built or broken
   const pings = [];  // where soldiers were just sent: a ring closing on the spot
   const blasts = []; // a powder keg going off
@@ -83,7 +84,7 @@ const World = (() => {
 
   // ---- The ground, piece by piece ----
   /** Forgets every painted piece: the land changed, or a ground image just loaded. */
-  function reset() { chunks.clear(); puffs.length = 0; pings.length = 0; blasts.length = 0; }
+  function reset() { chunks.clear(); forgetFlora(); puffs.length = 0; pings.length = 0; blasts.length = 0; }
   /** Forgets the piece a tile is in: its ground changed. */
   function dirty(tx, ty) { chunks.delete(Math.floor(ty / CH) * NCX + Math.floor(tx / CH)); }
   /** The iso point of a piece's top-left corner. */
@@ -92,7 +93,7 @@ const World = (() => {
     const key = cy * NCX + cx;
     let c = chunks.get(key);
     if (c) { c.used = frameN; return c.cv; }
-    if (chunks.size >= KEEP) { let old = null, ok = 0; for (const [k, v] of chunks) if (!old || v.used < old.used) { old = v; ok = k; } chunks.delete(ok); }
+    if (chunks.size >= Math.max(KEEP, inView + 16)) { let old = null, ok = 0; for (const [k, v] of chunks) if (!old || v.used < old.used) { old = v; ok = k; } chunks.delete(ok); }
     const cv = document.createElement('canvas'); cv.width = CW; cv.height = CHH;
     const g = cv.getContext('2d'), o = chunkAt(cx, cy), x0 = cx * CH, y0 = cy * CH;
     for (let s = 0; s < CH * 2 - 1; s++) for (let x = Math.max(0, s - CH + 1); x <= Math.min(CH - 1, s); x++) { // back row first
@@ -159,7 +160,7 @@ const World = (() => {
     c = { cv: null, used: frameN, own: kind === 2 };
     if (kind === 1) c.cv = fogFull || (fogFull = fogPaint());
     else if (kind === 2) {
-      if (fogOwn >= FOG_KEEP) { let ok = -1, old = null; for (const [k, v] of fogs) if (v.own && (!old || v.used < old.used)) { old = v; ok = k; } fogs.delete(ok); fogOwn--; }
+      if (fogOwn >= Math.max(FOG_KEEP, inView + 16)) { let ok = -1, old = null; for (const [k, v] of fogs) if (v.own && (!old || v.used < old.used)) { old = v; ok = k; } fogs.delete(ok); fogOwn--; }
       c.cv = fogPaint(cx, cy); fogOwn++;
     }
     fogs.set(key, c);
@@ -225,6 +226,18 @@ const World = (() => {
     const d = FLORA[f - 1], n = Art.frameCount(d.sprite), s = Art.get(d.sprite, Math.floor(hash(tx, ty, 23) * n));
     const X = Math.round(isoX(tx * T + 8, ty * T + 8) + (hash(tx, ty, 19) - 0.5) * 8), Y = Math.round(isoY(tx * T + 8, ty * T + 8) + (hash(tx, ty, 29) - 0.5) * 3) + (d.foot == null ? 4 : d.foot);
     return { s, X, Y, x: X - (s.width >> 1), y: Y - s.height };
+  }
+  // The tree or rock on each tile, placed once and kept, so a frame zoomed out neither hashes nor
+  // allocates for each of the thousands in view: tile index -> { y: its foot (the sort key), s, x,
+  // top, k: the kind it was placed for, i }. A tile whose kind changed since is placed again; a
+  // sprite image that loads, or a new land, forgets them all.
+  let floraAt = [];
+  function forgetFlora() { floraAt = []; }
+  function floraItem(tx, ty, i, f) {
+    if (floraAt.length !== Village.flora.length) floraAt = new Array(Village.flora.length).fill(null);
+    let it = floraAt[i];
+    if (!it || it.k !== f) { const r = floraRect(tx, ty, f); it = floraAt[i] = { y: r.Y, s: r.s, x: r.x, top: r.y, k: f, i }; }
+    return it;
   }
   function opaque(s, x, y) {
     if (x < 0 || y < 0 || x >= s.width || y >= s.height) return false;
@@ -303,8 +316,45 @@ const World = (() => {
     return Art.get(id, ROW[octant(dx, dy)] * sh.cols + col);
   }
 
-  function ellipse(cx, cy, rx, ry) { // filled, in whole pixels
-    for (let dy = -ry; dy <= ry; dy++) { const hw = Math.round(rx * Math.sqrt(Math.max(0, 1 - dy * dy / (ry * ry + 0.3)))); wg.fillRect(cx - hw, cy + dy, hw * 2 + 1, 1); }
+  function ellipse(cx, cy, rx, ry, g = wg) { // filled, in whole pixels
+    for (let dy = -ry; dy <= ry; dy++) { const hw = Math.round(rx * Math.sqrt(Math.max(0, 1 - dy * dy / (ry * ry + 0.3)))); g.fillRect(cx - hw, cy + dy, hw * 2 + 1, 1); }
+  }
+  // The warm light around a building at work is three faint ellipses, a line of pixels at a time:
+  // hundreds of small fills per building, every frame. Each size is painted once and kept (the
+  // light breathes between a few sizes), its middle at (R0, round(R0 / 2)).
+  const glows = new Map();
+  function glowPicture(R0) {
+    let cv = glows.get(R0);
+    if (!cv) {
+      const ry = Math.round(R0 * 0.5);
+      cv = document.createElement('canvas'); cv.width = R0 * 2 + 1; cv.height = ry * 2 + 1;
+      const g = cv.getContext('2d'); g.fillStyle = PAL.glow; g.globalAlpha = 0.11;
+      for (let j = 0; j < 3; j++) ellipse(R0, ry, R0 - j * 7, Math.round((R0 - j * 7) * 0.5), g);
+      glows.set(R0, cv);
+    }
+    return cv;
+  }
+  // The safe zone's dashed edge: a thousand dots and more, so painted once and kept until the zone,
+  // the zoom or the alert changes. { key, cv, x, y }: x, y the iso point of the picture's top-left.
+  let safe = null;
+  function safePicture(hx, hy, r, dot, alert, bright) {
+    const key = [hx, hy, r, dot, alert, bright].join();
+    if (safe && safe.key === key) return safe;
+    const n = Math.max(32, Math.floor(r * 6.283 / dot)), run = 4, pts = []; // dashes of `run` dots, as long as the gaps
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (let i = 0; i < n; i++) {
+      if (Math.floor(i / run) % 2) continue;
+      const a = i / n * 6.283, x = hx + Math.cos(a) * r, y = hy + Math.sin(a) * r, X = Math.round(isoX(x, y)), Y = Math.round(isoY(x, y));
+      pts.push(X, Y); x0 = Math.min(x0, X); y0 = Math.min(y0, Y); x1 = Math.max(x1, X); y1 = Math.max(y1, Y);
+    }
+    const cv = document.createElement('canvas'); cv.width = x1 - x0 + dot; cv.height = y1 - y0 + dot * 2;
+    const g = cv.getContext('2d');
+    for (let i = 0; i < pts.length; i += 2) {
+      const X = pts[i] - x0, Y = pts[i + 1] - y0;
+      g.globalAlpha = bright ? 0.8 : 0.45; g.fillStyle = PAL.ink; g.fillRect(X, Y + dot, dot, dot);
+      g.globalAlpha = bright ? 1 : 0.7; g.fillStyle = alert ? PAL.amberL : PAL.white; g.fillRect(X, Y, dot, dot);
+    }
+    return (safe = { key, cv, x: x0, y: y0 });
   }
   function ring(mx, my, r, color, o, dot = 1) { // a dotted circle on the ground, around a map point: a tower's reach, the safe zone
     wg.fillStyle = color;
@@ -357,6 +407,11 @@ const World = (() => {
     const k = zoom(), v = view(), VW = v.w, VH = v.h, o = origin(), cx = o.x, cy = o.y, t = state.t, list = [];
     if (wc.width !== VW || wc.height !== VH) { wc.width = VW; wc.height = VH; wg.imageSmoothingEnabled = false; }
     wg.fillStyle = SEA; wg.fillRect(0, 0, VW, VH);
+    inView = 0;
+    for (let s = 0; s < NCX + NCY - 1; s++) for (let x = Math.max(0, s - NCY + 1); x <= Math.min(NCX - 1, s); x++) {
+      const p = chunkAt(x, s - x);
+      if (!(p.x + CW <= cx || p.x >= cx + VW || p.y + CHH <= cy || p.y >= cy + VH)) inView++;
+    }
     for (let s = 0; s < NCX + NCY - 1; s++) for (let x = Math.max(0, s - NCY + 1); x <= Math.min(NCX - 1, s); x++) { // the ground in view, back pieces first
       const p = chunkAt(x, s - x);
       if (p.x + CW <= cx || p.x >= cx + VW || p.y + CHH <= cy || p.y >= cy + VH) continue;
@@ -377,9 +432,7 @@ const World = (() => {
       const r = bRect(b);
       if (r.x > cx + VW + 40 || r.x + r.w < cx - 40 || r.y > cy + VH + 40 || r.y + r.h < cy - 40) continue;
       const R0 = (d.w + d.h) * 9 + 4 + Math.round(Math.sin(t * 5 + b.uid * 1.7));
-      wg.fillStyle = PAL.glow; wg.globalAlpha = 0.11;
-      for (let j = 0; j < 3; j++) ellipse(r.cx - cx, Math.round(isoY(r.mcx, r.mcy)) - cy, R0 - j * 7, Math.round((R0 - j * 7) * 0.5));
-      wg.globalAlpha = 1;
+      wg.drawImage(glowPicture(R0), r.cx - R0 - cx, Math.round(isoY(r.mcx, r.mcy)) - Math.round(R0 * 0.5) - cy);
     }
 
     // everything that stands, sorted by its feet so nearer things cover farther ones.
@@ -391,10 +444,8 @@ const World = (() => {
       if (!Village.inMap(x, y) || !Explore.seen(x, y)) continue; // under the fog (or under a place found) nothing that stands is drawn
       const i = Village.idx(x, y), f = Village.flora[i];
       if (look.roads && Village.groundAt(x, y) === PATH && !Village.net[i]) list.push({ y: -1e9, f: () => diamond(x, y, 1, 1, PAL.red, 0.35, o) }); // a paved tile cut off from the hall
-      if (f) {
-        const r = floraRect(x, y, f), sh = Village.shakes.get(i), dx = sh > 0 ? Math.round(Math.sin(sh * 50) * 2) : 0;
-        list.push({ y: r.Y, f: () => wg.drawImage(r.s, r.x + dx - cx, r.y - cy) });
-      } else if (Village.groundAt(x, y) === WATER) { // light on the water
+      if (f) list.push(floraItem(x, y, i, f)); // placed once and kept: thousands stand in view zoomed out
+      else if (Village.groundAt(x, y) === WATER) { // light on the water
         const h = hash(x, y, 31);
         if (h < 0.16 && (t * 1.5 + h * 40) % 3 < 1) wg.fillRect(Math.round(isoX(x * T + 8, y * T + 8)) - 1 - cx, Math.round(isoY(x * T + 8, y * T + 8)) - cy, 3, 1);
       }
@@ -522,7 +573,12 @@ const World = (() => {
       } });
     }
     list.sort((p, q) => p.y - q.y);
-    for (const it of list) it.f();
+    const shakes = Village.shakes;
+    for (const it of list) {
+      if (it.f) { it.f(); continue; }
+      const sh = shakes.size ? shakes.get(it.i) : 0, dx = sh > 0 ? Math.round(Math.sin(sh * 50) * 2) : 0; // a tree or rock (floraItem), shaking when just struck
+      wg.drawImage(it.s, it.x + dx - cx, it.top - cy);
+    }
 
     // chimney smoke, from the chimney of the building's current look
     for (const b of state.buildings) {
@@ -567,15 +623,8 @@ const World = (() => {
     // inside it. Pale dashes, gold and solid once the horn has sounded or something is being placed.
     {
       const h = Village.hallMid(), alert = state.raid.active || state.raid.warned, r = Village.safeRadius() * T, dot = Math.max(1, Math.round(3 / k)); // about three screen pixels thick at any zoom
-      const n = Math.max(32, Math.floor(r * 6.283 / dot)), run = 4; // dashes of `run` dots, as long as the gaps
-      for (let i = 0; i < n; i++) {
-        if (Math.floor(i / run) % 2) continue;
-        const a = i / n * 6.283, x = h.x + Math.cos(a) * r, y = h.y + Math.sin(a) * r, X = Math.round(isoX(x, y)) - cx, Y = Math.round(isoY(x, y)) - cy;
-        if (X < -2 || Y < -2 || X > VW || Y > VH) continue;
-        wg.globalAlpha = alert || look.zone ? 0.8 : 0.45; wg.fillStyle = PAL.ink; wg.fillRect(X, Y + dot, dot, dot);
-        wg.globalAlpha = alert || look.zone ? 1 : 0.7; wg.fillStyle = alert ? PAL.amberL : PAL.white; wg.fillRect(X, Y, dot, dot);
-      }
-      wg.globalAlpha = 1;
+      const z = safePicture(h.x, h.y, r, dot, !!alert, !!(alert || look.zone));
+      wg.drawImage(z.cv, z.x - cx, z.y - cy);
     }
     // the raid's banner where the raiders come out of the wild, once the horn has sounded
     const from = state.raid.from;
@@ -633,7 +682,7 @@ const World = (() => {
   }
 
   return {
-    reset, dirty, fogReset, fogDirty, siteRect, pickSite, draw, tick, iso, camOn, toWorld, toScreen, toScreenIso, bRect, frameOf, lookOf, tier, towerTop, pickBuilding, pickFlora, ghostTile,
+    reset, dirty, forgetFlora, fogReset, fogDirty, siteRect, pickSite, draw, tick, iso, camOn, toWorld, toScreen, toScreenIso, bRect, frameOf, lookOf, tier, towerTop, pickBuilding, pickFlora, ghostTile,
     dust, dustAt, ping, blast, clampCam, view, zoom, zoomBy, zoomSteps, wpx, octant, unitSprite,
   };
 })();
