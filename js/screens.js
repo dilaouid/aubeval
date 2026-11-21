@@ -986,7 +986,7 @@ const scenes = (() => {
     UI.button(x, y, half, 36, muted ? tr('sound_off') : tr('sound_on'), () => setMuted(!muted), { size: 13, icon: 'icon.sound' });
     UI.button(x + half + 8, y, half, 36, tr('book_btn'), () => { ui.panel = 'lessons'; UI.scrollTop('lessons'); }, { size: 13, icon: 'icon.quest' }); Tuto.mark('menu:lessons', x + half + 8, y, half, 36); y += 42;
     text(tr('map_no', { n: state.mapSeed }), x, y + 23, 15, C.gold, 'left', true);
-    UI.button(x + half + 8, y, half, 36, tr('map_copy'), copyMapLink, { size: 13 }); y += 52;
+    UI.button(x + half + 8, y, half, 36, tr('map_copy'), copyMapLink, { size: 13 }); y += 44;
     text(tr('prestige_title'), x, y + 10, 17, C.gold, 'left', true); y += 28;
     y = UI.wrap(tr('prestige_text'), x, y, w, 14, C.text) + 4;
     const n = Village.renownGain(), pct = k => Math.round(k * tune.renown_bonus * 100);
@@ -995,7 +995,7 @@ const scenes = (() => {
     UI.button(x, y, w, 38, tr('prestige_do'), () => { if (Village.newStart()) closePanel(); }, { size: 15, primary: n > 0, disabled: n < 1 || !!state.raid.active });
     Tuto.mark('menu:prestige', x, y, w, 38);
     const armed = ui.wipeArm > state.t;
-    UI.button(x, P.y + P.h - 60, w, 36, armed ? tr('wipe_confirm') : tr('wipe'), () => {
+    UI.button(x, y + 38 + 10, w, 32, armed ? tr('wipe_confirm') : tr('wipe'), () => { // under the new start, with air between them, whatever the language's line count
       if (armed) { Save.wipe(); reset(); openNaming(); } else ui.wipeArm = state.t + 4; // a new game: the hero is named first
     }, { size: 14 });
   }
