@@ -1,13 +1,17 @@
-// Records a scripted battle, frame by frame, for docs/combat.gif: node tools/record-combat.js <frames-dir>
-// (python tools/make_combat_gif.py runs this, then builds the GIF.)
+// Records a scripted scene of the game, frame by frame, for the README's GIFs: node tools/record-game.js <scene> <frames-dir>
+// scene: combat | cafe | market | forge (python tools/make_gifs.py runs this, then builds the GIF.)
 // Headless Chrome opens the game in its manual mode (?manual=1: the loop stops, window.game.step() advances it a
-// step at a time), so the recording is deterministic and runs as fast as the machine can draw. The hero plays a
-// couple of cards, ends the turn, and parries every blow dead on (Space the instant the ring touches the circle).
+// step at a time), so the recording is deterministic and runs as fast as the machine can draw.
+//   combat: the hero plays a couple of cards, ends the turn, and parries every blow dead on
+//   cafe, market, forge: the place's mini-game played by the game's own bot (the one behind ?game=1)
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
 const { spawn } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT = path.resolve(process.argv[2] || path.join(os.tmpdir(), 'aubeval-combat'));
+const SCENE = process.argv[2];
+const OUT = path.resolve(process.argv[3] || path.join(os.tmpdir(), 'aubeval-' + SCENE));
+const SCENES = { combat: {}, cafe: { venue: 'cafe' }, market: { venue: 'market' }, forge: { venue: 'forge' } };
+if (!SCENES[SCENE]) throw new Error('scene: ' + Object.keys(SCENES).join(' | '));
 const CHROME = process.env.CHROME || [
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
@@ -15,8 +19,10 @@ const CHROME = process.env.CHROME || [
 ].find(p => fs.existsSync(p));
 if (!CHROME) throw new Error('Chrome not found: set CHROME to its path');
 
-const STEPS_PER_FRAME = 4;  // 60 steps a second / 4 = 15 frames a second
-const QUERY = 'scene=battle&demo=1&manual=1&render=cheap&music=0';
+const STEPS_PER_FRAME = SCENE === 'combat' ? 4 : 5; // 60 steps a second: 15 frames a second in a battle, 12 in a mini-game
+const QUERY = SCENE === 'combat' ? 'scene=battle&demo=1&manual=1&render=cheap&music=0'
+  : `scene=venue&venue=${SCENES[SCENE].venue}&game=1&secs=1&demo=1&manual=1&render=cheap&music=0`; // 1 second in: the countdown is past
+const GAME_SECONDS = 14;   // how much of a mini-game is recorded
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.webp': 'image/webp', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.css': 'text/css' };
 
 const server = http.createServer((req, res) => {
@@ -52,11 +58,13 @@ async function main() {
     await send('Page.enable');
     await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 720, deviceScaleFactor: 1, mobile: false });
     await send('Page.navigate', { url: `${base}/index.html?${QUERY}` });
-    for (let i = 0; i < 120 && !(await run('typeof Battle !== "undefined" && !!Battle.peek && !!window.game')); i++) await sleep(250);
+    for (let i = 0; i < 120 && !(await run('typeof Battle !== "undefined" && !!window.game')); i++) await sleep(250);
     await sleep(1500); // the images load by themselves; let them arrive
 
     // In the page: advance n steps, pressing Space on the blow the moment it lands (a perfect parry), then draw once.
-    await run(`window.adv = n => {
+    if (SCENE !== 'combat') await run(`window.adv = n => { game.step(n, true); return { phase: game.scene, energy: 0, hand: 0, round: 1 }; };
+    window.shot = () => document.getElementById('game').toDataURL('image/png');`);
+    else await run(`window.adv = n => {
       for (let i = 0; i < n; i++) { const b = Battle.peek.blow; if (b && !b.res && b.t >= -0.02) game.press('Space'); game.step(1, false); }
       game.step(0, true);
       const b = Battle.peek; return { phase: b.phase, energy: b.energy, hand: b.hand.length, round: b.round };
@@ -69,6 +77,13 @@ async function main() {
       const url = await run('shot()');
       fs.writeFileSync(path.join(OUT, `f${String(n++).padStart(4, '0')}.png`), Buffer.from(url.split(',')[1], 'base64'));
     };
+
+    if (SCENE !== 'combat') {
+      for (let i = 0; i < GAME_SECONDS * 60 / STEPS_PER_FRAME; i++) { await run(`adv(${STEPS_PER_FRAME})`); await grab(); }
+      console.log(`${n} frames in ${OUT}`);
+      ws.close();
+      return;
+    }
 
     // Play through to the hero's turn.
     let s = await run('adv(0)');

@@ -46,8 +46,6 @@ Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte g
 
 <img src="docs/monuments.gif" alt="Les trois grands chantiers, de l'échafaudage à l'édifice terminé" width="640">
 
-<sub>Cathédrale, château et grand phare s'élèvent en quatre étapes de chantier.</sub>
-
 </div>
 
 ### Armer son héros et tenir bon
@@ -77,11 +75,56 @@ Marchands, forgeron, boulangère, aubergiste, capitaine et guide Aveline ont leu
 
 </div>
 
+Chaque lieu a son mini-jeu d'une demi-minute, qui se durcit avec votre série de victoires. Un clic pour les voir tourner :
+
+<details>
+<summary><b>Le Café</b> : « Le coup de feu »</summary>
+
+<br>
+
+Les clients commandent, leur bulle se referme : servez les bonnes tasses, dans l'ordre.
+
+<div align="center">
+
+<img src="docs/cafe.gif" alt="Le mini-jeu du Café : servir les commandes avant que la bulle se referme" width="800">
+
+</div>
+
+</details>
+
+<details>
+<summary><b>Le Marché</b> : « Marchandage »</summary>
+
+<br>
+
+Arrêtez l'aiguille dans la zone verte, puis poussez pour un meilleur prix ou topez là.
+
+<div align="center">
+
+<img src="docs/market.gif" alt="Le mini-jeu du Marché : arrêter l'aiguille pour marchander" width="800">
+
+</div>
+
+</details>
+
+<details>
+<summary><b>La Forge</b> : « Battre le fer »</summary>
+
+<br>
+
+Frappez quand les repères passent sur l'enclume, et gardez la chaleur dans sa zone avec le soufflet.
+
+<div align="center">
+
+<img src="docs/forge.gif" alt="Le mini-jeu de la Forge : frapper en rythme et tenir la chaleur" width="800">
+
+</div>
+
+</details>
+
 ### Explorer sans fin
 
 Une grande carte aux biomes variés, tirée au hasard à chaque nouvelle partie et toujours jouable, sous le brouillard, avec des ruines, des hameaux, des gisements et des antres à découvrir. Rangs de cité, commandes des citoyens, grandes œuvres, arbre d'héritage et menace qui monte : de quoi jouer des heures.
-
-Chaque carte a son numéro : le menu du village le montre et copie son lien, pour qu'un ami joue sur la même. Avant de nommer le héros, « Autre carte » en tire une nouvelle.
 
 ### Un tutoriel qui suit le jeu
 
@@ -97,8 +140,6 @@ python -m http.server 8000
 
 Puis ouvrez <http://localhost:8000>. La partie est sauvegardée dans le navigateur (`localStorage`). `?seed=123456` dans l'adresse ouvre une nouvelle partie sur cette carte.
 
-Pour vérifier que toutes les cartes tirées sont jouables : `node tools/check-maps.js`.
-
 ## Commandes
 
 | Action | Commande |
@@ -111,20 +152,6 @@ Pour vérifier que toutes les cartes tirées sont jouables : `node tools/check-m
 | Parer, en combat | Espace ou clic |
 
 La pause liste toutes les commandes.
-
-## Structure
-
-```text
-index.html        la page et le démarrage du jeu
-config.js         toutes les valeurs d'équilibrage
-data/             bâtiments, ennemis, quêtes, textes, tutoriel…
-js/               les systèmes du jeu (village, combat, raids, ville…)
-assets/           manifeste des images et sprites, icônes de l'appli (assets/icons)
-docs/             captures d'écran de ce README
-tools/            scripts de génération et de vérification
-og-image.png      l'image d'aperçu des liens partagés (python tools/make_social.py)
-manifest.webmanifest, robots.txt, sitemap.xml, 404.html   référencement et installation
-```
 
 ## Crédits
 
