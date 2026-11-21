@@ -657,7 +657,7 @@ const City = (() => {
     let branch = null, marked = false;
     const depth = n => { let d = 0, a = n.after; while (a && d < 6) { d++; const up = LEG.find(q => q.id === Object.keys(a)[0]); a = up && up.after; } return d; };
     for (const n of LEG) {
-      if (n.branch !== branch) { branch = n.branch; y = section(branch, x, y + 6, w); }
+      if (n.branch !== branch) { branch = n.branch; y = section(DATA.legacyBranches[branch], x, y + 6, w); }
       const lvl = nodeLevel(n), open = nodeOpen(n), max = lvl >= n.max, cost = nodeCost(n), dx = depth(n) * 14, nx = x + dx, nw = w - dx - 74;
       if (dx) { ctx.fillStyle = C.lineL; ctx.fillRect(nx - 9, y - 2, 1, 12); ctx.fillRect(nx - 9, y + 9, 6, 1); } // the branch it grows from
       text(n.name, nx, y + 9, 13, open ? C.text : C.dim, 'left', true);

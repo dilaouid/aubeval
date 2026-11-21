@@ -116,7 +116,7 @@ DATA.tutorial = {
   // mechanic, and cover it ('do:<id>') in a lesson. The other ids are read from the data:
   // b:<building>, tab:<build bar tab>, tool:<tool>, plant, trap:<trap>, unit:<unit>, class:<class>,
   // res:<resource>, panel:<top bar panel>, btab:<building panel tab>, qtab:<quest book tab>,
-  // ctab:<Cité panel tab>, rank:<n>, order:<kind of order>, tax:<level>, legacy:<branch>,
+  // ctab:<Cité panel tab>, rank:<n>, order:<kind of order>, tax:<level>, legacy:<branch id>,
   // venue:<place> and game:<place>, site:<kind of place>, lord:<warlord> (js/tuto-check.js).
   mechanics: {
     drag: 'faire glisser la vue', zoom: 'zoomer, revenir au village (C)', chop: 'couper un arbre à la main',
@@ -788,7 +788,7 @@ DATA.tutorial = {
       ] },
 
     { id: 'legacy', title: 'L’héritage et le nouveau départ', about: 'La Renommée d’un nouveau départ, et l’arbre de bonus qu’elle achète pour toujours.', when: { after: 'register', any: [{ spend: true }, { rank: 1, renown: 1 }] },
-      covers: ['ctab:legacy', 'do:legacy', 'do:renown', 'legacy:Prospérité', 'legacy:Armes', 'legacy:Horizons'],
+      covers: ['ctab:legacy', 'do:legacy', 'do:renown', 'legacy:prosperity', 'legacy:arms', 'legacy:horizons'],
       steps: [
         { id: 'open',
           say: ['Un village peut tout recommencer… et en sortir plus fort. C’est l’héritage.'],

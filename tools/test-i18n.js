@@ -62,6 +62,14 @@ test('the language falls back when the address or the storage is no good', () =>
   assert.strictEqual(T.I18N.pick({ search: '', stored: () => null, nav: ['es-MX', 'en'] }), 'es');
 });
 
+test('a legacy branch is an id; its name is a text', () => {
+  const D = T.loadData(), p = T.paths(D);
+  for (const n of D.legacy) assert.ok(/^[a-z]+$/.test(n.branch) && typeof D.legacyBranches[n.branch] === 'string', n.id + ': ' + n.branch);
+  assert.strictEqual(p.get('legacyBranches.prosperity'), 'Prospérité');
+  const covers = D.tutorial.lessons.flatMap(l => l.covers || []).filter(c => c.startsWith('legacy:'));
+  assert.deepStrictEqual([...covers].sort(), Object.keys(D.legacyBranches).map(b => 'legacy:' + b).sort());
+});
+
 let bad = 0;
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

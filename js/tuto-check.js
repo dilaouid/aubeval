@@ -37,7 +37,7 @@ const TutoCheck = (() => {
     const C = D.city || {};
     (C.ranks || []).forEach((r, i) => { if (i) add('rank:' + i, 'rang ' + r.name); });                       // the first rank is where a village starts
     for (const kind of new Set((C.orders || []).map(o => o.kind))) add('order:' + kind, 'commande « ' + C.orders.find(o => o.kind === kind).title + ' »');
-    for (const br of new Set((D.legacy || []).map(n => n.branch))) add('legacy:' + br, 'héritage, branche ' + br);
+    for (const br of new Set((D.legacy || []).map(n => n.branch))) add('legacy:' + br, 'héritage, branche ' + D.legacyBranches[br]);
     for (const k in D.venues || {}) { add('venue:' + k, D.venues[k].name); add('game:' + k, 'jeu « ' + D.venues[k].title + ' »'); }
     for (const k in (D.explore || {}).kinds || {}) add('site:' + k, 'lieu : ' + D.explore.kinds[k].name);
     for (const w of D.warlords || []) add('lord:' + w.id, 'chef de guerre ' + w.name + ' ' + w.title);

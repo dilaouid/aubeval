@@ -218,25 +218,27 @@ DATA.city = {
 //   key, per   the bonus it feeds (DATA.city.bonuses) and what each level adds
 //   max        its levels · cost, step: the first level's price in Renown, and how much more each next one costs
 //   stock      (key 'stock') what a new start begins with, for each level
+//   branch     an id of DATA.legacyBranches, whose text is the name shown (the tutorial covers 'legacy:<id>')
+DATA.legacyBranches = { prosperity: 'Prospérité', arms: 'Armes', horizons: 'Horizons' };
 DATA.legacy = [
-  { id: 'out', branch: 'Prospérité', name: 'Mains habiles', key: 'out', per: 0.05, max: 10, cost: 1, step: 1,
+  { id: 'out', branch: 'prosperity', name: 'Mains habiles', key: 'out', per: 0.05, max: 10, cost: 1, step: 1,
     desc: 'Chaque bâtiment produit davantage.' },
-  { id: 'tax', branch: 'Prospérité', name: 'Trésor royal', key: 'tax', per: 0.05, max: 10, cost: 1, step: 1, after: { out: 2 },
+  { id: 'tax', branch: 'prosperity', name: 'Trésor royal', key: 'tax', per: 0.05, max: 10, cost: 1, step: 1, after: { out: 2 },
     desc: 'Chaque maison paie davantage.' },
-  { id: 'floor', branch: 'Prospérité', name: 'Lignée aimée', key: 'floor', per: 4, max: 5, cost: 2, step: 2, after: { tax: 2 },
+  { id: 'floor', branch: 'prosperity', name: 'Lignée aimée', key: 'floor', per: 4, max: 5, cost: 2, step: 2, after: { tax: 2 },
     desc: 'La popularité du héros ne tombe jamais plus bas.' },
-  { id: 'stock', branch: 'Prospérité', name: 'Greniers pleins', key: 'stock', per: 1, max: 8, cost: 2, step: 1,
+  { id: 'stock', branch: 'prosperity', name: 'Greniers pleins', key: 'stock', per: 1, max: 8, cost: 2, step: 1,
     stock: { wood: 150, planks: 80, stone: 40, bread: 30, gold: 100 }, desc: 'Un nouveau départ commence avec des réserves.' },
-  { id: 'orders', branch: 'Prospérité', name: 'Carnet d’adresses', key: 'orders', per: 0.1, max: 5, cost: 2, step: 2, after: { stock: 1 },
+  { id: 'orders', branch: 'prosperity', name: 'Carnet d’adresses', key: 'orders', per: 0.1, max: 5, cost: 2, step: 2, after: { stock: 1 },
     desc: 'Les commandes paient mieux.' },
-  { id: 'xp', branch: 'Armes', get name() { return 'Chroniques ' + heroName(true); }, key: 'xp', per: 0.1, max: 5, cost: 2, step: 2,
+  { id: 'xp', branch: 'arms', get name() { return 'Chroniques ' + heroName(true); }, key: 'xp', per: 0.1, max: 5, cost: 2, step: 2,
     desc: 'Le héros apprend plus vite.' },
-  { id: 'bounty', branch: 'Armes', name: 'Primes de guerre', key: 'bounty', per: 0.15, max: 6, cost: 2, step: 1, after: { xp: 1 },
+  { id: 'bounty', branch: 'arms', name: 'Primes de guerre', key: 'bounty', per: 0.15, max: 6, cost: 2, step: 1, after: { xp: 1 },
     desc: 'Un raid repoussé rapporte plus.' },
-  { id: 'guard', branch: 'Armes', name: 'Vieux remparts', key: 'guard', per: 0.04, max: 5, cost: 3, step: 2, after: { bounty: 2 },
+  { id: 'guard', branch: 'arms', name: 'Vieux remparts', key: 'guard', per: 0.04, max: 5, cost: 3, step: 2, after: { bounty: 2 },
     desc: 'Les pillards emportent moins.' },
-  { id: 'trip', branch: 'Horizons', name: 'Cartes anciennes', key: 'trip', per: 0.05, max: 6, cost: 2, step: 1,
+  { id: 'trip', branch: 'horizons', name: 'Cartes anciennes', key: 'trip', per: 0.05, max: 6, cost: 2, step: 1,
     desc: 'Les expéditions vont plus vite.' },
-  { id: 'sight', branch: 'Horizons', name: 'Longue-vue', key: 'sight', per: 1, max: 4, cost: 3, step: 2, after: { trip: 2 },
+  { id: 'sight', branch: 'horizons', name: 'Longue-vue', key: 'sight', per: 1, max: 4, cost: 3, step: 2, after: { trip: 2 },
     desc: 'La ville voit plus loin dans le brouillard.' },
 ];
