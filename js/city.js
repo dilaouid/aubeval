@@ -18,7 +18,7 @@ const City = (() => {
   const lower = s => s.charAt(0).toLowerCase() + s.slice(1);
   const pct = x => fmtNum(x * 100);
   /** A small rate, to two decimals: 0,25 par minute. */
-  const num2 = x => (Math.round(x * 100) / 100).toString().replace('.', ',');
+  const num2 = x => (Math.round(x * 100) / 100).toString().replace('.', DATA.strings.num_dec);
   /** An icon made for the city when its image is there, else one the game already has. */
   const ic = (id, alt) => UI.ready('icon.' + id) ? 'icon.' + id : alt;
   const put = (s, v) => { for (const k in v) s = s.split('{' + k + '}').join(v[k]); return s; };
@@ -165,7 +165,7 @@ const City = (() => {
     list.push(tr('city_rank_out', { pct: pct(tune.rank_output_step) }));
     return list;
   }
-  const rewardParts = r => (r.gold ? [`+${fmt(r.gold)} or`] : []).concat(Object.keys(r.res || {}).map(k => `+${fmt(r.res[k])} ${lower(RES[k].name)}`), r.pop ? [tr('city_reward_pop', { n: r.pop })] : []);
+  const rewardParts = r => (r.gold ? [('+' + tr('gold_n', { n: fmt(r.gold) }))] : []).concat(Object.keys(r.res || {}).map(k => `+${fmt(r.res[k])} ${lower(RES[k].name)}`), r.pop ? [tr('city_reward_pop', { n: r.pop })] : []);
   /** Proclaims the next rank when everything it asks for holds: its reward, what it opens, a fanfare and a banner. */
   function proclaim() {
     const n = rank() + 1, d = rankDef(n);
@@ -174,7 +174,7 @@ const City = (() => {
     Quests.grant({ gold: d.reward.gold, res: d.reward.res });
     gainPop(d.reward.pop, tr('city_why_rank', { name: d.name }));
     Village.refreshUnlocks();
-    ui.banner = { title: tr('city_banner', { name: d.name }), sub: tr('city_banner_sub', { n: n + 1 }), text: d.text + '\n' + tr('reward') + ' : ' + rewardParts(d.reward).join(', ') + '\n' + tr('city_opens', { list: opensOf(n).join(', ') }) };
+    ui.banner = { title: tr('city_banner', { name: d.name }), sub: tr('city_banner_sub', { n: n + 1 }), text: d.text + '\n' + tr('reward') + tr('colon') + rewardParts(d.reward).join(', ') + '\n' + tr('city_opens', { list: opensOf(n).join(', ') }) };
     sfx('fanfare'); events.push({ type: 'rank', rank: n }); Save.persist();
     return true;
   }
@@ -503,7 +503,7 @@ const City = (() => {
     const needs = needsOf(n + 1);
     for (const p of Quests.describe(needs)) y = check(p.ok, p.text, x, y, w);
     if (needs.royal != null && (c.royal || 0) < needs.royal) y = royalBlock(x, y + 4, w, needs);
-    y = UI.wrap(tr('reward') + ' : ' + rewardParts(nx.reward).join(', '), x, y + 4, w, 13, C.dim, 17);
+    y = UI.wrap(tr('reward') + tr('colon') + rewardParts(nx.reward).join(', '), x, y + 4, w, 13, C.dim, 17);
     y = UI.wrap(tr('city_opens', { list: opensOf(n + 1).join(', ') }), x, y, w, 13, C.accent, 17) + 6;
     const can = canProclaim();
     UI.button(x, y, w, 38, tr('city_proclaim', { name: nx.name }), proclaim, { primary: can, disabled: !can, size: 15, icon: 'icon.upgrade', tip: tr(can ? 'city_proclaim_tip' : 'city_proclaim_no') });

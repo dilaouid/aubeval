@@ -45,7 +45,7 @@ const Quests = (() => {
   function grant(r) {
     const lines = [];
     if (r.xp) { const xp = Math.round(r.xp * (1 + City.bonus('xp'))), ups = Hero.addXp(xp); lines.push(`+${xp} XP`); if (ups) { lines.push(tr('level_up', { n: state.hero.lvl })); sfx('level'); } }
-    if (r.gold) { Village.gain('gold', r.gold); lines.push(`+${r.gold} or`); }
+    if (r.gold) { Village.gain('gold', r.gold); lines.push(('+' + tr('gold_n', { n: r.gold }))); }
     for (const x in r.res || {}) { Village.gain(x, r.res[x]); lines.push(`+${r.res[x]} ${DATA.resources[x].name.toLowerCase()}`); }
     return lines;
   }
@@ -82,7 +82,7 @@ const Quests = (() => {
     if (Hero.away()) return tr('hero_away');
     if (state.raid.active) return tr('raid_on');
     const miss = describe(q.requires).filter(p => !p.ok);
-    return miss.length ? tr('need') + ' : ' + miss.map(p => p.text).join(', ') : null;
+    return miss.length ? tr('need') + tr('colon') + miss.map(p => p.text).join(', ') : null;
   }
   function startBattle(q) {
     if (blocked(q)) return;

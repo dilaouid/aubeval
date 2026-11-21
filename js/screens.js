@@ -252,8 +252,8 @@ const scenes = (() => {
       lines.push(tr('tax', { n: fmtNum(d.produces.gold * (b ? Village.taxMult(b) * Village.outMult(b) : c.tax)), t: fmtNum(d.cycle) }));
       return lines;
     }
-    if (d.produces) lines.push(tr('produces') + ' : ' + Object.keys(d.produces).map(r => `${fmtNum(d.produces[r] * (b ? Village.outMult(b) : 1))} ${lower(RES[r].name)}`).join(', ') + ' ' + tr('every', { n: fmtNum(d.cycle) }));
-    if (d.consumes) lines.push(tr('consumes') + ' : ' + Object.keys(d.consumes).map(r => `${fmtNum(d.consumes[r] * (b ? Village.levelMult(b) : 1))} ${lower(RES[r].name)}`).join(', '));
+    if (d.produces) lines.push(tr('produces') + tr('colon') + Object.keys(d.produces).map(r => `${fmtNum(d.produces[r] * (b ? Village.outMult(b) : 1))} ${lower(RES[r].name)}`).join(', ') + ' ' + tr('every', { n: fmtNum(d.cycle) }));
+    if (d.consumes) lines.push(tr('consumes') + tr('colon') + Object.keys(d.consumes).map(r => `${fmtNum(d.consumes[r] * (b ? Village.levelMult(b) : 1))} ${lower(RES[r].name)}`).join(', '));
     if (d.pop) lines.push(tr('houses', { n: d.pop + (b ? (b.lvl - 1) * 2 : 0) }));
     if (d.tower) lines.push(tr('tower_stats', { dmg: fmtNum(d.tower.dmg * (b ? 1 + (b.lvl - 1) * tune.tower_level_step : 1)), range: d.tower.range, rate: fmtNum(d.tower.rate) }));
     return lines;
@@ -394,7 +394,7 @@ const scenes = (() => {
       const open = trap ? raids : tool ? true : Village.isUnlocked(k), done = !tool && !!d.unique && Village.count(k) > 0;
       const price = tool ? (fl ? Village.toolCost(fl.plant) : d.cost ? Village.toolCost(d.cost) : {}) : Village.cost(k);
       const can = open && !done && armed && Village.canAfford(price), on = tool ? ui.tool === tool : ui.placing === k;
-      const tip = open ? [d.name, d.desc].concat(tool ? [] : prodText(d)).join('\n') : '????\n' + (trap ? tr('trap_locked') : tr('need') + ' : ' + Quests.describe(d.unlock).map(p => p.text).join(', '));
+      const tip = open ? [d.name, d.desc].concat(tool ? [] : prodText(d)).join('\n') : '????\n' + (trap ? tr('trap_locked') : tr('need') + tr('colon') + Quests.describe(d.unlock).map(p => p.text).join(', '));
       const hov = UI.region(x, y, w, h, () => {
         if (!open || done) { sfx('error'); return; }
         if (!armed) { toast(tr('trap_wait'), C.accent); sfx('error'); return; }
@@ -589,10 +589,10 @@ const scenes = (() => {
     }
     if (b.damaged) {
       const c = Village.repairCost(b);
-      text(tr('repair') + ' :', x, ly, 14, C.dim, 'left'); UI.cost(c, x + 84, ly, { size: 14 });
+      text(tr('repair') + tr('colon').trimEnd(), x, ly, 14, C.dim, 'left'); UI.cost(c, x + 84, ly, { size: 14 });
       UI.button(x, by, 136, 40, tr('repair'), () => Village.repair(b), { primary: true, disabled: !Village.canAfford(c), size: 15, icon: 'icon.build' });
     } else if (!d.decor) {
-      const c = Village.upgradeCost(b), lab = tr('upgrade_to', { n: b.lvl + 1 }) + ' :';
+      const c = Village.upgradeCost(b), lab = tr('upgrade_to', { n: b.lvl + 1 }) + tr('colon').trimEnd();
       text(lab, x, ly, 14, C.dim, 'left'); UI.cost(c, x + 10 + UI.width(lab, 14), ly, { size: 14 });
       UI.button(x, by, 136, 40, tr('upgrade'), () => Village.upgrade(b), { primary: true, disabled: !Village.canAfford(c), size: 15, icon: 'icon.upgrade', tip: tr('upgrade') + '\n' + upgradeTip(b, d) });
       Tuto.mark('act:upgrade', x, by, 136, 40);
@@ -634,7 +634,7 @@ const scenes = (() => {
       const ms = tune.milestone_levels, next = (Math.floor(b.lvl / ms) + 1) * ms;
       if (d.produces) { text(tr('milestone', { n: next }), x, y + 9, 14, C.text, 'left'); y += 20; UI.bar(x, y, w, 10, (b.lvl % ms) / ms, C.gold); y += 18; }
       if (World.tier(b.lvl) < 3 && !d.looks) y = UI.wrap(tr('next_look', { n: (World.tier(b.lvl) + 1) * ms }), x, y, w, 14, C.dim) + 2;
-      y = UI.wrap(tr('next_level') + ' : ' + upgradeTip(b, d).split('\n').join(' · '), x, y, w, 14, C.text) + 4;
+      y = UI.wrap(tr('next_level') + tr('colon') + upgradeTip(b, d).split('\n').join(' · '), x, y, w, 14, C.text) + 4;
     }
     if (d.service || d.beauty) {
       y = section(tr('sec_town'), x, y + 4, w);
@@ -655,7 +655,7 @@ const scenes = (() => {
     const c = Village.classOf(b), nx = Village.nextClass(b), sat = Village.satOf(b);
     y = section(c.name, x, y, w);
     y = UI.wrap(c.desc, x, y, w, 13, C.dim) + 4;
-    text(tr('needs') + ' :', x, y + 11, 14, C.dim, 'left'); let nxp = x + 70;
+    text(tr('needs') + tr('colon').trimEnd(), x, y + 11, 14, C.dim, 'left'); let nxp = x + 70;
     for (const r in c.needs) { UI.icon(RES[r].icon, nxp + 8, y + 11, 16); text('×' + c.needs[r], nxp + 18, y + 12, 14, b.lack === r ? C.bad : C.text, 'left', true); nxp += 46; }
     text(tr('every', { n: fmtNum(tune.need_cycle) }), x, y + 30, 12, C.dim, 'left'); y += 42;
     for (const k of c.services) y = check(Village.servicesOf(b).has(k), tr('in_reach', { name: B[k].name }), x, y, w);
@@ -722,8 +722,8 @@ const scenes = (() => {
   function hallTab(b, x, y, w) {
     y = UI.wrap(B.hall.desc, x, y, w, 14, C.dim) + 6;
     y = section(tr('sec_town'), x, y, w);
-    y = UI.wrap(`${tr('pop')} : ${Village.pop()}`, x, y, w, 14, C.text);
-    DATA.classes.forEach((c, i) => { const n = Village.classCount(i) - Village.classCount(i + 1); if (n) y = UI.wrap(`${c.name} : ${tr(n > 1 ? 'houses_n' : 'house_n', { n })}`, x + 8, y, w - 8, 13, C.dim); });
+    y = UI.wrap(`${tr('pop')}${tr('colon')}${Village.pop()}`, x, y, w, 14, C.text);
+    DATA.classes.forEach((c, i) => { const n = Village.classCount(i) - Village.classCount(i + 1); if (n) y = UI.wrap(`${c.name}${tr('colon')}${tr(n > 1 ? 'houses_n' : 'house_n', { n })}`, x + 8, y, w - 8, 13, C.dim); });
     const cut = state.buildings.filter(o => Village.needsRoad(o.kind) && !Village.onRoad(o)).length;
     if (cut) y = check(false, tr('hall_cut', { n: cut }), x, y + 2, w);
     if (state.prestige.renown) y = UI.wrap(tr('prestige_have', { n: state.prestige.renown, pct: Math.round(state.prestige.renown * tune.renown_bonus * 100) }), x, y, w, 14, C.gold);
@@ -783,7 +783,7 @@ const scenes = (() => {
   function unitRow(k, x, y, w, stats) {
     const d = U[k], miss = Quests.describe(d.unlock).filter(p => !p.ok);
     if (miss.length) { UI.icon('icon.lock', x + 8, y + 13, 16); text(`${d.name} · ${miss.map(p => p.text).join(', ')}`, x + 26, y + 13, 13, C.dim, 'left'); return y + 26; }
-    text(`${d.plural} : ${Units.count(k)}`, x, y + 11, 15, C.text, 'left', true);
+    text(`${d.plural}${tr('colon')}${Units.count(k)}`, x, y + 11, 15, C.text, 'left', true);
     if (stats) text(stats, x + w - 126, y + 11, 13, C.good, 'right');
     UI.cost(Units.cost(k), x, y + 31, { size: 13, gap: 6 });
     const why = Units.blocked(k);
@@ -815,7 +815,7 @@ const scenes = (() => {
   }
   /** The People panel's body, from y down. Returns the y under it. */
   function peopleBody(x, y, w, free) {
-    text(`${tr('pop')} : ${Village.pop()}`, x, y + 10, 16, C.text, 'left', true);
+    text(`${tr('pop')}${tr('colon')}${Village.pop()}`, x, y + 10, 16, C.text, 'left', true);
     text(tr('pop_free', { n: free }), x + w, y + 10, 14, free > 0 ? C.good : C.dim, 'right', true); y += 26;
     text(tr('classes'), x, y + 10, 15, C.gold, 'left', true); y += 22;
     DATA.classes.forEach((c, i) => { // a line per class: its houses, and what one of them eats
@@ -859,7 +859,7 @@ const scenes = (() => {
   function heroBody(h, x, y, w) {
     for (const slot of ['weapon', 'armor']) {
       const id = h.equip[slot];
-      text(tr(slot) + ' :', x, y + 10, 15, C.dim, 'left');
+      text(tr(slot) + tr('colon').trimEnd(), x, y + 10, 15, C.dim, 'left');
       text(id ? I[id].name + (h.plus[id] ? ' +' + h.plus[id] : '') : tr('nothing'), x + 76, y + 10, 15, id ? C.text : C.dim, 'left', !!id); y += 24;
     }
     y += 6; text(tr('inventory'), x, y + 10, 16, C.gold, 'left', true); y += 28;
@@ -898,10 +898,10 @@ const scenes = (() => {
   function rewardLine(r, drops) {
     const parts = [];
     if (r.xp) parts.push(`+${r.xp} XP`);
-    if (r.gold) parts.push(`+${r.gold} or`);
+    if (r.gold) parts.push(('+' + tr('gold_n', { n: r.gold })));
     for (const k in r.res || {}) parts.push(`+${r.res[k]} ${lower(RES[k].name)}`);
-    for (const d of drops || []) parts.push(`${d.n} ${lower(RES[d.res].name)}` + (d.chance < 1 ? ` (${Math.round(d.chance * 100)} %)` : ''));
-    return tr('reward') + ' : ' + parts.join(', ');
+    for (const d of drops || []) parts.push(`${d.n} ${lower(RES[d.res].name)}` + (d.chance < 1 ? ` (${tr('pct', { n: Math.round(d.chance * 100) })})` : ''));
+    return tr('reward') + tr('colon') + parts.join(', ');
   }
   function questBlock(q, x, y, w, contract) {
     const done = !contract && state.quests.done[q.id];
@@ -913,7 +913,7 @@ const scenes = (() => {
     for (const p of need) { UI.icon(p.ok ? 'icon.check' : 'icon.lock', x + 8, y + 10, 16); text(p.text, x + 22, y + 10, 14, p.ok ? C.good : C.bad, 'left'); y += 22; }
     y = UI.wrap(rewardLine(Quests.rewardOf(q)), x, y + 2, w, 14, C.dim);
     const un = Quests.unlocksOf(q);
-    if (un.length) y = UI.wrap(tr('unlocks') + ' : ' + un.join(', '), x, y, w, 14, C.accent);
+    if (un.length) y = UI.wrap(tr('unlocks') + tr('colon') + un.join(', '), x, y, w, 14, C.accent);
     y += 6;
     if (q.type === 'deliver') { UI.button(x, y, 170, 38, tr('deliver'), () => Quests.deliver(q), { primary: true, disabled: !need.every(p => p.ok), size: 15 }); y += 46; }
     else if (q.encounter) { const why = Quests.blocked(q); UI.button(x, y, 200, 38, tr('go_fight'), () => Quests.startBattle(q), { primary: true, disabled: !!why, size: 15, tip: why ? tr('locked_quest') + '\n' + why : null }); Tuto.mark('fight:' + q.id, x, y, 200, 38); y += 46; }

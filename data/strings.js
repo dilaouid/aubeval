@@ -269,6 +269,7 @@ DATA.strings = {
   num_dec: ',', num_units: ['k', 'M', 'Md', 'Bn', 'Tn'],
   // the hero's name with « de » (js/ui.js heroName, {de_hero}): elided before a vowel or a mute h
   hero_of: 'de {name}', hero_of_vowel: 'd’{name}',
+  colon: ' : ', pct: '{n} %', x2: '×2 !', gold_n: '{n} or', // French spacing: a space before « : », « % » and « ! »
   close_tip: 'Fermer (Échap)', key_tip: 'Touche {k}', quote: '« {s} »', save_file: 'aubeval-sauvegarde.json',
   // battle (js/battle.js)
   msg_hit: '{name} attaque.', msg_double: '{name} frappe deux fois.',

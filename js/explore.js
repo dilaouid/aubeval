@@ -293,7 +293,7 @@ const Explore = (() => {
     if (s.kind === 'lair' && ((rec(s).n || 0) + 1) % k.shardEvery === 0) out.res.shard = 1;
     return out;
   }
-  const rewardWords = r => [r.xp ? `+${r.xp} XP` : '', r.gold ? `+${r.gold} or` : ''].concat(Object.keys(r.res || {}).map(x => `+${r.res[x]} ${RES[x].name.toLowerCase()}`)).filter(Boolean).join(', ');
+  const rewardWords = r => [r.xp ? `+${r.xp} XP` : '', r.gold ? ('+' + tr('gold_n', { n: r.gold })) : ''].concat(Object.keys(r.res || {}).map(x => `+${r.res[x]} ${RES[x].name.toLowerCase()}`)).filter(Boolean).join(', ');
 
   // ---- The hero's expedition ----
   /** Where the hero stands when he is at the village: his post, off the hall's front corner (as js/raid.js). */
@@ -631,12 +631,12 @@ const Explore = (() => {
     if (!usable(s)) return { label: '—', off: true, tip: tr('ex_blocked') };
     if (s.kind === 'ruin' && r.done) return { label: tr('ex_done_btn'), off: true };
     if (s.kind === 'lair' && r.wait > 0) return { label: fmtTime(r.wait), off: true, tip: tr('ex_st_lair_wait', { time: fmtTime(r.wait) }) };
-    if (s.kind === 'hamlet' && r.open) { const c = askOf(s); return { label: tr('ex_deliver'), run: () => deliver(s), cost: c, off: !Village.canAfford(c), tip: tr('ex_deliver') + ' : ' + words(c) + '\n' + tr('ex_route_next', { n: r.fr + 1, gold: fmtNum(routePay(s, r.fr + 1)) }) }; }
-    if (s.kind === 'deposit' && r.own) { const c = deepenCost(s); return { label: tr('ex_deepen'), run: () => deepen(s), cost: c, off: !Village.canAfford(c), tip: tr('ex_deepen') + ' : ' + words(c) + '\n' + tr('ex_mine_next', { n: r.dp + 1, what: words(mineYield(s, r.dp + 1)) }) }; }
+    if (s.kind === 'hamlet' && r.open) { const c = askOf(s); return { label: tr('ex_deliver'), run: () => deliver(s), cost: c, off: !Village.canAfford(c), tip: tr('ex_deliver') + tr('colon') + words(c) + '\n' + tr('ex_route_next', { n: r.fr + 1, gold: fmtNum(routePay(s, r.fr + 1)) }) }; }
+    if (s.kind === 'deposit' && r.own) { const c = deepenCost(s); return { label: tr('ex_deepen'), run: () => deepen(s), cost: c, off: !Village.canAfford(c), tip: tr('ex_deepen') + tr('colon') + words(c) + '\n' + tr('ex_mine_next', { n: r.dp + 1, what: words(mineYield(s, r.dp + 1)) }) }; }
     if (heroHere(s)) {
       if (s.kind === 'ruin' || s.kind === 'lair') return { label: tr('ex_fight'), run: () => fight(s), off: !!state.raid.active, tip: state.raid.active ? tr('raid_on') : null, primary: true };
       const c = s.kind === 'hamlet' ? giftCost(s) : claimCost(s);
-      return { label: tr(s.kind === 'hamlet' ? 'ex_gift' : 'ex_claim'), run: () => (s.kind === 'hamlet' ? gift(s) : claim(s)), cost: c, off: !Village.canAfford(c), tip: tr(s.kind === 'hamlet' ? 'ex_gift' : 'ex_claim') + ' : ' + words(c), primary: true };
+      return { label: tr(s.kind === 'hamlet' ? 'ex_gift' : 'ex_claim'), run: () => (s.kind === 'hamlet' ? gift(s) : claim(s)), cost: c, off: !Village.canAfford(c), tip: tr(s.kind === 'hamlet' ? 'ex_gift' : 'ex_claim') + tr('colon') + words(c), primary: true };
     }
     if (tp && tp.site === s.id && tp.phase === 'out') return { label: tr('ex_coming'), off: true, tip: tr('ex_st_coming') + ' · ' + fmtTime(tp.total - tp.t) };
     const why = goBlocked(), p = heroAt() || home(), to = stand(s);

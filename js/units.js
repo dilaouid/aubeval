@@ -50,7 +50,7 @@ const Units = (() => {
   /** Why this kind cannot be trained now, in the player's words, or null when it can. */
   function blocked(kind) {
     const d = U[kind], miss = Quests.describe(d.unlock).filter(p => !p.ok);
-    if (miss.length) return tr('need') + ' : ' + miss.map(p => p.text).join(', ');
+    if (miss.length) return tr('need') + tr('colon') + miss.map(p => p.text).join(', ');
     if (d.role === 'soldier') {
       const b = barracks();
       if (!b) return tr('need_barracks');

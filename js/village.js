@@ -616,7 +616,7 @@ const Village = (() => {
     if (!pay(upgradeCost(b))) { toast(tr('no_funds'), UI.C.bad); return false; }
     b.lvl++; if (B[b.kind].wall) b.hp = wallMax(b);
     World.dust(b); sfx('unlock'); Raid.touch(); touchTown();
-    if (b.lvl % tune.milestone_levels === 0 && B[b.kind].produces) { sfx('fanfare'); floatText((b.x + dims(b).w / 2) * T, (b.y + dims(b).h / 2) * T, '×2 !', UI.C.gold, 24, World.bRect(b).h); }
+    if (b.lvl % tune.milestone_levels === 0 && B[b.kind].produces) { sfx('fanfare'); floatText((b.x + dims(b).w / 2) * T, (b.y + dims(b).h / 2) * T, tr('x2'), UI.C.gold, 24, World.bRect(b).h); }
     return true;
   }
   /**

@@ -551,6 +551,10 @@ I18N.add('en', {
   'strings.num_units[4]': 'Qa', // Tn
   'strings.hero_of': '{name}’s', // de {name}
   'strings.hero_of_vowel': '{name}’s', // d’{name}
+  'strings.colon': ': ', //  : 
+  'strings.pct': '{n}%', // {n} %
+  'strings.x2': '×2!', // ×2 !
+  'strings.gold_n': '{n} gold', // {n} or
   'strings.close_tip': 'Close (Esc)', // Fermer (Échap)
   'strings.key_tip': 'Key {k}', // Touche {k}
   'strings.quote': '“{s}”', // « {s} »

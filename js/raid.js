@@ -446,7 +446,7 @@ const Raid = (() => {
     const mods = elite();
     if (!mods.length) return;
     const C = UI.C, ds = mods.map(eliteData), h = 30 + ds.length * 18;
-    UI.region(x, y, w, h, null, tr('elite_tip', { list: ds.map(d => d.name + ' : ' + d.trait).join('\n'), pct: Math.round(tune.elite_bounty * 100 * ds.length) }));
+    UI.region(x, y, w, h, null, tr('elite_tip', { list: ds.map(d => d.name + tr('colon') + d.trait).join('\n'), pct: Math.round(tune.elite_bounty * 100 * ds.length) }));
     UI.plate(x, y, w, h, 'bad');
     UI.icon('icon.raid', x + 20, y + 15, 16);
     UI.label(tr('elite_hud'), x + 34, y + 16, 14, C.gold, 'left');

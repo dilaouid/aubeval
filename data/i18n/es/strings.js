@@ -344,7 +344,7 @@ I18N.add('es', {
   'strings.prestige_text': 'Cambia la aldea (edificios, reservas, incursiones) por Renombre, que se conserva para siempre. El héroe, su equipo y sus misiones se quedan.', // Échange le village (bâtiments, réserves, raids) contre de la Renommée, gardée pour toujours. Le héros, son équipement et ses quêtes restent.
   'strings.prestige_gain': 'Ahora: +{n} Renombre (producción e impuestos +{pct} %)', // Maintenant : +{n} Renommée (production et impôts +{pct} %)
   'strings.prestige_have': 'Renombre: {n} (producción +{pct} %)', // Renommée : {n} (production +{pct} %)
-  'strings.prestige_do': 'Empezar de nuevo', // Prendre un nouveau départ
+  'strings.prestige_do': 'Hacer un nuevo comienzo', // Prendre un nouveau départ
   'strings.prestige_none': 'Gane más oro con esta aldea para obtener Renombre.', // Gagnez plus d’or avec ce village pour obtenir de la Renommée.
   'strings.prestige_done': 'Nuevo comienzo: +{n} Renombre', // Nouveau départ : +{n} Renommée
   'strings.trees': 'Árboles', // Arbres
@@ -551,6 +551,10 @@ I18N.add('es', {
   'strings.num_units[4]': 'mB', // Tn
   'strings.hero_of': 'de {name}', // de {name}
   'strings.hero_of_vowel': 'de {name}', // d’{name}
+  'strings.colon': ': ', //  : 
+  'strings.pct': '{n} %', // {n} %
+  'strings.x2': '¡×2!', // ×2 !
+  'strings.gold_n': '{n} oro', // {n} or
   'strings.close_tip': 'Cerrar (Esc)', // Fermer (Échap)
   'strings.key_tip': 'Tecla {k}', // Touche {k}
   'strings.quote': '«{s}»', // « {s} »
@@ -740,7 +744,7 @@ I18N.add('es', {
   'strings.city_ns_none': 'Aún no hay Renombre que ganar: haga crecer esta aldea.', // Pas encore de Renommée à gagner : faites grandir ce village.
   'strings.city_ns_keep': 'Se conservan: el héroe, sus misiones, el legado, los lugares descubiertos. Vuelven a cero: edificios, reservas, rango, encargos, impuestos y obras.', // Restent : le héros, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers.
   'strings.city_ns_stock': 'Volverá a empezar con: {list}.', // Vous repartirez avec : {list}.
-  'strings.city_ns_do': 'Empezar de nuevo', // Prendre un nouveau départ
+  'strings.city_ns_do': 'Hacer un nuevo comienzo', // Prendre un nouveau départ
   'strings.city_ns_sure': 'Haga clic otra vez para confirmar', // Cliquez encore pour confirmer
   'strings.city_ns_raid': 'No durante una incursión.', // Pas pendant un raid.
   'strings.city_node_lvl': '{n} / {max}', // {n} / {max}

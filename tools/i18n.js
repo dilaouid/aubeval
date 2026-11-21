@@ -156,7 +156,7 @@ function literals(src) {
 }
 // French a player would see, written in js/ rather than in data/strings.js. Developer words are
 // let be: console lines, the tutorial check (js/tuto-check.js) and the sprite galleries (?scene=).
-const FRENCH = /[éèêàùçôîâûœÉÈÊÀÇ’«»]|\b(frappe|abat|siffle|enrage|Parade|Carte|fois|clic|Appeler|Chaque|Prime|attaque|soigne|souffle|habitants|niv|tours|Quête|Raid|Rage|RAGE|ATQ|DÉF|PV|Touche|Popularité|Garde|Pioche|Armure|Ignore|Milicien|secondes|minutes?|Fermer|Md|Bn|Tn)\b/;
+const FRENCH = /[éèêàùçôîâûœÉÈÊÀÇ’«»]| [:;!?%]|\b(or|frappe|abat|siffle|enrage|Parade|Carte|fois|clic|Appeler|Chaque|Prime|attaque|soigne|souffle|habitants|niv|tours|Quête|Raid|Rage|RAGE|ATQ|DÉF|PV|Touche|Popularité|Garde|Pioche|Armure|Ignore|Milicien|secondes|minutes?|Fermer|Md|Bn|Tn)\b/;
 function frenchInCode() {
   const out = [];
   for (const f of fs.readdirSync(path.join(ROOT, 'js'))) {
@@ -166,7 +166,7 @@ function frenchInCode() {
     if (f === 'screens.js') { const a = lines.findIndex(l => /function drawFigures\(/.test(l)), b = lines.findIndex(l => /function loadingUpdate\(/.test(l)); dev = [a + 1, b + 1]; }
     for (const { s, line } of literals(src)) {
       if (/console\./.test(lines[line - 1]) || (dev && line >= dev[0] && line < dev[1])) continue;
-      const t = s.replace(/\$\{[^}]*\}/g, ' ');
+      const t = s.replace(/\$\{[^}]*\}/g, 'X');
       if (FRENCH.test(t) && !/^[a-z_]+$/.test(t) && !/^\{?de_hero\}?$|^_hero\}$|^’$/.test(t)) /* a lone lowercase word is an id */ out.push(`${f}:${line}  ${s.slice(0, 90).replace(/\n/g, '\\n')}`);
     }
   }

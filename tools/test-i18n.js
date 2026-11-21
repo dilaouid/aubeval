@@ -85,6 +85,12 @@ test('applying a language names the page in it', () => {
   assert.ok(T.paths(D).has('strings.page_title'));
 });
 
+test('js/ writes no French decimal comma of its own', () => {
+  const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../js');
+  const hits = fs.readdirSync(dir).filter(f => /replace\(['"]\.['"], *['"],['"]\)/.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+  assert.deepStrictEqual(hits, []);
+});
+
 let bad = 0;
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

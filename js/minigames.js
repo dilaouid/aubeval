@@ -159,7 +159,7 @@ const Minigames = (() => {
     }
     function draw() {
       head(d, total - g.t, total); scoreBox(d, tr('cf_served'), g.score);
-      UI.plate(1118, 78, 150, 34); UI.label(`${tr('cf_lost')} : ${g.gone} / ${tune.cafe_strikes}`, 1193, 96, 14, g.gone ? C.bad : C.dim);
+      UI.plate(1118, 78, 150, 34); UI.label(`${tr('cf_lost')}${tr('colon')}${g.gone} / ${tune.cafe_strikes}`, 1193, 96, 14, g.gone ? C.bad : C.dim);
       const c = g.queue[0];
       if (c) { // the customer at the counter, his patience under him, his order over him
         const sx = -280 * c.slide;
@@ -253,10 +253,10 @@ const Minigames = (() => {
       UI.icon(DATA.resources[g.lot.res].icon, 62, 214, 32);
       UI.wrap(g.lot.name, 88, 194, 230, 16, C.gold, 20, true);
       ctx.fillStyle = C.lineL; ctx.fillRect(42, 246, 274, 1);
-      text(tr('mk_asked'), 44, 270, 14, C.dim, 'left'); text(g.lot.price + ' or', 314, 270, 15, g.gain ? C.dim : C.text, 'right', true);
-      if (g.gain) { ctx.fillStyle = C.bad; ctx.fillRect(314 - UI.width(g.lot.price + ' or', 15, true) - 3, 270, UI.width(g.lot.price + ' or', 15, true) + 6, 2); }
-      text(tr('mk_yours'), 44, 306, 15, C.text, 'left', true); UI.label(price + ' or', 314, 306, 24, C.gold, 'right');
-      text('−' + g.gain + ' %', 314, 334, 14, g.gain ? C.good : C.dim, 'right', true);
+      text(tr('mk_asked'), 44, 270, 14, C.dim, 'left'); text(tr('gold_n', { n: g.lot.price }), 314, 270, 15, g.gain ? C.dim : C.text, 'right', true);
+      if (g.gain) { ctx.fillStyle = C.bad; ctx.fillRect(314 - UI.width(tr('gold_n', { n: g.lot.price }), 15, true) - 3, 270, UI.width(tr('gold_n', { n: g.lot.price }), 15, true) + 6, 2); }
+      text(tr('mk_yours'), 44, 306, 15, C.text, 'left', true); UI.label(tr('gold_n', { n: price }), 314, 306, 24, C.gold, 'right');
+      text('−' + tr('pct', { n: g.gain }), 314, 334, 14, g.gain ? C.good : C.dim, 'right', true);
       UI.plate(24, 364, 310, 62);
       UI.label(tr('mk_patience'), 42, 384, 13, moodColor(g.pat), 'left'); UI.bar(40, 398, 278, 14, g.pat, moodColor(g.pat));
       // the dial, and the two ways on

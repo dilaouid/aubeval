@@ -244,7 +244,7 @@ const Battle = (() => {
     b.hand.splice(i, 1); (k.c.exhaust ? b.gone : b.discard).push(k);
     const twice = b.hero.echo && !k.c.echo;
     if (twice) b.hero.echo = false;
-    b.msg = k.c.name + (twice ? ' ×2' : '') + (k.c.target === 'one' && b.foes[b.target] ? ' : ' + b.foes[b.target].name : '');
+    b.msg = k.c.name + (twice ? ' ×2' : '') + (k.c.target === 'one' && b.foes[b.target] ? tr('colon') + b.foes[b.target].name : '');
     apply(k); if (twice) apply(k);
     if (!k.c.dmg && !k.c.flat) sfx('click');
     if (!alive().length) { b.phase = 'over'; b.timer = 0.7; }
@@ -478,7 +478,7 @@ const Battle = (() => {
       if (info.warn) UI.icon('icon.warn', f.pos.x - iw / 2 + 20, iy + 15, 16);
       UI.label(info.text, f.pos.x + (info.warn ? 10 : 0), iy + 16, 15, info.warn ? '#ffffff' : info.color);
       UI.region(f.box.x - 10, iy, f.box.w + 20, f.pos.y - iy + 10, playing ? () => { b.target = b.foes.indexOf(f); sfx('click'); } : null,
-        `${f.name}\n${E[f.id].how}\n${info.text} : ${info.tip}` + (def > 0 ? '\n' + tr('armor_tip', { n: def, pct: Math.round((1 - armor(def)) * 100) }) : ''));
+        `${f.name}\n${E[f.id].how}\n${info.text}${tr('colon')}${info.tip}` + (def > 0 ? '\n' + tr('armor_tip', { n: def, pct: Math.round((1 - armor(def)) * 100) }) : ''));
     }
 
     // the hero: name, health, Garde, the states he is in, and what is coming at him
@@ -556,7 +556,7 @@ const Battle = (() => {
       text(tr('victory'), 640, 156, 40, C.gold, 'center', true, TITLE_FONT);
       let y = 210;
       UI.icon('icon.xp', 482, y, 32); text(`+${Math.round(t.xp * k)} XP`, 506, y + 1, 20, C.text, 'left', true); y += 34;
-      UI.icon('icon.gold', 482, y, 32); text(`+${Math.round(t.gold * k)} or`, 506, y + 1, 20, C.text, 'left', true); y += 34;
+      UI.icon('icon.gold', 482, y, 32); text(('+' + tr('gold_n', { n: Math.round(t.gold * k) })), 506, y + 1, 20, C.text, 'left', true); y += 34;
       for (const r in t.res) { UI.icon(DATA.resources[r].icon, 482, y, 32); text(`+${t.res[r]} ${DATA.resources[r].name.toLowerCase()}`, 506, y + 1, 20, C.text, 'left', true); y += 34; }
       if (b.perfect) { text(tr('tally_perfect', { n: b.perfect }), 470, y + 2, 17, C.accent, 'left', true); y += 28; }
       if (t.ups) {
