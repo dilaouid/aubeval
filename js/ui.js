@@ -243,6 +243,7 @@ const UI = (() => {
   }
   /** Word-wrapped text. `align` 'center' makes x the middle of the block. Returns the y under the last line. */
   function wrap(str, x, y, maxW, size, color, lineH, bold, align = 'left') {
+    str = gendered(str); // the hole resolved before it is measured and cut into lines
     ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`;
     lineH = lineH || Math.round(size * 1.35);
     for (const para of String(str).split('\n')) {
@@ -256,7 +257,7 @@ const UI = (() => {
     }
     return y;
   }
-  function width(str, size, bold) { ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`; return ctx.measureText(str).width; }
+  function width(str, size, bold) { str = gendered(str); ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`; return ctx.measureText(str).width; }
   /** A sprite with its top-left at a logical point. scale 2 is the world's pixel size (the usual). */
   function sprite(id, x, y, scale = 2, frame = 0) { blit(Art.get(id, frame), x, y, scale / 2); }
   /** A gauge in a dark wooden groove with a brass rim; `ghost` is a pale trail behind a falling value. */

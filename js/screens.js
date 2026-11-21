@@ -873,7 +873,7 @@ const scenes = (() => {
   function drawHero() {
     const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48;
     UI.panel(P.x, P.y, P.w, P.h, tr('hero_title') + ' · ' + heroName(), closePanel);
-    UI.sprite('hero.battle', x, P.y + 56, 2, Hero.weaponTier());
+    UI.sprite(Hero.art('battle'), x, P.y + 56, 2, Hero.weaponTier());
     const sx = x + 100; let y = P.y + 72;
     text(tr('level', { n: h.lvl }), sx, y, 20, C.gold, 'left', true);
     text(`${h.xp} / ${Hero.xpNeed(h.lvl)} XP`, x + w, y, 14, C.dim, 'right'); y += 18;
@@ -1238,7 +1238,7 @@ const scenes = (() => {
     if (UI.ready('ui.logo')) { const lg = Art.get('ui.logo'); blit(lg, 640 - lg.width * PX / 2, 40 + bob); } // the PixelLab logo, at the world's pixel size
     else { text(TITLE, 644, 154 + bob, 104, '#120e1c', 'center', true, TITLE_FONT); text(TITLE, 640, 150 + bob, 104, C.gold, 'center', true, TITLE_FONT); }
     UI.label(tr('subtitle'), 640, 226, 22, C.text);
-    UI.sprite('hero.battle', 596, 250, 2, 1);
+    UI.sprite(Hero.art('battle'), 596, 250, 2, 1);
     // the first controls, two by two, under no frame; the full list waits in the pause
     const rows = DATA.strings.controls_title, gap = 64, cy = 392, lh = 38, n = Math.ceil(rows.length / 2);
     const colW = [0, 1].map(c => Math.max(0, ...rows.filter((_, i) => i % 2 === c).map(r => keyRow(r, 0, 0, { size: 18, draw: false }))));
@@ -1288,11 +1288,13 @@ const scenes = (() => {
       shadowText(names[i], x, y + 16, 15, C.text, 'center');
     });
     const en = DATA.enemies;
-    row(['hero.battle', 'enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk'], 230, 180, 230, [heroName() + ' (héros)', en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name], 1);
-    ['hero', 'villager', 'gobelin', 'brute', 'chaman', 'grakk'].forEach((kind, i) => { // the map's figures, facing the player
-      const s = World.unitSprite(kind, 0, 1, false, 0), x = 150 + i * 196;
+    const hs = DATA.heroes; // the four heroes, each as in battle (a frame holding the sword) and as a figurine facing the player
+    row(hs.map(h => Hero.art('battle', h.id)).concat(['enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk']), 230, 110, 150, hs.map(h => h.name + ' (héros)').concat([en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name]), 1);
+    const figs = hs.map(h => ({ id: Hero.art('unit', h.id), name: h.name })).concat(['villager', 'gobelin', 'brute', 'chaman', 'grakk'].map(k => ({ id: k, name: k[0].toUpperCase() + k.slice(1) })));
+    figs.forEach((f, i) => { // the map's figures, facing the player
+      const sh = i < hs.length ? Art.sheet(f.id) : null, s = i < hs.length ? (sh ? Art.get(f.id, 2 * sh.cols) : Art.get('unit.hero', 0)) : World.unitSprite(f.id, 0, 1, false, 0), x = 80 + i * 130;
       blit(s, x - s.width * PX / 2, 340 - s.height * PX);
-      shadowText(['Héros', 'Villageois', 'Gobelin', 'Brute', 'Chaman', 'Grakk'][i], x, 356, 15, C.text, 'center');
+      shadowText(f.name, x, 356, 15, C.text, 'center');
     });
     DATA.unitOrder.forEach((k, i) => { // the citizens at work and the soldiers
       const s = World.unitSprite(U[k].sprite, 0, 1, false, 0), x = 90 + i * 132;

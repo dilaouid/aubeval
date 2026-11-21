@@ -62,7 +62,7 @@ const Tuto = (() => {
   const keyOf = () => course().id + ':' + at();
   /** Her lines for the step as it runs: a task already done drops the pages about doing it (`todo`). */
   const says = s => !s.say ? [] : cur && cur.skip ? s.say.filter(p => !p.todo) : s.say;
-  const pageOf = s => { const p = says(s)[cur.page]; return typeof p === 'string' ? { text: fill(p) } : { text: fill(p.text), show: p.show }; };
+  const pageOf = s => { const p = says(s)[cur.page]; return typeof p === 'string' ? { text: gendered(fill(p)) } : { text: gendered(fill(p.text)), show: p.show }; };
   const inside = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
   const grow = (r, n) => ({ x: r.x - n, y: r.y - n, w: r.w + 2 * n, h: r.h + 2 * n });
   const tileOf = (x, y) => { const p = World.toWorld(x, y); return { tx: Math.floor(p.x / T), ty: Math.floor(p.y / T) }; };

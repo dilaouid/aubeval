@@ -309,7 +309,7 @@ const World = (() => {
    */
   const ROW = [2, 1, 0, 7, 6, 5, 4, 3]; // octant() -> the sheet's row: south, south-east, east, north-east, north, north-west, west, south-west
   function unitSprite(kind, dx, dy, moving, clock) {
-    const id = 'iso.unit.' + kind, sh = Art.sheet(id);
+    const id = kind === 'hero' ? Hero.art('unit') : 'iso.unit.' + kind, sh = Art.sheet(id);
     if (!sh && !Art.defs['unit.' + kind] && kind !== 'villager') return unitSprite('villager', dx, dy, moving, clock); // no art of its own yet: the villager's
     if (!sh) return Art.get('unit.' + kind, moving ? Math.floor(clock * 6) % 2 : 0);
     const col = moving && sh.cols > 1 ? 1 + Math.floor(clock * tune.walk_fps) % (sh.cols - 1) : 0;

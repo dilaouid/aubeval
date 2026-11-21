@@ -93,7 +93,7 @@ const Cards = (() => {
    */
   function picture(e) {
     if (e.c.art && Art.loaded(e.c.art)) return { sprite: e.c.art, frame: 0, k: 1, top: true };
-    if (e.c.from === 'hero') return { sprite: 'hero.battle', frame: Hero.weaponTier(), k: 1, top: true };
+    if (e.c.from === 'hero') return { sprite: Hero.art('battle'), frame: Hero.weaponTier(), k: 1, top: true };
     const s = source(e.c.from);
     return { sprite: B[e.c.from].sprite, frame: s.best ? World.frameOf(s.best) : 0, k: 0.5, top: false };
   }

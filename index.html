@@ -234,7 +234,7 @@ function blit(img, x, y, k = 1) { ctx.drawImage(img, snap(x), snap(y), img.width
 function clear(c) { ctx.fillStyle = c; ctx.fillRect(0, 0, W, H); }
 function text(s, x, y, size, c, align = 'center', bold = false, font = FONT) {
   ctx.fillStyle = c; ctx.font = `${bold ? 'bold ' : ''}${size}px ${font}`; ctx.textAlign = align;
-  ctx.textBaseline = 'middle'; ctx.fillText(s, x, y);
+  ctx.textBaseline = 'middle'; ctx.fillText(typeof gendered === 'function' ? gendered(s) : s, x, y); // {g:he|she}: resolved for the chosen hero where it is drawn (js/ui.js; text() only runs once that is loaded)
 }
 
 // ---- Input: keys by position (event.code), OS key repeat ignored ------------------------
@@ -424,6 +424,7 @@ reset();
 Art.loadOverrides(id => { World.forgetFlora(); if (id.startsWith('iso.tile')) World.reset(); }); // an image just loaded: the trees are placed again with it, a ground image's ground painted again
 scene = params.get('scene') || 'title';
 if (params.get('demo')) { buildDemo(); if (scene === 'title') scene = 'play'; }
+if ((params.get('demo') || params.has('scene')) && DATA.heroes.some(h => h.id === params.get('hero'))) state.hero.look = params.get('hero'); // ?hero=isaure, with ?demo=1 or ?scene=: that hero, for a screenshot (never the save)
 if (params.get('tuto')) { Tuto.jump(params.get('tuto')); if (scene === 'title') scene = 'play'; } // ?tuto=forge: a new game opened at that step of the tutorial
 if (params.get('lesson')) { Tuto.lessonNow(params.get('lesson')); if (scene === 'title') scene = 'play'; } // ?lesson=decor: that lesson of Aveline's opened at once (with &demo=1: on a grown village)
 TutoCheck.lines(TutoCheck.run(DATA)).forEach(l => console.warn(l)); // the tutorial must cover the whole game: what it misses is said here (js/tuto-check.js)

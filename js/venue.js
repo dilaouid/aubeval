@@ -380,7 +380,7 @@ const Venue = (() => {
   }
 
   // ---- The visit ----
-  function say(line) { v.line = line; v.shown = 0; }
+  function say(line) { v.line = gendered(line); v.shown = 0; }
   const pick = list => list[Math.floor(state.t) % list.length]; // which of a keeper's lines: not a gameplay draw
   function enter(id, b) {
     const s = S(), d = V[id];

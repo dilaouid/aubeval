@@ -333,7 +333,7 @@ const Battle = (() => {
 
   // ---- Drawing ----
   function drawUnit(u) {
-    const s = Art.get(u.isHero ? 'hero.battle' : u.alt && !Art.loaded(u.sprite) ? u.alt : u.sprite, u.isHero ? Hero.weaponTier() : 0); // alt: the stand-in while its own image is missing
+    const s = Art.get(u.isHero ? Hero.art('battle') : u.alt && !Art.loaded(u.sprite) ? u.alt : u.sprite, u.isHero ? Hero.weaponTier() : 0); // alt: the stand-in while its own image is missing
     const w = s.width * PX, hgt = s.height * PX, side = u.isHero ? 1 : -1;
     const lunge = (Math.sin(u.lunge * Math.PI) * 48 + u.reach * 70) * side;
     const bob = Math.round(Math.sin(b.t * 3 + u.pos.x)) * PX;
