@@ -352,8 +352,9 @@ const scenes = (() => {
       ctx.globalAlpha = 1;
     } else if (r.camp && r.camp.down > 0) { // the camp burnt down: no raid until the next one rises
       UI.plate(rx, ry, 320, 52, null); UI.icon('icon.raid', rx + 30, ry + 26, 32);
-      UI.label(tr('camp_ruin_hud'), rx + 54, ry + 18, 14, C.good, 'left');
+      UI.label(tr(r.timer != null ? 'camp_ruin_hud_short' : 'camp_ruin_hud'), rx + 54, ry + 18, 14, C.good, 'left'); // short beside the button
       UI.label(fmtTime(r.camp.down), rx + 54, ry + 36, 18, C.text, 'left');
+      if (r.timer != null) UI.button(rx + 216, ry + 8, 94, 36, tr('camp_provoke'), Camp.provoke, { size: 14, tip: tr('camp_provoke_tip', { pct: Math.round(tune.raid_call_bonus * 100) }) }); // not before the raids have begun
     } else if (r.timer != null) {
       UI.plate(rx, ry, 320, 52, r.warned ? 'bad' : null); UI.icon('icon.raid', rx + 30, ry + 26, 32);
       UI.label(tr(Raid.hudKey('raid_in'), { n: r.n + 1, time: '' }).trim(), rx + 54, ry + 18, 14, r.warned ? C.bad : C.dim, 'left');

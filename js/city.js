@@ -146,6 +146,7 @@ const City = (() => {
     if (c.rank != null) out.push({ ok: s.rank >= c.rank, text: tr('city_need_rank', { name: rankName(c.rank), have: rankName() }), short: rankName(c.rank) });
     if (c.popularity != null) out.push({ ok: s.pop >= c.popularity, text: tr('city_need_pop', { n: c.popularity, have: Math.floor(s.pop) }), short: 'Popularité ' + c.popularity });
     count('orders', s.done, 'city_need_orders'); count('raids', s.raids, 'city_need_raids');
+    if (c.raids != null && tune.camp_raid_credit > 0) { const o = out[out.length - 1]; o.text += tr('city_need_raids_camp', { k: tune.camp_raid_credit }); } // a camp razed counts too: say so on the long line
     count('works', worksTotal(), 'city_need_works'); count('camps', s.camps, 'city_need_camps');
     return out;
   }
@@ -272,7 +273,7 @@ const City = (() => {
     if (type === 'raid') {
       if (e.won) { c.raids++; gainPop(e.siege ? F.siege : F.raid, tr(e.siege ? 'city_why_siege' : 'city_why_raid')); bump('raid'); }
       else gainPop(F.raidLost, tr('city_why_raidlost'));
-    } else if (type === 'camp') { c.camps++; gainPop(F.camp, tr('city_why_camp')); bump('camp'); }
+    } else if (type === 'camp') { c.camps++; c.raids += tune.camp_raid_credit; gainPop(F.camp, tr('city_why_camp')); bump('camp'); }
     else if (type === 'quest') gainPop(F.quest, tr('city_why_quest'));
     else if (type === 'battle') { gainPop(e.boss ? F.boss : F.battle, tr(e.boss ? 'city_why_boss' : 'city_why_battle')); bump('battle'); }
     else if (type === 'class') { gainPop(F.cls, tr('city_why_class')); bump('raise'); }

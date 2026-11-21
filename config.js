@@ -244,6 +244,7 @@ window.CONFIG = {
   camp_chief_hp: { value: 0.6, min: 0.1, max: 5, step: 0.05 },       // a camp's chief: x the warlord's health (data/enemies.js), then the camp's growth
   camp_chief_gold: { value: 100, min: 0, max: 2000, step: 10 },      // gold more a fallen camp leaves for its chief, times the camps fallen before it
   camp_pop: { value: 5, min: 0, max: 50, step: 1 },                  // popularity the hero gains for a camp razed
+  camp_raid_credit: { value: 2, min: 0, max: 6, step: 1 },           // raids repelled a camp razed counts for, toward the city's ranks (not the orders): the raids its respite holds back
   sunder_mult: { value: 0.9, min: 0.2, max: 3, step: 0.05 },         // the duel: a blow that shatters the Garde, as a share of the warlord's attack
   flurry_mult: { value: 0.45, min: 0.1, max: 2, step: 0.05 },        // ... each of three quick blows
   mend_share: { value: 0.15, min: 0, max: 0.6, step: 0.01 },         // ... share of her health a warlord who mends herself gets back

@@ -117,7 +117,7 @@ const Camp = (() => {
     state.counters.campsDown = (state.counters.campsDown || 0) + 1;
     if (r.warned && !r.active) { r.warned = false; r.from = null; r.siege = null; } // the horn had sounded: that raid (or siege) will never leave
     World.blast(mid.x, mid.y, Village.CAMP * T); floatText(mid.x, mid.y, '+' + gold, UI.C.gold, 22, 30);
-    state.gained = tr('camp_fall', { gold, time: fmtTime(tune.camp_respite) }); toast(state.gained, UI.C.good); sfx('fanfare');
+    state.gained = tr('camp_fall', { gold, time: fmtTime(tune.camp_respite) }) + (tune.camp_raid_credit > 0 ? tr('camp_fall_credit', { k: tune.camp_raid_credit }) : ''); toast(state.gained, UI.C.good); sfx('fanfare');
     City.event('camp'); City.gainPop(tune.camp_pop, tr('pop_camp')); // the city's orders and the hero's popularity
     Raid.touch(); Save.persist();
   }
@@ -130,6 +130,18 @@ const Camp = (() => {
     const chief = chiefName(lvl);
     toast(chief ? tr('camp_new_chief', { dir: Raid.compass(Village.campMid()), name: chief }) : tr('camp_new', { dir: Raid.compass(Village.campMid()) }), UI.C.bad); sfx('horn');
     Save.persist();
+  }
+
+  /**
+   * The player cuts the respite short: the next camp rises now and its first raid leaves at once,
+   * as a raid called early (its bonus). Not before the raids have begun, nor during one. Returns
+   * whether it happened.
+   */
+  function provoke() {
+    const c = camp(), r = state.raid;
+    if (!c || !(c.down > 0) || r.active || r.timer == null) return false;
+    c.down = 0; rise(); Raid.start(true);
+    return true;
   }
 
   function tick(dt) {
@@ -189,5 +201,5 @@ const Camp = (() => {
     return tx >= c.x - 1 && ty >= c.y - 1 && tx <= c.x + Village.CAMP + 1 && ty <= c.y + Village.CAMP + 1;
   }
 
-  return { tick, ensure, standing, assaulted, attackers, targetFor, hit, away, attack, gate, covers, roster, chiefName, chiefLine, demo };
+  return { tick, ensure, standing, assaulted, attackers, targetFor, hit, away, attack, gate, covers, roster, chiefName, chiefLine, demo, provoke };
 })();
