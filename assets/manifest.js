@@ -138,6 +138,8 @@ window.ASSETS = {
   // un seul dessin pour les quatre armes, en attendant hero_battle_t0 / _t2 / _t3 (voir imagegen/PROMPTS.md, section 11)
   'hero.battle': 'sprites/hero_battle.png',
   'hero.battle.aldric': { file: 'sprites/hero_battle.png', w: 44, h: 50 }, // w and h: with no drawn sprite to size it, the file's own size comes out four times too big
+  // the other heroes in battle (tools/make_heroes.py): drawn at 44x50, in Aldric's pose
+  ...Object.fromEntries(['tancrede', 'isaure', 'maelle'].map(k => ['hero.battle.' + k, { file: `sprites/hero_battle_${k}.png`, w: 44, h: 50 }])),
   'unit.brute': 'sprites/unit_brute.png',
   'unit.chaman': 'sprites/unit_chaman.png',
   'unit.gobelin': 'sprites/unit_gobelin.png',
