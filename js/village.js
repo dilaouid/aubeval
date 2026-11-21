@@ -12,7 +12,23 @@ const Village = (() => {
   const M = DATA.map, T = M.tile, B = DATA.buildings, N = M.w * M.h, CL = DATA.classes;
   const GROUND = Object.keys(DATA.ground), FLORA = Object.keys(DATA.flora);
   const G_PATH = GROUND.indexOf('path');
-  const baseSeed = Number(params.get('seed')) || CONFIG.seed; // the land of a new game
+  /** The first playable seed from `s` on (js/mapgen.js pickSeed): the one kept and shown. */
+  const playableFrom = s => MapGen.pickSeed(s, M, DATA.ground, DATA.biomes, DATA.flora);
+  // ?seed=N in the address: the land a shared link asks for, already moved on to a playable one
+  // (0 when there is none, or not a number from 1 to SEED_MAX)
+  const sharedSeed = (n => n >= 1 && n <= MapGen.SEED_MAX ? playableFrom(n) : 0)(Math.floor(Number(params.get('seed'))));
+  // A screenshot or a check (index.html and js/screens.js read these): the same land every time,
+  // CONFIG.seed's, so that two runs can be compared, unless ?seed= asks for another
+  const CHECKS = ['demo', 'tuto', 'lesson', 'scene', 'manual', 'render', 'keys', 'venue', 'camp', 'look'];
+  const pinnedSeed = sharedSeed || (CHECKS.some(k => params.has(k)) ? CONFIG.seed : 0);
+  /**
+   * A new game's land: the one the address pins (a shared link, or a check) when there is one and
+   * `useShared`, else one drawn at random (the only Math.random of the game: every gameplay draw
+   * reads rng(), seeded from this land) and moved on to the first playable seed from there.
+   */
+  function drawSeed(useShared = true) {
+    return useShared && pinnedSeed ? pinnedSeed : playableFrom(1 + Math.floor(Math.random() * MapGen.SEED_MAX));
+  }
   let land = null, landSeed = null;            // the land as its seed draws it, untouched
   const flora = new Uint8Array(N);             // what grows on each tile now: 0 nothing, else 1 + its place in FLORA
   const paved = new Uint8Array(N);             // 1 where the player paved a path
@@ -53,21 +69,40 @@ const Village = (() => {
   // ---- The goblin camp: every raid leaves from it. It stays put until the player's soldiers burn
   // it down (js/camp.js); then, after a respite, a new one rises farther out, on another side ----
   const CAMP = 4; // its side, in tiles
+  const STEP4 = [1, 0, -1, 0, 1]; // (STEP4[k], STEP4[k + 1]) for k = 0..3: the four tiles beside one
   /**
    * Finds the camp's place when there is none (a spot of open ground `raid_camp_dist` tiles from the
    * hall, on a side the land's seed picks, so the same land always has its camp in the same place;
    * the camp number `lvl` that rises after `lvl` have fallen goes `camp_dist_step` tiles farther per
-   * fallen camp, turned by a golden angle each time, and never on a building or a paved path)
+   * fallen camp, turned by a golden angle each time, never on a building or a paved path, and
+   * always where its raiders can walk to the hall inside the map of their raid)
    * and keeps it in state.raid.camp. Then clears its ground: no tree grows there, nothing is built.
    */
   function placeCamp(lvl = 0) {
     camp.fill(0);
     const r = state.raid;
     if (!r.camp) {
-      const h = hallMid(), cx = h.x / T, cy = h.y / T, a0 = ((state.mapSeed * 0.6180339) % 1) * 6.2832 + lvl * 2.39996;
+      const h = hallMid(), cx = h.x / T, cy = h.y / T, hx = Math.floor(cx), hy = Math.floor(cy);
+      // need[i]: the smallest square around the hall (half its side, in tiles) inside which a walk side
+      // by side over walkable ground leads from the hall to tile i. One pass, the smallest squares first.
+      const need = new Uint16Array(N).fill(0xffff), byNeed = [[idx(hx, hy)]];
+      need[byNeed[0][0]] = 0;
+      for (let v = 0; v < byNeed.length; v++) for (const i of byNeed[v] || []) {
+        if (need[i] !== v) continue; // reached since by a smaller square
+        const tx = i % M.w, ty = (i / M.w) | 0;
+        for (let k = 0; k < 4; k++) {
+          const X = tx + STEP4[k], Y = ty + STEP4[k + 1];
+          if (!walkable(X, Y)) continue;
+          const j = idx(X, Y), n = Math.max(v, Math.abs(X - hx), Math.abs(Y - hy));
+          if (n < need[j]) { need[j] = n; (byNeed[n] = byNeed[n] || []).push(j); }
+        }
+      }
+      // Whether raiders from a camp whose middle is (x, y) have a way to the hall inside the map of their raid (js/raid.js fieldRadius).
+      const reached = (x, y) => inMap(x, y) && need[idx(x, y)] <= Raid.fieldRadius(Math.hypot(x - cx, y - cy));
+      const a0 = ((state.mapSeed * 0.6180339) % 1) * 6.2832 + lvl * 2.39996;
       const d0 = tune.raid_camp_dist + Math.min(lvl * tune.camp_dist_step, tune.camp_dist_max);
       const free = i => !lvl || occ[i] === 0 || occ[i] === -1; // a later camp: only on open ground or wild flora (occ is current by then)
-      const ok = (tx, ty) => { for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
+      const ok = (tx, ty) => { if (!reached(tx + 2, ty + 2)) return false; for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
       for (let d = d0; d < d0 + 30 && !r.camp; d += 2) for (let k = 0; k < 32; k++) {
         const a = a0 + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 6.2832 / 32, tx = Math.round(cx + Math.cos(a) * d) - 2, ty = Math.round(cy + Math.sin(a) * d) - 2;
         if (ok(tx, ty)) { r.camp = { x: tx, y: ty, lvl }; break; }
@@ -226,11 +261,14 @@ const Village = (() => {
   /** The hall's middle, in map pixels. */
   const hallMid = () => ({ x: (M.hall.x + B.hall.w / 2) * T, y: (M.hall.y + B.hall.h / 2) * T });
 
-  /** A new game's state. Everything the save file holds is here. */
-  function fresh() {
+  /**
+   * A new game's state. Everything the save file holds is here. `mapSeed`: its land (drawSeed); left
+   * out, the land of every save from before lands were drawn, so an older save filled from here keeps its own.
+   */
+  function fresh(mapSeed = CONFIG.seed) {
     const s = {
       v: 4, t: 0, score: 0, gained: '', seed: 0, savedAt: 0, // v: the save's version (js/save.js VERSION): a new game is never taken for an older save when it is loaded
-      mapSeed: baseSeed,                         // the land is drawn from this
+      mapSeed,                                   // the land is drawn from this
       land: { cut: {}, planted: {}, paved: {} }, // what the player changed on it, by tile index: felled, planted (flora id), paved
       res: {}, totals: {},                       // stock, and all that was ever gained in this village
       buildings: [], nextUid: 1, unlocked: {},
@@ -340,7 +378,7 @@ const Village = (() => {
    */
   function migrateV1() {
     const dx = M.hall.x - 12, dy = M.hall.y - 11; // the old hall stood at tile (12, 11)
-    state.mapSeed = baseSeed; state.land = { cut: {}, planted: {}, paved: {} };
+    state.mapSeed = CONFIG.seed; state.land = { cut: {}, planted: {}, paved: {} };
     for (const b of state.buildings) { b.x += dx; b.y += dy; }
     const kept = state.buildings.slice().sort((p, q) => (q.kind === 'hall') - (p.kind === 'hall')); // the hall takes its place first
     state.buildings = [];
@@ -646,7 +684,7 @@ const Village = (() => {
   }
 
   return {
-    sync, fresh, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
+    sync, fresh, drawSeed, sharedSeed, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
     safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, repairCost, canAfford, pay, gain,
     levelMult, milestoneMult, renownMult, outMult, wallMax, pillagePct, isUnlocked, refreshUnlocks, nextPopUnlock,
     size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartCost, upgradeRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,

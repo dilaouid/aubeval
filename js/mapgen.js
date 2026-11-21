@@ -74,6 +74,30 @@ const MapGen = (() => {
     return { ground, flora, biome, groundIds, floraIds, biomeIds };
   }
 
-  return { generate, hash };
+  /**
+   * Whether a land is fair to start on (DATA.map.playable): a rock that gives stone within
+   * `rockWithin` tiles of the hall's middle. Wood needs no check: the woods around the hall always have it.
+   */
+  function playable(land, M, FLORA) {
+    const P = M.playable, hx = M.hall.x + 2, hy = M.hall.y + 1.5, r = P.rockWithin, floraIds = land.floraIds;
+    for (let y = Math.max(0, Math.floor(hy - r)); y <= Math.min(M.h - 1, Math.ceil(hy + r)); y++)
+      for (let x = Math.max(0, Math.floor(hx - r)); x <= Math.min(M.w - 1, Math.ceil(hx + r)); x++) {
+        const f = land.flora[y * M.w + x];
+        if (f && FLORA[floraIds[f - 1]].gives === 'stone' && Math.hypot(x - hx, y - hy) <= r) return true;
+      }
+    return false;
+  }
+  const SEED_MAX = 999999; // seeds a new game draws, short enough to read out
+  /**
+   * The first playable seed from `start` on (start, start + 1, ..., back to 1 after SEED_MAX).
+   * The seed it gives is the one kept and shown, so sharing it gives back the very same land.
+   */
+  function pickSeed(start, M, GROUND, BIOMES, FLORA) {
+    for (let k = 0, s = start; k < 200; k++, s = s >= SEED_MAX ? 1 : s + 1)
+      if (playable(generate(s, M, GROUND, BIOMES, FLORA), M, FLORA)) return s;
+    return start; // no playable land so near: the asked one, as it is
+  }
+
+  return { generate, hash, playable, pickSeed, SEED_MAX };
 })();
 if (typeof module !== 'undefined') module.exports = MapGen; // read by a script outside the game, to look at a map

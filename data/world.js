@@ -29,7 +29,10 @@ DATA.map = {
   scale: { height: 30, heat: 56, wet: 38, wood: 11 },
   // Where one biome ends and the next begins, on each layer (0 to 1, 0.5 is the middle).
   level: { water: 0.27, shore: 0.30, rock: 0.72, cold: 0.36, hot: 0.66, dry: 0.56, wet: 0.66, wood: 0.47 },
-  heatSlope: 0.55,                                   // share of the heat that follows the map: cold at the top of the screen, hot at the bottom
+  // What a land must offer for a new game to start on it (js/mapgen.js playable): a rock that gives
+  // stone within `rockWithin` tiles of the hall's middle. A seed whose land has none is passed over.
+  playable: { rockWithin: 20 },
+  heatSlope: 0.55,                                  // share of the heat that follows the map: cold at the top of the screen, hot at the bottom
 };
 
 // Ground kinds. `sprite` is a 32x32 isometric tile (its variants are picked tile by tile);
