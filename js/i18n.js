@@ -63,6 +63,11 @@
     return true;
   }
 
+  /** Resolves each {g:masculine|feminine} for g 'm' or 'f'; anything else, a malformed hole too, is left as written. */
+  function gender(s, g) { return String(s).replace(/\{g:([^|{}]*)\|([^|{}]*)\}/g, (m, a, b) => (g === 'f' ? b : a)); }
+  /** True if a {g: is left once the well-formed holes are resolved: a typo in a text. */
+  function genderBad(s) { return gender(s, 'm').indexOf('{g:') >= 0; }
+
   /** The language: the address (?lang=), then the stored choice, then the browser's, else French. */
   function pick(env) {
     env = env || {};
@@ -80,7 +85,7 @@
 
   const I18N = {
     langs: LANGS, files: FILES, lang: 'fr', layers,
-    parse, get, put, pick,
+    parse, get, put, pick, gender, genderBad,
     /** Called by the layer files: adds texts to a language. A null text is one still to translate. */
     add(lang, map) { Object.assign(layers[lang] || (layers[lang] = {}), map); },
     /** Each language's name, in itself: what the language buttons say. */

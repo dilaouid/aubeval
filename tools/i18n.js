@@ -75,12 +75,13 @@ function pathOf(D, pred, field) {
   return found;
 }
 const holes = s => (String(s).match(/\{[a-z_]+\}/g) || []).map(h => (h === '{de_hero}' ? '{hero}' : h)).sort().join(' ');
-/** What is wrong with a layer, against the French: [{ kind: missing | unknown | holes, path }]. */
+/** What is wrong with a layer, against the French: [{ kind: missing | unknown | holes | gender, path }]. */
 function check(src, layer) {
   const out = [];
   for (const [p, fr] of src) {
     const t = layer[p];
     if (t == null) out.push({ kind: 'missing', path: p });
+    else if (I18N.genderBad(t)) out.push({ kind: 'gender', path: p });
     else if (holes(t) !== holes(fr)) out.push({ kind: 'holes', path: p, fr: holes(fr), got: holes(t) });
   }
   for (const p in layer) if (!src.has(p)) out.push({ kind: 'unknown', path: p });
@@ -121,12 +122,16 @@ function extract(lang) {
 function checkAll(langs) {
   const src = paths(loadData());
   let bad = 0;
+  const frBad = [...src].filter(([, t]) => I18N.genderBad(t)); // a malformed {g:...} in the French itself
+  bad += frBad.length;
+  console.log(`fr: ${src.size} texts · ${frBad.length} with a malformed gender hole`);
+  for (const [p] of frBad.slice(0, 15)) console.log(`  gender   ${p}`);
   for (const lang of langs) {
     const layer = Object.assign({}, ...Object.values(readLayers(lang)));
     const errs = check(src, layer);
     bad += errs.length;
     const n = k => errs.filter(e => e.kind === k).length;
-    console.log(`${lang}: ${src.size} texts · ${n('missing')} missing · ${n('unknown')} unknown · ${n('holes')} with other holes`);
+    console.log(`${lang}: ${src.size} texts · ${n('missing')} missing · ${n('unknown')} unknown · ${n('holes')} with other holes · ${n('gender')} malformed gender`);
     for (const e of errs.slice(0, 15)) console.log(`  ${e.kind.padEnd(8)} ${e.path}${e.kind === 'holes' ? `  fr: ${e.fr} | ${lang}: ${e.got}` : ''}`);
   }
   return bad;

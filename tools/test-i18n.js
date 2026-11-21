@@ -110,6 +110,30 @@ test('the popularity log keeps keys, not words (a save stays the same in every l
 });
 
 let bad = 0;
+test('gender picks the first form for m, the second for f', () => {
+  const s = '{hero} est {g:arrivé|arrivée} : {g:il|elle} rentre.';
+  assert.strictEqual(T.I18N.gender(s, 'm'), '{hero} est arrivé : il rentre.');
+  assert.strictEqual(T.I18N.gender(s, 'f'), '{hero} est arrivée : elle rentre.');
+});
+test('gender leaves other holes, plain text and empty forms alone', () => {
+  assert.strictEqual(T.I18N.gender('{n} {res} pour {hero}', 'f'), '{n} {res} pour {hero}');
+  assert.strictEqual(T.I18N.gender('prêt{g:|e}', 'm'), 'prêt');
+  assert.strictEqual(T.I18N.gender('prêt{g:|e}', 'f'), 'prête');
+  assert.strictEqual(T.I18N.gender('{g:le héros|l’héroïne}', 'f'), 'l’héroïne');
+});
+test('a malformed gender hole is kept as written, and reported', () => {
+  for (const bad of ['{g:seul}', '{g:a|b|c}', '{g:a|{hero}}']) {
+    assert.strictEqual(T.I18N.gender(bad, 'f'), bad);
+    assert.strictEqual(T.I18N.genderBad(bad), true);
+  }
+  assert.strictEqual(T.I18N.genderBad('{g:il|elle} et {hero}'), false);
+});
+test('check reports a malformed gender hole as kind gender', () => {
+  const errs = T.check(new Map([['strings.x', 'seul'], ['strings.y', '{g:a|b}']]), { 'strings.x': '{g:seul}', 'strings.y': 'c' });
+  assert.ok(errs.some(e => e.kind === 'gender' && e.path === 'strings.x'));
+  assert.ok(!errs.some(e => e.path === 'strings.y')); // a gender hole on one side only is no difference of holes
+});
+
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }
 }
