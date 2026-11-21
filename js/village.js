@@ -67,7 +67,8 @@ const Village = (() => {
    * Finds the camp's place when there is none (a spot of open ground `raid_camp_dist` tiles from the
    * hall, on a side the land's seed picks, so the same land always has its camp in the same place;
    * the camp number `lvl` that rises after `lvl` have fallen goes `camp_dist_step` tiles farther per
-   * fallen camp, turned by a golden angle each time, and never on a building or a paved path)
+   * fallen camp, turned by a golden angle each time, never on a building or a paved path, and
+   * always where its raiders can walk to the hall)
    * and keeps it in state.raid.camp. Then clears its ground: no tree grows there, nothing is built.
    */
   function placeCamp(lvl = 0) {
@@ -77,7 +78,13 @@ const Village = (() => {
       const h = hallMid(), cx = h.x / T, cy = h.y / T, a0 = ((state.mapSeed * 0.6180339) % 1) * 6.2832 + lvl * 2.39996;
       const d0 = tune.raid_camp_dist + Math.min(lvl * tune.camp_dist_step, tune.camp_dist_max);
       const free = i => !lvl || occ[i] === 0 || occ[i] === -1; // a later camp: only on open ground or wild flora (occ is current by then)
-      const ok = (tx, ty) => { for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
+      const reach = new Uint8Array(N), q = [idx(Math.floor(cx), Math.floor(cy))]; // every tile a raider can walk to from the hall: a camp on an island would send none
+      reach[q[0]] = 1;
+      while (q.length) {
+        const i = q.pop(), x = i % M.w, y = (i / M.w) | 0;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { if (!walkable(x + dx, y + dy)) continue; const j = idx(x + dx, y + dy); if (!reach[j]) { reach[j] = 1; q.push(j); } }
+      }
+      const ok = (tx, ty) => { if (!inMap(tx + 2, ty + 2) || !reach[idx(tx + 2, ty + 2)]) return false; for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
       for (let d = d0; d < d0 + 30 && !r.camp; d += 2) for (let k = 0; k < 32; k++) {
         const a = a0 + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 6.2832 / 32, tx = Math.round(cx + Math.cos(a) * d) - 2, ty = Math.round(cy + Math.sin(a) * d) - 2;
         if (ok(tx, ty)) { r.camp = { x: tx, y: ty, lvl }; break; }
