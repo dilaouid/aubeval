@@ -44,9 +44,9 @@ Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte g
 
 <div align="center">
 
-<img src="docs/monuments.png" alt="Les trois grands chantiers, de l'échafaudage à l'édifice terminé" width="640">
+<img src="docs/monuments.gif" alt="Les trois grands chantiers, de l'échafaudage à l'édifice terminé" width="640">
 
-<sub>Cathédrale, château et grand phare, chacun en quatre étapes de chantier.</sub>
+<sub>Cathédrale, château et grand phare s'élèvent en quatre étapes de chantier.</sub>
 
 </div>
 
