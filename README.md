@@ -17,7 +17,7 @@ Aucune dépendance, aucun build : du HTML et du JavaScript.
 
 ## Le jeu
 
-Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte générée, faites tourner leurs chaînes de production (bois, planches, pain, café) et armez votre héros pour repousser les raids gobelins. La partie n'a pas de fin : le village grandit, la cité monte en rang et il y a toujours un chantier de plus.
+Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte générée, différente à chaque partie, faites tourner leurs chaînes de production (bois, planches, pain, café) et armez votre héros pour repousser les raids gobelins. La partie n'a pas de fin : le village grandit, la cité monte en rang et il y a toujours un chantier de plus.
 
 <div align="center">
 
@@ -79,7 +79,9 @@ Marchands, forgeron, boulangère, aubergiste, capitaine et guide Aveline ont leu
 
 ### Explorer sans fin
 
-Une grande carte aux biomes variés, sous le brouillard, avec des ruines, des hameaux, des gisements et des antres à découvrir. Rangs de cité, commandes des citoyens, grandes œuvres, arbre d'héritage et menace qui monte : de quoi jouer des heures.
+Une grande carte aux biomes variés, tirée au hasard à chaque nouvelle partie et toujours jouable, sous le brouillard, avec des ruines, des hameaux, des gisements et des antres à découvrir. Rangs de cité, commandes des citoyens, grandes œuvres, arbre d'héritage et menace qui monte : de quoi jouer des heures.
+
+Chaque carte a son numéro : le menu du village le montre et copie son lien, pour qu'un ami joue sur la même. Avant de nommer le héros, « Autre carte » en tire une nouvelle.
 
 ### Un tutoriel qui suit le jeu
 
@@ -93,7 +95,9 @@ Le jeu est statique : servez le dossier avec n'importe quel serveur HTTP local.
 python -m http.server 8000
 ```
 
-Puis ouvrez <http://localhost:8000>. La partie est sauvegardée dans le navigateur (`localStorage`).
+Puis ouvrez <http://localhost:8000>. La partie est sauvegardée dans le navigateur (`localStorage`). `?seed=123456` dans l'adresse ouvre une nouvelle partie sur cette carte.
+
+Pour vérifier que toutes les cartes tirées sont jouables : `node tools/check-maps.js`.
 
 ## Commandes
 
