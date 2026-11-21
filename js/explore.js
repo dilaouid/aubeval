@@ -114,11 +114,15 @@ const Explore = (() => {
     if (changed) { state.explore.fog = pack(); Units.touch(); } // the save is always true; a worker may find a nearer tree
     return changed;
   }
-  /** What the town sees without moving: around the hall, each building, the goblin camp and the way to it. */
+  /**
+   * What the town sees without moving: around the hall, each building (a wall sees nothing: a line
+   * of palisades, six wood a tile, would otherwise carry the sight across the whole map), the goblin
+   * camp and the way to it.
+   */
   function lookAround() {
     const h = Village.hallMid();
     reveal(h.x, h.y, Village.safeRadius() + tune.fog_sight_margin + City.bonus('sight'));
-    for (const b of state.buildings) { const d = Village.dims(b); reveal((b.x + d.w / 2) * T, (b.y + d.h / 2) * T, tune.fog_sight_building); }
+    for (const b of state.buildings) { if (DATA.buildings[b.kind].wall) continue; const d = Village.dims(b); reveal((b.x + d.w / 2) * T, (b.y + d.h / 2) * T, tune.fog_sight_building); }
     if (state.raid.camp) { // always in sight, with the way to it: raids come from there, and the guard is sent there
       const m = Village.campMid(), n = Math.max(1, Math.ceil(Math.hypot(m.x - h.x, m.y - h.y) / (cell * T)));
       reveal(m.x, m.y, tune.fog_sight_camp);
