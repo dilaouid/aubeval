@@ -652,7 +652,7 @@ const Tuto = (() => {
   /** Her face now: a frame of her strip, or null while it is not there. */
   function face() { const id = 'portrait.' + D.guide.portrait, sh = Art.sheet(id); return sh ? Art.get(id, Math.floor(state.t * tune.portrait_fps) % sh.cols) : null; }
   function wrapLines(str, maxW, size) {
-    ctx.font = `${size}px ${FONT}`; const out = [];
+    str = gendered(str); ctx.font = `${size}px ${FONT}`; const out = [];
     let line = '';
     for (const word of str.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = word; } else line = t; }
     out.push(line);

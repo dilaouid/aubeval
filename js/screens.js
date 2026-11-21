@@ -269,7 +269,7 @@ const scenes = (() => {
   /** How many lines UI.wrap would take. */
   function linesOf(str, maxW, size) {
     ctx.font = `${size}px ${FONT}`; let n = 0;
-    for (const para of String(str).split('\n')) {
+    for (const para of String(gendered(str)).split('\n')) {
       let line = ''; n++;
       for (const word of para.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { n++; line = word; } else line = t; }
     }

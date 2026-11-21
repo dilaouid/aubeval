@@ -286,7 +286,7 @@ const UI = (() => {
     if (!tip) return;
     ctx.font = `15px ${FONT}`;
     const lines = [];
-    for (const para of tip.split('\n')) {
+    for (const para of gendered(tip).split('\n')) {
       let line = '';
       for (const word of para.split(' ')) {
         const t = line ? line + ' ' + word : word;

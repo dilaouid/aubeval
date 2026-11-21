@@ -534,7 +534,7 @@ const Venue = (() => {
   }
 
   // ---- Drawing ----
-  function wrapLines(str, maxW, size) {
+  function wrapLines(str, maxW, size) { str = gendered(str);
     ctx.font = `${size}px ${FONT}`;
     const out = []; let line = '';
     for (const word of str.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = word; } else line = t; }

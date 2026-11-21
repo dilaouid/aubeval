@@ -381,7 +381,7 @@ const Battle = (() => {
     const nx = x + w / 2 + 14, nw = w - 58;
     if (UI.width(c.name, 13, true) <= nw) UI.label(c.name, nx, y + 23, 13, C.gold);
     else {
-      const words = c.name.split(' '); let cut = 1, best = 1e9;
+      const words = gendered(c.name).split(' '); let cut = 1, best = 1e9;
       for (let i = 1; i < words.length; i++) { const d = Math.abs(UI.width(words.slice(0, i).join(' '), 12, true) - UI.width(words.slice(i).join(' '), 12, true)); if (d < best) { best = d; cut = i; } }
       UI.label(words.slice(0, cut).join(' '), nx, y + 16, 12, C.gold); UI.label(words.slice(cut).join(' '), nx, y + 30, 12, C.gold);
     }
@@ -400,7 +400,7 @@ const Battle = (() => {
     // what it does
     ctx.font = `12px ${FONT}`;
     const rows = [];
-    for (const line of Cards.lines(k, st)) {
+    for (const line of Cards.lines(k, st).map(gendered)) { // the holes resolved before the line is cut into words
       let cur = '';
       for (const word of line.split(' ')) { const t = cur ? cur + ' ' + word : word; if (ctx.measureText(t).width > w - 24 && cur) { rows.push([cur, line]); cur = word; } else cur = t; }
       rows.push([cur, line]);
@@ -417,7 +417,7 @@ const Battle = (() => {
   function drawNote(o) {
     const C = UI.C, lines = [];
     ctx.font = `bold 14px ${FONT}`;
-    for (const para of o.str.split('\n')) {
+    for (const para of gendered(o.str).split('\n')) {
       let line = '';
       for (const word of para.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > 340 && line) { lines.push(line); line = word; } else line = t; }
       lines.push(line);
