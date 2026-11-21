@@ -25,7 +25,7 @@ const Cards = (() => {
       const c = D[id];
       if (c.from === 'hero') { if (state.hero.lvl >= c.lvl) out.push({ id, c, copies: c.copies || 1, lvl: 0, pow: 1, benched: !!bench[id] }); continue; }
       const s = source(c.from);
-      if (!s.n) continue;
+      if (!s.n || (c.at && s.lvl < c.at)) continue;
       out.push({ id, c, copies: Math.min(c.max || 1, s.n) * (c.copies || 1), lvl: s.lvl, pow: 1 + (s.lvl - 1) * tune.card_level_step, benched: !!bench[id] });
     }
     return out;

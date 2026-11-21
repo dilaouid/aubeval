@@ -625,6 +625,9 @@ I18N.add('es', {
   'strings.pop_tip': 'Las casas alojan a los habitantes. Su número desbloquea nuevos edificios.', // Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.
   'strings.raid_call_tip': 'Llamar a la incursión ahora\nPrima +{pct} % si la rechaza.', // Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.
   'strings.forge_plus_tip': 'Cada +1 añade un {pct} % de sus bonificaciones.', // Chaque +1 ajoute {pct} % de ses bonus.
+  'strings.forge_perk_on': 'Temple: cada +N vale un {pct} % de sus bonificaciones.', // Trempe : chaque +N vaut {pct} % de ses bonus.
+  'strings.forge_perk_off': 'Nivel {n}: Temple (+N más fuertes) y la carta Hierro candente.', // Niveau {n} : Trempe (+N plus forts) et carte Fer rouge.
+  'strings.up_forge_perk': '¡Hito: Temple y la carta Hierro candente!', // Palier : Trempe et carte Fer rouge !
   'strings.contracts_none': 'Los contratos llegan con la misión «Defender la aldea». Cada victoria sube su rango: enemigos y primas crecen sin límite.', // Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.
   'strings.fg_bellows_keys': 'B · ↑ · clic derecho', // B · ↑ · clic droit
   'strings.span_min': '{m} minuto', // {m} minute

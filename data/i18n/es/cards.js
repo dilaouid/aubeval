@@ -20,6 +20,8 @@ I18N.add('es', {
   'cards.barricade.flavor': 'Tablones del aserradero, clavados a toda prisa.', // Des planches de la scierie, clouées à la hâte.
   'cards.thrust.name': 'Estocada', // Estoc
   'cards.thrust.flavor': 'La punta templada en la forja pasa entre las placas.', // La pointe trempée à la forge passe entre les plaques.
+  'cards.brand.name': 'Hierro candente', // Fer rouge
+  'cards.brand.flavor': 'El hierro recién sacado del fuego marca al objetivo: golpea con la mitad de fuerza.', // Le fer sorti du feu marque la cible : elle frappe deux fois moins fort.
   'cards.cheer.name': 'Vítores', // Acclamations
   'cards.cheer.flavor': 'Los habitantes gritan su nombre desde las ventanas.', // Les habitants crient son nom depuis les fenêtres.
   'cards.scythe.name': 'Gran guadaña', // Grande faux

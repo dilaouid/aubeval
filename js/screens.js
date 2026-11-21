@@ -431,6 +431,8 @@ const scenes = (() => {
   // ---- Side panels ----
   function drawForge(b, x, y, w) {
     text(tr('forge_title'), x, y + 10, 16, C.gold, 'left', true); y += 26;
+    const temper = b.lvl >= tune.milestone_levels; // the Trempe: from its first milestone, a +N is worth more
+    y = UI.wrap(temper ? tr('forge_perk_on', { pct: Math.round(Hero.plusBonus() * 100) }) : tr('forge_perk_off', { n: tune.milestone_levels }), x, y, w, 14, temper ? C.good : C.dim) + 6;
     if (b.craft) {
       text(tr('forging', { name: I[b.craft.item].name }), x, y + 8, 14, C.accent, 'left', true);
       UI.bar(x + 230, y, w - 230, 16, 1 - b.craft.left / b.craft.total, C.accent); y += 24;
@@ -444,7 +446,7 @@ const scenes = (() => {
       const price = Hero.craftCost(id);
       UI.cost(price, x, y + 32, { size: 14, gap: 8 });
       UI.button(x + w - 118, y + 4, 118, 36, own ? tr('forge_plus', { n: plus + 1 }) : tr('forge_do'), () => Hero.startCraft(b, id),
-        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? '\n' + tr('forge_plus_tip', { pct: Math.round(tune.plus_bonus * 100) }) : '') });
+        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? '\n' + tr('forge_plus_tip', { pct: Math.round(Hero.plusBonus() * 100) }) : '') });
       Tuto.mark('forge:' + id, x + w - 118, y + 4, 118, 36);
       y += 46;
     }
@@ -615,6 +617,7 @@ const scenes = (() => {
     if (d.service) out.push(tr('up_service', { n: fmtNum(tune.service_radius_step) }));
     if (b.kind === 'hall') out.push(tr('up_hall'));
     if (d.produces && n % ms === 0) out.push(tr('up_double'));
+    if (b.kind === 'forge' && n === ms) out.push(tr('up_forge_perk'));
     if (!d.looks && !d.decor && World.tier(n) > World.tier(b.lvl)) out.push(tr('up_look'));
     return out.join('\n');
   }
@@ -890,7 +893,7 @@ const scenes = (() => {
       for (const id of more) {
         const c = DATA.cards[id];
         UI.icon('icon.lock', x + 8, y + 9, 16); text(c.name, x + 22, y + 9, 14, C.dim, 'left', true);
-        text(c.from === 'hero' ? tr('deck_locked', { n: c.lvl }) : tr('deck_build', { name: B[c.from].name }), x + w, y + 9, 13, C.dim, 'right'); y += 22;
+        text(c.from === 'hero' ? tr('deck_locked', { n: c.lvl }) : c.at ? tr('card_origin_lvl', { card: B[c.from].card, n: c.at }) : tr('deck_build', { name: B[c.from].name }), x + w, y + 9, 13, C.dim, 'right'); y += 22;
       }
     }
     return y;

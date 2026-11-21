@@ -7,9 +7,13 @@
 const Hero = (() => {
   const I = DATA.items;
 
+  /** The forge's level (0 with none). A raid's damage does not lower it: the Trempe is in the gear already forged. */
+  function forgeLevel() { return state.buildings.reduce((n, b) => (b.kind === 'forge' ? Math.max(n, b.lvl || 1) : n), 0); }
+  /** What one +N is worth, as a share of a piece's stats: the Trempe adds to it once the forge reaches its first milestone. */
+  function plusBonus() { return tune.plus_bonus + (forgeLevel() >= tune.milestone_levels ? tune.forge_temper_bonus : 0); }
   /** What a forged piece adds, with its +N reinforcements. */
   function itemStats(id) {
-    const it = I[id], m = 1 + (state.hero.plus[id] || 0) * tune.plus_bonus;
+    const it = I[id], m = 1 + (state.hero.plus[id] || 0) * plusBonus();
     return { atk: (it.atk || 0) * m, def: (it.def || 0) * m, hp: (it.hp || 0) * m };
   }
   /** The hero's numbers right now: base, levels, gear. */
@@ -98,5 +102,5 @@ const Hero = (() => {
    */
   const nameChars = raw => [...String(raw || '').replace(/[^\p{L}\p{M}\s'’-]/gu, '').replace(/\s+/g, ' ').replace(/^ /, '')].slice(0, DATA.hero.nameMax).join('');
 
-  return { itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
+  return { forgeLevel, plusBonus, itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
 })();

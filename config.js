@@ -28,6 +28,7 @@ window.CONFIG = {
   refund_pct: { value: 0.7, min: 0, max: 1, step: 0.05 },            // share of the base price given back on demolish
   repair_pct: { value: 0.3, min: 0, max: 1, step: 0.05 },            // share of the base price to repair a damaged building
   plus_bonus: { value: 0.15, min: 0.05, max: 0.5, step: 0.01 },      // each +1 on a piece of gear adds this share of its stats
+  forge_temper_bonus: { value: 0.05, min: 0, max: 0.3, step: 0.01 }, // the forge's Trempe: added to plus_bonus once it reaches milestone_levels
   plus_cost_growth: { value: 1.5, min: 1.1, max: 3, step: 0.05 },    // each +1 costs x this
 
   // ---- Citizens: classes and needs (data/people.js) ----

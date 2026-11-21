@@ -304,6 +304,7 @@ DATA.strings = {
   pop_tip: 'Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.',
   raid_call_tip: 'Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.',
   forge_plus_tip: 'Chaque +1 ajoute {pct} % de ses bonus.',
+  forge_perk_on: 'Trempe : chaque +N vaut {pct} % de ses bonus.', forge_perk_off: 'Niveau {n} : Trempe (+N plus forts) et carte Fer rouge.', up_forge_perk: 'Palier : Trempe et carte Fer rouge !',
   contracts_none: 'Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.',
   fg_bellows_keys: 'B · ↑ · clic droit',
   span_min: '{m} minute', span_mins: '{m} minutes', span_secs: '{s} secondes',

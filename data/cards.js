@@ -15,6 +15,7 @@
 //   lvl            a hero card: the hero level that teaches it
 //   copies         a hero card: how many are in the deck
 //   max            a building card: one copy per building of that kind, up to this many (1 if left out)
+//   at             a building card: the level its building must have reached (1 if left out)
 //   cost           souffle (energy) it takes to play
 //   pay            { resource: n } taken from the village's stock when it is played
 //   target         one (the marked enemy) | all | random | self
@@ -61,6 +62,8 @@ DATA.cards = {
     flavor: 'Des planches de la scierie, clouées à la hâte.' },
   thrust: { name: 'Estoc', from: 'forge', max: 1, copies: 2, cost: 2, target: 'one', dmg: 1.3, pierce: true,
     flavor: 'La pointe trempée à la forge passe entre les plaques.' },
+  brand: { name: 'Fer rouge', from: 'forge', at: 5, max: 1, copies: 1, cost: 1, target: 'one', dmg: 0.9, pierce: true, weak: 2, exhaust: true,
+    flavor: 'Le fer sorti du feu marque la cible : elle frappe deux fois moins fort.' },
   cheer: { name: 'Acclamations', from: 'house', max: 2, cost: 0, target: 'self', block: 3, draw: 1,
     flavor: 'Les habitants crient son nom depuis les fenêtres.' },
   scythe: { name: 'Grande faux', from: 'farm', max: 2, cost: 1, target: 'all', dmg: 0.4,
@@ -89,5 +92,5 @@ DATA.cards = {
     flavor: 'Le joyau de l’orfèvre répète le geste qui le suit.' },
 };
 // The order cards are listed in (the hero's sheet): his own first, then the village's as it grows.
-DATA.cardOrder = ['strike', 'guard', 'heavy', 'whirl', 'rally', 'order', 'axe', 'barricade', 'thrust', 'cheer', 'scythe', 'ration',
+DATA.cardOrder = ['strike', 'guard', 'heavy', 'whirl', 'rally', 'order', 'axe', 'barricade', 'thrust', 'brand', 'cheer', 'scythe', 'ration',
   'boulder', 'volley', 'spikes', 'bolt', 'militia', 'coffee', 'bless', 'bribe', 'cloak', 'gem'];

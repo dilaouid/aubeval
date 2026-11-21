@@ -625,6 +625,9 @@ I18N.add('en', {
   'strings.pop_tip': 'Houses lodge inhabitants. Their number unlocks new buildings.', // Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.
   'strings.raid_call_tip': 'Call the raid now\nBounty +{pct}% if you repel it.', // Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.
   'strings.forge_plus_tip': 'Each +1 adds {pct}% of its bonuses.', // Chaque +1 ajoute {pct} % de ses bonus.
+  'strings.forge_perk_on': 'Tempering: each +N is worth {pct}% of its bonuses.', // Trempe : chaque +N vaut {pct} % de ses bonus.
+  'strings.forge_perk_off': 'Level {n}: Tempering (stronger +N) and the Red-hot Iron card.', // Niveau {n} : Trempe (+N plus forts) et carte Fer rouge.
+  'strings.up_forge_perk': 'Milestone: Tempering and the Red-hot Iron card!', // Palier : Trempe et carte Fer rouge !
   'strings.contracts_none': 'Contracts come with the quest “Hold the Village”. Each victory raises their rank: enemies and bounties grow without limit.', // Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.
   'strings.fg_bellows_keys': 'B · ↑ · right-click', // B · ↑ · clic droit
   'strings.span_min': '{m} minute', // {m} minute
