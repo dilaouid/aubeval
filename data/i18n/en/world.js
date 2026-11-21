@@ -10,20 +10,20 @@ I18N.add('en', {
   'biomes.rock.name': 'Highlands', // Hautes terres
   'biomes.shore.name': 'Shore', // Rivage
   'biomes.water.name': 'Lake', // Lac
-  'flora.tree.red.name': 'Red Maple', // Érable rouge
-  'flora.tree.gold.name': 'Golden Birch', // Bouleau doré
-  'flora.tree.green.name': 'Oak', // Chêne
-  'flora.tree.pine.name': 'Fir', // Sapin
-  'flora.tree.snowpine.name': 'Snowy Fir', // Sapin enneigé
-  'flora.tree.willow.name': 'Willow', // Saule
-  'flora.tree.dead.name': 'Dead Tree', // Arbre mort
-  'flora.tree.palm.name': 'Palm Tree', // Palmier
+  'flora[tree.red].name': 'Red Maple', // Érable rouge
+  'flora[tree.gold].name': 'Golden Birch', // Bouleau doré
+  'flora[tree.green].name': 'Oak', // Chêne
+  'flora[tree.pine].name': 'Fir', // Sapin
+  'flora[tree.snowpine].name': 'Snowy Fir', // Sapin enneigé
+  'flora[tree.willow].name': 'Willow', // Saule
+  'flora[tree.dead].name': 'Dead Tree', // Arbre mort
+  'flora[tree.palm].name': 'Palm Tree', // Palmier
   'flora.cactus.name': 'Cactus', // Cactus
   'flora.bush.name': 'Bush', // Buisson
   'flora.reeds.name': 'Reeds', // Roseaux
   'flora.rock.name': 'Rock', // Rocher
-  'flora.rock.snow.name': 'Snowy Rock', // Rocher enneigé
-  'flora.rock.sand.name': 'Sandstone', // Grès
+  'flora[rock.snow].name': 'Snowy Rock', // Rocher enneigé
+  'flora[rock.sand].name': 'Sandstone', // Grès
   'resources.wood.name': 'Wood', // Bois
   'resources.planks.name': 'Planks', // Planches
   'resources.stone.name': 'Stone', // Pierre

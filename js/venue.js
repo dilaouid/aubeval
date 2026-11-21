@@ -456,7 +456,7 @@ const Venue = (() => {
       gifts.push({ key, v: val });
     }
     City.event('game', { venue: id, score: medal });
-    if (pop > 0) City.gainPop(pop, tr('vn_why', { title: d.title, medal: tr('vn_medal_' + medal) }));
+    if (pop > 0) City.gainPop(pop, 'vn_why', { title: { venue: id }, medal: { medal } });
     events.push({ type: 'game', venue: id, medal, score });
     v.res = { t: 0, medal, score, record, old, pop, gifts, before, streak: s.streak[id], why: g.why || '' };
     v.mode = 'result';

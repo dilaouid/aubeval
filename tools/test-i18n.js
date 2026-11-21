@@ -91,6 +91,24 @@ test('js/ writes no French decimal comma of its own', () => {
   assert.deepStrictEqual(hits, []);
 });
 
+test('every real layer lays all its texts on the game', () => {
+  for (const lang of ['en', 'es']) {
+    const D = T.loadData(), layer = Object.assign({}, ...Object.values(T.readLayers(lang)));
+    const want = Object.values(layer).filter(t => t != null).length, warn = console.warn;
+    T.I18N.add(lang, layer); T.I18N.lang = lang; console.warn = () => {};
+    let n;
+    try { n = T.I18N.apply(D, { documentElement: {} }); } finally { T.I18N.lang = 'fr'; console.warn = warn; }
+    assert.strictEqual(n, want, lang + ': ' + (want - n) + ' text(s) lead nowhere');
+  }
+});
+
+test('the popularity log keeps keys, not words (a save stays the same in every language)', () => {
+  const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../js');
+  const hits = [];
+  for (const f of fs.readdirSync(dir)) fs.readFileSync(path.join(dir, f), 'utf8').split('\n').forEach((l, i) => { if (/gainPop\([^;]*\btr\(/.test(l)) hits.push(f + ':' + (i + 1)); });
+  assert.deepStrictEqual(hits, []);
+});
+
 let bad = 0;
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

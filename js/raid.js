@@ -373,7 +373,7 @@ const Raid = (() => {
   function duelWon(sg) {
     const a = state.raid.active, name = lordData(sg.lord).name;
     sg.duel = 'won';
-    City.gainPop(tune.duel_pop, tr('pop_duel'));
+    City.gainPop(tune.duel_pop, 'pop_duel');
     toast(a ? tr('duel_won', { name, n: rout(a) }) : tr('duel_won_before', { name }), UI.C.good);
     Save.persist();
   }

@@ -88,15 +88,19 @@ const City = (() => {
   // ---- The hero's popularity ----
   const popularity = () => state.city.pop;
   const floor = () => bonus('floor');
-  /** Adds to the hero's popularity (n may be negative), with a short reason for the log. The higher it is, the less a gain adds. Returns what it really moved by. */
-  function gainPop(n, why) {
+  /**
+   * Adds to the hero's popularity (n may be negative), with a short reason for the log: a key of
+   * data/strings.js and its vars, kept as such in the save so the log reads in the language of the
+   * moment (logText). The higher it is, the less a gain adds. Returns what it really moved by.
+   */
+  function gainPop(n, key, vars) {
     const c = state.city;
     if (!n) return 0;
     const before = c.pop;
     c.pop = clamp(c.pop + (n > 0 ? n * (1 - tune.pop_soften * c.pop / 100) : n), Math.min(floor(), 100), 100);
     const d = c.pop - before;
     if (Math.abs(d) < 0.05) return 0;
-    c.log.unshift({ n: Math.round(d * 10) / 10, why: why || '' }); c.log.length = Math.min(c.log.length, D.logLines);
+    c.log.unshift({ n: Math.round(d * 10) / 10, key, vars: vars || {} }); c.log.length = Math.min(c.log.length, D.logLines);
     flash = { n: d, until: state.t + 3 };
     return d;
   }
@@ -122,6 +126,20 @@ const City = (() => {
   // ---- The ranks ----
   const roman = n => { let s = ''; for (const [v, r] of [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]) while (n >= v) { s += r; n -= v; } return s; };
   /** A rank: one of the named ones, or the one the formula makes after them (« Capitale II » and on, for ever). */
+  /**
+   * A log line's words, in the language of the moment. A var may name something of the game rather
+   * than hold its words: { rank: n }, { b: building id }, { venue: place id }, { medal: id }.
+   * A line from an older save holds its own words (why).
+   */
+  function logText(l) {
+    if (!l.key) return l.why || '';
+    const v = {};
+    for (const k in l.vars || {}) {
+      const x = l.vars[k];
+      v[k] = !x || typeof x !== 'object' ? x : x.rank != null ? rankDef(x.rank).name : x.b ? B[x.b].name : x.venue ? DATA.venues[x.venue].title : x.medal != null ? tr('vn_medal_' + x.medal) : '';
+    }
+    return tr(l.key, v);
+  }
   function rankDef(n) {
     if (n < D.ranks.length) return D.ranks[n];
     const e = D.endless, k = n - D.ranks.length + 1, at = a => a[0] + a[1] * k;
@@ -172,7 +190,7 @@ const City = (() => {
     if (!canProclaim()) { sfx('error'); return false; }
     state.city.rank = n;
     Quests.grant({ gold: d.reward.gold, res: d.reward.res });
-    gainPop(d.reward.pop, tr('city_why_rank', { name: d.name }));
+    gainPop(d.reward.pop, 'city_why_rank', { name: { rank: n } });
     Village.refreshUnlocks();
     ui.banner = { title: tr('city_banner', { name: d.name }), sub: tr('city_banner_sub', { n: n + 1 }), text: d.text + '\n' + tr('reward') + tr('colon') + rewardParts(d.reward).join(', ') + '\n' + tr('city_opens', { list: opensOf(n).join(', ') }) };
     sfx('fanfare'); events.push({ type: 'rank', rank: n }); Save.persist();
@@ -183,7 +201,7 @@ const City = (() => {
   function royalWon(n) {
     const c = state.city;
     c.royal = Math.max(c.royal || 0, n);
-    gainPop(tune.royal_pop, tr('city_why_royal'));
+    gainPop(tune.royal_pop, 'city_why_royal');
     ui.banner = { title: tr('city_royal_won'), sub: rankDef(n).name, text: tr('city_royal_won_text') };
     sfx('fanfare'); Save.persist();
   }
@@ -277,7 +295,7 @@ const City = (() => {
     if (!o || !ready(o)) { sfx('error'); return false; }
     if (o.kind === 'deliver') state.res[o.res] -= o.n;
     const lines = Quests.grant({ gold: o.gold, res: o.bonus || {} });
-    gainPop(o.pop, tr('city_why_order'));
+    gainPop(o.pop, 'city_why_order');
     const worth = worthOf(o);
     c.done += worth; c.orders[i] = { wait: waitNow() };
     toast(tr('city_order_done', { title: tplOf(o).title }) + (worth > 1 ? ' (×' + worth + ')' : '') + ' · ' + lines.join(', '), C.gold); sfx('coin');
@@ -302,17 +320,17 @@ const City = (() => {
     const c = state.city, F = D.fame, e = data || {};
     const bump = (kind, test) => { for (const o of c.orders) if (o.kind === kind && o.have < o.n && (!test || test(o))) o.have++; };
     if (type === 'raid') {
-      if (e.won) { c.raids++; gainPop(e.siege ? F.siege : F.raid, tr(e.siege ? 'city_why_siege' : 'city_why_raid')); bump('raid'); }
-      else gainPop(F.raidLost, tr('city_why_raidlost'));
-    } else if (type === 'camp') { c.camps++; c.raids += tune.camp_raid_credit; gainPop(F.camp, tr('city_why_camp')); bump('camp'); }
-    else if (type === 'quest') gainPop(F.quest, tr('city_why_quest'));
-    else if (type === 'battle') { gainPop(e.boss ? F.boss : F.battle, tr(e.boss ? 'city_why_boss' : 'city_why_battle')); bump('battle'); }
-    else if (type === 'class') { gainPop(F.cls, tr('city_why_class')); bump('raise'); }
+      if (e.won) { c.raids++; gainPop(e.siege ? F.siege : F.raid, e.siege ? 'city_why_siege' : 'city_why_raid'); bump('raid'); }
+      else gainPop(F.raidLost, 'city_why_raidlost');
+    } else if (type === 'camp') { c.camps++; c.raids += tune.camp_raid_credit; gainPop(F.camp, 'city_why_camp'); bump('camp'); }
+    else if (type === 'quest') gainPop(F.quest, 'city_why_quest');
+    else if (type === 'battle') { gainPop(e.boss ? F.boss : F.battle, e.boss ? 'city_why_boss' : 'city_why_battle'); bump('battle'); }
+    else if (type === 'class') { gainPop(F.cls, 'city_why_class'); bump('raise'); }
     else if (type === 'build') { bump('build', o => o.of === e.kind); if (B[e.kind] && B[e.kind].monument) founded(e.kind); }
-    else if (type === 'site') { gainPop(F.site, tr('city_why_site')); bump('site'); }
+    else if (type === 'site') { gainPop(F.site, 'city_why_site'); bump('site'); }
     else if (type === 'game') {
       const s = clamp(e.score | 0, 0, 3);
-      gainPop(F.game[s], tr('city_why_game'));
+      gainPop(F.game[s], 'city_why_game');
       bump('game', o => s >= o.score && (!o.venue || o.venue === e.venue || !B[e.venue])); // a venue named otherwise than its building: any game counts
     }
     cache = null;
@@ -323,7 +341,7 @@ const City = (() => {
   function founded(kind) {
     const c = state.city, b = monument(kind);
     if (!b) return;
-    if (!c.works[kind]) gainPop(D.fame.stage, tr('city_why_work', { name: B[kind].name }));
+    if (!c.works[kind]) gainPop(D.fame.stage, 'city_why_work', { name: { b: kind } });
     b.lvl = Math.max(1, c.works[kind] || 1); b.stage = Math.min(STAGES, b.lvl); c.works[kind] = b.lvl;
   }
   /** The price of a monument's next step: a stage, then embellishments that grow without end. */
@@ -337,7 +355,7 @@ const City = (() => {
     if (!Village.pay(stageCost(b))) { toast(tr('no_funds'), C.bad); return false; }
     b.lvl++; b.stage = Math.min(STAGES, b.lvl); state.city.works[b.kind] = b.lvl; cache = null;
     const name = B[b.kind].name, done = b.lvl === STAGES;
-    gainPop(b.lvl <= STAGES ? D.fame.stage : D.fame.embel, tr('city_why_work', { name }));
+    gainPop(b.lvl <= STAGES ? D.fame.stage : D.fame.embel, 'city_why_work', { name: { b: b.kind } });
     World.dust(b); sfx('fanfare');
     if (done) ui.banner = { title: tr('city_work_banner'), sub: name, text: tr('city_work_banner_text', { name }) };
     else toast(b.lvl < STAGES ? tr('city_work_done', { name, stage: D.stages[b.lvl - 1] }) : tr('city_work_more', { name, n: b.lvl - STAGES }), C.gold);
@@ -498,7 +516,7 @@ const City = (() => {
     Tuto.mark('city:pop', x, popTop, w, y - popTop);
     text(tr('city_pop_log'), x, y + 8, 13, C.gold, 'left', true); y += 20;
     if (!c.log.length) y = UI.wrap(tr('city_pop_nolog'), x, y, w, 12, C.dim, 16);
-    for (const l of c.log) { text((l.n > 0 ? '+' : '−') + fmtNum(Math.abs(l.n)), x + 34, y + 8, 13, l.n > 0 ? C.good : C.bad, 'right', true); text(l.why, x + 44, y + 8, 13, C.text, 'left'); y += 18; }
+    for (const l of c.log) { text((l.n > 0 ? '+' : '−') + fmtNum(Math.abs(l.n)), x + 34, y + 8, 13, l.n > 0 ? C.good : C.bad, 'right', true); text(logText(l), x + 44, y + 8, 13, C.text, 'left'); y += 18; }
     y = section(tr('city_next', { name: nx.name }), x, y + 8, w);
     const needs = needsOf(n + 1);
     for (const p of Quests.describe(needs)) y = check(p.ok, p.text, x, y, w);
@@ -680,7 +698,7 @@ const City = (() => {
   function demo() {
     const c = state.city, h = DATA.map.hall, q = params.get('crank');
     Object.assign(c, { rank: q != null ? Math.max(0, Number(q) | 0) : 2, pop: 46, done: 17, raids: 6, camps: 0 });
-    c.log = [{ n: 2.3, why: tr('city_why_order') }, { n: 2.4, why: tr('city_why_raid') }, { n: 1.6, why: tr('city_why_game') }, { n: -4, why: tr('city_why_raidlost') }, { n: 0.8, why: tr('city_why_battle') }];
+    c.log = [{ n: 2.3, key: 'city_why_order' }, { n: 2.4, key: 'city_why_raid' }, { n: 1.6, key: 'city_why_game' }, { n: -4, key: 'city_why_raidlost' }, { n: 0.8, key: 'city_why_battle' }];
     c.tax.artisan = 0; c.tax.merchant = 2;
     const tx = h.x + 15, ty = h.y + 1; // the cathedral, outside the east rampart
     for (let y = 0; y < B.cathedral.h; y++) for (let x = 0; x < B.cathedral.w; x++) Village.clearTile(tx + x, ty + y);

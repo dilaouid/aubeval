@@ -655,7 +655,7 @@ const scenes = (() => {
     const c = Village.classOf(b), nx = Village.nextClass(b), sat = Village.satOf(b);
     y = section(c.name, x, y, w);
     y = UI.wrap(c.desc, x, y, w, 13, C.dim) + 4;
-    text(tr('needs') + tr('colon').trimEnd(), x, y + 11, 14, C.dim, 'left'); let nxp = x + 70;
+    const needL = tr('needs') + tr('colon').trimEnd(); text(needL, x, y + 11, 14, C.dim, 'left'); let nxp = x + Math.max(70, UI.width(needL, 14) + 10); // the icons start after the label, however long in this language
     for (const r in c.needs) { UI.icon(RES[r].icon, nxp + 8, y + 11, 16); text('×' + c.needs[r], nxp + 18, y + 12, 14, b.lack === r ? C.bad : C.text, 'left', true); nxp += 46; }
     text(tr('every', { n: fmtNum(tune.need_cycle) }), x, y + 30, 12, C.dim, 'left'); y += 42;
     for (const k of c.services) y = check(Village.servicesOf(b).has(k), tr('in_reach', { name: B[k].name }), x, y, w);

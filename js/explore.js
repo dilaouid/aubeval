@@ -359,15 +359,15 @@ const Explore = (() => {
     const k = K[s.kind], r = rec(s);
     if (s.kind === 'ruin') {
       r.done = 1;
-      City.gainPop(k.pop, tr('ex_pop_ruin'));
+      City.gainPop(k.pop, 'ex_pop_ruin');
       if (rng() < k.relic.chance) {
         const m = gainMult(s.lvl), extra = { gold: Math.round(k.relic.gold * m), res: Object.assign({}, k.relic.res) };
         toast(tr('ex_relic_found', { what: Quests.grant(extra).join(', ') }), UI.C.gold);
-        City.gainPop(k.relic.pop, tr('ex_pop_relic'));
+        City.gainPop(k.relic.pop, 'ex_pop_relic');
       } else toast(tr('ex_won_ruin', { name: s.name }), UI.C.good);
     } else {
       r.n = (r.n || 0) + 1; r.wait = k.refill;
-      City.gainPop(k.pop, tr('ex_pop_lair'));
+      City.gainPop(k.pop, 'ex_pop_lair');
       toast(tr('ex_won_lair', { name: s.name, time: fmtTime(k.refill) }), UI.C.good);
     }
     completed(s);

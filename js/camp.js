@@ -118,7 +118,7 @@ const Camp = (() => {
     if (r.warned && !r.active) { r.warned = false; r.from = null; r.siege = null; } // the horn had sounded: that raid (or siege) will never leave
     World.blast(mid.x, mid.y, Village.CAMP * T); floatText(mid.x, mid.y, '+' + gold, UI.C.gold, 22, 30);
     state.gained = tr('camp_fall', { gold, time: fmtTime(tune.camp_respite) }) + (tune.camp_raid_credit > 0 ? tr('camp_fall_credit', { k: tune.camp_raid_credit }) : ''); toast(state.gained, UI.C.good); sfx('fanfare');
-    City.event('camp'); City.gainPop(tune.camp_pop, tr('pop_camp')); // the city's orders and the hero's popularity
+    City.event('camp'); City.gainPop(tune.camp_pop, 'pop_camp'); // the city's orders and the hero's popularity
     Raid.touch(); Save.persist();
   }
   /** The respite is over: a new camp, farther out and stronger, and the raids' clock starts again. */

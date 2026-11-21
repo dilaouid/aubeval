@@ -44,12 +44,14 @@ function step(arr, i) {
   const e = arr[i], id = e && typeof e === 'object' && typeof e.id === 'string' ? e.id : null;
   return id && arr.filter(x => x && x.id === id).length === 1 ? '[' + id + ']' : '[' + i + ']';
 }
+/** A key's step: '.key', or '[key]' when the key holds a dot or a bracket ('tree.red' in DATA.flora). */
+const join = (p, k) => (/[.[\]]/.test(k) ? p + '[' + k + ']' : p ? p + '.' + k : k);
 /** Walks DATA: visit(path, value, field) for every string, field being the nearest named key. */
 function walk(D, visit) {
   (function go(o, p, field) {
     if (typeof o === 'string') return visit(p, o, field);
     if (Array.isArray(o)) return o.forEach((v, i) => go(v, p + step(o, i), field));
-    if (o && typeof o === 'object') for (const k of Object.keys(o)) go(o[k], p ? p + '.' + k : k, k);
+    if (o && typeof o === 'object') for (const k of Object.keys(o)) go(o[k], join(p, k), k);
   })(D, '', '');
 }
 /** Every text of DATA: path -> French, in the order of the files. */
@@ -68,7 +70,7 @@ function pathOf(D, pred, field) {
     if (found || !o || typeof o !== 'object') return;
     if (!Array.isArray(o) && pred(o)) { found = p + '.' + field; return; }
     if (Array.isArray(o)) o.forEach((v, i) => go(v, p + step(o, i)));
-    else for (const k of Object.keys(o)) go(o[k], p ? p + '.' + k : k);
+    else for (const k of Object.keys(o)) go(o[k], join(p, k));
   })(D, '');
   return found;
 }
