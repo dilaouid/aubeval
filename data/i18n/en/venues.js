@@ -1,0 +1,139 @@
+// PROTOTYPE - NOT FOR PRODUCTION
+// EN layer of data/venues.js (js/i18n.js). One text per path, the French beside it.
+// null: still to translate. Written by node tools/i18n.js extract en; translations already here are kept.
+I18N.add('en', {
+  'venueBuffs.pop.name': 'Gaspard’s Round', // La tournée de Gaspard
+  'venueBuffs.pop.text': 'Popularity from games +{n}%', // Popularité des jeux +{n} %
+  'venueBuffs.pop.short': 'games +{n}%', // jeux +{n} %
+  'venueBuffs.buy.name': 'Friend’s Price', // Prix d’amie
+  'venueBuffs.buy.text': 'Market purchases −{n}%', // Achats au marché −{n} %
+  'venueBuffs.buy.short': 'buying −{n}%', // achats −{n} %
+  'venueBuffs.sell.name': 'Friend’s Price', // Prix d’amie
+  'venueBuffs.sell.text': 'Market sales +{n}%', // Ventes au marché +{n} %
+  'venueBuffs.sell.short': 'selling +{n}%', // ventes +{n} %
+  'venueBuffs.atk.name': 'Well-Beaten Blade', // Lame bien battue
+  'venueBuffs.atk.text': 'Hero’s attack +{n}%', // Attaque du héros +{n} %
+  'venueBuffs.atk.short': 'attack +{n}%', // attaque +{n} %
+  'venueBuffs.forge.name': 'Roaring Fire', // Feu vif
+  'venueBuffs.forge.text': 'Forge {n}% faster', // Forge {n} % plus rapide
+  'venueBuffs.forge.short': 'forge +{n}%', // forge +{n} %
+  'venues.cafe.name': 'The Aubeval Café', // Le Café d’Aubeval
+  'venues.cafe.title': 'The Rush', // Le coup de feu
+  'venues.cafe.unit': 'pennies in tips', // sous de pourboire
+  'venues.cafe.how': 'Customers order, then their bubble closes: serve the right cups, in order, before their patience wears thin.', // Les clients commandent, puis leur bulle se referme : servez les bonnes tasses, dans l’ordre, avant que leur patience ne s’use.
+  'venues.cafe.keys': 'Keys 1 to 6, or click the cups. A wrong cup costs patience, but the customer repeats.', // Touches 1 à 6, ou clic sur les tasses. Une tasse fausse coûte de la patience, mais le client répète.
+  'venues.cafe.drinks[noir].name': 'Black', // Noir
+  'venues.cafe.drinks[creme].name': 'White', // Crème
+  'venues.cafe.drinks[noisette].name': 'Macchiato', // Noisette
+  'venues.cafe.drinks[chocolat].name': 'Chocolate', // Chocolat
+  'venues.cafe.drinks[tisane].name': 'Tisane', // Tisane
+  'venues.cafe.drinks[lait].name': 'Warm Milk', // Lait chaud
+  'venues.cafe.thanks[0]': 'Thank you!', // Merci !
+  'venues.cafe.thanks[1]': 'Perfect.', // Parfait.
+  'venues.cafe.thanks[2]': 'Ah, at last!', // Ah, enfin !
+  'venues.cafe.thanks[3]': 'Splendid.', // Fameux.
+  'venues.cafe.leaves[0]': 'Too slow!', // Trop long !
+  'venues.cafe.leaves[1]': 'I’m off!', // Je m’en vais !
+  'venues.cafe.leaves[2]': 'Never mind.', // Tant pis.
+  'venues.cafe.greet': 'Come in, come in! Here we serve it hot and talk it loud. When the room fills up, a hand behind the counter is never turned away.', // Entrez, entrez ! Ici on sert chaud et on parle fort. Quand la salle se remplit, un coup de main derrière le comptoir ne se refuse pas.
+  'venues.cafe.ready[0]': 'The room’s filling up, hero. Will you step behind the counter?', // La salle se remplit, héros. Vous passez derrière le comptoir ?
+  'venues.cafe.ready[1]': 'The rush is coming. There’s an apron waiting for you.', // Ça va être le coup de feu. Un tablier vous attend.
+  'venues.cafe.ready[2]': 'The cups are hot, the customers are coming. Shall we?', // Les tasses sont chaudes, les clients arrivent. On y va ?
+  'venues.cafe.wait[0]': 'Let me dry my cups, and we’ll go again shortly.', // Laissez-moi essuyer mes tasses, on remet ça tout à l’heure.
+  'venues.cafe.wait[1]': 'The room’s catching its breath. Come back in a while.', // La salle souffle un peu. Revenez dans un moment.
+  'venues.cafe.chat[0]': 'A cup, black and strong, and the day begins.', // Une tasse noire et serrée, et la journée commence.
+  'venues.cafe.chat[1]': 'An artisan without coffee is just a yawning peasant.', // Un artisan sans café, c’est un paysan qui bâille.
+  'venues.cafe.chat[2]': 'Here we put the world to rights. And the village, sometimes.', // Ici, on refait le monde. Et le village, parfois.
+  'venues.cafe.chat[3]': 'When the hero serves at the counter, the whole street comes to watch. Good for you, good for me.', // Quand le héros sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.
+  'venues.cafe.chat[4]': 'Master Odon always takes a white. He says it’s for the ledgers.', // Maître Odon prend toujours un crème. Il dit que c’est pour les registres.
+  'venues.cafe.tips[0]': 'Word at the counter is that', // On dit au comptoir que
+  'venues.cafe.tips[1]': 'Between two cups, I heard that', // Entre deux tasses, j’ai entendu que
+  'venues.cafe.tips[2]': 'Lend an ear:', // Tendez l’oreille :
+  'venues.cafe.glad[0]': 'Another one served!', // Et un de servi !
+  'venues.cafe.glad[1]': 'Well done!', // Bien joué !
+  'venues.cafe.glad[2]': 'We’re rolling!', // Ça tourne !
+  'venues.cafe.glad[3]': 'There you go!', // Voilà !
+  'venues.cafe.cross[0]': 'Not that one!', // Pas celle-là !
+  'venues.cafe.cross[1]': 'Ouch, the order!', // Aïe, la commande !
+  'venues.cafe.cross[2]': 'No, no!', // Non, non !
+  'venues.cafe.lost[0]': 'Another one gone…', // Encore un de parti…
+  'venues.cafe.lost[1]': 'He’ll be back. Maybe.', // Il reviendra. Peut-être.
+  'venues.cafe.after[0]': 'The room emptied, and not in a good way… We’ll try again.', // La salle s’est vidée, et pas en bien… On réessaiera.
+  'venues.cafe.after[1]': 'Not bad for a hero! The customers smiled.', // Pas mal pour un héros ! Les clients ont souri.
+  'venues.cafe.after[2]': 'Fine service! The whole street will be talking about you.', // Beau service ! On va parler de vous dans toute la rue.
+  'venues.cafe.after[3]': 'Service fit for a king! A round on the house, and all Aubeval will know who poured it.', // Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.
+  'venues.market.name': 'The Market Hall', // La Halle du Marché
+  'venues.market.title': 'Haggling', // Marchandage
+  'venues.market.unit': 'percent off', // % de rabais
+  'venues.market.how': 'Stop the needle in the green zone to bring the price down. After each round: push further, or shake on it. Push once too often and she walks away.', // Arrêtez l’aiguille dans la zone verte pour faire baisser le prix. Après chaque manche : pousser encore, ou toper. Poussez une fois de trop et elle s’en va.
+  'venues.market.keys': 'Space or click: stop the needle. ↑: push further. Enter: shake on it.', // Espace ou clic : arrêter l’aiguille. ↑ : pousser encore. Entrée : toper.
+  'venues.market.lots[0].name': 'A lot of Levantine spices', // Un lot d’épices du Levant
+  'venues.market.lots[1].name': 'Ten rolls of fine cloth', // Dix rouleaux d’étoffe fine
+  'venues.market.lots[2].name': 'Three sacks of island coffee', // Trois sacs de café des îles
+  'venues.market.lots[3].name': 'A casket of jewels', // Un coffret de bijoux
+  'venues.market.lots[4].name': 'Twenty fleeces of wool', // Vingt toisons de laine
+  'venues.market.greet': 'Come closer, mayor. Everything is for sale here, and everything is up for discussion. But know this: I never lose twice to the same customer.', // Approchez, bourgmestre. Tout s’achète ici, et tout se discute. Mais sachez-le : je ne perds jamais deux fois contre le même client.
+  'venues.market.ready[0]': 'I have a fine bargain on the table. Do you dare to haggle?', // J’ai une belle affaire sur la table. Vous osez marchander ?
+  'venues.market.ready[1]': 'A lot has just come in. Name your price, and let us have a laugh.', // Un lot vient d’arriver. Faites-moi votre prix, qu’on rie un peu.
+  'venues.market.ready[2]': 'Let us see if you count as well as you build.', // Voyons si vous comptez aussi bien que vous bâtissez.
+  'venues.market.wait[0]': 'No bargains just now, my friend. The next caravan arrives soon.', // Pas d’affaire pour l’instant, mon ami. La prochaine caravane arrive bientôt.
+  'venues.market.wait[1]': 'Let me go over my accounts. Come back shortly.', // Laissez-moi refaire mes comptes. Revenez tout à l’heure.
+  'venues.market.chat[0]': 'Everything can be bought, my friend. Above all, what’s lacking.', // Tout s’achète, mon ami. Surtout ce qui manque.
+  'venues.market.chat[1]': 'My spices come from beyond the edge of your maps.', // Mes épices viennent de plus loin que vos cartes.
+  'venues.market.chat[2]': 'I sell dear and buy cheap: that’s the trade.', // Je vends cher, j’achète bas : c’est un métier.
+  'venues.market.chat[3]': 'A beloved hero pays less. Merchants read faces too.', // Un héros qu’on aime paie moins cher. Les marchands aussi lisent les visages.
+  'venues.market.chat[4]': 'Gaspard owes me three sacks of coffee. Don’t tell him I’m counting.', // Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.
+  'venues.market.tips[0]': 'Between ourselves,', // Entre nous,
+  'venues.market.tips[1]': 'My customers gossip:', // Mes clients bavardent :
+  'venues.market.tips[2]': 'A merchant hears everything:', // Une marchande entend tout :
+  'venues.market.glad[0]': 'Hmph. Nicely played.', // Hmpf. Joli coup.
+  'venues.market.glad[1]': 'You’re bleeding me dry!', // Vous m’étranglez !
+  'venues.market.glad[2]': 'Wherever did you learn that?', // D’où sortez-vous ce talent ?
+  'venues.market.cross[0]': 'Ha! No.', // Ha ! Non.
+  'venues.market.cross[1]': 'You’re dreaming.', // Vous rêvez.
+  'venues.market.cross[2]': 'At that price? Never.', // À ce prix-là ? Jamais.
+  'venues.market.okay[0]': 'Very well…', // Soit…
+  'venues.market.okay[1]': 'Fine, fine.', // Bon, bon.
+  'venues.market.okay[2]': 'You drive a hard bargain.', // Vous êtes dur.
+  'venues.market.pushed[0]': 'Again?!', // Encore ?!
+  'venues.market.pushed[1]': 'You presume…', // Vous abusez…
+  'venues.market.pushed[2]': 'My patience has a price.', // Ma patience a un prix.
+  'venues.market.gone': 'Enough! Keep your gold, I’ll keep my wares.', // Assez ! Gardez votre or, je garde ma marchandise.
+  'venues.market.after[0]': 'You wanted too much. Come back when you know when to stop.', // Vous avez voulu trop. Revenez quand vous saurez vous arrêter.
+  'venues.market.after[1]': 'A small bargain. Honest. Too honest for me.', // Une petite affaire. Honnête. Trop honnête pour moi.
+  'venues.market.after[2]': 'Well haggled. My prices will smile on you for a while.', // Bien négocié. Mes prix vous souriront un moment.
+  'venues.market.after[3]': 'You’ve fleeced me! The whole market is talking already… Friend’s price, for a time.', // Vous m’avez dépouillée ! Tout le marché en parle déjà… Prix d’amie, pour un temps.
+  'venues.forge.name': 'Bram’s Forge', // La Forge de Bram
+  'venues.forge.title': 'Beat the Iron', // Battre le fer
+  'venues.forge.unit': 'percent quality', // % de qualité
+  'venues.forge.how': 'Strike when the mark reaches the anvil, and keep the heat in its band with the bellows. A chain of true blows sends the sparks flying.', // Frappez quand la marque arrive sur l’enclume, et gardez la chaleur dans sa bande avec le soufflet. Une chaîne de coups justes fait voler les étincelles.
+  'venues.forge.keys': 'Space or click: strike. B, ↑ or right-click: bellows.', // Espace ou clic : frapper. B, ↑ ou clic droit : soufflet.
+  'venues.forge.greet': 'Ah, the hero! Put down that sword, take this hammer. A blade takes two to beat: I hold, you strike.', // Ah, le héros ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.
+  'venues.forge.ready[0]': 'The iron’s red-hot. You strike, I hold?', // Le fer est au rouge. Vous frappez, je tiens ?
+  'venues.forge.ready[1]': 'I’ve a blade waiting for its hammer. Yours?', // J’ai une lame qui attend son marteau. Le vôtre ?
+  'venues.forge.ready[2]': 'The fire’s good. Show me that arm.', // Le feu est bon. Montrez-moi ce bras.
+  'venues.forge.wait[0]': 'The iron’s cooling, let it rest. We’ll forge again shortly.', // Le fer refroidit, laissez-le reposer. On reforgera tout à l’heure.
+  'venues.forge.wait[1]': 'My arms need a rest too. Come back later.', // Mes bras aussi ont besoin d’une pause. Revenez plus tard.
+  'venues.forge.chat[0]': 'Good wood, good iron, and I’ll make you a legend.', // Du bon bois, du bon fer, et je vous fais une légende.
+  'venues.forge.chat[1]': 'A blade wants respect. And reinforcing.', // Une lame, ça se respecte. Et ça se renforce.
+  'venues.forge.chat[2]': 'The hero breaks, I mend.', // Le héros casse, moi je répare.
+  'venues.forge.chat[3]': 'A hero beating his own iron, folk like that. They come and watch through the window.', // Un héros qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.
+  'venues.forge.chat[4]': 'Lady Ysolde says my iron’s too dear. She’s never seen hers.', // Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.
+  'venues.forge.tips[0]': 'Between hammer blows, I hear that', // Entre deux coups de marteau, j’entends que
+  'venues.forge.tips[1]': 'The guards told me so:', // Les gardes me l’ont dit :
+  'venues.forge.tips[2]': 'Word gets round at the forge:', // Ça se sait à la forge :
+  'venues.forge.glad[0]': 'There!', // Voilà !
+  'venues.forge.glad[1]': 'Well struck!', // Bien frappé !
+  'venues.forge.glad[2]': 'It rings!', // Ça chante !
+  'venues.forge.cross[0]': 'Missed!', // Raté !
+  'venues.forge.cross[1]': 'The rhythm!', // Le rythme !
+  'venues.forge.cross[2]': 'Listen to the iron!', // Écoutez le fer !
+  'venues.forge.chain[0]': 'Now that’s forging!', // Ça, c’est forger !
+  'venues.forge.chain[1]': 'She sings!', // Elle chante !
+  'venues.forge.cold': 'Too cold! The bellows!', // Trop froid ! Le soufflet !
+  'venues.forge.hot': 'It’s burning! Easy!', // Ça brûle ! Doucement !
+  'venues.forge.after[0]': 'That blade’s fit for scrap. We’ll start again.', // Cette lame-là ira aux clous. On recommencera.
+  'venues.forge.after[1]': 'It cuts. That’s something.', // Elle coupe. C’est déjà ça.
+  'venues.forge.after[2]': 'Fine blade! Your arm will remember it in battle.', // Belle lame ! Votre bras s’en souviendra au combat.
+  'venues.forge.after[3]': 'A legendary blade! Strike like that in battle and nothing will stand.', // Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.
+});
