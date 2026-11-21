@@ -871,20 +871,23 @@ const scenes = (() => {
     return UI.wrap(tr('soldiers_help'), x, y, w, 12, C.dim, 16);
   }
   function drawHero() {
-    const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48;
+    const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48, pid = Hero.art('portrait'), sh = pid && Art.sheet(pid), raid = !!state.raid.active;
     UI.panel(P.x, P.y, P.w, P.h, tr('hero_title') + ' · ' + heroName(), closePanel);
-    UI.sprite(Hero.art('battle'), x, P.y + 56, 2, Hero.weaponTier());
-    const sx = x + 100; let y = P.y + 72;
+    UI.plate(x, P.y + 56, 136, 136); // the portrait alive on a plate, as a shopkeeper's (drawKeeper); no portrait yet: the battle sprite
+    if (sh) { const s = Art.get(pid, Math.floor(state.t * tune.portrait_fps) % sh.cols), k = Math.min(1, 128 / (Math.max(s.width, s.height) * PX)); blit(s, x + 68 - s.width * PX * k / 2, P.y + 188 - s.height * PX * k, k); }
+    else UI.sprite(Hero.art('battle'), x + 4, P.y + 60, 2, Hero.weaponTier());
+    UI.button(x, P.y + 198, 136, 28, tr('hero_look'), () => openNaming({ edit: true }), { size: 12, disabled: raid, tip: raid ? tr('hero_look_raid') : null });
+    const sx = x + 148, sw = w - 148; let y = P.y + 72;
     text(tr('level', { n: h.lvl }), sx, y, 20, C.gold, 'left', true);
     text(`${h.xp} / ${Hero.xpNeed(h.lvl)} XP`, x + w, y, 14, C.dim, 'right'); y += 18;
-    UI.bar(sx, y, w - 100, 14, h.xp / Hero.xpNeed(h.lvl), C.accent); y += 28;
+    UI.bar(sx, y, sw, 14, h.xp / Hero.xpNeed(h.lvl), C.accent); y += 28;
     UI.icon('icon.hp', sx + 12, y + 8, 32); text(String(st.hp), sx + 30, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.atk', sx + 100, y + 8, 32); text(fmtNum(st.atk), sx + 118, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.def', sx + 188, y + 8, 32); text(fmtNum(st.def), sx + 206, y + 9, 17, C.text, 'left', true); y += 32;
+    UI.icon('icon.atk', sx + 78, y + 8, 32); text(fmtNum(st.atk), sx + 96, y + 9, 17, C.text, 'left', true);
+    UI.icon('icon.def', sx + 144, y + 8, 32); text(fmtNum(st.def), sx + 162, y + 9, 17, C.text, 'left', true); y += 32;
     const ms = state.mission && DATA.missions.find(k => k.id === state.mission.id);
     const trip = !ms && Explore.onTrip(); // away at a place found in the wild (js/explore.js)
-    UI.wrap(ms ? tr('mission_run', { title: ms.title }) + ' · ' + fmtTime(state.mission.left) : trip ? tr('ex_trip') : tr('at_village'), sx, y - 2, w - 100, 14, ms || trip ? C.accent : C.dim, 18);
-    UI.scrollBox('hero', x, P.y + 160, w, P.h - 176, y0 => heroBody(h, x, y0, w));
+    UI.wrap(ms ? tr('mission_run', { title: ms.title }) + ' · ' + fmtTime(state.mission.left) : trip ? tr('ex_trip') : tr('at_village'), sx, y - 2, sw, 14, ms || trip ? C.accent : C.dim, 18);
+    UI.scrollBox('hero', x, P.y + 236, w, P.h - 252, y0 => heroBody(h, x, y0, w));
   }
   /** The hero's gear, bag and skills, from y down. Returns the y under them. */
   function heroBody(h, x, y, w) {
@@ -1201,7 +1204,7 @@ const scenes = (() => {
     document.body.appendChild(f);
     return f;
   }
-  /** opts.edit: the retouching of a hero already in the game (kept in ui.nameEdit; the screen for it comes later). */
+  /** opts.edit: the retouching of a hero already in the game (kept in ui.nameEdit): the pick and the name start from his or hers, and the way out is back to his or her panel. */
   function openNaming(opts) {
     const f = field();
     scene = 'naming'; ui.nameWhy = null; ui.nameEdit = !!(opts && opts.edit);
@@ -1217,12 +1220,21 @@ const scenes = (() => {
     s.width = ((b.w - 8) * k) + 'px'; s.height = ((b.h - 8) * k) + 'px'; s.fontSize = (26 * k) + 'px';
   }
   function nameConfirm() {
+    if (scene !== 'naming') return; // a key read twice (the field, then the scene) leaves once
     const r = Hero.cleanName(nameField.value);
     if (r.why) { ui.nameWhy = r.why; sfx('error'); nameField.focus(); return; }
+    const edit = ui.nameEdit;
     state.hero.name = r.name; state.hero.look = heroLook().id; closeNaming(); // only now is the choice written
+    if (edit) { Save.persist(); leaveEdit(); sfx('click'); return; } // a game under way: saved again, never begun
     Save.begin(); scene = 'play'; sfx('click');
   }
-  function nameBack() { closeNaming(); scene = 'title'; ui.titleWipe = 0; }
+  /** Back to the hero's panel, over the village, after retouching him or her. */
+  function leaveEdit() { scene = 'play'; ui.panel = 'hero'; }
+  function nameBack() {
+    if (scene !== 'naming') return;
+    const edit = ui.nameEdit; closeNaming();
+    if (edit) leaveEdit(); else { scene = 'title'; ui.titleWipe = 0; }
+  }
   /** Another land: reset() makes a new game, but the hero being picked and the name being typed are kept. */
   function otherMap() { const pick = ui.heroPick, edit = ui.nameEdit, v = nameField.value; reset(Village.drawSeed(false)); ui.heroPick = pick; ui.nameEdit = edit; nameField.value = v; }
   function drawNaming() {
@@ -1243,8 +1255,10 @@ const scenes = (() => {
     UI.sprite(Hero.art('battle'), px + 36, sy, 2, 1);
     const w = World.unitSprite('hero', 0, 1, true, ui.titleT);
     blit(w, px + 136, sy + 128 - w.height * PX, 1);
-    text(tr('map_no', { n: state.mapSeed }), b.x, py + 288, 15, C.gold, 'left', true); // the land behind the panel, and another one to start on
-    UI.button(b.x + b.w - 170, py + 272, 170, 32, tr('map_other'), otherMap, { size: 13 });
+    if (!ui.nameEdit) { // a new game: the land behind the panel, and another one to start on
+      text(tr('map_no', { n: state.mapSeed }), b.x, py + 288, 15, C.gold, 'left', true);
+      UI.button(b.x + b.w - 170, py + 272, 170, 32, tr('map_other'), otherMap, { size: 13 });
+    }
     UI.label(tr('name_ask'), b.x + b.w / 2, b.y - 36, 20, C.text);
     UI.box(b.x, b.y, b.w, b.h, '#1b1420', ui.nameWhy ? C.bad : document.activeElement === f ? C.gold : C.lineL);
     UI.region(b.x, b.y, b.w, b.h, () => f.focus());
@@ -1253,8 +1267,8 @@ const scenes = (() => {
     UI.wrap(ui.nameWhy ? tr(ui.nameWhy, lim) : tr('name_rule', lim), 640, b.y + b.h + 40, pw - 60, 14, ui.nameWhy ? C.bad : C.dim, 18, false, 'center');
     const by = py + ph - 96;
     UI.button(px + 40, by, 200, 46, tr('name_back'), nameBack, { size: 17 });
-    UI.button(px + pw - 300, by, 260, 46, tr('name_ok'), nameConfirm, { size: 18, primary: true });
-    text(tr('name_keys'), 640, by + 68, 13, C.dim, 'center');
+    UI.button(px + pw - 300, by, 260, 46, tr(ui.nameEdit ? 'name_ok_edit' : 'name_ok'), nameConfirm, { size: 18, primary: true });
+    text(tr(ui.nameEdit ? 'name_keys_edit' : 'name_keys'), 640, by + 68, 13, C.dim, 'center');
     placeField();
   }
   function drawTitle() {

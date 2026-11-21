@@ -21,6 +21,8 @@ I18N.add('en', {
   'strings.name_ok': 'Begin', // Commencer
   'strings.name_back': 'Back', // Retour
   'strings.name_keys': 'Enter: begin · ↑ ↓: change hero · Esc: back', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_ok_edit': 'Confirm', // Valider
+  'strings.name_keys_edit': 'Enter: confirm · ↑ ↓: change hero · Esc: back', // Entrée : valider · ↑ ↓ : changer de héros · Échap : retour
   'strings.name_empty': 'Your hero needs a name.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'A little short: at least {min} characters.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Too long: {max} characters at most.', // Trop long : {max} caractères au plus.
@@ -233,6 +235,8 @@ I18N.add('en', {
   'strings.trap_locked': 'Traps come with the first raid.', // Les pièges arrivent avec le premier raid.
   'strings.trap_hint': 'Click or drag along the raiders’ path. Right-click or Esc to put away.', // Cliquez ou glissez sur le chemin des pillards. Clic droit ou Échap pour ranger.
   'strings.safe_zone': 'Safe zone: {n} tiles around it (+{step} per level). No raider appears there.', // Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.
+  'strings.hero_look': 'Change look', // Changer d’apparence
+  'strings.hero_look_raid': 'Not during a raid.', // Pas pendant un raid.
   'strings.hero_title': 'The hero', // Le héros
   'strings.equip': 'Equip', // Équiper
   'strings.equipped': 'Equipped', // Équipé

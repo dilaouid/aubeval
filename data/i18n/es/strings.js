@@ -21,6 +21,8 @@ I18N.add('es', {
   'strings.name_ok': 'Empezar', // Commencer
   'strings.name_back': 'Volver', // Retour
   'strings.name_keys': 'Intro: empezar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_ok_edit': 'Confirmar', // Valider
+  'strings.name_keys_edit': 'Intro: confirmar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : valider · ↑ ↓ : changer de héros · Échap : retour
   'strings.name_empty': '{g:Su héroe|Su heroína} necesita un nombre.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'Algo corto: al menos {min} caracteres.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Demasiado largo: {max} caracteres como máximo.', // Trop long : {max} caractères au plus.
@@ -233,6 +235,8 @@ I18N.add('es', {
   'strings.trap_locked': 'Las trampas llegan con la primera incursión.', // Les pièges arrivent avec le premier raid.
   'strings.trap_hint': 'Haga clic o arrastre en el camino de los saqueadores. Clic derecho o Esc para terminar.', // Cliquez ou glissez sur le chemin des pillards. Clic droit ou Échap pour ranger.
   'strings.safe_zone': 'Zona segura: {n} casillas a su alrededor (+{step} por nivel). Ningún saqueador aparece en ella.', // Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.
+  'strings.hero_look': 'Cambiar de aspecto', // Changer d’apparence
+  'strings.hero_look_raid': 'No durante una incursión.', // Pas pendant un raid.
   'strings.hero_title': 'El héroe', // Le héros
   'strings.equip': 'Equipar', // Équiper
   'strings.equipped': 'Equipado', // Équipé

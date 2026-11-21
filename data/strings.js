@@ -22,6 +22,7 @@ DATA.strings = {
   name_title: '{g:Votre héros|Votre héroïne}', name_ask: 'Quel est le nom de {g:votre héros|votre héroïne} ?',
   name_rule: 'De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.',
   name_ok: 'Commencer', name_back: 'Retour', name_keys: 'Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour',
+  name_ok_edit: 'Valider', name_keys_edit: 'Entrée : valider · ↑ ↓ : changer de héros · Échap : retour',
   name_empty: '{g:Votre héros|Votre héroïne} a besoin d’un nom.', name_short: 'Un peu court : au moins {min} caractères.',
   name_long: 'Trop long : {max} caractères au plus.', name_chars: 'Seulement des lettres, des espaces, des traits d’union et des apostrophes.',
   name_marks: 'Un espace, un trait d’union ou une apostrophe se place entre deux lettres.',
@@ -125,7 +126,8 @@ DATA.strings = {
   trap_locked: 'Les pièges arrivent avec le premier raid.', trap_hint: 'Cliquez ou glissez sur le chemin des pillards. Clic droit ou Échap pour ranger.',
   safe_zone: 'Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.',
   // hero
-  hero_title: 'Le héros', equip: 'Équiper', equipped: 'Équipé', nothing: 'rien', weapon: 'Arme', armor: 'Armure',
+  hero_look: 'Changer d’apparence', hero_look_raid: 'Pas pendant un raid.',
+  hero_title: 'Le héros',equip: 'Équiper', equipped: 'Équipé', nothing: 'rien', weapon: 'Arme', armor: 'Armure',
   inventory: 'Équipement forgé', inventory_empty: 'Rien encore : forgez une arme à la Forge.',
   at_village: 'Au village : il garde l’hôtel de ville.',
   level_up: 'Niveau {n} !',
