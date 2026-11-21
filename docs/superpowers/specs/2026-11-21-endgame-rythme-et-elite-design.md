@@ -37,7 +37,24 @@ corne : il reste le temps d'adapter la défense.
   raids d'élite la première fois.
 - `?demo=1&crank=3&elite=fire,flank` force des fléaux, pour les captures d'écran.
 
+## 3. Le Siège royal (DATA.royal, js/raid.js, js/city.js)
+La Capitale demande une épreuve finale (`royal: true` dans ses conditions), et ses raids passent
+de 24 à 16.
+- Le bouton « Affronter le Siège royal » apparaît dans l'onglet Rang, sous les conditions. Il
+  s'active quand toutes les autres sont remplies, sans raid en cours ni corne sonnée.
+- **3 vagues** à la suite, avec `royal_gap` (45 s) entre deux. Les deux premières sont
+  `royal_size` (×1,4) plus nombreuses. Chaque vague a un fléau de plus (1, 2, 3), au moins autant
+  que le rang en donne.
+- La **dernière vague** est un siège mené par **Grakk le Fendeur** (niveau des sièges vus +
+  `royal_lord_lvl`), avec 2 brutes et 1 chaman en plus, et des pillards 20 % plus solides. Le duel
+  est proposé comme pour tout siège.
+- **Victoire** : la condition est remplie, popularité +`royal_pop`, bannière, et on proclame
+  ensuite la Capitale soi-même. **Défaite** (une vague qui passe) : bannière, puis `royal_retry`
+  (10 min) avant de pouvoir retenter.
+- Le Siège royal continue même pendant le répit d'un camp rasé. Un camp qui se relève ne repousse
+  pas la vague suivante. Une nouvelle carte l'annule.
+- `?demo=1&crank=3&royal=3` montre une vague en marche, pour les captures d'écran.
+
 ## Laissé pour plus tard
-- Le Siège royal comme dernière étape avant la Capitale.
 - Les décrets à choisir à chaque rang sans fin.
 - Les crises.

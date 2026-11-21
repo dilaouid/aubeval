@@ -15,6 +15,12 @@ Object.assign(DATA.strings, {
   city_need_rank: 'Rang de cité : {name} (ici : {have})', city_need_pop: 'Popularité du héros {n} (ici : {have})',
   city_need_orders: 'Commandes honorées ({have}/{n})', city_need_raids: 'Raids repoussés par ce village ({have}/{n})', city_need_raids_camp: ' · un camp rasé en vaut {k}',
   city_need_works: 'Étapes de grands chantiers ({have}/{n})', city_need_camps: 'Camps gobelins rasés ({have}/{n})',
+  city_need_royal: 'Siège royal repoussé : trois vagues, Grakk à la dernière', city_need_royal_on: 'Siège royal en cours : vague {wave}/{of}', city_need_royal_short: 'Siège royal',
+  city_royal_btn: 'Affronter le Siège royal', city_royal_others: 'Remplissez d’abord les autres conditions du rang.',
+  city_royal_tip: 'Affronter le Siège royal\n{n} vagues de suite, chacune plus nombreuse et avec un fléau de plus. Grakk le Fendeur mène la dernière : il peut être défié en duel.\nUne seule vague qui passe, et c’est à retenter plus tard.',
+  city_royal_busy: 'Pas pendant un raid, ni quand la corne a sonné.', city_royal_early: 'Les raids n’ont pas encore commencé.', city_royal_cd: 'Grakk regroupe ses troupes : encore {time}.',
+  city_royal_won: 'Le Siège royal est repoussé !', city_royal_won_text: 'Grakk et ses trois vagues ont reflué devant vos murs. Le royaume n’attend plus que votre proclamation : la Cité (G), onglet Rang.',
+  city_why_royal: 'Siège royal repoussé',
   // the Rang tab
   city_rank_n: 'Rang {n}', city_rank_gives: 'production et impôts +{pct} %',
   city_pop_title: 'Popularité du héros : {n} / 100',
@@ -75,7 +81,8 @@ Object.assign(DATA.strings, {
 //   4:15   Cité                 260 inhabitants, 8 Négociant houses, popularity 45, 45 orders, 14 raids,
 //                               the cathedral's walls (2 stages of great works)
 //   5:15   first Nobles         14 Négociant houses, popularity 50, beauty 10, 30 000 gold and 60 jewels
-//   7:00+  Capitale             6 Noble houses, popularity 60, 75 orders, 24 raids, 6 stages, a camp razed
+//   7:00+  Capitale             6 Noble houses, popularity 60, 75 orders, 16 raids, 6 stages, a camp razed,
+//                               and the royal siege repelled (three waves in a row, launched by the player)
 //   then   Capitale II, III...  DATA.city.endless, for ever
 // What holds the pace are counts that grow at a bounded rate: orders (three at a time, more from the
 // Ville: DATA.city.slots; config.js order_wait between two, shorter with every rank; a great order counts for several), raids (config.js raid_interval), the popularity (it decays) and the great
@@ -85,7 +92,7 @@ DATA.city = {
   // The ranks, lowest first. A village starts at the first. Rising is proclaimed by the player once
   // `needs` holds: the usual conditions of js/quests.js (pop, cls) and the city's own, counted for
   // this village only: popularity, orders (honoured), raids (repelled), works (stages of great works,
-  // all monuments together), camps (razed). reward: gold, goods, popularity. opens: one line said
+  // all monuments together), camps (razed), royal (the royal siege repelled for this rank: js/raid.js). reward: gold, goods, popularity. opens: one line said
   // beside what the game finds by itself (the classes and buildings that ask for this rank).
   ranks: [
     { name: 'Hameau', text: 'Quelques toits autour d’un hôtel de ville.' },
@@ -98,7 +105,7 @@ DATA.city = {
     { name: 'Cité', needs: { pop: 260, cls: { merchant: 8 }, popularity: 45, orders: 45, raids: 14, works: 2 },
       reward: { gold: 12000, res: { cloth: 100, shard: 3 }, pop: 8 },
       text: 'Les négociants y tiennent comptoir, et la cathédrale sort de terre.' },
-    { name: 'Capitale', needs: { pop: 500, cls: { noble: 6 }, popularity: 60, orders: 75, raids: 24, works: 6, camps: 1 },
+    { name: 'Capitale', needs: { pop: 500, cls: { noble: 6 }, popularity: 60, orders: 75, raids: 16, works: 6, camps: 1, royal: true },
       reward: { gold: 60000, res: { jewel: 60, shard: 5 }, pop: 10 },
       text: 'Le royaume se gouverne désormais depuis Aubeval.', opens: 'les rangs sans fin : Capitale II, III…' },
   ],

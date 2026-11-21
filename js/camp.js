@@ -126,7 +126,7 @@ const Camp = (() => {
     const lvl = (camp().lvl || 0) + 1, r = state.raid;
     Village.raiseCamp(lvl);
     muster(camp());
-    if (r.timer != null) r.timer = Math.max(r.timer, tune.raid_interval);
+    if (r.timer != null && !r.royal) r.timer = Math.max(r.timer, tune.raid_interval); // a royal wave keeps its time
     const chief = chiefName(lvl);
     toast(chief ? tr('camp_new_chief', { dir: Raid.compass(Village.campMid()), name: chief }) : tr('camp_new', { dir: Raid.compass(Village.campMid()) }), UI.C.bad); sfx('horn');
     Save.persist();

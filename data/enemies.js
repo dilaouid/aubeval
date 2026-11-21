@@ -126,6 +126,19 @@ DATA.elites = [
     trait: 'La moitié des pillards prend un autre chemin et arrive par un autre côté du village.' },
 ];
 
+// The royal siege (js/raid.js): the trial the Capitale asks for. The player launches it from the
+// city's Rang tab once every other condition holds: `waves` raids one after the other (config.js
+// royal_gap between two), each bigger (royal_size) and with one more scourge than the last; the last
+// is a siege led by `lord` (an enemy of the card battle: the duel is offered as in any siege).
+//   lord   as a warlord of DATA.warlords: name, title, trait, short, prize, siege
+DATA.royal = {
+  waves: 3,
+  lord: { id: 'grakk', name: 'Grakk', title: 'le Fendeur',
+    trait: 'Il mène la dernière vague du Siège royal : deux brutes et un chaman de plus marchent avec lui, et toute sa colonne est un cinquième plus solide.',
+    short: 'Deux brutes, un chaman de plus, plus solides.', prize: { shard: 3 },
+    siege: { hp: 1.2, add: { brute: 2, chaman: 1 } } },
+};
+
 // Raids: who comes, raid by raid. After the last line, each further raid adds `each` (fractions add up).
 DATA.raids = {
   waves: [

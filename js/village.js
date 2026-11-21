@@ -386,7 +386,7 @@ const Village = (() => {
     for (const b of kept) if (settle(b)) state.buildings.push(b);
     const r = state.raid; // the old road is gone: a raid on it is called off, the next one comes on time
     if (r.active) { r.active = null; r.timer = tune.raid_interval; }
-    r.warned = false; r.from = null;
+    r.warned = false; r.from = null; r.royal = null;
     state.cam = Object.assign({ k: 0 }, World.camOn((M.hall.x + 2) * T, (M.hall.y + 2) * T));
     state.v = 2;
     World.reset(); Raid.reset();

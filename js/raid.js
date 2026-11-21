@@ -34,6 +34,12 @@
 //   elite   the scourges of raid n: { n, mods: [ids] }; from2: where a raid on two fronts' second column comes out
 //   active  also gets: elite (the ids), armor (added to every raider's), burn, burnt, tint
 // state.flags.eliteTold: the elite raids were explained once.
+//
+// The royal siege (DATA.royal): launched by the player from the city's Rang tab, the trial the
+// Capitale asks for. DATA.royal.waves raids in a row, each royal_size bigger and with one more
+// scourge; the last is a siege led by Grakk. A wave that gets through ends it (royal_retry before
+// another try); the last one repelled tells the city (City.royalWon).
+//   royal    { rank (the rank it opens), wave (from 0) } while it goes on; royalCd: seconds before a new try
 'use strict';
 
 const Raid = (() => {
@@ -51,12 +57,17 @@ const Raid = (() => {
   const siegeNo = n => Math.max(0, Math.floor((n - tune.siege_after) / Math.max(1, tune.siege_every)));
   /** The warlord of the siege that comes after `k` others: they come in turn, for ever. */
   const lordFor = k => DATA.warlords[k % DATA.warlords.length];
-  const lordData = id => DATA.warlords.find(w => w.id === id) || DATA.warlords[0];
+  const lordData = id => DATA.warlords.find(w => w.id === id) || (id === DATA.royal.lord.id ? DATA.royal.lord : DATA.warlords[0]);
   /** The siege announced or going on ({ n, lord, lvl, duel, fallen, passed }), or null: an ordinary raid, or none in sight. */
   function siege() { const r = state.raid, sg = r.siege; return sg && sg.n === r.n && (r.warned || r.active) ? sg : null; }
   /** The horn or the start of raid `r.n`: its siege is written down if it is one. Returns it, or null. */
   function announce() {
-    const r = state.raid;
+    const r = state.raid, ry = r.royal;
+    if (ry) { // the royal siege: only its last wave is a siege, led by Grakk
+      if (ry.wave < DATA.royal.waves - 1) { r.siege = null; return null; }
+      if (!r.siege || r.siege.n !== r.n) r.siege = { n: r.n, lord: DATA.royal.lord.id, lvl: siegeNo(r.n) + tune.royal_lord_lvl, duel: null, royal: true };
+      return r.siege;
+    }
     if (!isSiege(r.n)) { r.siege = null; return null; }
     if (!r.siege || r.siege.n !== r.n) r.siege = { n: r.n, lord: lordFor(siegeNo(r.n)).id, lvl: siegeNo(r.n), duel: null };
     return r.siege;
@@ -83,7 +94,7 @@ const Raid = (() => {
     const r = state.raid;
     if (r.elite && r.elite.n === r.n) return r.elite.mods;
     const mods = String(params.get('elite') || '').split(',').filter(eliteData);
-    if (!mods.length) { const pool = DATA.elites.map(x => x.id); for (let k = eliteCount(); k > 0 && pool.length; k--) mods.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]); }
+    if (!mods.length) { const pool = DATA.elites.map(x => x.id); for (let k = Math.max(eliteCount(), r.royal ? r.royal.wave + 1 : 0); k > 0 && pool.length; k--) mods.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]); }
     r.elite = { n: r.n, mods };
     return mods;
   }
@@ -140,11 +151,11 @@ const Raid = (() => {
    * A siege is that column made bigger (`siege_size`) plus what its warlord brings; the warlord
    * himself is not counted (he may be beaten before it leaves).
    */
-  function composition(n) {
+  function composition(n, lord) {
     const waves = DATA.raids.waves, base = Object.assign({}, waves[Math.min(n, waves.length - 1)]);
     const extra = Math.max(0, n - (waves.length - 1));
     for (const k in DATA.raids.each) base[k] = (base[k] || 0) + DATA.raids.each[k] * extra;
-    const sg = isSiege(n), add = sg ? lordFor(siegeNo(n)).siege.add || {} : {};
+    const sg = lord !== undefined ? !!lord : isSiege(n), add = sg ? (lord || lordFor(siegeNo(n))).siege.add || {} : {}; // lord: the siege's warlord given (the royal siege), or null for none
     for (const k in add) base[k] = base[k] || 0;
     const out = {};
     for (const k in base) out[k] = Math.max(0, Math.round((Math.floor(base[k]) * (sg ? tune.siege_size : 1) + (add[k] || 0)) * tune.raid_size_scale));
@@ -279,8 +290,9 @@ const Raid = (() => {
   function start(early) {
     const r = state.raid, sg = announce(), mods = sg ? lordData(sg.lord).siege : {}, routed = !!sg && sg.duel === 'won';
     const el = drawElite(), size = (eliteWith(el, 'size') || {}).size || 1, split = !!eliteWith(el, 'split');
-    const comp = composition(r.n), hpK = (1 + tune.raid_hp_growth * r.n) * (sg ? tune.siege_hp * (mods.hp || 1) : 1) * (1 + tune.raid_rank_hp * Math.max(0, City.rank() - 2));
-    if (size !== 1) for (const k in comp) comp[k] = Math.round(comp[k] * size); // a horde
+    const ry = r.royal, comp = ry ? composition(r.n, sg ? lordData(sg.lord) : null) : composition(r.n), hpK = (1 + tune.raid_hp_growth * r.n) * (sg ? tune.siege_hp * (mods.hp || 1) : 1) * (1 + tune.raid_rank_hp * Math.max(0, City.rank() - 2));
+    const grow = size * (ry && !sg ? tune.royal_size : 1); // Grakk's wave is already a siege's size
+    if (grow !== 1) for (const k in comp) comp[k] = Math.round(comp[k] * grow); // a horde, a royal wave
     if (!r.from) r.from = pickFrom();
     if (split && !r.from2) r.from2 = pickFlank(r.from); // two fronts, called before the horn
     const gap = tune.raid_spawn_gap * ((eliteWith(el, 'gap') || {}).gap || 1), two = split && !!r.from2;
@@ -379,8 +391,43 @@ const Raid = (() => {
     });
     return true;
   }
-  /** The key of a raid line of the HUD (data/strings.js raid_in, raid_now): its siege twin when the raid coming or going on is one. */
+  // ---- The royal siege ----
+  /** The royal siege going on ({ rank, wave }), or null. */
+  const royalOn = () => state.raid.royal || null;
+  /** Why the royal siege cannot be launched now: '' when it can. */
+  function royalBlocked() {
+    const r = state.raid;
+    if (r.active || r.warned || r.royal) return tr('city_royal_busy');
+    if (r.timer == null && !r.n) return tr('city_royal_early');
+    if (r.royalCd > 0) return tr('city_royal_cd', { time: fmtTime(r.royalCd) });
+    return '';
+  }
+  /** Launches the royal siege that opens rank `rank`: its first wave's horn sounds at once. */
+  function royalStart(rank) {
+    if (royalBlocked()) { sfx('error'); return false; }
+    const r = state.raid;
+    r.royal = { rank, wave: 0 }; r.elite = null; r.siege = null;
+    r.timer = tune.raid_warning; // the horn, at the next step
+    toast(tr('royal_go'), UI.C.bad); sfx('horn');
+    if (typeof closePanel === 'function') closePanel();
+    Save.persist();
+    return true;
+  }
+  /** A royal wave is over: the next one comes, or the siege is won, or lost. */
+  function royalAfter(ry, won) {
+    const r = state.raid, of = DATA.royal.waves;
+    if (!won) {
+      r.royal = null; r.royalCd = tune.royal_retry;
+      ui.banner = { title: tr('royal_lost_title'), sub: tr('royal_lost_sub'), text: tr('royal_lost_text', { time: fmtTime(tune.royal_retry) }) };
+    } else if (ry.wave + 1 >= of) { r.royal = null; City.royalWon(ry.rank); }
+    else { ry.wave++; r.timer = tune.royal_gap; toast(tr('royal_next', { wave: ry.wave + 1, of }), UI.C.good); }
+  }
+  /** What the HUD's raid lines say of the royal siege: its wave. */
+  const hudVars = () => { const ry = state.raid.royal; return ry ? { wave: ry.wave + 1, of: DATA.royal.waves } : {}; };
+
+  /** The key of a raid line of the HUD (data/strings.js raid_in, raid_now): its siege twin when the raid coming or going on is one, its royal twin during the royal siege. */
   function hudKey(key) {
+    if (state.raid.royal) return key.replace('raid_', 'royal_');
     const r = state.raid, sg = r.active ? r.active.siege : isSiege(r.n);
     return sg ? key.replace('raid_', 'siege_') : key;
   }
@@ -471,6 +518,14 @@ const Raid = (() => {
   function demo() {
     const camps = Math.max(0, Math.floor(Number(params.get('camp')) || 0));
     if (camps) Camp.demo(camps);
+    const rv = Math.floor(Number(params.get('royal')) || 0); // &royal=1..3: that wave of the royal siege, marching
+    if (rv > 0) {
+      const r = state.raid;
+      state.flags.siegeTold = true;
+      r.n = 12; r.royal = { rank: DATA.city.ranks.length - 1, wave: Math.min(rv, DATA.royal.waves) - 1 };
+      r.timer = tune.raid_warning * 0.75; warn(); start(false);
+      return true;
+    }
     const v = Number(params.get('siege'));
     if (!v) return false;
     const r = state.raid;
@@ -547,7 +602,9 @@ const Raid = (() => {
       Village.gain('gold', gold); state.counters.raidsWon++;
       state.gained = tr(sg ? 'siege_won' : 'raid_won', { gold }); toast(state.gained, UI.C.good); sfx('fanfare');
     }
+    const ry = r.royal;
     r.n++; r.active = null; r.timer = tune.raid_interval; r.warned = false; r.from = null; r.from2 = null; r.siege = null; r.elite = null;
+    if (ry) royalAfter(ry, won);
     r.traps = []; Units.afterRaid(); // the traps are cleared away, the soldiers on their feet again
     City.event('raid', { won, siege: sg }); // the city's orders and the hero's popularity read it
     Save.persist();
@@ -587,7 +644,8 @@ const Raid = (() => {
     const r = state.raid;
     if (!r.active) {
       heroFight(dt, heroTick(dt, null));
-      if (r.timer == null || !Camp.standing()) return; // no camp standing (it fell, the next one has not risen): no raid
+      if (r.royalCd > 0) r.royalCd = Math.max(0, r.royalCd - dt);
+      if (r.timer == null || (!Camp.standing() && !r.royal)) return; // no camp standing (it fell, the next one has not risen): no raid, but the royal siege goes on
       r.timer -= dt;
       if (!r.warned && r.timer <= tune.raid_warning) warn();
       if (r.timer <= 0) start(false);
@@ -658,5 +716,5 @@ const Raid = (() => {
   function callNow() { if (!state.raid.active && state.raid.timer != null && Camp.standing()) start(true); }
 
   return { tick, start, callNow, composition, heroPost, hero, pos, shots, reset, touch, compass, hurt: hurtNow, trapsOpen, trapAt, canTrap, layTrap, route, fieldRadius,
-    isSiege, siege, duel, duelBlocked, hudExtra, hudKey, drawFigure, demo, elite, tint };
+    isSiege, siege, duel, duelBlocked, hudExtra, hudKey, hudVars, drawFigure, demo, elite, tint, royalOn, royalBlocked, royalStart };
 })();

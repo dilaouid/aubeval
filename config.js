@@ -247,6 +247,11 @@ window.CONFIG = {
   elite_max: { value: 3, min: 1, max: 5, step: 1 },                  // ... this many at most
   elite_bounty: { value: 0.4, min: 0, max: 3, step: 0.05 },          // a raid repelled pays +this share of its bounty for each scourge it had
   elite_burn_max: { value: 6, min: 0, max: 30, step: 1 },            // buildings the Incendiaires may set fire to in one raid
+  royal_size: { value: 1.4, min: 1, max: 4, step: 0.05 },            // the royal siege: its first waves x this many raiders (Grakk's has a siege's size)
+  royal_gap: { value: 45, min: 5, max: 600, step: 5 },               // ... seconds between a wave repelled and the next one leaving the camp
+  royal_retry: { value: 600, min: 0, max: 3600, step: 30 },          // ... seconds before it can be tried again once lost
+  royal_lord_lvl: { value: 1, min: 0, max: 10, step: 1 },            // ... Grakk's level above the sieges already seen
+  royal_pop: { value: 12, min: 0, max: 50, step: 1 },                // ... popularity for it repelled
   raid_rank_hp: { value: 0.2, min: 0, max: 1, step: 0.01 },          // raiders' health +this share for every city rank above the Ville: the threat keeps up with the town
   duel_pop: { value: 6, min: 0, max: 50, step: 1 },                  // popularity the hero gains for a warlord beaten in a duel
   camp_chief_hp: { value: 0.6, min: 0.1, max: 5, step: 0.05 },       // a camp's chief: x the warlord's health (data/enemies.js), then the camp's growth

@@ -40,6 +40,7 @@ const City = (() => {
       orders: D.firstWaits.map(w => ({ wait: w })),    // the slots (three, more with the rank: slotsAt): an order ({ id, tpl, kind, n, have, gold, pop, bonus, ... }) or { wait: seconds until the next }
       seq: 0, done: 0, refuse: 0,                      // orders drawn, orders honoured, seconds until one may be refused again
       raids: 0, camps: 0,                              // raids repelled and camps razed by this village (the ranks count them)
+      royal: 0,                                        // the highest rank whose royal siege was repelled (js/raid.js)
       works: {},                                       // monument kind -> the highest level its works reached (kept if it is demolished)
     };
   }
@@ -134,6 +135,7 @@ const City = (() => {
   function needsOf(n) {
     const out = Object.assign({}, rankDef(n).needs);
     for (const k of ['orders', 'raids']) if (out[k] != null) out[k] = Math.max(1, Math.ceil(out[k] * tune.city_pace));
+    if (out.royal) out.royal = n; // the royal siege of this rank
     return out;
   }
   const rank = () => state.city.rank;
@@ -149,6 +151,7 @@ const City = (() => {
     count('orders', s.done, 'city_need_orders'); count('raids', s.raids, 'city_need_raids');
     if (c.raids != null && tune.camp_raid_credit > 0) { const o = out[out.length - 1]; o.text += tr('city_need_raids_camp', { k: tune.camp_raid_credit }); } // a camp razed counts too: say so on the long line
     count('works', worksTotal(), 'city_need_works'); count('camps', s.camps, 'city_need_camps');
+    if (c.royal != null) { const on = Raid.royalOn(), of = DATA.royal.waves; out.push({ ok: (s.royal || 0) >= c.royal, royal: true, text: on ? tr('city_need_royal_on', { wave: on.wave + 1, of }) : tr('city_need_royal'), short: tr('city_need_royal_short') }); }
     return out;
   }
   /** One more step before a house may rise into `next`: the rank that class asks for. */
@@ -174,6 +177,25 @@ const City = (() => {
     ui.banner = { title: tr('city_banner', { name: d.name }), sub: tr('city_banner_sub', { n: n + 1 }), text: d.text + '\n' + tr('reward') + ' : ' + rewardParts(d.reward).join(', ') + '\n' + tr('city_opens', { list: opensOf(n).join(', ') }) };
     sfx('fanfare'); events.push({ type: 'rank', rank: n }); Save.persist();
     return true;
+  }
+
+  /** The royal siege of rank n was repelled (js/raid.js): the rank can be proclaimed. */
+  function royalWon(n) {
+    const c = state.city;
+    c.royal = Math.max(c.royal || 0, n);
+    gainPop(tune.royal_pop, tr('city_why_royal'));
+    ui.banner = { title: tr('city_royal_won'), sub: rankDef(n).name, text: tr('city_royal_won_text') };
+    sfx('fanfare'); Save.persist();
+  }
+  /** Under the next rank's conditions, while its royal siege is still to be repelled: the button that launches it, or how it goes. Returns the y under it. */
+  function royalBlock(x, y, w, needs) {
+    const on = Raid.royalOn();
+    if (on) return y;
+    const others = Quests.describe(needs).filter(p => !p.royal).every(p => p.ok), why = Raid.royalBlocked();
+    const can = others && !why;
+    UI.button(x, y, w, 36, tr('city_royal_btn'), () => Raid.royalStart(needs.royal), { primary: can, disabled: !can, size: 14, icon: 'icon.raid',
+      tip: !others ? tr('city_royal_others') : why || tr('city_royal_tip', { n: DATA.royal.waves }) });
+    return y + 42;
   }
 
   // ---- The orders ----
@@ -478,7 +500,9 @@ const City = (() => {
     if (!c.log.length) y = UI.wrap(tr('city_pop_nolog'), x, y, w, 12, C.dim, 16);
     for (const l of c.log) { text((l.n > 0 ? '+' : '−') + fmtNum(Math.abs(l.n)), x + 34, y + 8, 13, l.n > 0 ? C.good : C.bad, 'right', true); text(l.why, x + 44, y + 8, 13, C.text, 'left'); y += 18; }
     y = section(tr('city_next', { name: nx.name }), x, y + 8, w);
-    for (const p of Quests.describe(needsOf(n + 1))) y = check(p.ok, p.text, x, y, w);
+    const needs = needsOf(n + 1);
+    for (const p of Quests.describe(needs)) y = check(p.ok, p.text, x, y, w);
+    if (needs.royal != null && (c.royal || 0) < needs.royal) y = royalBlock(x, y + 4, w, needs);
     y = UI.wrap(tr('reward') + ' : ' + rewardParts(nx.reward).join(', '), x, y + 4, w, 13, C.dim, 17);
     y = UI.wrap(tr('city_opens', { list: opensOf(n + 1).join(', ') }), x, y, w, 13, C.accent, 17) + 6;
     const can = canProclaim();
@@ -688,6 +712,6 @@ const City = (() => {
     fresh, adopt, sync, tick, demo, event, gainPop, popularity, rank, rankName, bonus,
     taxMult, mealSat, satMax, housedBonus, buyMult, sellMult, outMult, raiseSteps, describe,
     drawHud, drawPanel, worksTab, taxTab,
-    stageCost, advance, proclaim, canProclaim, honour, refuse, learn, startStocks, renownBonus, points, openPanel,
+    stageCost, advance, proclaim, canProclaim, honour, refuse, learn, startStocks, renownBonus, points, openPanel, royalWon,
   };
 })();

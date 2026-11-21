@@ -359,7 +359,7 @@ const scenes = (() => {
       const pulse = 0.5 + 0.5 * Math.sin(state.t * 6);
       UI.plate(rx, ry, 320, 52, 'bad'); UI.icon('icon.raid', rx + 30, ry + 26, 32);
       ctx.globalAlpha = 0.75 + 0.25 * pulse;
-      UI.wrap(tr(Raid.hudKey('raid_now'), { n: r.n + 1, left: r.active.raiders.length, leaks: r.active.leaks, max: tune.raid_leaks_to_lose }), rx + 54, ry + 10, 256, 14, C.text, 17, true);
+      UI.wrap(tr(Raid.hudKey('raid_now'), Object.assign({ n: r.n + 1, left: r.active.raiders.length, leaks: r.active.leaks, max: tune.raid_leaks_to_lose }, Raid.hudVars())), rx + 54, ry + 10, 256, 14, C.text, 17, true);
       ctx.globalAlpha = 1;
     } else if (r.camp && r.camp.down > 0) { // the camp burnt down: no raid until the next one rises
       UI.plate(rx, ry, 320, 52, null); UI.icon('icon.raid', rx + 30, ry + 26, 32);
@@ -368,7 +368,7 @@ const scenes = (() => {
       if (r.timer != null) UI.button(rx + 216, ry + 8, 94, 36, tr('camp_provoke'), Camp.provoke, { size: 14, tip: tr('camp_provoke_tip', { pct: Math.round(tune.raid_call_bonus * 100) }) }); // not before the raids have begun
     } else if (r.timer != null) {
       UI.plate(rx, ry, 320, 52, r.warned ? 'bad' : null); UI.icon('icon.raid', rx + 30, ry + 26, 32);
-      UI.label(tr(Raid.hudKey('raid_in'), { n: r.n + 1, time: '' }).trim(), rx + 54, ry + 18, 14, r.warned ? C.bad : C.dim, 'left');
+      UI.label(tr(Raid.hudKey('raid_in'), Object.assign({ n: r.n + 1, time: '' }, Raid.hudVars())).trim(), rx + 54, ry + 18, 14, r.warned ? C.bad : C.dim, 'left');
       UI.label(fmtTime(r.timer), rx + 54, ry + 36, 18, r.warned ? C.gold : C.text, 'left');
       UI.button(rx + 216, ry + 8, 94, 36, tr('raid_call'), Raid.callNow, { size: 14, primary: r.warned, tip: `Appeler le raid maintenant\nPrime +${Math.round(tune.raid_call_bonus * 100)} % si vous le repoussez.` });
     }
