@@ -21,7 +21,7 @@ I18N.add('en', {
   'strings.name_ok': 'Begin', // Commencer
   'strings.name_back': 'Back', // Retour
   'strings.name_keys': 'Enter: begin · ↑ ↓: change hero · Esc: back', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
-  'strings.name_empty': 'Your hero needs a name.', // Votre héros a besoin d’un nom.
+  'strings.name_empty': 'Your hero needs a name.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'A little short: at least {min} characters.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Too long: {max} characters at most.', // Trop long : {max} caractères au plus.
   'strings.name_chars': 'Only letters, spaces, hyphens and apostrophes.', // Seulement des lettres, des espaces, des traits d’union et des apostrophes.

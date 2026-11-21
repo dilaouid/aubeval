@@ -21,7 +21,7 @@ I18N.add('es', {
   'strings.name_ok': 'Empezar', // Commencer
   'strings.name_back': 'Volver', // Retour
   'strings.name_keys': 'Intro: empezar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
-  'strings.name_empty': 'Su héroe necesita un nombre.', // Votre héros a besoin d’un nom.
+  'strings.name_empty': '{g:Su héroe|Su heroína} necesita un nombre.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'Algo corto: al menos {min} caracteres.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Demasiado largo: {max} caracteres como máximo.', // Trop long : {max} caractères au plus.
   'strings.name_chars': 'Solo letras, espacios, guiones y apóstrofos.', // Seulement des lettres, des espaces, des traits d’union et des apostrophes.

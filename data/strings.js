@@ -22,7 +22,7 @@ DATA.strings = {
   name_title: '{g:Votre héros|Votre héroïne}', name_ask: 'Quel est le nom de {g:votre héros|votre héroïne} ?',
   name_rule: 'De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.',
   name_ok: 'Commencer', name_back: 'Retour', name_keys: 'Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour',
-  name_empty: 'Votre héros a besoin d’un nom.', name_short: 'Un peu court : au moins {min} caractères.',
+  name_empty: '{g:Votre héros|Votre héroïne} a besoin d’un nom.', name_short: 'Un peu court : au moins {min} caractères.',
   name_long: 'Trop long : {max} caractères au plus.', name_chars: 'Seulement des lettres, des espaces, des traits d’union et des apostrophes.',
   name_marks: 'Un espace, un trait d’union ou une apostrophe se place entre deux lettres.',
   // The controls (js/screens.js keyRow). A row is keys, one cap per string in an array,
