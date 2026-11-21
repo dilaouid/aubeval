@@ -929,6 +929,11 @@ const scenes = (() => {
     }
     return y;
   }
+  /** Puts this land's link (the game's address with ?seed=) in the clipboard; when the browser refuses, shows it instead. */
+  function copyMapLink() {
+    const url = location.origin + location.pathname + '?seed=' + state.mapSeed, show = () => toast(tr('map_link', { url }), C.text);
+    try { navigator.clipboard.writeText(url).then(() => toast(tr('map_copied'), C.good), show); } catch (e) { show(); }
+  }
   function drawMenu() {
     const x = P.x + 24, w = P.w - 48;
     UI.panel(P.x, P.y, P.w, P.h, tr('menu_title'), closePanel);
@@ -936,8 +941,11 @@ const scenes = (() => {
     UI.button(x, y, w, 36, tr('save_now'), () => { if (Save.persist()) toast(tr('saved'), C.good); }, { size: 15, disabled: !Save.enabled, icon: 'icon.check' }); y += 42;
     UI.button(x, y, (w - 8) / 2, 36, tr('export'), Save.exportFile, { size: 13 }); Tuto.mark('menu:export', x, y, w, 36);
     UI.button(x + (w + 8) / 2, y, (w - 8) / 2, 36, tr('import'), Save.importFile, { size: 13 }); y += 42;
-    UI.button(x, y, w, 36, muted ? tr('sound_off') : tr('sound_on'), () => setMuted(!muted), { size: 15, icon: 'icon.sound' }); y += 42;
-    UI.button(x, y, w, 36, tr('book_btn'), () => { ui.panel = 'lessons'; UI.scrollTop('lessons'); }, { size: 15, icon: 'icon.quest' }); Tuto.mark('menu:lessons', x, y, w, 36); y += 52;
+    const half = (w - 8) / 2;
+    UI.button(x, y, half, 36, muted ? tr('sound_off') : tr('sound_on'), () => setMuted(!muted), { size: 13, icon: 'icon.sound' });
+    UI.button(x + half + 8, y, half, 36, tr('book_btn'), () => { ui.panel = 'lessons'; UI.scrollTop('lessons'); }, { size: 13, icon: 'icon.quest' }); Tuto.mark('menu:lessons', x + half + 8, y, half, 36); y += 42;
+    text(tr('map_no', { n: state.mapSeed }), x, y + 23, 15, C.gold, 'left', true);
+    UI.button(x + half + 8, y, half, 36, tr('map_copy'), copyMapLink, { size: 13 }); y += 52;
     text(tr('prestige_title'), x, y + 10, 17, C.gold, 'left', true); y += 28;
     y = UI.wrap(tr('prestige_text'), x, y, w, 14, C.text) + 4;
     const n = Village.renownGain(), pct = k => Math.round(k * tune.renown_bonus * 100);
@@ -1137,6 +1145,8 @@ const scenes = (() => {
     const px = 330, py = 150, pw = 620, ph = 400, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax };
     UI.panel(px, py, pw, ph, tr('name_title'));
     UI.sprite('hero.battle', px + 34, b.y - 60, 2, 1);
+    text(tr('map_no', { n: state.mapSeed }), b.x, py + 72, 15, C.gold, 'left', true); // the land behind the panel, and another one to start on
+    UI.button(b.x + b.w - 170, py + 50, 170, 32, tr('map_other'), () => reset(Village.drawSeed(false)), { size: 13 });
     UI.label(tr('name_ask'), b.x + b.w / 2, b.y - 36, 20, C.text);
     UI.box(b.x, b.y, b.w, b.h, '#1b1420', ui.nameWhy ? C.bad : document.activeElement === f ? C.gold : C.lineL);
     UI.region(b.x, b.y, b.w, b.h, () => f.focus());
@@ -1173,6 +1183,7 @@ const scenes = (() => {
     if (!UI.nine(hov ? 'button_primary_hover' : 'button_primary', 390, by, 500, 54)) UI.box(390, by, 500, 54, C.btnP, C.gold);
     UI.label(tr(has ? 'start_continue' : 'start_new'), 640, by + 28, 20, C.text);
     if (has) UI.label(ui.titleWipe ? tr('start_wipe_confirm') : tr('start_wipe'), 640, by + 80, 15, ui.titleWipe ? C.bad : C.dim, 'center', false);
+    if (has && Village.sharedSeed) UI.label(tr('map_shared', { n: Village.sharedSeed }), 640, by + 104, 15, C.gold, 'center', false); // a shared link, over a village of one's own
   }
   function drawPause() {
     playDraw();

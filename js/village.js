@@ -12,16 +12,18 @@ const Village = (() => {
   const M = DATA.map, T = M.tile, B = DATA.buildings, N = M.w * M.h, CL = DATA.classes;
   const GROUND = Object.keys(DATA.ground), FLORA = Object.keys(DATA.flora);
   const G_PATH = GROUND.indexOf('path');
-  // ?seed=N in the address: the land a shared link asks for (0 when there is none, or not a number from 1 to SEED_MAX)
-  const sharedSeed = (n => n >= 1 && n <= MapGen.SEED_MAX ? n : 0)(Math.floor(Number(params.get('seed'))));
+  /** The first playable seed from `s` on (js/mapgen.js pickSeed): the one kept and shown. */
+  const playableFrom = s => MapGen.pickSeed(s, M, DATA.ground, DATA.biomes, DATA.flora);
+  // ?seed=N in the address: the land a shared link asks for, already moved on to a playable one
+  // (0 when there is none, or not a number from 1 to SEED_MAX)
+  const sharedSeed = (n => n >= 1 && n <= MapGen.SEED_MAX ? playableFrom(n) : 0)(Math.floor(Number(params.get('seed'))));
   /**
    * A new game's land: the shared one when there is one and `useShared`, else one drawn at random
-   * (the only Math.random of the game: every gameplay draw reads rng(), seeded from this land),
-   * moved on to the first playable seed from there (js/mapgen.js pickSeed).
+   * (the only Math.random of the game: every gameplay draw reads rng(), seeded from this land)
+   * and moved on to the first playable seed from there.
    */
   function drawSeed(useShared = true) {
-    const s = useShared && sharedSeed ? sharedSeed : 1 + Math.floor(Math.random() * MapGen.SEED_MAX);
-    return MapGen.pickSeed(s, M, DATA.ground, DATA.biomes, DATA.flora);
+    return useShared && sharedSeed ? sharedSeed : playableFrom(1 + Math.floor(Math.random() * MapGen.SEED_MAX));
   }
   let land = null, landSeed = null;            // the land as its seed draws it, untouched
   const flora = new Uint8Array(N);             // what grows on each tile now: 0 nothing, else 1 + its place in FLORA

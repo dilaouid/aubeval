@@ -165,6 +165,9 @@ DATA.strings = {
   deck_min: 'Il faut garder au moins {min} cartes.', deck_more: 'Cartes à gagner', deck_locked: '{hero} l’apprend au niveau {n}', deck_build: 'Bâtissez : {name}',
   // save and menu
   menu_title: 'Le village', save_now: 'Sauvegarder', saved: 'Partie sauvegardée', export: 'Exporter la sauvegarde', import: 'Importer une sauvegarde',
+  // the land's number (js/village.js drawSeed): shown, shared as a link, drawn again before a new game
+  map_no: 'Carte n° {n}', map_copy: 'Copier le lien', map_copied: 'Lien copié', map_link: 'Lien de la carte : {url}',
+  map_other: 'Autre carte', map_shared: 'Carte partagée n° {n} : une nouvelle partie la jouera.',
   imported: 'Sauvegarde importée', import_bad: 'Ce fichier n’est pas une sauvegarde d’Aubeval',
   save_note: 'Sauvegarde automatique dans ce navigateur. Exportez le fichier pour le garder ailleurs.',
   save_off: 'Sauvegarde coupée pour cette session (mode vérification).',
