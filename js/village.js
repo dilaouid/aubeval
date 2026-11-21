@@ -17,13 +17,17 @@ const Village = (() => {
   // ?seed=N in the address: the land a shared link asks for, already moved on to a playable one
   // (0 when there is none, or not a number from 1 to SEED_MAX)
   const sharedSeed = (n => n >= 1 && n <= MapGen.SEED_MAX ? playableFrom(n) : 0)(Math.floor(Number(params.get('seed'))));
+  // A screenshot or a check (index.html and js/screens.js read these): the same land every time,
+  // CONFIG.seed's, so that two runs can be compared, unless ?seed= asks for another
+  const CHECKS = ['demo', 'tuto', 'lesson', 'scene', 'manual', 'render', 'keys', 'venue', 'camp', 'look'];
+  const pinnedSeed = sharedSeed || (CHECKS.some(k => params.has(k)) ? CONFIG.seed : 0);
   /**
-   * A new game's land: the shared one when there is one and `useShared`, else one drawn at random
-   * (the only Math.random of the game: every gameplay draw reads rng(), seeded from this land)
-   * and moved on to the first playable seed from there.
+   * A new game's land: the one the address pins (a shared link, or a check) when there is one and
+   * `useShared`, else one drawn at random (the only Math.random of the game: every gameplay draw
+   * reads rng(), seeded from this land) and moved on to the first playable seed from there.
    */
   function drawSeed(useShared = true) {
-    return useShared && sharedSeed ? sharedSeed : playableFrom(1 + Math.floor(Math.random() * MapGen.SEED_MAX));
+    return useShared && pinnedSeed ? pinnedSeed : playableFrom(1 + Math.floor(Math.random() * MapGen.SEED_MAX));
   }
   let land = null, landSeed = null;            // the land as its seed draws it, untouched
   const flora = new Uint8Array(N);             // what grows on each tile now: 0 nothing, else 1 + its place in FLORA
