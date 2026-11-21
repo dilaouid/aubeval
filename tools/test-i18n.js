@@ -75,6 +75,16 @@ test('js/ shows the player no French of its own', () => {
   assert.strictEqual(found.length, 0, found.length + ' found:\n' + found.slice(0, 40).join('\n'));
 });
 
+test('applying a language names the page in it', () => {
+  const D = T.loadData(), doc = { title: 'old', documentElement: {} };
+  T.I18N.add('xx', { 'strings.page_title': 'Aubeval – test' });
+  T.I18N.langs.push('xx'); T.I18N.lang = 'xx';
+  try { T.I18N.apply(D, doc); } finally { T.I18N.lang = 'fr'; T.I18N.langs.pop(); }
+  assert.strictEqual(doc.title, 'Aubeval – test');
+  assert.strictEqual(doc.documentElement.lang, 'xx');
+  assert.ok(T.paths(D).has('strings.page_title'));
+});
+
 let bad = 0;
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

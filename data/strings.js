@@ -306,4 +306,6 @@ DATA.strings = {
   contracts_none: 'Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.',
   fg_bellows_keys: 'B · ↑ · clic droit',
   span_min: '{m} minute', span_mins: '{m} minutes', span_secs: '{s} secondes',
+  // the language (js/i18n.js): the page's name in the browser's tab
+  page_title: 'Aubeval – Jeu de gestion en pixel art, gratuit dans le navigateur',
 };

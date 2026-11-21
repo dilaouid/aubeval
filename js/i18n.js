@@ -83,15 +83,18 @@
     parse, get, put, pick,
     /** Called by the layer files: adds texts to a language. A null text is one still to translate. */
     add(lang, map) { Object.assign(layers[lang] || (layers[lang] = {}), map); },
-    /** Lays the chosen language's texts on DATA. Paths that lead nowhere are listed in the console. */
-    apply(data) {
-      data = data || root.DATA;
+    /** Each language's name, in itself: what the language buttons say. */
+    names: { fr: 'Français', en: 'English', es: 'Español' },
+    /** Lays the chosen language's texts on DATA, and names the page in it. Paths that lead nowhere are listed in the console. */
+    apply(data, doc) {
+      data = data || root.DATA; doc = doc || root.document;
       const map = layers[I18N.lang];
       if (!map || I18N.lang === 'fr') return 0;
       let n = 0;
       const lost = [];
       for (const p in map) if (map[p] != null) { if (put(data, p, map[p])) n++; else lost.push(p); }
       if (lost.length && root.console) root.console.warn('i18n: ' + lost.length + ' path(s) lead nowhere', lost.slice(0, 10));
+      if (doc) { doc.documentElement.lang = I18N.lang; if (data.strings && data.strings.page_title) doc.title = data.strings.page_title; }
       return n;
     },
     /** Switches language: saves the village, keeps the choice, and reloads the page in it. */

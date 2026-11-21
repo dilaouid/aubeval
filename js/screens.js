@@ -966,9 +966,18 @@ const scenes = (() => {
     const url = location.origin + location.pathname + '?seed=' + state.mapSeed, show = () => toast(tr('map_link', { url }), C.text);
     try { navigator.clipboard.writeText(url).then(() => toast(tr('map_copied'), C.good), show); } catch (e) { show(); }
   }
+  /** FR · EN · ES: one button per language, the one in use lit. A click saves and reloads the page in the other (js/i18n.js). */
+  function langButtons(x, y, bw, h) {
+    return I18N.langs.map((l, i) => {
+      const r = { x: x + i * (bw + 6), y, w: bw, h, lang: l };
+      UI.button(r.x, r.y, bw, h, l.toUpperCase(), () => I18N.set(l), { size: 13, on: l === I18N.lang, tip: I18N.names[l] });
+      return r;
+    });
+  }
   function drawMenu() {
     const x = P.x + 24, w = P.w - 48;
     UI.panel(P.x, P.y, P.w, P.h, tr('menu_title'), closePanel);
+    langButtons(P.x + P.w - 64 - 3 * 46, P.y + 16, 40, 28); // the language, in the header beside the close button
     let y = UI.wrap(Save.enabled ? tr('save_note') : tr('save_off'), x, P.y + 60, w, 14, C.dim) + 8;
     UI.button(x, y, w, 36, tr('save_now'), () => { if (Save.persist()) toast(tr('saved'), C.good); }, { size: 15, disabled: !Save.enabled, icon: 'icon.check' }); y += 42;
     UI.button(x, y, (w - 8) / 2, 36, tr('export'), Save.exportFile, { size: 13 }); Tuto.mark('menu:export', x, y, w, 36);
@@ -1217,6 +1226,7 @@ const scenes = (() => {
     UI.label(tr(has ? 'start_continue' : 'start_new'), 640, by + 28, 20, C.text);
     if (has) UI.label(ui.titleWipe ? tr('start_wipe_confirm') : tr('start_wipe'), 640, by + 80, 15, ui.titleWipe ? C.bad : C.dim, 'center', false);
     if (has && Village.sharedSeed) UI.label(tr('map_shared', { n: Village.sharedSeed }), 640, by + 104, 15, C.gold, 'center', false); // a shared link, over a village of one's own
+    ui.langHits = langButtons(W - 16 - 3 * 52 - 12, 14, 52, 32); // the language, top right: a click there does not start the game
   }
   function drawPause() {
     playDraw();
@@ -1344,7 +1354,9 @@ const scenes = (() => {
       update(dt) {
         ui.titleT += dt;
         if (pressed('KeyN') && Save.has()) { if (ui.titleWipe) { Save.wipe(); ui.titleWipe = 0; } else ui.titleWipe = 1; return; }
-        if (pressed('Enter') || pressed('Space') || pressed('NumpadEnter') || clicks.some(c => c.button === 0)) titleStart();
+        const c = clicks.find(k => k.button === 0), lang = c && (ui.langHits || []).find(r => c.x >= r.x && c.x < r.x + r.w && c.y >= r.y && c.y < r.y + r.h);
+        if (lang) { I18N.set(lang.lang); return; }
+        if (pressed('Enter') || pressed('Space') || pressed('NumpadEnter') || c) titleStart();
       },
       draw: drawTitle,
     },
