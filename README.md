@@ -2,163 +2,163 @@
 
 <img src="assets/sprites/ui/logo.png" alt="Aubeval" width="512">
 
-### Un village à bâtir, un héros à armer.
+### A village to build, a hero to arm.
 
-Un jeu de gestion et de combat en **pixel art isométrique**, qui se joue dans le navigateur.<br>
-Aucune dépendance, aucun build : du HTML et du JavaScript.
+A management and combat game in **isometric pixel art**, played in the browser.<br>
+No dependencies, no build step: just HTML and JavaScript.
 
 <br>
 
-<img src="docs/village.png" alt="Le village d'Aubeval" width="900">
+<img src="docs/village.png" alt="The village of Aubeval" width="900">
 
 </div>
 
 <br>
 
-## Le jeu
+## The game
 
-Vous êtes le bourgmestre d'Aubeval. Posez des bâtiments sur une grande carte générée, différente à chaque partie, faites tourner leurs chaînes de production (bois, planches, pain, café) et armez votre héros pour repousser les raids gobelins. La partie n'a pas de fin : le village grandit, la cité monte en rang et il y a toujours un chantier de plus.
+You are the mayor of Aubeval. Place buildings on a large generated map, different in every game, keep their production chains running (wood, planks, bread, coffee) and arm your hero to fend off goblin raids. The game has no end: the village grows, the city climbs in rank, and there is always one more project to build.
 
 <div align="center">
 
-<img src="assets/sprites/iso/hall_stone_l15.png" height="130" alt="Hôtel de ville">
-<img src="assets/sprites/iso/market_l15.png" height="130" alt="Marché">
+<img src="assets/sprites/iso/hall_stone_l15.png" height="130" alt="Town Hall">
+<img src="assets/sprites/iso/market_l15.png" height="130" alt="Market">
 <img src="assets/sprites/iso/forge_l15.png" height="130" alt="Forge">
-<img src="assets/sprites/iso/mage_tower_l15.png" height="130" alt="Tour de mage">
-<img src="assets/sprites/iso/watchtower_l15.png" height="130" alt="Tour de guet">
-<img src="assets/sprites/iso/castle_s4.png" height="130" alt="Château">
-<img src="assets/sprites/iso/cathedral_s4.png" height="130" alt="Cathédrale">
-<img src="assets/sprites/iso/lighthouse_s4.png" height="130" alt="Grand phare">
+<img src="assets/sprites/iso/mage_tower_l15.png" height="130" alt="Mage Tower">
+<img src="assets/sprites/iso/watchtower_l15.png" height="130" alt="Watchtower">
+<img src="assets/sprites/iso/castle_s4.png" height="130" alt="Castle">
+<img src="assets/sprites/iso/cathedral_s4.png" height="130" alt="Cathedral">
+<img src="assets/sprites/iso/lighthouse_s4.png" height="130" alt="Great Lighthouse">
 
 </div>
 
-## Ce qu'on y fait
+## What you do
 
-### Bâtir une vraie ville
+### Build a real town
 
-- **Des chaînes de production** : chaque bâtiment nourrit le suivant, et chacun doit toucher un chemin pour travailler.
-- **Des citoyens par classe**, avec leurs besoins : maisons, services à portée, beauté du quartier, routes, impôts et popularité.
-- **Quatre paliers d'aspect** par bâtiment (niveaux 1, 5, 10 et 15), et trois styles au choix pour la maison et l'hôtel de ville.
-- **Trois grands chantiers** (cathédrale, château, grand phare) élevés étape par étape, échafaudages compris.
-- Des chemins que l'on trace à la main, des arbres que l'on abat ou que l'on plante, de la décoration, et des murs qui se tracent comme dans un jeu de stratégie.
+- **Production chains**: each building feeds the next, and each must touch a path to work.
+- **Citizens by class**, with their needs: houses, services within reach, neighbourhood beauty, roads, taxes and popularity.
+- **Four visual tiers** per building (levels 1, 5, 10 and 15), and three styles to choose from for the house and the town hall.
+- **Three great works** (cathedral, castle, great lighthouse) raised stage by stage, scaffolding included.
+- Paths you lay by hand, trees you fell or plant, decoration, and walls you draw the way you would in a strategy game.
 
 <div align="center">
 
-<img src="docs/monuments.gif" alt="Les trois grands chantiers, de l'échafaudage à l'édifice terminé" width="640">
+<img src="docs/monuments.gif" alt="The three great works, from scaffolding to finished building" width="640">
 
 </div>
 
-### Armer son héros et tenir bon
+### Arm your hero and hold the line
 
-- **Un combat de cartes au tour par tour** : les cartes viennent des bâtiments du village, et la **parade se joue au timing** (Espace ou clic quand l'anneau touche le cercle doré).
-- **Des raids** lancés depuis un camp gobelin, des pièges à poser sur leur route, des tours de guet et des remparts, une zone sûre autour de l'hôtel de ville.
-- **Des soldats à envoyer** sur la carte pour détruire le camp. Un nouveau, plus fort, finit par se relever.
-- **Des seigneurs de guerre** qui mènent les sièges, et Grakk le Fendeur parmi les ennemis.
+- **Turn-based card combat**: the cards come from the buildings of your village, and the **parry is played on timing** (Space or click when the ring touches the golden circle).
+- **Raids** launched from a goblin camp, traps to set along their route, watchtowers and ramparts, and a safe zone around the town hall.
+- **Soldiers to send** across the map to destroy the camp. A new, stronger one eventually rises in its place.
+- **Warlords** who lead the sieges, and Grakk the Cleaver among the enemies.
 
 <div align="center">
 
-<img src="docs/combat.gif" alt="Un combat avec parade au timing" width="900">
+<img src="docs/combat.gif" alt="A fight with a timed parry" width="900">
 
 </div>
 
-### Des gens, des lieux
+### People and places
 
-Marchands, forgeron, boulangère, aubergiste, capitaine et guide Aveline ont leur portrait animé. Le Café, le Marché et la Forge s'entrent en plein écran, avec leurs mini-jeux.
+The merchants, the blacksmith, the baker, the innkeeper, the captain and the guide Aveline each have an animated portrait. The Café, the Market and the Forge open full screen, with their own mini-games.
 
 <div align="center">
 
-<img src="docs/portraits.png" alt="Les portraits des personnages" width="900">
+<img src="docs/portraits.png" alt="Portraits of the characters" width="900">
 
 <br><br>
 
-<img src="docs/market.png" alt="Le panneau du Marché" width="900">
+<img src="docs/market.png" alt="The Market panel" width="900">
 
 </div>
 
-Chaque lieu a son mini-jeu d'une demi-minute, qui se durcit avec votre série de victoires. Un clic pour les voir tourner :
+Each place has a half-minute mini-game that gets harder with your winning streak. One click to watch them run:
 
 <details>
-<summary><b>Le Café</b> : « Le coup de feu »</summary>
+<summary><b>The Café</b>: “The Rush”</summary>
 
 <br>
 
-Les clients commandent, leur bulle se referme : servez les bonnes tasses, dans l'ordre.
+Customers place their orders and their bubbles close: serve the right cups, in the right order.
 
 <div align="center">
 
-<img src="docs/cafe.gif" alt="Le mini-jeu du Café : servir les commandes avant que la bulle se referme" width="800">
+<img src="docs/cafe.gif" alt="The Café mini-game: serving orders before the bubble closes" width="800">
 
 </div>
 
 </details>
 
 <details>
-<summary><b>Le Marché</b> : « Marchandage »</summary>
+<summary><b>The Market</b>: “Haggling”</summary>
 
 <br>
 
-Arrêtez l'aiguille dans la zone verte, puis poussez pour un meilleur prix ou topez là.
+Stop the needle in the green zone, then push for a better price or shake on it.
 
 <div align="center">
 
-<img src="docs/market.gif" alt="Le mini-jeu du Marché : arrêter l'aiguille pour marchander" width="800">
+<img src="docs/market.gif" alt="The Market mini-game: stopping the needle to haggle" width="800">
 
 </div>
 
 </details>
 
 <details>
-<summary><b>La Forge</b> : « Battre le fer »</summary>
+<summary><b>The Forge</b>: “Beating the Iron”</summary>
 
 <br>
 
-Frappez quand les repères passent sur l'enclume, et gardez la chaleur dans sa zone avec le soufflet.
+Strike when the markers cross the anvil, and keep the heat in its zone with the bellows.
 
 <div align="center">
 
-<img src="docs/forge.gif" alt="Le mini-jeu de la Forge : frapper en rythme et tenir la chaleur" width="800">
+<img src="docs/forge.gif" alt="The Forge mini-game: striking on rhythm and holding the heat" width="800">
 
 </div>
 
 </details>
 
-### Explorer sans fin
+### Endless exploration
 
-Une grande carte aux biomes variés, tirée au hasard à chaque nouvelle partie et toujours jouable, sous le brouillard, avec des ruines, des hameaux, des gisements et des antres à découvrir. Rangs de cité, commandes des citoyens, grandes œuvres, arbre d'héritage et menace qui monte : de quoi jouer des heures.
+A large map of varied biomes, drawn at random for every new game and always playable, hidden under mist, with ruins, hamlets, deposits and lairs to discover. City ranks, citizen orders, great works, a legacy tree and a rising threat: hours of play.
 
-### Un tutoriel qui suit le jeu
+### A tutorial that follows the game
 
-Aveline guide les premiers pas, étape par étape, puis les leçons arrivent au bon moment. Le *Livre des leçons* les regroupe toutes.
+Aveline guides your first steps, one at a time, then the lessons arrive just when you need them. The *Book of Lessons* gathers them all.
 
-## Jouer
+## Play
 
-Le jeu est statique : servez le dossier avec n'importe quel serveur HTTP local.
+The game is static: serve the folder with any local HTTP server.
 
 ```sh
 python -m http.server 8000
 ```
 
-Puis ouvrez <http://localhost:8000>. La partie est sauvegardée dans le navigateur (`localStorage`). `?seed=123456` dans l'adresse ouvre une nouvelle partie sur cette carte.
+Then open <http://localhost:8000>. The game is saved in the browser (`localStorage`). Adding `?seed=123456` to the address starts a new game on that map.
 
-## Commandes
+## Controls
 
-| Action | Commande |
+| Action | Control |
 |---|---|
-| Poser, choisir | Clic |
-| Déplacer la vue | Glisser |
-| Zoom | Molette |
-| Annuler | Clic droit |
-| Commencer | Entrée ou clic |
-| Parer, en combat | Espace ou clic |
+| Place, select | Click |
+| Move the view | Drag |
+| Zoom | Wheel |
+| Cancel | Right-click |
+| Start | Enter or click |
+| Parry, in combat | Space or click |
 
-La pause liste toutes les commandes.
+The pause screen lists every control.
 
-## Crédits
+## Credits
 
-Les sprites sont générés avec [PixelLab](https://pixellab.ai).
+The sprites are generated with [PixelLab](https://pixellab.ai).
 
-Les musiques viennent d'[OpenGameArt](https://opengameart.org), par mrpoly, Scott Elliott (Scrabbit), Cleyton Kauffman, RandomMind et Johan Brodd. Titres, licences et sources : [assets/music/CREDITS.md](assets/music/CREDITS.md).
+The music comes from [OpenGameArt](https://opengameart.org), by mrpoly, Scott Elliott (Scrabbit), Cleyton Kauffman, RandomMind and Johan Brodd. Titles, licences and sources: [assets/music/CREDITS.md](assets/music/CREDITS.md).
 
 ## Licence
 
-Le code est sous licence MIT, voir [LICENSE](LICENSE). Les musiques de `assets/music/` gardent chacune la licence de leur auteur (CC0, CC BY 3.0 ou CC BY 4.0), détaillée dans [assets/music/CREDITS.md](assets/music/CREDITS.md).
+The code is under the MIT licence, see [LICENSE](LICENSE). The music in `assets/music/` keeps each author's own licence (CC0, CC BY 3.0 or CC BY 4.0), detailed in [assets/music/CREDITS.md](assets/music/CREDITS.md).
