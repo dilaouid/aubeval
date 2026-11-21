@@ -65,28 +65,40 @@ const Village = (() => {
   // ---- The goblin camp: every raid leaves from it. It stays put until the player's soldiers burn
   // it down (js/camp.js); then, after a respite, a new one rises farther out, on another side ----
   const CAMP = 4; // its side, in tiles
+  const STEP4 = [1, 0, -1, 0, 1]; // (STEP4[k], STEP4[k + 1]) for k = 0..3: the four tiles beside one
   /**
    * Finds the camp's place when there is none (a spot of open ground `raid_camp_dist` tiles from the
    * hall, on a side the land's seed picks, so the same land always has its camp in the same place;
    * the camp number `lvl` that rises after `lvl` have fallen goes `camp_dist_step` tiles farther per
    * fallen camp, turned by a golden angle each time, never on a building or a paved path, and
-   * always where its raiders can walk to the hall)
+   * always where its raiders can walk to the hall inside the map of their raid)
    * and keeps it in state.raid.camp. Then clears its ground: no tree grows there, nothing is built.
    */
   function placeCamp(lvl = 0) {
     camp.fill(0);
     const r = state.raid;
     if (!r.camp) {
-      const h = hallMid(), cx = h.x / T, cy = h.y / T, a0 = ((state.mapSeed * 0.6180339) % 1) * 6.2832 + lvl * 2.39996;
+      const h = hallMid(), cx = h.x / T, cy = h.y / T, hx = Math.floor(cx), hy = Math.floor(cy);
+      // need[i]: the smallest square around the hall (half its side, in tiles) inside which a walk side
+      // by side over walkable ground leads from the hall to tile i. One pass, the smallest squares first.
+      const need = new Uint16Array(N).fill(0xffff), byNeed = [[idx(hx, hy)]];
+      need[byNeed[0][0]] = 0;
+      for (let v = 0; v < byNeed.length; v++) for (const i of byNeed[v] || []) {
+        if (need[i] !== v) continue; // reached since by a smaller square
+        const tx = i % M.w, ty = (i / M.w) | 0;
+        for (let k = 0; k < 4; k++) {
+          const X = tx + STEP4[k], Y = ty + STEP4[k + 1];
+          if (!walkable(X, Y)) continue;
+          const j = idx(X, Y), n = Math.max(v, Math.abs(X - hx), Math.abs(Y - hy));
+          if (n < need[j]) { need[j] = n; (byNeed[n] = byNeed[n] || []).push(j); }
+        }
+      }
+      // Whether raiders from a camp whose middle is (x, y) have a way to the hall inside the map of their raid (js/raid.js fieldRadius).
+      const reached = (x, y) => inMap(x, y) && need[idx(x, y)] <= Raid.fieldRadius(Math.hypot(x - cx, y - cy));
+      const a0 = ((state.mapSeed * 0.6180339) % 1) * 6.2832 + lvl * 2.39996;
       const d0 = tune.raid_camp_dist + Math.min(lvl * tune.camp_dist_step, tune.camp_dist_max);
       const free = i => !lvl || occ[i] === 0 || occ[i] === -1; // a later camp: only on open ground or wild flora (occ is current by then)
-      const reach = new Uint8Array(N), q = [idx(Math.floor(cx), Math.floor(cy))]; // every tile a raider can walk to from the hall: a camp on an island would send none
-      reach[q[0]] = 1;
-      while (q.length) {
-        const i = q.pop(), x = i % M.w, y = (i / M.w) | 0;
-        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { if (!walkable(x + dx, y + dy)) continue; const j = idx(x + dx, y + dy); if (!reach[j]) { reach[j] = 1; q.push(j); } }
-      }
-      const ok = (tx, ty) => { if (!inMap(tx + 2, ty + 2) || !reach[idx(tx + 2, ty + 2)]) return false; for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
+      const ok = (tx, ty) => { if (!reached(tx + 2, ty + 2)) return false; for (let y = -1; y <= CAMP; y++) for (let x = -1; x <= CAMP; x++) { if (!inMap(tx + x, ty + y)) return false; const i = idx(tx + x, ty + y); if (!groundOf(i).walk || !groundOf(i).build || !free(i)) return false; } return true; };
       for (let d = d0; d < d0 + 30 && !r.camp; d += 2) for (let k = 0; k < 32; k++) {
         const a = a0 + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 6.2832 / 32, tx = Math.round(cx + Math.cos(a) * d) - 2, ty = Math.round(cy + Math.sin(a) * d) - 2;
         if (ok(tx, ty)) { r.camp = { x: tx, y: ty, lvl }; break; }

@@ -90,11 +90,15 @@ const Raid = (() => {
   function reset() { field = null; stale = true; shots.length = 0; Object.assign(hero, post(), { dx: 0, dy: 1, moving: false }); }
 
   // ---- The raiders' map ----
-  /** Tiles from the hall that the raiders' map must reach: as far as the goblin camp, with room around it. */
-  const spawnDist = () => Math.max(Village.safeRadius() + tune.raid_spawn_margin, Math.hypot(Village.campMid().x - Village.hallMid().x, Village.campMid().y - Village.hallMid().y) / T);
   const SPREAD = 8; // tiles of margin beyond the camp
+  /**
+   * Half the side, in tiles, of the square around the hall the raiders' map covers when their camp's
+   * middle is `campDist` tiles away: as far as the camp, with room around it. The camp is only placed
+   * where a way inside this square leads to the hall (js/village.js placeCamp).
+   */
+  const fieldRadius = campDist => Math.ceil(Math.max(Village.safeRadius() + tune.raid_spawn_margin, campDist)) + SPREAD + 8;
   function buildField() {
-    const h = Village.hallMid(), R = Math.ceil(spawnDist()) + SPREAD + 8, cx = Math.floor(h.x / T), cy = Math.floor(h.y / T);
+    const h = Village.hallMid(), c = Village.campMid(), R = fieldRadius(Math.hypot(c.x - h.x, c.y - h.y) / T), cx = Math.floor(h.x / T), cy = Math.floor(h.y / T);
     const x0 = Math.max(0, cx - R), y0 = Math.max(0, cy - R), w = Math.min(M.w - 1, cx + R) - x0 + 1, hh = Math.min(M.h - 1, cy + R) - y0 + 1;
     const dist = new Float32Array(w * hh).fill(Infinity), cost = new Float32Array(w * hh), solid = new Uint8Array(w * hh);
     const byUid = new Map(); for (const b of state.buildings) byUid.set(b.uid, b);
@@ -130,7 +134,7 @@ const Raid = (() => {
         if (cost[v] === Infinity) continue;
         if (dx && dy && (solid[uy * w + vx] || solid[vy * w + ux])) continue; // never between two corners
         const nd = d + (dx && dy ? 1.414 : 1) * cost[u]; // the raider walks from v onto u
-        if (nd < dist[v]) { dist[v] = nd; push(nd, v); }
+        if (nd < dist[v]) { dist[v] = nd; push(dist[v], v); } // queued as stored (a 32-bit float): queued as computed, a value rounded down is taken for stale when popped and never spreads
       }
     }
     field = { x0, y0, w, h: hh, dist, cost, solid, byUid };
@@ -544,6 +548,6 @@ const Raid = (() => {
   /** Calls the next raid now, for a bigger bounty. */
   function callNow() { if (!state.raid.active && state.raid.timer != null && Camp.standing()) start(true); }
 
-  return { tick, start, callNow, composition, heroPost, hero, pos, shots, reset, touch, compass, hurt: hurtNow, trapsOpen, trapAt, canTrap, layTrap, route,
+  return { tick, start, callNow, composition, heroPost, hero, pos, shots, reset, touch, compass, hurt: hurtNow, trapsOpen, trapAt, canTrap, layTrap, route, fieldRadius,
     isSiege, siege, duel, duelBlocked, hudExtra, hudKey, drawFigure, demo };
 })();
