@@ -358,9 +358,10 @@ let scene, state;
 <script src="js/music.js"></script>
 <script>
 'use strict';
-function reset() {
-  seed = Number(params.get('seed')) || CONFIG.seed;
-  state = Village.fresh(); // a new game: state.score is the gold earned, state.gained the last milestone
+/** A new game on the land `mapSeed` (drawn when left out: the shared one, else a random one). Its gameplay draws start from the same seed. */
+function reset(mapSeed = Village.drawSeed()) {
+  seed = mapSeed;
+  state = Village.fresh(mapSeed); // a new game: state.score is the gold earned, state.gained the last milestone
   Village.sync(); resetUi(); // the land for this game's seed, with nothing changed on it yet
 }
 

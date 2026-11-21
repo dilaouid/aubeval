@@ -12,7 +12,17 @@ const Village = (() => {
   const M = DATA.map, T = M.tile, B = DATA.buildings, N = M.w * M.h, CL = DATA.classes;
   const GROUND = Object.keys(DATA.ground), FLORA = Object.keys(DATA.flora);
   const G_PATH = GROUND.indexOf('path');
-  const baseSeed = Number(params.get('seed')) || CONFIG.seed; // the land of a new game
+  // ?seed=N in the address: the land a shared link asks for (0 when there is none, or not a number from 1 to SEED_MAX)
+  const sharedSeed = (n => n >= 1 && n <= MapGen.SEED_MAX ? n : 0)(Math.floor(Number(params.get('seed'))));
+  /**
+   * A new game's land: the shared one when there is one and `useShared`, else one drawn at random
+   * (the only Math.random of the game: every gameplay draw reads rng(), seeded from this land),
+   * moved on to the first playable seed from there (js/mapgen.js pickSeed).
+   */
+  function drawSeed(useShared = true) {
+    const s = useShared && sharedSeed ? sharedSeed : 1 + Math.floor(Math.random() * MapGen.SEED_MAX);
+    return MapGen.pickSeed(s, M, DATA.ground, DATA.biomes, DATA.flora);
+  }
   let land = null, landSeed = null;            // the land as its seed draws it, untouched
   const flora = new Uint8Array(N);             // what grows on each tile now: 0 nothing, else 1 + its place in FLORA
   const paved = new Uint8Array(N);             // 1 where the player paved a path
@@ -226,11 +236,14 @@ const Village = (() => {
   /** The hall's middle, in map pixels. */
   const hallMid = () => ({ x: (M.hall.x + B.hall.w / 2) * T, y: (M.hall.y + B.hall.h / 2) * T });
 
-  /** A new game's state. Everything the save file holds is here. */
-  function fresh() {
+  /**
+   * A new game's state. Everything the save file holds is here. `mapSeed`: its land (drawSeed); left
+   * out, the land of every save from before lands were drawn, so an older save filled from here keeps its own.
+   */
+  function fresh(mapSeed = CONFIG.seed) {
     const s = {
       v: 4, t: 0, score: 0, gained: '', seed: 0, savedAt: 0, // v: the save's version (js/save.js VERSION): a new game is never taken for an older save when it is loaded
-      mapSeed: baseSeed,                         // the land is drawn from this
+      mapSeed,                                   // the land is drawn from this
       land: { cut: {}, planted: {}, paved: {} }, // what the player changed on it, by tile index: felled, planted (flora id), paved
       res: {}, totals: {},                       // stock, and all that was ever gained in this village
       buildings: [], nextUid: 1, unlocked: {},
@@ -340,7 +353,7 @@ const Village = (() => {
    */
   function migrateV1() {
     const dx = M.hall.x - 12, dy = M.hall.y - 11; // the old hall stood at tile (12, 11)
-    state.mapSeed = baseSeed; state.land = { cut: {}, planted: {}, paved: {} };
+    state.mapSeed = CONFIG.seed; state.land = { cut: {}, planted: {}, paved: {} };
     for (const b of state.buildings) { b.x += dx; b.y += dy; }
     const kept = state.buildings.slice().sort((p, q) => (q.kind === 'hall') - (p.kind === 'hall')); // the hall takes its place first
     state.buildings = [];
@@ -646,7 +659,7 @@ const Village = (() => {
   }
 
   return {
-    sync, fresh, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
+    sync, fresh, drawSeed, sharedSeed, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
     safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, repairCost, canAfford, pay, gain,
     levelMult, milestoneMult, renownMult, outMult, wallMax, pillagePct, isUnlocked, refreshUnlocks, nextPopUnlock,
     size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartCost, upgradeRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,

@@ -8,7 +8,7 @@
 // (what one building costs, one enemy's health, one quest's reward) live with their content in
 // data/*.js, so adding a building, an enemy or a chapter never touches this file.
 window.CONFIG = {
-  seed: 1, // every gameplay random call reads rng(), seeded from this (or ?seed= in the address)
+  seed: 1, // the land of every save from before lands were drawn; a new game draws its own (js/village.js drawSeed, or ?seed= in the address)
   volume: { value: 0.5, min: 0, max: 1, step: 0.05 },
   music: { value: 0.55, min: 0, max: 1, step: 0.05 }, // the music's share of the volume (js/music.js)
 
