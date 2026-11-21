@@ -85,7 +85,7 @@ const Save = (() => {
     state.savedAt = Date.now(); state.seed = seed;
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(state)], { type: 'application/json' }));
-    a.download = 'aubeval-sauvegarde.json';
+    a.download = tr('save_file');
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }

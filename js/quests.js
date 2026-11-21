@@ -15,17 +15,17 @@ const Quests = (() => {
   function describe(c) {
     const out = [];
     if (!c) return out;
-    if (c.pop != null) { const p = Village.pop(); out.push({ ok: p >= c.pop, text: `${c.pop} habitants (${p})`, short: `${c.pop} habitants` }); }
-    if (c.built) for (const k in c.built) { const n = Village.count(k); out.push({ ok: n >= c.built[k], text: `${DATA.buildings[k].name} (${n}/${c.built[k]})`, short: 'après ' + DATA.buildings[k].card }); }
-    if (c.cls) for (const k in c.cls) { const i = DATA.classes.findIndex(x => x.id === k), n = Village.classCount(i), nm = DATA.classes[i].name; out.push({ ok: n >= c.cls[k], text: `Maison de classe ${nm} (${n}/${c.cls[k]})`, short: nm }); }
-    if (c.quest) { const q = find(c.quest); out.push({ ok: !!state.quests.done[c.quest], text: `Quête « ${q ? q.title : c.quest} »`, short: 'Quête' }); }
-    if (c.raidsWon != null) out.push({ ok: state.counters.raidsWon >= c.raidsWon, text: `Raids repoussés (${state.counters.raidsWon}/${c.raidsWon})`, short: 'Raid' });
-    if (c.heroLvl != null) out.push({ ok: state.hero.lvl >= c.heroLvl, text: `Héros niveau ${c.heroLvl}`, short: `Niveau ${c.heroLvl}` });
-    if (c.equip) out.push({ ok: !!state.hero.equip[c.equip], text: c.equip === 'weapon' ? 'Une arme équipée' : 'Une armure équipée', short: 'Équipement' });
-    if (c.weaponTier != null) out.push({ ok: Hero.weaponTier() >= c.weaponTier, text: `Arme de palier ${c.weaponTier}`, short: `Palier ${c.weaponTier}` });
-    if (c.totals) for (const r in c.totals) { const n = Math.floor(state.totals[r]); out.push({ ok: n >= c.totals[r], text: `${DATA.resources[r].name} récolté (${Math.min(n, c.totals[r])}/${c.totals[r]})`, short: DATA.resources[r].name }); }
+    if (c.pop != null) { const p = Village.pop(); out.push({ ok: p >= c.pop, text: tr('need_pop', { n: c.pop, have: p }), short: tr('need_pop_short', { n: c.pop }) }); }
+    if (c.built) for (const k in c.built) { const n = Village.count(k); out.push({ ok: n >= c.built[k], text: `${DATA.buildings[k].name} (${n}/${c.built[k]})`, short: tr('need_after', { name: DATA.buildings[k].card }) }); }
+    if (c.cls) for (const k in c.cls) { const i = DATA.classes.findIndex(x => x.id === k), n = Village.classCount(i), nm = DATA.classes[i].name; out.push({ ok: n >= c.cls[k], text: tr('need_cls', { name: nm, n, all: c.cls[k] }), short: nm }); }
+    if (c.quest) { const q = find(c.quest); out.push({ ok: !!state.quests.done[c.quest], text: tr('need_quest', { title: q ? q.title : c.quest }), short: tr('need_quest_short') }); }
+    if (c.raidsWon != null) out.push({ ok: state.counters.raidsWon >= c.raidsWon, text: tr('need_raids', { n: state.counters.raidsWon, all: c.raidsWon }), short: tr('need_raids_short') });
+    if (c.heroLvl != null) out.push({ ok: state.hero.lvl >= c.heroLvl, text: tr('need_hero', { n: c.heroLvl }), short: tr('need_hero_short', { n: c.heroLvl }) });
+    if (c.equip) out.push({ ok: !!state.hero.equip[c.equip], text: tr(c.equip === 'weapon' ? 'need_weapon' : 'need_armor'), short: tr('need_equip_short') });
+    if (c.weaponTier != null) out.push({ ok: Hero.weaponTier() >= c.weaponTier, text: tr('need_tier', { n: c.weaponTier }), short: tr('need_tier_short', { n: c.weaponTier }) });
+    if (c.totals) for (const r in c.totals) { const n = Math.floor(state.totals[r]); out.push({ ok: n >= c.totals[r], text: tr('need_totals', { name: DATA.resources[r].name, n: Math.min(n, c.totals[r]), all: c.totals[r] }), short: DATA.resources[r].name }); }
     for (const p of City.describe(c)) out.push(p); // { rank }, { popularity }
-    if (c.res) for (const r in c.res) { const n = Math.floor(state.res[r]); out.push({ ok: n >= c.res[r], text: `${DATA.resources[r].name} en réserve (${Math.min(n, c.res[r])}/${c.res[r]})`, short: DATA.resources[r].name }); }
+    if (c.res) for (const r in c.res) { const n = Math.floor(state.res[r]); out.push({ ok: n >= c.res[r], text: tr('need_res', { name: DATA.resources[r].name, n: Math.min(n, c.res[r]), all: c.res[r] }), short: DATA.resources[r].name }); }
     return out;
   }
   const met = c => describe(c).every(p => p.ok);

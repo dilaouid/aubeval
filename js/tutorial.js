@@ -142,7 +142,7 @@ const Tuto = (() => {
   /** A time of config.js in her words: 240 -> « 4 minutes », 90 -> « 1 minute 30 ». */
   function span(secs) {
     const m = Math.floor(secs / 60), r = Math.round(secs % 60);
-    return m ? `${m} minute${m > 1 ? 's' : ''}${r ? ' ' + r : ''}` : `${r} secondes`;
+    return m ? tr(m > 1 ? 'span_mins' : 'span_min', { m }) + (r ? ' ' + r : '') : tr('span_secs', { s: r });
   }
   /**
    * The words a line of data/tutorial.js leaves open, filled from the game as it is now:

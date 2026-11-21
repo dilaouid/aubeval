@@ -315,21 +315,21 @@ const scenes = (() => {
     const stepX = clamp(Math.floor((BX - 12 - POPW - 8) / shown.length), 60, 104), pw = stepX - 4, small = stepX < 86; // many resources: smaller icons, the same plates
     for (const r of shown) {
       const rt = rates[r] || 0, ix = small ? 14 : 22, tx = small ? 26 : 40;
-      UI.region(x, 6, pw, 40, null, RES[r].name + '\n' + (rt ? fmtRate(rt) + ' en ce moment' : 'Rien ne le produit pour l’instant'));
+      UI.region(x, 6, pw, 40, null, RES[r].name + '\n' + (rt ? tr('res_rate_tip', { rate: fmtRate(rt) }) : tr('res_none_tip')));
       UI.plate(x, 6, pw, 40); UI.icon(RES[r].icon, x + ix, 26, small ? 16 : 32); Tuto.mark('res:' + r, x, 6, pw, 40);
       UI.label(fmt(ui.disp[r] == null ? state.res[r] : ui.disp[r]), x + tx, rt ? 19 : 26, small ? 14 : 16, C.text, 'left');
       if (rt) text(fmtRate(rt), x + tx, 35, small ? 11 : 12, rt > 0 ? C.good : C.bad, 'left', true);
       x += stepX;
     }
     const pop = Village.pop(), nx = Village.nextPopUnlock(), free = Units.free();
-    UI.region(x, 6, POPW, 40, () => togglePanel('people'), tr('pop') + '\nLes maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.\n' + tr('pop_free_tip', { n: free })
+    UI.region(x, 6, POPW, 40, () => togglePanel('people'), tr('pop') + '\n' + tr('pop_tip') + '\n' + tr('pop_free_tip', { n: free })
       + (nx ? '\n' + tr('pop_next_tip', { n: nx.pop, name: nx.name }) : ''));
     UI.plate(x, 6, POPW, 40); UI.icon('icon.pop', x + 22, 26, 32);
     UI.label(String(pop), x + 40, 19, 16, C.text, 'left');
     text(tr('pop_free', { n: free }), x + 40, 35, 12, free > 0 ? C.good : C.dim, 'left', true);
     [['people', 'icon.pop', 'btn_people'], ['hero', 'icon.hero', 'btn_hero'], ['quests', 'icon.quest', 'btn_quests'], ['city', UI.ready('icon.city') ? 'icon.city' : 'icon.upgrade', 'btn_city'], ['explore', UI.ready('icon.explore') ? 'icon.explore' : 'icon.recenter', 'btn_explore'], ['menu', 'icon.village', 'btn_menu']].forEach(([p, ic, key], i) => {
       const s = tr(key), name = s.replace(/ \(.\)$/, ''), k = (s.match(/\((.)\)$/) || [])[1];
-      UI.button(BX + i * 50, 6, 46, 40, '', () => togglePanel(p), { on: ui.panel === p, icon: ic, isz: 32, tip: name + (k ? `\nTouche ${k}` : '') });
+      UI.button(BX + i * 50, 6, 46, 40, '', () => togglePanel(p), { on: ui.panel === p, icon: ic, isz: 32, tip: name + (k ? '\n' + tr('key_tip', { k }) : '') });
       Tuto.mark('btn:' + p, BX + i * 50, 6, 46, 40);
     });
 
@@ -370,7 +370,7 @@ const scenes = (() => {
       UI.plate(rx, ry, 320, 52, r.warned ? 'bad' : null); UI.icon('icon.raid', rx + 30, ry + 26, 32);
       UI.label(tr(Raid.hudKey('raid_in'), Object.assign({ n: r.n + 1, time: '' }, Raid.hudVars())).trim(), rx + 54, ry + 18, 14, r.warned ? C.bad : C.dim, 'left');
       UI.label(fmtTime(r.timer), rx + 54, ry + 36, 18, r.warned ? C.gold : C.text, 'left');
-      UI.button(rx + 216, ry + 8, 94, 36, tr('raid_call'), Raid.callNow, { size: 14, primary: r.warned, tip: `Appeler le raid maintenant\nPrime +${Math.round(tune.raid_call_bonus * 100)} % si vous le repoussez.` });
+      UI.button(rx + 216, ry + 8, 94, 36, tr('raid_call'), Raid.callNow, { size: 14, primary: r.warned, tip: tr('raid_call_tip', { pct: Math.round(tune.raid_call_bonus * 100) }) });
     }
     if (Raid.hudExtra) Raid.hudExtra(rx, ry + 58, 320); // a siege: its warlord, and the button that challenges him
   }
@@ -410,7 +410,7 @@ const scenes = (() => {
       if (!open) {
         UI.icon('icon.lock', x + w / 2, y + 40, 32);
         UI.label('????', x + w / 2, y + 78, 15, C.dim);
-        const need = trap ? { short: 'Raid' } : Quests.describe(d.unlock)[0];
+        const need = trap ? { short: tr('need_raids_short') } : Quests.describe(d.unlock)[0];
         if (need) text(need.short, x + w / 2, y + 96, 12, C.dim, 'center', true);
         return;
       }
@@ -438,13 +438,13 @@ const scenes = (() => {
     for (const id in I) {
       const it = I[id], open = Quests.met(it.requires), own = Hero.has(id), plus = state.hero.plus[id] || 0;
       if (!open) { UI.icon('icon.lock', x + 8, y + 13, 16); text(`${it.name} · ${Quests.describe(it.requires).map(p => p.text).join(', ')}`, x + 26, y + 13, 14, C.dim, 'left'); y += 26; continue; }
-      const st = [it.atk ? `ATQ +${it.atk}` : '', it.def ? `DÉF +${it.def}` : '', it.hp ? `PV +${it.hp}` : ''].filter(Boolean).join(' · ');
+      const st = [it.atk ? tr('stat_atk', { n: it.atk }) : '', it.def ? tr('stat_def', { n: it.def }) : '', it.hp ? tr('stat_hp', { n: it.hp }) : ''].filter(Boolean).join(' · ');
       text(it.name + (plus ? ' +' + plus : ''), x, y + 11, 15, C.text, 'left', true);
       text(st, x + w - 126, y + 11, 14, C.good, 'right');
       const price = Hero.craftCost(id);
       UI.cost(price, x, y + 32, { size: 14, gap: 8 });
       UI.button(x + w - 118, y + 4, 118, 36, own ? tr('forge_plus', { n: plus + 1 }) : tr('forge_do'), () => Hero.startCraft(b, id),
-        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? `\nChaque +1 ajoute ${Math.round(tune.plus_bonus * 100)} % de ses bonus.` : '') });
+        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? '\n' + tr('forge_plus_tip', { pct: Math.round(tune.plus_bonus * 100) }) : '') });
       Tuto.mark('forge:' + id, x + w - 118, y + 4, 118, 36);
       y += 46;
     }
@@ -529,7 +529,7 @@ const scenes = (() => {
     if (st) { UI.icon(st.icon, tx + 8, y + 9, 16); y = UI.wrap(st.text, tx + 22, y, tw - 22, 14, st.color, 17, true); }
     if (d.produces && !d.pop && !d.trade) { recipe(d, b, tx, y + 10); y += 22; }
     else if (d.pop) { text(tr('house_head', { n: Village.housed(b), gold: fmtNum(d.produces.gold * Village.taxMult(b) * Village.outMult(b)), t: fmtNum(d.cycle) }), tx, y + 9, 13, C.text, 'left'); y += 20; }
-    if (kp && y < hy + 62) UI.wrap('« ' + keeperLine(kp, b) + ' »', tx, y, tw, 12, C.dim, 15); // the keeper's word, as far as it fits
+    if (kp && y < hy + 62) UI.wrap(tr('quote', { s: keeperLine(kp, b) }), tx, y, tw, 12, C.dim, 15); // the keeper's word, as far as it fits
     // ---- the tabs
     let top = hy + 86;
     if (Venue.has(b)) { // a place that can be entered: its keeper waits inside, with a game to play
@@ -759,7 +759,7 @@ const scenes = (() => {
       blit(s, px + 74 - s.width * PX * k / 2, py + 140 - s.height * PX * k, k);
     }
     UI.label(kp.name, px + 74, py + 150, 14, C.gold); text(kp.title, px + 74, py + 165, 11, C.dim, 'center');
-    const bw = 304, said = '« ' + line + ' »', bh = linesOf(said, bw - 28, 13) * 17 + 18; // what he or she says, under the portrait
+    const bw = 304, said = tr('quote', { s: line }), bh = linesOf(said, bw - 28, 13) * 17 + 18; // what he or she says, under the portrait
     UI.plate(P.x - 4 - bw, py + 180, bw, bh); UI.wrap(said, P.x - 4 - bw + 14, py + 189, bw - 28, 13, C.text, 17);
   }
   /** The market: its spice imports, and gold against goods. */
@@ -797,12 +797,12 @@ const scenes = (() => {
     const free = Units.free();
     text(tr('train_title'), x, y + 10, 15, C.gold, 'left', true); text(tr('pop_free', { n: free }), x + w, y + 10, 13, free > 0 ? C.good : C.bad, 'right', true); y += 24;
     if (b.train) { text(tr('training', { name: U[b.train.kind].name }), x, y + 9, 14, C.accent, 'left', true); UI.bar(x + 190, y, w - 190, 16, 1 - b.train.left / b.train.total, C.accent); y += 24; }
-    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, `PV ${Math.round(U[k].hp * Units.drill())} · ATQ ${fmtNum(U[k].atk * Units.drill())}`);
+    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(U[k].atk * Units.drill()) }));
     return armyButtons(x, y + 2, w);
   }
   function armyButtons(x, y, w) {
     const any = Units.soldiers().length > 0;
-    UI.button(x, y, (w - 8) / 2, 34, tr('select_all'), selectAll, { size: 13, disabled: !any, tip: tr('select_all') + '\nTouche T' });
+    UI.button(x, y, (w - 8) / 2, 34, tr('select_all'), selectAll, { size: 13, disabled: !any, tip: tr('select_all') + '\n' + tr('key_tip', { k: 'T' }) });
     UI.button(x + (w + 8) / 2, y, (w - 8) / 2, 34, tr('recall'), Units.recall, { size: 13, disabled: !any, tip: tr('recall_tip') });
     return y + 40;
   }
@@ -867,7 +867,7 @@ const scenes = (() => {
     for (const id of h.inv) {
       const it = I[id], s = Hero.itemStats(id), on = h.equip[it.slot] === id;
       text(it.name + (h.plus[id] ? ' +' + h.plus[id] : ''), x, y + 9, 15, C.text, 'left', true);
-      text([s.atk ? `ATQ +${fmtNum(s.atk)}` : '', s.def ? `DÉF +${fmtNum(s.def)}` : '', s.hp ? `PV +${fmtNum(s.hp)}` : ''].filter(Boolean).join(' · '), x, y + 27, 14, C.good, 'left');
+      text([s.atk ? tr('stat_atk', { n: fmtNum(s.atk) }) : '', s.def ? tr('stat_def', { n: fmtNum(s.def) }) : '', s.hp ? tr('stat_hp', { n: fmtNum(s.hp) }) : ''].filter(Boolean).join(' · '), x, y + 27, 14, C.good, 'left');
       UI.button(x + w - 104, y + 2, 104, 32, on ? tr('equipped') : tr('equip'), () => Hero.equip(id), { size: 14, primary: !on, disabled: on, tip: it.name + '\n' + it.desc });
       Tuto.mark('equip:' + id, x + w - 104, y + 2, 104, 32);
       y += 40;
@@ -881,7 +881,7 @@ const scenes = (() => {
       UI.button(x, y, 30, 30, '', () => { if (!Cards.toggle(e.id)) toast(tr('deck_min', { min: tune.deck_min }), C.bad); }, { icon: on ? 'icon.check' : null, on });
       text(`${e.c.name}${e.copies > 1 ? ' ×' + e.copies : ''}`, x + 40, y + 9, 14, on ? C.text : C.dim, 'left', true);
       text(Cards.origin(e), x + w, y + 9, 12, C.dim, 'right');
-      y = UI.wrap(`${e.c.cost} souffle · ` + Cards.lines(e, stats).join(' · '), x + 40, y + 19, w - 40, 13, on ? C.good : C.dim, 16) + 8;
+      y = UI.wrap(tr('card_cost', { n: e.c.cost }) + ' · ' + Cards.lines(e, stats).join(' · '), x + 40, y + 19, w - 40, 13, on ? C.good : C.dim, 16) + 8;
       UI.region(x + 34, y0, w - 34, y - y0 - 6, null, Cards.tip(e, stats));
     }
     const more = DATA.cardOrder.filter(id => !pool.some(e => e.id === id));
@@ -956,7 +956,7 @@ const scenes = (() => {
       for (const m of DATA.missions) y = missionBlock(m, x, y, w);
     } else {
       const open = DATA.contracts.filter(q => Quests.met(q.requires));
-      if (!open.length) y = UI.wrap('Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.', x, y, w, 15, C.dim);
+      if (!open.length) y = UI.wrap(tr('contracts_none'), x, y, w, 15, C.dim);
       for (const q of open) y = questBlock(q, x, y, w, true);
     }
     return y;
@@ -1089,7 +1089,7 @@ const scenes = (() => {
     UI.button(58, BOTTOM - 50, 44, 44, '', () => World.zoomBy(1, W / 2, 316), { icon: 'icon.zoom_in', tip: tr('zoom_in') });
     UI.button(106, BOTTOM - 50, 44, 44, '', goHome, { icon: 'icon.recenter', tip: tr('recenter') + '\n' + tr('recenter_tip') });
     Tuto.mark('view', 10, BOTTOM - 50, 140, 44);
-    if (Units.soldiers().length) UI.button(154, BOTTOM - 50, 44, 44, '', selectAll, { icon: 'icon.army', on: ui.selU.length > 0, tip: tr('select_all') + '\nTouche T' });
+    if (Units.soldiers().length) UI.button(154, BOTTOM - 50, 44, 44, '', selectAll, { icon: 'icon.army', on: ui.selU.length > 0, tip: tr('select_all') + '\n' + tr('key_tip', { k: 'T' }) });
     if (ui.selU.length && !kind && !ui.tool) { // the chosen soldiers, and how to send them
       const hint = tr('sel_hint', { n: ui.selU.length }), hw = UI.width(hint, 14, true) + 36;
       UI.plate(640 - hw / 2, BOTTOM - 46, hw, 38); UI.label(hint, 640, BOTTOM - 26, 14, C.text);

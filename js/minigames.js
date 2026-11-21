@@ -363,7 +363,7 @@ const Minigames = (() => {
       UI.wrap(tr(cold ? 'fg_cold' : hot ? 'fg_hot' : 'fg_ok'), 1058, 284, 136, 16, cold ? BLUE : hot ? C.bad : C.good, 20, true);
       UI.button(1056, 408, 140, 124, '', pump, { tip: tr('fg_bellows_tip'), primary: cold });
       Venue.pix(bellows(), 1056 + 70 - 39 - (g.puff > 0 ? 3 : 0), 424, 3);
-      UI.label(tr('fg_bellows'), 1126, 496, 15, C.text); text('B · ↑ · clic droit', 1126, 516, 11, C.dim, 'center');
+      UI.label(tr('fg_bellows'), 1126, 496, 15, C.text); text(tr('fg_bellows_keys'), 1126, 516, 11, C.dim, 'center');
       // the rail the marks come down, the anvil and the blade
       UI.panel(PANEL.x, PANEL.y, PANEL.w, PANEL.h);
       ctx.fillStyle = C.ink; ctx.fillRect(TX - 60, TY - 5, len + 60, 10); ctx.fillStyle = '#5a3a22'; ctx.fillRect(TX - 58, TY - 3, len + 56, 6);

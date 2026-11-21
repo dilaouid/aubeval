@@ -47,7 +47,7 @@ const Cards = (() => {
     h.bench[id] = true; return true;
   }
   /** Where a card comes from, in words: "Forge · niv. 2", or the hero's name. */
-  function origin(e) { return e.c.from === 'hero' ? heroName() : B[e.c.from].card + (e.lvl > 1 ? ' · niv. ' + e.lvl : ''); }
+  function origin(e) { return e.c.from === 'hero' ? heroName() : (e.lvl > 1 ? tr('card_origin_lvl', { card: B[e.c.from].card, n: e.lvl }) : B[e.c.from].card); }
 
   /**
    * What a card does, one short line per effect, with its numbers as they are now.
@@ -55,36 +55,36 @@ const Cards = (() => {
    */
   function lines(e, st) {
     const c = e.c, p = e.pow, out = [];
-    if (c.dmg) { const d = whole(st.atk * c.dmg * p); out.push((c.hits > 1 ? `${c.hits} × ${d}` : d) + ' dégâts' + (c.target === 'all' ? ' à tous' : '')); }
-    if (c.flat) { const d = whole(c.flat * p); out.push(c.target === 'random' ? `${c.hits || 1} flèches de ${d}, au hasard` : `${d} dégâts` + (c.target === 'all' ? ' à tous' : '')); }
-    if (c.pierce) out.push('Ignore l’armure');
-    if (c.shred) out.push(`Armure −${whole(c.shred * p)}`);
-    if (c.stun) out.push('La cible perd son tour');
-    if (c.weak) out.push(`Affaiblit ${c.weak} tours`);
-    if (c.block || c.blockDef) out.push(`Garde ${whole((c.block || 0) * p + (c.blockDef || 0) * st.def)}`);
-    if (c.thorns) out.push(`Épines ${whole(c.thorns * p)}`);
-    if (c.heal) out.push(`Rend ${whole(st.max * c.heal * p)} PV`);
-    if (c.draw) out.push(`Pioche ${c.draw}`);
-    if (c.energy) out.push(`+${c.energy} souffle`);
-    if (c.buff) out.push(`ATQ +${Math.round((c.buff.atk - 1) * 100)} %, ${c.buff.turns} tours`);
-    if (c.bless) out.push('Prochain coup paré');
-    if (c.wide) out.push('Parade facile');
-    if (c.ally) out.push(`Milicien : ${whole(c.ally.dmg * p)} par tour, ${c.ally.turns} tours`);
-    if (c.echo) out.push('Carte suivante ×2');
-    if (c.exhaust) out.push('Une fois par combat');
+    if (c.dmg) { const d = whole(st.atk * c.dmg * p); out.push(tr(c.target === 'all' ? 'card_dmg_all' : 'card_dmg', { d: c.hits > 1 ? `${c.hits} × ${d}` : d })); }
+    if (c.flat) { const d = whole(c.flat * p); out.push(c.target === 'random' ? tr('card_arrows', { n: c.hits || 1, d }) : tr(c.target === 'all' ? 'card_dmg_all' : 'card_dmg', { d })); }
+    if (c.pierce) out.push(tr('card_pierce'));
+    if (c.shred) out.push(tr('card_shred', { n: whole(c.shred * p) }));
+    if (c.stun) out.push(tr('card_stun'));
+    if (c.weak) out.push(tr('card_weak', { n: c.weak }));
+    if (c.block || c.blockDef) out.push(tr('card_block', { n: whole((c.block || 0) * p + (c.blockDef || 0) * st.def) }));
+    if (c.thorns) out.push(tr('card_thorns', { n: whole(c.thorns * p) }));
+    if (c.heal) out.push(tr('card_heal', { n: whole(st.max * c.heal * p) }));
+    if (c.draw) out.push(tr('card_draw', { n: c.draw }));
+    if (c.energy) out.push(tr('card_energy', { n: c.energy }));
+    if (c.buff) out.push(tr('card_buff', { pct: Math.round((c.buff.atk - 1) * 100), n: c.buff.turns }));
+    if (c.bless) out.push(tr('card_bless'));
+    if (c.wide) out.push(tr('card_wide'));
+    if (c.ally) out.push(tr('card_ally', { dmg: whole(c.ally.dmg * p), n: c.ally.turns }));
+    if (c.echo) out.push(tr('card_echo'));
+    if (c.exhaust) out.push(tr('card_once'));
     return out;
   }
   /** The longer words behind a card's short lines: what its keywords mean, its flavour, where it comes from. */
   function tip(e, st) {
     const c = e.c, notes = [];
-    if (c.block || c.blockDef) notes.push('Garde : absorbe les dégâts jusqu’à votre prochain tour.');
-    if (c.thorns) notes.push('Épines : chaque ennemi qui vous frappe ce tour les subit.');
-    if (c.stun) notes.push('Un chef ne perd pas son tour : il frappe à moitié force.');
-    if (c.bless) notes.push('Le prochain coup est paré parfaitement, sans rien presser, riposte comprise.');
-    if (c.wide) notes.push('Jusqu’à votre prochain tour, le moment de la parade est deux fois plus large.');
-    if (c.echo) notes.push('La prochaine carte jouée ce tour fait son effet deux fois.');
-    if (c.pay) notes.push('Coûte ' + Object.keys(c.pay).map(r => `${c.pay[r]} ${DATA.resources[r].name.toLowerCase()}`).join(', ') + ' des réserves du village.');
-    return `${c.name} · ${c.cost} souffle\n${notes.join('\n')}${notes.length ? '\n' : ''}${c.flavor}\n${tr('card_from', { from: origin(e) })}`;
+    if (c.block || c.blockDef) notes.push(tr('card_note_block'));
+    if (c.thorns) notes.push(tr('card_note_thorns'));
+    if (c.stun) notes.push(tr('card_note_stun'));
+    if (c.bless) notes.push(tr('card_note_bless'));
+    if (c.wide) notes.push(tr('card_note_wide'));
+    if (c.echo) notes.push(tr('card_note_echo'));
+    if (c.pay) notes.push(tr('card_note_pay', { list: Object.keys(c.pay).map(r => `${c.pay[r]} ${DATA.resources[r].name.toLowerCase()}`).join(', ') }));
+    return `${c.name} · ${tr('card_cost', { n: c.cost })}\n${notes.join('\n')}${notes.length ? '\n' : ''}${c.flavor}\n${tr('card_from', { from: origin(e) })}`;
   }
   /**
    * The picture on a card: { sprite, frame, k (drawing scale: 1 = the world's pixel size), top }.

@@ -130,7 +130,50 @@ function checkAll(langs) {
   return bad;
 }
 
-module.exports = { I18N, loadData, filesOf, paths, pathOf, check, readLayers };
+/** The string and template literals of a source file: [{ s, line }] (comments and regexes skipped). */
+function literals(src) {
+  const out = [], n = src.length;
+  let i = 0, line = 1, prev = '';
+  while (i < n) {
+    const c = src[i];
+    if (c === '\n') { line++; i++; continue; }
+    if (c === '/' && src[i + 1] === '/') { while (i < n && src[i] !== '\n') i++; continue; }
+    if (c === '/' && src[i + 1] === '*') { i += 2; while (i < n && !(src[i] === '*' && src[i + 1] === '/')) { if (src[i] === '\n') line++; i++; } i += 2; continue; }
+    if (c === '/' && /[(,=:[!&|?{};]$/.test(prev)) { // a regex
+      i++;
+      while (i < n && src[i] !== '/') { if (src[i] === '\\') i++; else if (src[i] === '[') { while (i < n && src[i] !== ']') { if (src[i] === '\\') i++; i++; } } i++; }
+      i++; prev = 'x'; continue;
+    }
+    if (c === "'" || c === '"' || c === '`') {
+      const at = line; let j = i + 1, s = '';
+      while (j < n && src[j] !== c) { if (src[j] === '\\') { const e = src[j + 1]; s += e === 'n' ? '\n' : e === 't' ? '\t' : e; j += 2; continue; } if (src[j] === '\n') line++; s += src[j]; j++; }
+      out.push({ s, line: at }); i = j + 1; prev = 'x'; continue;
+    }
+    if (!/\s/.test(c)) prev = c;
+    i++;
+  }
+  return out;
+}
+// French a player would see, written in js/ rather than in data/strings.js. Developer words are
+// let be: console lines, the tutorial check (js/tuto-check.js) and the sprite galleries (?scene=).
+const FRENCH = /[éèêàùçôîâûœÉÈÊÀÇ’«»]|\b(frappe|abat|siffle|enrage|Parade|Carte|fois|clic|Appeler|Chaque|Prime|attaque|soigne|souffle|habitants|niv|tours|Quête|Raid|Rage|RAGE|ATQ|DÉF|PV|Touche|Popularité|Garde|Pioche|Armure|Ignore|Milicien|secondes|minutes?|Fermer|Md|Bn|Tn)\b/;
+function frenchInCode() {
+  const out = [];
+  for (const f of fs.readdirSync(path.join(ROOT, 'js'))) {
+    if (!f.endsWith('.js') || f === 'i18n.js' || f === 'tuto-check.js') continue;
+    const src = fs.readFileSync(path.join(ROOT, 'js', f), 'utf8'), lines = src.split('\n');
+    let dev = null; // the gallery's lines in js/screens.js
+    if (f === 'screens.js') { const a = lines.findIndex(l => /function drawFigures\(/.test(l)), b = lines.findIndex(l => /function loadingUpdate\(/.test(l)); dev = [a + 1, b + 1]; }
+    for (const { s, line } of literals(src)) {
+      if (/console\./.test(lines[line - 1]) || (dev && line >= dev[0] && line < dev[1])) continue;
+      const t = s.replace(/\$\{[^}]*\}/g, ' ');
+      if (FRENCH.test(t) && !/^[a-z_]+$/.test(t) && !/^\{?de_hero\}?$|^_hero\}$|^’$/.test(t)) /* a lone lowercase word is an id */ out.push(`${f}:${line}  ${s.slice(0, 90).replace(/\n/g, '\\n')}`);
+    }
+  }
+  return out;
+}
+
+module.exports = { I18N, loadData, filesOf, paths, pathOf, check, readLayers, literals, frenchInCode };
 
 if (require.main === module) {
   const [cmd, ...args] = process.argv.slice(2);

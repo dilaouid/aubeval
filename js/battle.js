@@ -99,15 +99,15 @@ const Battle = (() => {
     const blow = (mult, o) => b.blows.push(Object.assign({ f, mult, k: f.weak > 0 ? 0.5 : 1, lead: tune.parry_lead, t: 0, res: null }, o));
     b.timer = 0.75;
     if (it === 'stunned') { f.stun--; b.msg = tr('msg_stunned', { name: f.name }); pop(f, tr('it_stunned'), UI.C.dim); }
-    else if (it === 'hit') { b.msg = `${f.name} attaque.`; blow(1); }
-    else if (it === 'double') { b.msg = `${f.name} frappe deux fois.`; blow(0.6); blow(0.6, { lead: tune.parry_lead * 0.55 }); }
-    else if (it === 'windup') { b.msg = `${f.name} lève son arme : un coup terrible arrive au prochain tour !`; sfx('warn'); pop(f, '!', UI.C.bad, true); }
-    else if (it === 'heavy') { b.msg = `${f.name} abat son arme !`; blow(heavyMult(f), { big: true, lead: tune.parry_lead * 1.5 }); }
-    else if (it === 'hex') { b.msg = `${f.name} lance un maléfice : il traverse la Garde.`; blow(1, { pure: true, lead: tune.parry_lead * 1.2 }); }
+    else if (it === 'hit') { b.msg = tr('msg_hit', { name: f.name }); blow(1); }
+    else if (it === 'double') { b.msg = tr('msg_double', { name: f.name }); blow(0.6); blow(0.6, { lead: tune.parry_lead * 0.55 }); }
+    else if (it === 'windup') { b.msg = tr('msg_windup', { name: f.name }); sfx('warn'); pop(f, '!', UI.C.bad, true); }
+    else if (it === 'heavy') { b.msg = tr('msg_heavy', { name: f.name }); blow(heavyMult(f), { big: true, lead: tune.parry_lead * 1.5 }); }
+    else if (it === 'hex') { b.msg = tr('msg_hex', { name: f.name }); blow(1, { pure: true, lead: tune.parry_lead * 1.2 }); }
     else if (it === 'heal') {
       const weak = alive().filter(x => x.hp < x.max * 0.6).sort((p, q) => p.hp / p.max - q.hp / q.max)[0], n = Math.round(weak.max * 0.3);
       weak.hp = Math.min(weak.max, weak.hp + n);
-      b.msg = `${f.name} soigne ${weak.name}.`; pop(weak, '+' + n, UI.C.good); sfx('heal');
+      b.msg = tr('msg_heal', { name: f.name, ally: weak.name }); pop(weak, '+' + n, UI.C.good); sfx('heal');
     } else if (it === 'sunder') { b.msg = tr('msg_sunder', { name: f.name }); blow(tune.sunder_mult, { breaks: true, lead: tune.parry_lead * 1.2 }); }
     else if (it === 'flurry') { b.msg = tr('msg_flurry', { name: f.name }); blow(tune.flurry_mult); blow(tune.flurry_mult, { lead: tune.parry_lead * 0.55 }); blow(tune.flurry_mult, { lead: tune.parry_lead * 0.55 }); }
     else if (it === 'mend') {
@@ -117,8 +117,8 @@ const Battle = (() => {
       f.summoned = true;
       const pos = CALLED.find(p => !alive().some(x => x.pos === p)) || CALLED[0];
       const g = mkFoe(f.call, pos, b.opts.scale || 1); planIntent(g); b.foes.push(g);
-      b.msg = f.call === 'gobelin' ? `${f.name} siffle : un gobelin accourt !` : tr('msg_call', { name: f.name, ally: E[f.call].name }); sfx('horn');
-    } else if (it === 'enrage') { f.enraged = true; f.atk *= 1.3; b.msg = `${f.name} enrage : ses coups font plus mal !`; sfx('warn'); pop(f, 'RAGE', UI.C.bad, true); }
+      b.msg = f.call === 'gobelin' ? tr('msg_whistle', { name: f.name }) : tr('msg_call', { name: f.name, ally: E[f.call].name }); sfx('horn');
+    } else if (it === 'enrage') { f.enraged = true; f.atk *= 1.3; b.msg = tr('msg_enrage', { name: f.name }); sfx('warn'); pop(f, tr('pop_rage'), UI.C.bad, true); }
     if (it !== 'summon' && it !== 'enrage') f.n++; // a stunned enemy loses the step it was on: a terrible blow is gone
     if (f.weak > 0) f.weak--;
     if (b.blows.length) b.timer = 0.3;
@@ -406,7 +406,7 @@ const Battle = (() => {
       rows.push([cur, line]);
     }
     const lh = rows.length > 4 ? 13 : 15; let ty = y + 106 + Math.max(0, (5 - rows.length) * lh / 2) + lh / 2;
-    for (const [s, line] of rows) { text(s, x + w / 2, ty, 12, line === 'Une fois par combat' ? C.dim : C.text, 'center', line !== 'Une fois par combat'); ty += lh; }
+    for (const [s, line] of rows) { text(s, x + w / 2, ty, 12, line === tr('card_once') ? C.dim : C.text, 'center', line !== tr('card_once')); ty += lh; }
     // where it comes from, and its key
     text(Cards.origin(k), x + w / 2 + (o.key ? 6 : 0), y + hgt - 15, 11, C.dim, 'center');
     if (o.key) text(String(o.key), x + 16, y + hgt - 15, 12, C.accent, 'center', true);
@@ -471,7 +471,7 @@ const Battle = (() => {
       if (def > 0 || f.shred > 0) { UI.icon('icon.def', f.pos.x + 84, top + 8, 16); shadowText(String(def), f.pos.x + 96, top + 9, 14, f.shred > 0 ? C.accent : C.text, 'left'); }
       const st = [];
       if (f.weak > 0) st.push({ text: tr('pop_weak'), color: C.accent });
-      if (f.enraged) st.push({ text: 'Rage', color: C.bad });
+      if (f.enraged) st.push({ text: tr('st_rage'), color: C.bad });
       if (st.length) chips(st, f.pos.x, top + 28);
       const iw = UI.width(info.text, 15, true) + (info.warn ? 46 : 24), iy = top - 56 + (info.warn ? Math.round(Math.sin(b.t * 8)) * 2 : 0);
       UI.plate(f.pos.x - iw / 2, iy, iw, 30, info.warn ? 'bad' : null);
@@ -488,7 +488,7 @@ const Battle = (() => {
     shadowText(`${h.name} · ${tr('level', { n: state.hero.lvl })}`, h.pos.x, top - 12, 15, C.text, 'center');
     if (h.block > 0) { UI.icon('icon.def', h.pos.x - 100, top + 8, 32); shadowText(String(h.block), h.pos.x - 100, top + 9, 15, BLUE, 'center'); }
     const hs = [];
-    if (h.buff) hs.push({ text: `ATQ ×${fmtNum(h.buff.atk)} (${h.buff.turns})`, color: C.gold });
+    if (h.buff) hs.push({ text: tr('st_buff', { x: fmtNum(h.buff.atk), n: h.buff.turns }), color: C.gold });
     if (h.bless) hs.push({ text: tr('st_bless'), color: C.gold });
     if (h.thorns > 0) hs.push({ text: tr('st_thorns', { n: h.thorns }), color: C.accent });
     if (h.wide) hs.push({ text: tr('st_wide'), color: BLUE });
@@ -561,7 +561,7 @@ const Battle = (() => {
       if (b.perfect) { text(tr('tally_perfect', { n: b.perfect }), 470, y + 2, 17, C.accent, 'left', true); y += 28; }
       if (t.ups) {
         text(tr('level_up', { n: state.hero.lvl }), 470, y + 4, 22, C.gold, 'left', true); y += 30;
-        text(`PV +${t.hp} · ATQ +${fmtNum(t.atk)} · DÉF +${fmtNum(t.def)}`, 470, y + 2, 17, C.good, 'left'); y += 28;
+        text(tr('stats_up', { hp: t.hp, atk: fmtNum(t.atk), def: fmtNum(t.def) }), 470, y + 2, 17, C.good, 'left'); y += 28;
       }
       if (t.cards > 0) text(tr('tally_cards', { n: t.cards }), 470, y + 2, 17, C.good, 'left', true);
       UI.button(520, 440, 240, 46, tr('continue'), leave, { primary: true, size: 18 });

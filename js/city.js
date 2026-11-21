@@ -147,7 +147,7 @@ const City = (() => {
     if (!c) return out;
     const count = (key, have, str) => { if (c[key] != null) out.push({ ok: have >= c[key], text: tr(str, { n: c[key], have: Math.min(have, c[key]) }), short: tr(str, { n: c[key], have: Math.min(have, c[key]) }) }); };
     if (c.rank != null) out.push({ ok: s.rank >= c.rank, text: tr('city_need_rank', { name: rankName(c.rank), have: rankName() }), short: rankName(c.rank) });
-    if (c.popularity != null) out.push({ ok: s.pop >= c.popularity, text: tr('city_need_pop', { n: c.popularity, have: Math.floor(s.pop) }), short: 'Popularité ' + c.popularity });
+    if (c.popularity != null) out.push({ ok: s.pop >= c.popularity, text: tr('city_need_pop', { n: c.popularity, have: Math.floor(s.pop) }), short: tr('city_need_pop_short', { n: c.popularity }) });
     count('orders', s.done, 'city_need_orders'); count('raids', s.raids, 'city_need_raids');
     if (c.raids != null && tune.camp_raid_credit > 0) { const o = out[out.length - 1]; o.text += tr('city_need_raids_camp', { k: tune.camp_raid_credit }); } // a camp razed counts too: say so on the long line
     count('works', worksTotal(), 'city_need_works'); count('camps', s.camps, 'city_need_camps');

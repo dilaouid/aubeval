@@ -264,4 +264,46 @@ DATA.strings = {
   it_mend: 'Va se soigner', it_mend_tip: 'se rend {pct} % de sa vie.', it_call: 'Va appeler : {name}', it_call_tip: 'un renfort de plus dans la mêlée.',
   msg_sunder: '{name} fracasse la Garde !', msg_flurry: '{name} frappe trois fois.', msg_mend: '{name} panse ses plaies.', msg_call: '{name} siffle : {ally} accourt !',
   pop_sunder: 'Garde brisée',
+  // ---- words that were written in js/ (iteration i18n)
+  // numbers (js/ui.js fmt, fmtRate, fmtNum): the decimal mark and the names of big numbers
+  num_dec: ',', num_units: ['k', 'M', 'Md', 'Bn', 'Tn'],
+  // the hero's name with « de » (js/ui.js heroName, {de_hero}): elided before a vowel or a mute h
+  hero_of: 'de {name}', hero_of_vowel: 'd’{name}',
+  close_tip: 'Fermer (Échap)', key_tip: 'Touche {k}', quote: '« {s} »', save_file: 'aubeval-sauvegarde.json',
+  // battle (js/battle.js)
+  msg_hit: '{name} attaque.', msg_double: '{name} frappe deux fois.',
+  msg_windup: '{name} lève son arme : un coup terrible arrive au prochain tour !', msg_heavy: '{name} abat son arme !',
+  msg_hex: '{name} lance un maléfice : il traverse la Garde.', msg_heal: '{name} soigne {ally}.',
+  msg_whistle: '{name} siffle : un gobelin accourt !', msg_enrage: '{name} enrage : ses coups font plus mal !',
+  pop_rage: 'RAGE', st_rage: 'Rage', st_buff: 'ATQ ×{x} ({n})', stats_up: 'PV +{hp} · ATQ +{atk} · DÉF +{def}',
+  stat_atk: 'ATQ +{n}', stat_def: 'DÉF +{n}', stat_hp: 'PV +{n}', unit_stats: 'PV {hp} · ATQ {atk}',
+  // a card's lines (js/cards.js)
+  card_cost: '{n} souffle', card_origin_lvl: '{card} · niv. {n}',
+  card_dmg: '{d} dégâts', card_dmg_all: '{d} dégâts à tous', card_arrows: '{n} flèches de {d}, au hasard',
+  card_pierce: 'Ignore l’armure', card_shred: 'Armure −{n}', card_stun: 'La cible perd son tour', card_weak: 'Affaiblit {n} tours',
+  card_block: 'Garde {n}', card_thorns: 'Épines {n}', card_heal: 'Rend {n} PV', card_draw: 'Pioche {n}', card_energy: '+{n} souffle',
+  card_buff: 'ATQ +{pct} %, {n} tours', card_bless: 'Prochain coup paré', card_wide: 'Parade facile',
+  card_ally: 'Milicien : {dmg} par tour, {n} tours', card_echo: 'Carte suivante ×2', card_once: 'Une fois par combat',
+  card_note_block: 'Garde : absorbe les dégâts jusqu’à votre prochain tour.',
+  card_note_thorns: 'Épines : chaque ennemi qui vous frappe ce tour les subit.',
+  card_note_stun: 'Un chef ne perd pas son tour : il frappe à moitié force.',
+  card_note_bless: 'Le prochain coup est paré parfaitement, sans rien presser, riposte comprise.',
+  card_note_wide: 'Jusqu’à votre prochain tour, le moment de la parade est deux fois plus large.',
+  card_note_echo: 'La prochaine carte jouée ce tour fait son effet deux fois.',
+  card_note_pay: 'Coûte {list} des réserves du village.',
+  // conditions (js/quests.js describe, js/city.js)
+  need_pop: '{n} habitants ({have})', need_pop_short: '{n} habitants', need_after: 'après {name}',
+  need_cls: 'Maison de classe {name} ({n}/{all})', need_quest: 'Quête « {title} »', need_quest_short: 'Quête',
+  need_raids: 'Raids repoussés ({n}/{all})', need_raids_short: 'Raid', need_hero: 'Héros niveau {n}', need_hero_short: 'Niveau {n}',
+  need_weapon: 'Une arme équipée', need_armor: 'Une armure équipée', need_equip_short: 'Équipement',
+  need_tier: 'Arme de palier {n}', need_tier_short: 'Palier {n}',
+  need_totals: '{name} récolté ({n}/{all})', need_res: '{name} en réserve ({n}/{all})', city_need_pop_short: 'Popularité {n}',
+  // screens (js/screens.js, js/minigames.js, js/tutorial.js)
+  res_rate_tip: '{rate} en ce moment', res_none_tip: 'Rien ne le produit pour l’instant',
+  pop_tip: 'Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.',
+  raid_call_tip: 'Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.',
+  forge_plus_tip: 'Chaque +1 ajoute {pct} % de ses bonus.',
+  contracts_none: 'Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.',
+  fg_bellows_keys: 'B · ↑ · clic droit',
+  span_min: '{m} minute', span_mins: '{m} minutes', span_secs: '{s} secondes',
 };

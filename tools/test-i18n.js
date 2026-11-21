@@ -70,6 +70,11 @@ test('a legacy branch is an id; its name is a text', () => {
   assert.deepStrictEqual([...covers].sort(), Object.keys(D.legacyBranches).map(b => 'legacy:' + b).sort());
 });
 
+test('js/ shows the player no French of its own', () => {
+  const found = T.frenchInCode();
+  assert.strictEqual(found.length, 0, found.length + ' found:\n' + found.slice(0, 40).join('\n'));
+});
+
 let bad = 0;
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

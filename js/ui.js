@@ -11,7 +11,7 @@
  */
 function heroName(of) {
   const n = (typeof state !== 'undefined' && state && state.hero && state.hero.name) || DATA.hero.name;
-  return of ? (/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'd’' : 'de ') + n : n;
+  return of ? DATA.strings[/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'hero_of_vowel' : 'hero_of'].split('{name}').join(n) : n;
 }
 /** Fills {hero} and {de_hero} in a line of text. */
 function withHero(s) { return s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName()); }
@@ -26,18 +26,18 @@ function tr(key, vars) {
 function fmt(n) {
   n = Math.floor(n + 1e-6);
   if (n < 10000) return String(n);
-  const units = ['k', 'M', 'Md', 'Bn', 'Tn'];
+  const units = DATA.strings.num_units;
   let i = -1, x = n;
   while (x >= 1000 && i < units.length - 1) { x /= 1000; i++; }
-  return (x < 10 ? x.toFixed(2) : x < 100 ? x.toFixed(1) : x.toFixed(0)).replace('.', ',') + ' ' + units[i];
+  return (x < 10 ? x.toFixed(2) : x < 100 ? x.toFixed(1) : x.toFixed(0)).replace('.', DATA.strings.num_dec) + ' ' + units[i];
 }
-function fmtRate(r) { return (r >= 0 ? '+' : '−') + (Math.abs(r) < 100 ? Math.abs(r).toFixed(1).replace('.', ',') : fmt(Math.abs(r))) + '/s'; }
+function fmtRate(r) { return (r >= 0 ? '+' : '−') + (Math.abs(r) < 100 ? Math.abs(r).toFixed(1).replace('.', DATA.strings.num_dec) : fmt(Math.abs(r))) + '/s'; }
 function fmtTime(s) {
   s = Math.max(0, Math.ceil(s));
   if (s >= 3600) return Math.floor(s / 3600) + ' h ' + String(Math.floor(s % 3600 / 60)).padStart(2, '0');
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 }
-function fmtNum(x) { return (Math.round(x * 10) / 10).toString().replace('.', ','); }
+function fmtNum(x) { return (Math.round(x * 10) / 10).toString().replace('.', DATA.strings.num_dec); }
 
 const UI = (() => {
   // Dark walnut and brass, the colours of the PixelLab HUD kit; the flat look below is only drawn
@@ -189,7 +189,7 @@ const UI = (() => {
     if (title) {
       label(title, x + 26, y + 30, 20, C.gold, 'left');
       ctx.fillStyle = C.lineL; ctx.fillRect(x + 22, y + 46, w - 44, 2); ctx.fillStyle = C.ink; ctx.fillRect(x + 22, y + 48, w - 44, 2);
-      if (onClose) button(x + w - 54, y + 14, 34, 32, '×', onClose, { size: 22, tip: 'Fermer (Échap)' });
+      if (onClose) button(x + w - 54, y + 14, 34, 32, '×', onClose, { size: 22, tip: tr('close_tip') });
     }
   }
   /**
