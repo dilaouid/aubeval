@@ -120,6 +120,9 @@ window.ASSETS = {
   // the shopkeepers' half-body portraits (data/people.js DATA.keepers) and the tutorial's guide (data/tutorial.js): a strip of 64x64 frames, played in a loop
   // beside their building's panel (config.js portrait_fps). imagegen/pixellab/portraits/install_portraits.py makes them.
   ...Object.fromEntries(['merchant', 'smith', 'baker', 'innkeeper', 'captain', 'steward', 'guide'].map(k => ['portrait.' + k, { sheet: `sprites/portraits/${k}.png`, cols: 7, rows: 1 }])),
+  // the heroes' portraits (data/world.js DATA.heroes), the same strips of seven 64x64 frames: on the naming screen and in the hero's panel
+  // (js/hero.js Hero.art). tools/make_heroes.py makes them from tools/heroes/raw/.
+  ...Object.fromEntries(['aldric', 'tancrede', 'isaure', 'maelle'].map(k => ['portrait.hero.' + k, { sheet: `sprites/portraits/hero_${k}.png`, cols: 7, rows: 1 }])),
 
   // the places entered full screen (data/venues.js): the inside of each, 640x360, and its keeper from the waist up, a strip of
   // eight 160x160 frames played in a loop. imagegen/pixellab/venue/install_venue.py makes them.

@@ -1,0 +1,15 @@
+hero	kind	pixellab id	what was asked
+# Where each raw image of tools/heroes/raw/ comes from (PixelLab, through its MCP server), so it can be made again.
+# portrait: create_image_pro_from_style, 64x64, 16 candidates, styled after the first frame of the captain's, baker's, merchant's and guide's portraits;
+#   style description: "half-body character portraits of a medieval village game, dark outline, warm saturated colours, two-tone shading".
+#   The sixteen are in raw/<hero>/candidates/c00..c15.png; the one kept is raw/<hero>/portrait/bust.png.
+# portrait_anim: animate_image, 8 frames, the bust as first and last frame. Of the nine images it returns (0: the bust, 1-8: drawn), seven are
+#   kept as frame_001..frame_007, in the order given here: mostly open eyes, with a blink of one frame.
+aldric	portrait	job fbeb8071-8957-4919-b099-1a0e7d306e4d, candidate 1 (c00)	half-body portrait of a young knight, short brown hair, steel plate armour with a leather belt and a gold buckle, bright red cape, confident half smile, three-quarter face, bust to the waist
+aldric	portrait_anim	job 501afdcd-25f4-4d38-9c46-8367ea865221, frames 1 8 7 6 7 3 8	blinks once, breathes in and out, shoulders rise slightly, head stays in place
+tancrede	portrait	job 38e4b51e-1f13-4fd6-98d0-307cf86a522d, candidate 12 (c11)	half-body portrait of a knight with dark brown skin, short black hair, a short trimmed beard, steel plate armour, royal blue cape, calm steady look, three-quarter face, bust to the waist
+tancrede	portrait_anim	job 02e9d9db-7de5-47cb-8759-a2c5523ae74a, frames 1 8 7 6 5 3 6	blinks once, breathes in and out, shoulders rise slightly, head stays in place
+isaure	portrait	job 00abf046-ddc9-4189-af5e-35e48d5858f1, candidate 4 (c03)	half-body portrait of a young woman knight, auburn red hair in one long braid over her shoulder, steel plate armour, white cape with a green clasp, bright determined smile, three-quarter face, bust to the waist
+isaure	portrait_anim	job 43321e3a-e6d8-4891-8677-7fe5923806d8 (seed 33), frames 1 2 3 4 5 6 8	standing still, smiling, breathing gently, hair and braid sway very slightly
+maelle	portrait	job 4a16ee86-07f7-495f-8290-979a75ede5df, candidate 2 (c01)	half-body portrait of a woman knight, short black hair, sharp eyes, blackened steel armour, golden yellow cape, small wry smile, three-quarter face, bust to the waist
+maelle	portrait_anim	job 4282b3be-c59c-41bf-98b6-2ec2a73eed1d, frames 8 7 6 7 8 4 7	blinks once, breathes in and out, shoulders rise slightly, head stays in place
