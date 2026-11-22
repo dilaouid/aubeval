@@ -267,32 +267,32 @@ I18N.add('en', {
   'venues.lodge.legend[0]': 'Right building: +{n}', // Bâtiment juste : +{n}
   'venues.lodge.legend[1]': 'Wrong building: −{n}', // Bâtiment faux : −{n}
   'venues.lodge.legend[2]': 'Perfect quarter: +{n}', // Quartier parfait : +{n}
-  'venues.lodge.greet': 'Welcome to the Lodge, burgomaster! This is where I draw up the plans of Aubeval, and where my journeymen learn the trade. A good builder picks a stone at a glance: come and show me yours, and my plans will have you building for less.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
-  'venues.lodge.ready[0]': 'The wall is waiting for its next course. Take a stone, burgomaster, and let’s see that eye of yours!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
-  'venues.lodge.ready[1]': 'My journeymen have cut a whole heap of stones, and only one fits the hole. Up to you to find it, and quickly!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !
-  'venues.lodge.ready[2]': 'Fancy a builder’s lesson? A wall goes up stone by stone, without a moment’s doubt. I show you the hole, you pick the stone.', // Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.
-  'venues.lodge.wait[0]': 'My journeymen are cutting new stones. Come back in a while: the wall, at least, isn’t going anywhere.', // Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.
+  'venues.lodge.greet': 'Welcome to the Lodge, burgomaster! This is where I draw up the plans of Aubeval, and where my journeymen learn the trade. A good builder remembers a quarter at a glance: come and show me yours, and my plans will have you building for less.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur retient un quartier d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
+  'venues.lodge.ready[0]': 'My quarter is on the table, burgomaster. Take a good look: in a moment, you’re the one building it!', // Mon quartier est sur la table, bourgmestre. Regardez-le bien : tout à l’heure, c’est vous qui le bâtirez !
+  'venues.lodge.ready[1]': 'A house here, a chapel there… I show it to you once, and you rebuild it for me from memory. Shall we?', // Une maison ici, une chapelle là… Je vous le montre une fois, et vous me le rebâtissez de mémoire. On s’y met ?
+  'venues.lodge.ready[2]': 'Fancy a builder’s lesson? A good plan is remembered at a glance, and rebuilt without a second thought.', // Une leçon de bâtisseuse, ça vous dit ? Un bon plan se retient d’un regard, et se rebâtit sans hésiter.
+  'venues.lodge.wait[0]': 'I’m redrawing my quarters. Come back in a while: my plans aren’t going anywhere.', // Je redessine mes quartiers. Repassez tout à l’heure : mes plans, eux, ne bougeront pas.
   'venues.lodge.wait[1]': 'I’m going over my plans for a moment. And do enlarge the Lodge, burgomaster: with every level, my plans serve you longer.', // Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.
-  'venues.lodge.chat[0]': 'Before you lay a stone, you look at it. Then you look at it again. And once it’s laid, you stop looking: it’s where it belongs.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.
-  'venues.lodge.chat[1]': 'A straight wall, burgomaster, is a wall that stands a hundred years. Just look at those joints: you couldn’t slip a hair in there!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !
-  'venues.lodge.chat[2]': 'A stone turns in the hand, it never flips over: its dressed face must stay on the outside. Remember that, and you’ll know more than many a mason.', // Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.
-  'venues.lodge.chat[3]': '{g:A hero|A heroine} who can raise a straight wall, you don’t see that often. My journeymen still talk about it, and stand straighter than their plumb lines.', // {g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.
+  'venues.lodge.chat[0]': 'You look at a quarter the way you look at a face: first you remember what stands out, a chapel’s spire, a mage’s tower. The rest follows.', // Un quartier, ça se regarde comme un visage : on retient d’abord ce qui dépasse, la flèche d’une chapelle, la tour d’un mage. Le reste suit.
+  'venues.lodge.chat[1]': 'Look at this plan, burgomaster: every house in its place, every street straight. A well-drawn quarter is a quarter that stands for a hundred years.', // Regardez-moi ce plan, bourgmestre : chaque maison à sa place, chaque rue droite. Un quartier bien tracé, c’est un quartier qui tient cent ans.
+  'venues.lodge.chat[2]': 'I always plant my flag in the same corner. Turn the plan however you like: follow the flag, and you’ll never get lost.', // Mon drapeau, je le plante toujours au même coin. Tournez le plan comme vous voulez : suivez le drapeau, et vous ne vous perdrez jamais.
+  'venues.lodge.chat[3]': '{g:A hero|A heroine} who rebuilds a quarter from memory, you don’t see that often. My journeymen still talk about it, and go over their plans in the evening.', // {g:Un héros|Une héroïne} qui rebâtit un quartier de mémoire, on n’en voit pas souvent. Mes compagnons en parlent encore, et revoient leurs plans le soir.
   'venues.lodge.chat[4]': 'Bram forges my chisels, Lady Ysolde sells me my stone too dear. To each their trade, and mine is making sure everything stays standing.', // Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.
   'venues.lodge.tips[0]': 'On my plans, I see this:', // Sur mes plans, je vois ceci :
   'venues.lodge.tips[1]': 'My journeymen flagged it from up on the scaffolding:', // Mes compagnons me l’ont signalé du haut de l’échafaudage :
   'venues.lodge.tips[2]': 'A word of advice from a builder, burgomaster:', // Un conseil de bâtisseuse, bourgmestre :
-  'venues.lodge.glad[0]': 'It fits!', // Elle entre !
-  'venues.lodge.glad[1]': 'Well spotted!', // Bien vu !
-  'venues.lodge.glad[2]': 'Spot on!', // Juste au millimètre !
-  'venues.lodge.glad[3]': 'That’s a course!', // Voilà une assise !
+  'venues.lodge.glad[0]': 'Well spotted!', // Bien vu !
+  'venues.lodge.glad[1]': 'Almost all there!', // Presque tout y est !
+  'venues.lodge.glad[2]': 'Now that’s a quarter!', // Voilà un quartier qui se tient !
+  'venues.lodge.glad[3]': 'Good memory!', // Bonne mémoire !
   'venues.lodge.cross[0]': 'Look again!', // Regardez mieux !
-  'venues.lodge.cross[1]': 'Not that one!', // Pas celle-là !
-  'venues.lodge.cross[2]': 'The hole first, then the stone!', // Le trou d’abord, la pierre ensuite !
-  'venues.lodge.chain[0]': 'What an eye!', // Quel coup d’œil !
-  'venues.lodge.chain[1]': 'The wall builds itself!', // Le mur monte tout seul !
+  'venues.lodge.cross[1]': 'That’s not my quarter!', // Ce n’est pas mon quartier, ça !
+  'venues.lodge.cross[2]': 'The plan first, then the houses!', // Le plan d’abord, les maisons ensuite !
+  'venues.lodge.chain[0]': 'Perfect, down to the cobble!', // Parfait, au pavé près !
+  'venues.lodge.chain[1]': 'My quarter, line for line!', // Mon quartier, trait pour trait !
   'venues.lodge.chain[2]': 'Now you’re learning the trade!', // Voilà le métier qui rentre !
-  'venues.lodge.after[0]': 'The wall came down… It’s only stone, burgomaster: we pick it up and start again. Every master has seen a first wall fall.', // Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.
-  'venues.lodge.after[1]': 'A few courses laid, and straight ones too. My plans will save you a little on your building sites.', // Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.
-  'venues.lodge.after[2]': 'A fine wall! Tight joints, a true plumb. My plans are yours for a while: your building sites will cost less.', // Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
-  'venues.lodge.after[3]': 'A master’s wall! I couldn’t slip a knife blade in anywhere. My best plans are yours: your building sites will cost far less, and everyone will know whose eye picked those stones.', // Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quel œil a choisi ces pierres.
+  'venues.lodge.after[0]': 'Let’s stop there for today… It’s only paper, burgomaster: you roll it up and start again. Every master has mixed up their first plans.', // On s’arrête là pour aujourd’hui… Ce n’est que du papier, bourgmestre : on le roule, et on recommence. Tous les maîtres ont mélangé leurs premiers plans.
+  'venues.lodge.after[1]': 'A few quarters rebuilt, and none of them crooked. My plans will save you a little on your building sites.', // Quelques quartiers rebâtis, et pas de travers. Mes plans vous feront gagner un peu sur vos chantiers.
+  'venues.lodge.after[2]': 'Fine work! Every house in its place, every street where I drew it. My plans are yours for a while: your building sites will cost less.', // Beau travail ! Chaque maison à sa place, chaque rue où je l’avais tracée. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
+  'venues.lodge.after[3]': 'Master’s work! Anyone would think you had my plan right in front of you. My best plans are yours: your building sites will cost far less, and everyone will know whose memory rebuilt this quarter.', // Un travail de maître ! On croirait que vous aviez mon plan sous les yeux. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quelle mémoire a rebâti ce quartier.
 });
