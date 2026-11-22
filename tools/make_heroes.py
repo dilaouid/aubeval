@@ -173,10 +173,8 @@ def same_body(hero, path):
     return os.path.exists(BATTLE % hero) and only_sword_differs(Image.open(BATTLE % hero), Image.open(path))
 
 
-def unit(hero):
-    src = os.path.join(RAW, hero, 'unit')
-    if not os.path.isdir(src):
-        return None
+def unit_sheet(src, out):
+    """Lays the figure of a PixelLab character ZIP (src/rotations/<direction>.png, src/walk/<direction>/frame_NNN.png) in a sheet of COLS columns and one row per direction (ROWS), saved to `out`. Returns the cell's size. Refuses what is missing or does not match."""
     cells = []
     for d in ROWS:
         stand = os.path.join(src, 'rotations', d + '.png')
@@ -202,8 +200,16 @@ def unit(hero):
     for y, row in enumerate(cells):
         for x, im in enumerate(row):
             sheet.alpha_composite(im.crop(box), (x * cw, y * ch))
-    out = UNIT % hero
     sheet.save(out)
+    return cw, ch
+
+
+def unit(hero):
+    src = os.path.join(RAW, hero, 'unit')
+    if not os.path.isdir(src):
+        return None
+    out = UNIT % hero
+    cw, ch = unit_sheet(src, out)
     return 'unit %s -> %s cols %d rows %d cell %dx%d' % (hero, out, COLS, len(ROWS), cw, ch)
 
 

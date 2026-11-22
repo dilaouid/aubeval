@@ -1,0 +1,14 @@
+mob	pixellab character	walk animation group	what was asked
+# The map figures of the first mobs, redone on 2026-11-22 so that they look like their battle sprites (assets/sprites/enemy_gobelin.png,
+# _brute.png, _chaman.png): the old ones came from the first generator and the shaman's robe, the brute's armour and the goblin's head
+# were not the same character. Built by tools/make_mobs.py into assets/sprites/iso/unit_<mob>.png ('iso.unit.<mob>').
+# create_character, mode v3 (from text), view low top-down, 8 directions, then animate_character with the template 'walking' (6 frames a
+# direction, 8 generations). The ZIP of each character is unpacked into tools/mobs/raw/<mob>/unit/ (Idle/rotations -> rotations,
+# Idle/animations/walk -> walk), after erasing the stray pixels PixelLab left away from the figure: whatever is not the figure's largest
+# blob nor within 2 pixels of it (second tries: gobelin and brute; the counts, with the shaman's, were gobelin 0, brute 10, chaman 1 on the first tries). The template loses what is held in the hand in some views while walking
+# (a little of the goblin's dagger in the back views, the brute's club to the north-east, the shaman's staff to the west): it is back in the standing frame.
+# Every request ended with "Small map unit seen from far away, bold readable shape, strong (saturated, for the second tries) colours, only the figure on an empty background,
+# no ground shadow, no icon or emblem beside it".
+gobelin	bccc32be-51bb-4961-abab-e731820dec14 (size 32; second try, the first, 887e907f, had a dull olive skin)	81ffb011-2faa-40c7-956a-467c33c9ef32	Goblin raider, small and wiry: bright lime-green skin (vivid yellow-green, almost glowing), big pointed ears, yellow eyes, a mean grin, a ragged purple tunic with a bright lime-yellow zigzag hem, a brown belt with a small pouch, barefoot, holding a short curved steel dagger in the right hand
+brute	d43b3124-b18e-4984-9646-2b9d2e611c4a (size 40; second try, the first, acbd95f5, had a dull dark-olive skin)	2b1628a7-c877-47f7-b964-4384486355e9	Huge brute orc, broad and heavy: bright green skin (vivid leaf green), a riveted iron helmet with two big ivory horns, spiked grey-steel shoulder plates, a bright purple armour with a big riveted steel plate on the belly, bright purple trousers, holding a big spiked brown wooden club in the right hand
+chaman	6340b6b0-4d3f-4059-8ad5-7dc2a689d184 (size 36)	b7227cbe-b4bd-4e48-b5be-ec46e2dd9229	Goblin shaman: a long purple hooded robe with a lime-green zigzag hem and a violet banner down the front, a white bone mask with glowing yellow eyes, red and lime-green feathers rising from the head, green hands, holding a tall wooden staff topped with a skull in the left hand
