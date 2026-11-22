@@ -12,7 +12,7 @@ I18N.add('es', {
   'venueBuffs.sell.text': 'Ventas en el mercado +{n} %', // Ventes au marché +{n} %
   'venueBuffs.sell.short': 'ventas +{n} %', // ventes +{n} %
   'venueBuffs.atk.name': 'Hoja bien batida', // Lame bien battue
-  'venueBuffs.atk.text': 'Ataque del héroe +{n} %', // Attaque du héros +{n} %
+  'venueBuffs.atk.text': 'Ataque {g:del héroe|de la heroína} +{n} %', // Attaque {g:du héros|de l’héroïne} +{n} %
   'venueBuffs.atk.short': 'ataque +{n} %', // attaque +{n} %
   'venueBuffs.forge.name': 'Fuego vivo', // Feu vif
   'venueBuffs.forge.text': 'Forja un {n} % más rápida', // Forge {n} % plus rapide
@@ -36,7 +36,7 @@ I18N.add('es', {
   'venues.cafe.leaves[1]': '¡Me voy!', // Je m’en vais !
   'venues.cafe.leaves[2]': 'Otra vez será.', // Tant pis.
   'venues.cafe.greet': '¡Pase, pase! Aquí se sirve caliente y se habla alto. Cuando la sala se llena, una mano tras el mostrador nunca sobra.', // Entrez, entrez ! Ici on sert chaud et on parle fort. Quand la salle se remplit, un coup de main derrière le comptoir ne se refuse pas.
-  'venues.cafe.ready[0]': 'La sala se llena, héroe. ¿Pasa usted tras el mostrador?', // La salle se remplit, héros. Vous passez derrière le comptoir ?
+  'venues.cafe.ready[0]': 'La sala se llena, {g:héroe|heroína}. ¿Pasa usted tras el mostrador?', // La salle se remplit, {g:héros|héroïne}. Vous passez derrière le comptoir ?
   'venues.cafe.ready[1]': 'Se avecina el ajetreo. Le espera un delantal.', // Ça va être le coup de feu. Un tablier vous attend.
   'venues.cafe.ready[2]': 'Las tazas están calientes, llegan los clientes. ¿Vamos?', // Les tasses sont chaudes, les clients arrivent. On y va ?
   'venues.cafe.wait[0]': 'Déjeme secar las tazas, volvemos a ello en un rato.', // Laissez-moi essuyer mes tasses, on remet ça tout à l’heure.
@@ -44,7 +44,7 @@ I18N.add('es', {
   'venues.cafe.chat[0]': 'Una taza negra y bien cargada, y empieza el día.', // Une tasse noire et serrée, et la journée commence.
   'venues.cafe.chat[1]': 'Un artesano sin café es un campesino que bosteza.', // Un artisan sans café, c’est un paysan qui bâille.
   'venues.cafe.chat[2]': 'Aquí arreglamos el mundo. Y la aldea, a veces.', // Ici, on refait le monde. Et le village, parfois.
-  'venues.cafe.chat[3]': 'Cuando el héroe sirve en el mostrador, toda la calle viene a verlo. Bueno para usted, bueno para mí.', // Quand le héros sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.
+  'venues.cafe.chat[3]': 'Cuando {g:el héroe|la heroína} sirve en el mostrador, toda la calle viene a {g:verlo|verla}. Bueno para usted, bueno para mí.', // Quand {g:le héros|l’héroïne} sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.
   'venues.cafe.chat[4]': 'Maese Odon siempre toma un café con leche. Dice que es por los registros.', // Maître Odon prend toujours un crème. Il dit que c’est pour les registres.
   'venues.cafe.tips[0]': 'Se dice en el mostrador que', // On dit au comptoir que
   'venues.cafe.tips[1]': 'Entre taza y taza, oí que', // Entre deux tasses, j’ai entendu que
@@ -59,7 +59,7 @@ I18N.add('es', {
   'venues.cafe.lost[0]': 'Otro que se va…', // Encore un de parti…
   'venues.cafe.lost[1]': 'Volverá. Quizá.', // Il reviendra. Peut-être.
   'venues.cafe.after[0]': 'La sala se vació, y no para bien… Lo volveremos a intentar.', // La salle s’est vidée, et pas en bien… On réessaiera.
-  'venues.cafe.after[1]': '¡Nada mal para un héroe! Los clientes sonrieron.', // Pas mal pour un héros ! Les clients ont souri.
+  'venues.cafe.after[1]': '¡Nada mal para {g:un héroe|una heroína}! Los clientes sonrieron.', // Pas mal pour {g:un héros|une héroïne} ! Les clients ont souri.
   'venues.cafe.after[2]': '¡Buen servicio! Toda la calle hablará de usted.', // Beau service ! On va parler de vous dans toute la rue.
   'venues.cafe.after[3]': '¡Un servicio de rey! Ronda para todos, y todo Aubeval sabrá quién la sirvió.', // Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.
   'venues.market.name': 'La Lonja del Mercado', // La Halle du Marché
@@ -81,7 +81,7 @@ I18N.add('es', {
   'venues.market.chat[0]': 'Todo se compra, amigo mío. Sobre todo lo que falta.', // Tout s’achète, mon ami. Surtout ce qui manque.
   'venues.market.chat[1]': 'Mis especias vienen de más allá de sus mapas.', // Mes épices viennent de plus loin que vos cartes.
   'venues.market.chat[2]': 'Vendo caro y compro barato: es un oficio.', // Je vends cher, j’achète bas : c’est un métier.
-  'venues.market.chat[3]': 'Un héroe querido paga menos. Los comerciantes también leen caras.', // Un héros qu’on aime paie moins cher. Les marchands aussi lisent les visages.
+  'venues.market.chat[3]': '{g:Un héroe querido|Una heroína querida} paga menos. Los comerciantes también leen caras.', // {g:Un héros|Une héroïne} qu’on aime paie moins cher. Les marchands aussi lisent les visages.
   'venues.market.chat[4]': 'Gaspard me debe tres sacos de café. No le diga que llevo la cuenta.', // Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.
   'venues.market.tips[0]': 'Entre nosotros,', // Entre nous,
   'venues.market.tips[1]': 'Mis clientes charlan:', // Mes clients bavardent :
@@ -108,7 +108,7 @@ I18N.add('es', {
   'venues.forge.unit': '% de calidad', // % de qualité
   'venues.forge.how': 'Golpee cuando la marca llegue al yunque y mantenga el calor en su franja con el fuelle. Una cadena de golpes certeros hace volar las chispas.', // Frappez quand la marque arrive sur l’enclume, et gardez la chaleur dans sa bande avec le soufflet. Une chaîne de coups justes fait voler les étincelles.
   'venues.forge.keys': 'Espacio o clic: golpear. B, ↑ o clic derecho: fuelle.', // Espace ou clic : frapper. B, ↑ ou clic droit : soufflet.
-  'venues.forge.greet': '¡Ah, el héroe! Deje esa espada, tome este martillo. Una hoja se bate entre dos: yo sujeto, usted golpea.', // Ah, le héros ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.
+  'venues.forge.greet': '¡Ah, {g:el héroe|la heroína}! Deje esa espada, tome este martillo. Una hoja se bate entre dos: yo sujeto, usted golpea.', // Ah, {g:le héros|l’héroïne} ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.
   'venues.forge.ready[0]': 'El hierro está al rojo. ¿Usted golpea y yo sujeto?', // Le fer est au rouge. Vous frappez, je tiens ?
   'venues.forge.ready[1]': 'Tengo una hoja que espera su martillo. ¿El suyo?', // J’ai une lame qui attend son marteau. Le vôtre ?
   'venues.forge.ready[2]': 'El fuego está bueno. Enséñeme ese brazo.', // Le feu est bon. Montrez-moi ce bras.
@@ -116,8 +116,8 @@ I18N.add('es', {
   'venues.forge.wait[1]': 'Mis brazos también necesitan un respiro. Vuelva más tarde.', // Mes bras aussi ont besoin d’une pause. Revenez plus tard.
   'venues.forge.chat[0]': 'Buena madera, buen hierro, y le hago una leyenda.', // Du bon bois, du bon fer, et je vous fais une légende.
   'venues.forge.chat[1]': 'A una hoja se la respeta. Y se la refuerza.', // Une lame, ça se respecte. Et ça se renforce.
-  'venues.forge.chat[2]': 'El héroe rompe, yo arreglo.', // Le héros casse, moi je répare.
-  'venues.forge.chat[3]': 'Un héroe que bate su propio hierro, eso le gusta a la gente. Vienen a mirar por la ventana.', // Un héros qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.
+  'venues.forge.chat[2]': '{g:El héroe|La heroína} rompe, yo arreglo.', // {g:Le héros|L’héroïne} casse, moi je répare.
+  'venues.forge.chat[3]': '{g:Un héroe|Una heroína} que bate su propio hierro, eso le gusta a la gente. Vienen a mirar por la ventana.', // {g:Un héros|Une héroïne} qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.
   'venues.forge.chat[4]': 'Dama Ysolde dice que mi hierro es caro. Nunca ha visto el suyo.', // Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.
   'venues.forge.tips[0]': 'Entre martillazo y martillazo, oigo que', // Entre deux coups de marteau, j’entends que
   'venues.forge.tips[1]': 'Me lo dijeron los guardias:', // Les gardes me l’ont dit :

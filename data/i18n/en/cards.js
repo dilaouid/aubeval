@@ -33,7 +33,7 @@ I18N.add('en', {
   'cards.volley.name': 'Arrow Volley', // Volée de flèches
   'cards.volley.flavor': 'The watchtower archers shoot over the hero’s shoulder.', // Les archers des tours de guet tirent par-dessus son épaule.
   'cards.spikes.name': 'Stakes', // Pieux
-  'cards.spikes.flavor': 'Whoever strikes is impaled on the palisade.', // Qui le frappe s’empale sur la palissade.
+  'cards.spikes.flavor': 'Whoever strikes is impaled on the palisade.', // Qui {g:le|la} frappe s’empale sur la palissade.
   'cards.bolt.name': 'Lightning', // Éclair
   'cards.bolt.flavor': 'The mage tower strikes the whole band with lightning.', // La tour de mage foudroie toute la bande.
   'cards.militia.name': 'Militia Aid', // Renfort de la milice

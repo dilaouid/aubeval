@@ -141,6 +141,30 @@ test('French gender suspects are all accounted for', () => {
   const left = T.genderSuspects('fr').filter(x => !T.genderOk('fr', x.path));
   assert.strictEqual(left.length, 0, left.length + ' left:\n' + left.slice(0, 40).map(x => x.path + '  ' + x.text).join('\n'));
 });
+test('English gender suspects are all accounted for', () => {
+  const left = T.genderSuspects('en').filter(x => !T.genderOk('en', x.path));
+  assert.strictEqual(left.length, 0, left.length + ' left:\n' + left.slice(0, 80).map(x => x.path + '  ' + x.text).join('\n'));
+});
+test('no bare « héroe » in the Spanish texts', () => {
+  const layer = Object.assign({}, ...Object.values(T.readLayers('es')));
+  const found = Object.entries(layer).filter(([p, t]) => t != null && T.GENDER.es.bare.test(T.unholed(t)) && !T.genderOk('es', p));
+  assert.strictEqual(found.length, 0, found.length + ' found:\n' + found.slice(0, 80).map(([p, t]) => p + '  ' + t).join('\n'));
+});
+test('Spanish gender suspects are all accounted for', () => {
+  const left = T.genderSuspects('es').filter(x => !T.genderOk('es', x.path));
+  assert.strictEqual(left.length, 0, left.length + ' left:\n' + left.slice(0, 80).map(x => x.path + '  ' + x.text).join('\n'));
+});
+test('the gender detector flags an unholed text and passes a holed one, in every language', () => {
+  const cases = {
+    fr: { bad: ['{hero} est arrivé', 'le héros', 'Envoyez {hero} : il revient'], good: ['{hero} est {g:arrivé|arrivée}', '{g:le héros|l’héroïne}', '{hero} est au marché'] },
+    en: { bad: ['{hero} is back: he rests', 'Send the hero to his post', 'Well met, my lord {hero}'], good: ['{hero} is back: {g:he|she} rests', 'Send the hero to {g:his|her} post', 'The warlord is here', 'the hero’s blade'] },
+    es: { bad: ['el héroe', '{hero} está listo', 'Envía a {hero}: él vuelve', '{hero} ha llegado y está cansado'], good: ['{g:el héroe|la heroína}', '{hero} está {g:listo|lista}', '{hero} hace lo que puede', 'El soldado está cansado'] },
+  };
+  for (const [lang, { bad, good }] of Object.entries(cases)) {
+    const texts = new Map([...bad.map((t, i) => ['bad' + i, t]), ...good.map((t, i) => ['good' + i, t])]);
+    assert.deepStrictEqual(T.genderSuspects(lang, texts).map(x => x.path), bad.map((t, i) => 'bad' + i), lang);
+  }
+});
 
 for (const t of tests) {
   try { t.fn(); console.log('ok   ' + t.name); } catch (e) { bad++; console.log('FAIL ' + t.name + '\n     ' + (e.message || e).split('\n')[0]); }

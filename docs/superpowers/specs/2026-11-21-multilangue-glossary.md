@@ -95,6 +95,7 @@ lui stays lui as an indirect object (« lui envoie »), elle after a preposition
 ever addresses the hero). Mind the elisions: « héros » has an aspirated h (le héros, de héros), « héroïne » a mute one (l’héroïne, d’héroïne).
 EN: "hero" does not change (never "heroine" as a role word), but its pronouns do: {g:he|she}, {g:him|her}, {g:his|her}.
 ES: héroe / heroína, el héroe / la heroína, él / ella, and the agreeing adjectives (listo / lista).
+ES: an enclitic pronoun goes into the hole with its verb ({g:envíelo|envíela}, {g:verlo|verla}); a participle after « ha » does not agree (« {hero} ha llegado »).
 `node tools/i18n.js gender fr` lists the French texts still written for one gender (tools/i18n.js GENDER, GENDER_OK).
 
 ## Numbers and special keys (data/strings.js)

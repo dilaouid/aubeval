@@ -4,7 +4,7 @@
 //                                   line, with the French beside it; a new one comes as null (to translate)
 //   node tools/i18n.js check        every layer has every text, no path that leads nowhere, and the
 //                                   same {holes} as the French ({de_hero} counts as {hero}); exit 1 if not
-//   node tools/i18n.js gender fr    the texts of a language that speak of the hero in one gender only
+//   node tools/i18n.js gender en    the texts of a language that speak of the hero in one gender only
 //                                   (GENDER says how to tell, per language); exit 1 if one is not in GENDER_OK
 // The texts are the fields named in FIELDS, everything under ALL, never what SKIP names: ids,
 // sprites, kinds and conditions are not words and never change with the language.
@@ -183,7 +183,7 @@ function frenchInCode() {
 }
 
 // The words that give away a text written for one gender of hero only, by language. `bare`: never
-// outside a {g:...}. `names`: the text speaks of the hero (looked for in the whole text). `words`:
+// outside a {g:...} (none in English). `names`: the text speaks of the hero (looked for in the whole text). `words`:
 // then suspect outside a hole. `not`: a short word that only looks like a participle (« est au »).
 const L = '\\p{L}', W = s => new RegExp(`(?<![${L}])(?:${s})(?![${L}])`, 'iu');
 const GENDER = {
@@ -192,6 +192,16 @@ const GENDER = {
     names: /\{hero\}|\{de_hero\}|héros|héroïne/iu,
     words: W(`il|lui|messire|(?:est|soit)\\s+(?:seul|prêt|[${L}’'-]*[éiu])`),
     not: W(`(?:est|soit)\\s+(?:au|du|ici|si|ni|lui|parmi)`),
+  },
+  en: { // « hero » is the same for a heroine: only its pronouns and titles give a gender away
+    names: /\{hero\}|\{de_hero\}|(?<![a-z])hero(?:es|’s|'s)?(?![a-z])/i,
+    words: W('he|him|his|himself|lord|sir'),
+  },
+  es: {
+    bare: W('héroe'),
+    names: /\{hero\}|\{de_hero\}|héroe|heroína/iu,
+    words: W(`él|lo|señor|(?:está|es|esté)\\s+(?:solo|listo|[${L}]*(?:ado|ido))`),
+    not: W('lo\\s+(?:que|de|mismo|mejor|bastante|antes|justo|suyo|tuyo)|por\\s+lo|a\\s+lo'), // the neuter « lo »
   },
 };
 // Texts left as they are on purpose, each with its reason: suspects the rules above cannot tell apart.
@@ -213,6 +223,19 @@ const GENDER_OK = {
     'tutorial.lessons[jewels].steps[goldsmith].say[1]', // « Il leur faut »: impersonal
     'tutorial.lessons[legacy].steps[start].say[1]', // « il demande deux clics »: the new start
   ],
+  en: [
+    'cards.militia.flavor', // « takes his place »: the militiaman
+    'tutorial.lessons[siege].steps[duel].say[0].text', // « faces him alone »: him is the warlord
+  ],
+  es: [
+    'strings.subtitle', // the title screen's tagline, before any hero is chosen: « héroe » as the generic
+    'strings.name_keys', // the naming screen, choosing among the four heroes: the generic
+    'strings.name_keys_edit', // the same, when the name is changed
+    'strings.defeat_text', // « Nada está perdido »: perdido agrees with nada
+    'strings.battle_help', // « sus golpes irán a él »: él is the marked enemy
+    'strings.siege_banner_text', // « se bate con él », « Vencido… marcha »: the warlord
+    'tutorial.lessons[siege].steps[duel].say[0].text', // « se enfrenta a él »: él is the warlord
+  ],
 };
 const unholed = s => String(s).replace(/\{g:[^|{}]*\|[^|{}]*\}/g, ' ');
 /** The texts of a language: the French of DATA, else its layers on disk (null left out). */
@@ -221,14 +244,16 @@ function textsOf(lang) {
   const layer = Object.assign({}, ...Object.values(readLayers(lang)));
   return new Map(Object.entries(layer).filter(([, t]) => t != null));
 }
-/** The texts of a language a reader would find one-gendered: [{ path, text }]. Throws on a language without rules. */
-function genderSuspects(lang) {
+/** The texts of a language a reader would find one-gendered: [{ path, text }]. `texts` (path -> text)
+ * defaults to the language's own. Throws on a language without rules. */
+function genderSuspects(lang, texts) {
   const R = GENDER[lang];
   if (!R) throw new Error('no gender rules for ' + lang);
   const out = [];
-  for (const [p, t] of textsOf(lang)) {
-    const bare = unholed(t), rest = R.not ? bare.replace(new RegExp(R.not.source, 'giu'), ' ') : bare;
-    if (R.bare.test(bare) || (R.names.test(t) && R.words.test(rest))) out.push({ path: p, text: t });
+  for (const [p, t] of texts || textsOf(lang)) {
+    const bare = unholed(t).replace(/\{[a-z_:]+\}/g, ' '); // {lord} is a hole, not the word
+    const rest = R.not ? bare.replace(new RegExp(R.not.source, 'giu'), ' ') : bare;
+    if ((R.bare && R.bare.test(bare)) || (R.names.test(t) && R.words.test(rest))) out.push({ path: p, text: t });
   }
   return out;
 }

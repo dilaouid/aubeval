@@ -70,7 +70,7 @@ I18N.add('es', {
   'city.bonuses.trip.label': 'Expediciones: −{v} % de tiempo', // Expéditions : −{v} % de temps
   'city.bonuses.out.label': 'Producción: +{v} %', // Production : +{v} %
   'city.bonuses.tax.label': 'Impuestos: +{v} %', // Impôts : +{v} %
-  'city.bonuses.xp.label': 'Experiencia del héroe: +{v} %', // Expérience du héros : +{v} %
+  'city.bonuses.xp.label': 'Experiencia {g:del héroe|de la heroína}: +{v} %', // Expérience {g:du héros|de l’héroïne} : +{v} %
   'city.bonuses.bounty.label': 'Recompensas de incursión: +{v} %', // Primes de raid : +{v} %
   'city.bonuses.orders.label': 'Pago de los encargos: +{v} %', // Paie des commandes : +{v} %
   'city.bonuses.stock.label': 'Reservas iniciales', // Réserves de départ
@@ -82,13 +82,13 @@ I18N.add('es', {
   'legacy[tax].name': 'Tesoro real', // Trésor royal
   'legacy[tax].desc': 'Cada casa paga más.', // Chaque maison paie davantage.
   'legacy[floor].name': 'Linaje amado', // Lignée aimée
-  'legacy[floor].desc': 'La popularidad del héroe nunca cae tan bajo.', // La popularité du héros ne tombe jamais plus bas.
+  'legacy[floor].desc': 'La popularidad {g:del héroe|de la heroína} nunca cae tan bajo.', // La popularité {g:du héros|de l’héroïne} ne tombe jamais plus bas.
   'legacy[stock].name': 'Graneros llenos', // Greniers pleins
   'legacy[stock].desc': 'Un Nuevo comienzo empieza con reservas.', // Un nouveau départ commence avec des réserves.
   'legacy[orders].name': 'Buenos contactos', // Carnet d’adresses
   'legacy[orders].desc': 'Los encargos pagan mejor.', // Les commandes paient mieux.
   'legacy[xp].name': 'Crónicas {de_hero}', // Chroniques {de_hero}
-  'legacy[xp].desc': 'El héroe aprende más rápido.', // Le héros apprend plus vite.
+  'legacy[xp].desc': '{g:El héroe|La heroína} aprende más rápido.', // {g:Le héros|L’héroïne} apprend plus vite.
   'legacy[bounty].name': 'Botines de guerra', // Primes de guerre
   'legacy[bounty].desc': 'Una incursión rechazada rinde más.', // Un raid repoussé rapporte plus.
   'legacy[guard].name': 'Viejas murallas', // Vieux remparts

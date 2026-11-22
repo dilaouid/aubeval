@@ -16,7 +16,7 @@ I18N.add('en', {
   'buildings.sawmill.desc': 'Saws wood into planks.', // Scie le bois en planches.
   'buildings.forge.name': 'Forge', // Forge
   'buildings.forge.card': 'Forge', // Forge
-  'buildings.forge.desc': 'Forges the hero’s weapons and armour from what the village produces.', // Forge les armes et les armures du héros avec ce que le village produit.
+  'buildings.forge.desc': 'Forges the hero’s weapons and armour from what the village produces.', // Forge les armes et les armures {g:du héros|de l’héroïne} avec ce que le village produit.
   'buildings.house.name': 'House', // Maison
   'buildings.house.card': 'House', // Maison
   'buildings.house.styles[0]': 'Timber-framed', // Colombages
@@ -28,7 +28,7 @@ I18N.add('en', {
   'buildings.farm.desc': 'Grows wheat.', // Cultive le blé.
   'buildings.bakery.name': 'Bakery', // Boulangerie
   'buildings.bakery.card': 'Bakery', // Boulangerie
-  'buildings.bakery.desc': 'Bakes wheat into bread: what every one of your houses needs, and the hero’s rations.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations du héros.
+  'buildings.bakery.desc': 'Bakes wheat into bread: what every one of your houses needs, and the hero’s rations.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations {g:du héros|de l’héroïne}.
   'buildings.quarry.name': 'Quarry', // Carrière
   'buildings.quarry.card': 'Quarry', // Carrière
   'buildings.quarry.desc': 'Cuts stone, for second-tier weapons, chapels and mage towers. Noisy: keep it away from houses.', // Taille la pierre, pour les armes du deuxième palier, les chapelles et les tours de mage. Bruyante : tenez-la loin des maisons.
@@ -70,7 +70,7 @@ I18N.add('en', {
   'buildings.mage_tower.desc': 'A bolt of lightning that pierces armour and strikes a whole group.', // Un éclair qui perce les armures et touche tout un groupe.
   'buildings.cathedral.name': 'Cathedral', // Cathédrale
   'buildings.cathedral.card': 'Cathedral', // Cathédrale
-  'buildings.cathedral.desc': 'A great work of several hours: foundations, walls, roof, then the spires. Each stage makes meals happier and keeps the hero’s popularity from falling too low.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité du héros de tomber trop bas.
+  'buildings.cathedral.desc': 'A great work of several hours: foundations, walls, roof, then the spires. Each stage makes meals happier and keeps the hero’s popularity from falling too low.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité {g:du héros|de l’héroïne} de tomber trop bas.
   'buildings.castle.name': 'Castle', // Château
   'buildings.castle.card': 'Castle', // Château
   'buildings.castle.desc': 'Curtain walls, towers and keep. Each stage puts your stores out of the raiders’ reach and toughens your soldiers.', // Courtines, tours et donjon. Chaque étape met les réserves à l’abri des pillards et endurcit vos soldats.

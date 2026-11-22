@@ -33,7 +33,7 @@ I18N.add('es', {
   'cards.volley.name': 'Lluvia de flechas', // Volée de flèches
   'cards.volley.flavor': 'Los arqueros de las atalayas disparan por encima de su hombro.', // Les archers des tours de guet tirent par-dessus son épaule.
   'cards.spikes.name': 'Estacas', // Pieux
-  'cards.spikes.flavor': 'Quien golpea se ensarta en la empalizada.', // Qui le frappe s’empale sur la palissade.
+  'cards.spikes.flavor': 'Quien golpea se ensarta en la empalizada.', // Qui {g:le|la} frappe s’empale sur la palissade.
   'cards.bolt.name': 'Relámpago', // Éclair
   'cards.bolt.flavor': 'La torre del mago fulmina a toda la banda.', // La tour de mage foudroie toute la bande.
   'cards.militia.name': 'Miliciano', // Renfort de la milice

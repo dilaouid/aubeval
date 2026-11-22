@@ -16,7 +16,7 @@ I18N.add('es', {
   'classes[merchant].desc': 'Suman las telas, quieren el Mercado a mano y una calle agradable (belleza 4). Necesitan una Villa. Abren el Orfebre.', // Ajoutent les étoffes, veulent le Marché à portée et une rue plaisante (beauté 4). Il leur faut une Ville. Ils ouvrent l’Orfèvre.
   'classes[noble].name': 'Nobles', // Nobles
   'classes[noble].one': 'Noble', // Noble
-  'classes[noble].desc': 'Además, joyas y una calle soberbia (belleza 10): fuentes, estatuas, árboles y flores. Necesitan una Ciudad y un héroe querido por su pueblo.', // Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et un héros aimé de sa ville.
+  'classes[noble].desc': 'Además, joyas y una calle soberbia (belleza 10): fuentes, estatuas, árboles y flores. Necesitan una Ciudad y {g:un héroe querido|una heroína querida} por su pueblo.', // Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et {g:un héros aimé|une héroïne aimée} de sa ville.
   'units.woodcutter.name': 'Leñador', // Bûcheron
   'units.woodcutter.plural': 'Leñadores', // Bûcherons
   'units.woodcutter.desc': 'Corta madera del árbol más cercano y la trae. Una cabaña del leñador junto al bosque acorta sus viajes.', // Coupe du bois à l’arbre le plus proche et le rapporte. Une cabane de bûcheron près de la forêt raccourcit ses trajets.
@@ -54,13 +54,13 @@ I18N.add('es', {
   'keepers.smith.title': 'Herrero', // Forgeron
   'keepers.smith.lines[0]': 'Buena madera, buen hierro, y le hago una leyenda.', // Du bon bois, du bon fer, et je vous fais une légende.
   'keepers.smith.lines[1]': 'A una hoja se la respeta. Y se la refuerza.', // Une lame, ça se respecte. Et ça se renforce.
-  'keepers.smith.lines[2]': 'El héroe rompe, yo arreglo.', // Le héros casse, moi je répare.
+  'keepers.smith.lines[2]': '{g:El héroe|La heroína} rompe, yo arreglo.', // {g:Le héros|L’héroïne} casse, moi je répare.
   'keepers.smith.busy': '¡Atrás, que quema! Estará lista pronto.', // Reculez, ça chauffe ! Elle sera prête bientôt.
   'keepers.baker.name': 'Mélisande', // Mélisande
   'keepers.baker.title': 'Panadera', // Boulangère
   'keepers.baker.lines[0]': 'Una hogaza caliente y el mundo va mejor.', // Une miche chaude et le monde va mieux.
   'keepers.baker.lines[1]': 'Sus campesinos comen por cuatro. ¡Mejor así!', // Vos paysans mangent comme quatre. Tant mieux !
-  'keepers.baker.lines[2]': 'Lleve un poco para el héroe, tiene mala cara.', // Emportez-en pour le héros, il a mauvaise mine.
+  'keepers.baker.lines[2]': 'Lleve un poco para {g:el héroe|la heroína}, tiene mala cara.', // Emportez-en pour {g:le héros|l’héroïne}, {g:il|elle} a mauvaise mine.
   'keepers.baker.sad': 'Ni un grano de trigo… no puedo amasar el viento.', // Plus un grain de blé… je ne peux pas pétrir du vent.
   'keepers.innkeeper.name': 'Gaspard', // Gaspard
   'keepers.innkeeper.title': 'Cafetero', // Cafetier
