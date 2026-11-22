@@ -744,7 +744,7 @@ DATA.tutorial = {
           ] },
       ] },
 
-    { id: 'lodge', title: 'La Loge des bâtisseurs', about: 'La Loge d’Aveline : son jeu de la bonne pierre, et ses plans qui font bâtir moins cher.', when: { unlocked: 'lodge' },
+    { id: 'lodge', title: 'La Loge des bâtisseurs', about: 'La Loge d’Aveline : son jeu du quartier à rebâtir, et ses plans qui font bâtir moins cher.', when: { unlocked: 'lodge' },
       covers: ['b:lodge', 'venue:lodge', 'game:lodge'],
       steps: [
         { id: 'lodge',
@@ -753,7 +753,7 @@ DATA.tutorial = {
           point: ['build:lodge'], already: { built: { lodge: 1 } }, goal: { gain: { 'b:lodge': 1 } } },
         { id: 'stone',
           say: [
-            'La Loge se visite, comme le Café : « Entrer », et je vous y attends avec « {game:lodge} ». Un mur, un trou, quatre pierres taillées : à vous de trouver celle qui entre.',
+            'La Loge se visite, comme le Café : « Entrer », et je vous y attends avec « {game:lodge} ». Je vous montre un petit quartier, puis je le cache : à vous de le rebâtir de mémoire.',
             'Une médaille, et mes plans sont à vous un moment : constructions et améliorations moins chères. Chaque niveau de la Loge les fait durer plus longtemps.',
             'Et la Loge elle-même, dès qu’elle est posée, vous fait bâtir un peu moins cher, réparer à meilleur compte et récupérer davantage en démolissant. Plus elle monte, plus c’est net.',
           ] },

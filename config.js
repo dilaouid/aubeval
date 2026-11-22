@@ -225,10 +225,15 @@ window.CONFIG = {
   barracks_feint: { value: 0.3, min: 0, max: 1, step: 0.05 },        // share of the blows that are feints, once they have come (data/venues.js ramp.feintFrom)
   barracks_double: { value: 0.25, min: 0, max: 1, step: 0.05 },      // share of the blows that are double, once they have come (ramp.doubleFrom)
   barracks_hits: { value: 5, min: 1, max: 10, step: 1 },             // blows that may land: at this many the drill is lost
-  lodge_time: { value: 36, min: 15, max: 90, step: 1 },              // builders' lodge, « La bonne pierre »: seconds the wall goes on rising
-  lodge_strikes: { value: 4, min: 1, max: 10, step: 1 },             // wrong stones that may be tried: at this many the wall comes down (the help text of DATA.venues.lodge names it: « Quatre mauvaises pierres »)
-  lodge_chain: { value: 3, min: 2, max: 10, step: 1 },               // right stones in a row from which each one is worth 2 (the help text of DATA.venues.lodge names it: « dès la troisième »)
-  lodge_chain_gap: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // seconds after a right stone past which the chain falls back
+  lodge_time: { value: 60, min: 15, max: 120, step: 1 },             // builders' lodge, « Le quartier d'Aveline »: seconds to rebuild as many quarters as one can (the clock stops while they are compared)
+  lodge_misses: { value: 3, min: 1, max: 10, step: 1 },              // quarters under half alike that end the lesson (the game is lost)
+  lodge_peek_cost: { value: 2, min: 0, max: 10, step: 1 },           // points « Revoir le plan » costs, even at none (the help card names it)
+  lodge_peek_time: { value: 1.5, min: 0.5, max: 5, step: 0.1 },      // seconds the plan shows again
+  lodge_reveal_time: { value: 1.5, min: 0.5, max: 5, step: 0.1 },    // seconds the plan and the rebuilt quarter show side by side
+  lodge_perfect: { value: 3, min: 0, max: 20, step: 1 },             // « Le quartier d'Aveline »: points a quarter rebuilt without a fault adds
+  lodge_quick_3: { value: 1.0, min: 0.2, max: 5, step: 0.1 },        // seconds per building of the plan within which a rebuilt quarter (half alike at least) earns 3 more
+  lodge_quick_2: { value: 1.6, min: 0.2, max: 5, step: 0.1 },        // ... 2 more
+  lodge_quick_1: { value: 2.2, min: 0.2, max: 5, step: 0.1 },        // ... 1 more
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----
   fog_cell: { value: 4, min: 2, max: 16, step: 1 },                  // tiles on one side of a cell of fog: a cell is seen or not, whole

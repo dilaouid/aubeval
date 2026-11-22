@@ -256,43 +256,43 @@ I18N.add('es', {
   'venues.barracks.after[2]': '¡Buena guardia! La tropa ha mirado, y golpeará más fuerte. No lo diré dos veces.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
   'venues.barracks.after[3]': '¡Una guardia de leyenda! En todo el cuartel no se habla más que de usted, y mis soldados golpean como nunca. Estoy orgullosa de ellos… y de usted.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
   'venues.lodge.name': 'La Logia de los constructores', // La Loge des bâtisseurs
-  'venues.lodge.title': 'La piedra justa', // La bonne pierre
-  'venues.lodge.unit': 'piedras puestas', // pierres posées
-  'venues.lodge.how': 'Elija la única piedra que encaja en el hueco del muro.', // Choisissez la seule pierre qui entre dans le trou du mur.
-  'venues.lodge.say': 'Una lección de constructora, en tres vistazos:', // Une leçon de bâtisseuse, en trois coups d’œil :
-  'venues.lodge.steps[0]': 'Queda un hueco', // Il reste un trou
-  'venues.lodge.steps[1]': 'Solo una piedra encaja', // Une seule pierre y entre
-  'venues.lodge.steps[2]': '{n} fallos: el muro cae', // {n} fautes : le mur tombe
-  'venues.lodge.news[turn].text': 'Las piedras llegan giradas', // Les pierres arrivent tournées
-  'venues.lodge.news[mirror].text': 'Volteada, nunca encaja', // Retournée, elle n’entre jamais
-  'venues.lodge.legend[0]': 'Piedra correcta: {n}', // Bonne pierre : {n}
-  'venues.lodge.legend[1]': 'Rápido, en cadena: {n}', // Vite, en chaîne : {n}
-  'venues.lodge.greet': '¡{g:Bienvenido|Bienvenida} a la Logia, burgomaestre! Aquí trazo los planos de Aubeval, y aquí aprenden el oficio mis oficiales. Un buen constructor elige su piedra de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
-  'venues.lodge.ready[0]': 'El muro espera su próxima hilada. Tome una piedra, burgomaestre, ¡y veamos ese ojo!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
-  'venues.lodge.ready[1]': 'Mis oficiales han tallado un montón de piedras, y solo una encaja en el hueco. ¡A usted le toca encontrarla, y deprisa!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !
-  'venues.lodge.ready[2]': '¿Le apetece una lección de constructora? Un muro se levanta piedra a piedra, sin dudar. Yo le enseño el hueco, usted elige la piedra.', // Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.
-  'venues.lodge.wait[0]': 'Mis oficiales tallan piedras nuevas. Vuelva dentro de un rato: el muro, al menos, no se moverá.', // Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.
+  'venues.lodge.title': 'El barrio de Aveline', // Le quartier d’Aveline
+  'venues.lodge.unit': 'puntos', // points
+  'venues.lodge.how': 'Memorice el barrio de Aveline y vuelva a construirlo de memoria.', // Retenez le quartier d’Aveline, puis rebâtissez-le de mémoire.
+  'venues.lodge.say': 'Una lección de constructora: mire bien y reconstruya.', // Une leçon de bâtisseuse : regardez bien, puis rebâtissez.
+  'venues.lodge.steps[0]': 'Memorice el barrio', // Retenez le quartier
+  'venues.lodge.steps[1]': 'Reconstrúyalo de memoria', // Rebâtissez-le de mémoire
+  'venues.lodge.steps[2]': 'Volver a ver: −{n} puntos', // Revoir le plan : −{n} points
+  'venues.lodge.news[turn].text': 'Plano girado: siga la bandera', // Plan tourné : suivez le drapeau
+  'venues.lodge.legend[0]': 'Edificio correcto: +{n}', // Bâtiment juste : +{n}
+  'venues.lodge.legend[1]': 'Edificio erróneo: −{n}', // Bâtiment faux : −{n}
+  'venues.lodge.legend[2]': 'Barrio perfecto: +{n}', // Quartier parfait : +{n}
+  'venues.lodge.greet': '¡{g:Bienvenido|Bienvenida} a la Logia, burgomaestre! Aquí trazo los planos de Aubeval, y aquí aprenden el oficio mis oficiales. Un buen constructor recuerda un barrio de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur retient un quartier d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
+  'venues.lodge.ready[0]': 'Mi barrio está sobre la mesa, burgomaestre. Mírelo bien: dentro de un momento, ¡será usted quien lo construya!', // Mon quartier est sur la table, bourgmestre. Regardez-le bien : tout à l’heure, c’est vous qui le bâtirez !
+  'venues.lodge.ready[1]': 'Una casa aquí, una capilla allá… Se lo enseño una vez, y usted me lo reconstruye de memoria. ¿Empezamos?', // Une maison ici, une chapelle là… Je vous le montre une fois, et vous me le rebâtissez de mémoire. On s’y met ?
+  'venues.lodge.ready[2]': '¿Le apetece una lección de constructora? Un buen plano se recuerda de un vistazo, y se reconstruye sin dudar.', // Une leçon de bâtisseuse, ça vous dit ? Un bon plan se retient d’un regard, et se rebâtit sans hésiter.
+  'venues.lodge.wait[0]': 'Estoy redibujando mis barrios. Vuelva dentro de un rato: mis planos, al menos, no se moverán.', // Je redessine mes quartiers. Repassez tout à l’heure : mes plans, eux, ne bougeront pas.
   'venues.lodge.wait[1]': 'Repaso mis planos un momento. Y amplíe la Logia, burgomaestre: con cada nivel, mis planos le sirven más tiempo.', // Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.
-  'venues.lodge.chat[0]': 'Antes de poner una piedra, se mira. Luego se vuelve a mirar. Y una vez puesta, ya no se mira: está en su sitio.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.
-  'venues.lodge.chat[1]': 'Un muro recto, burgomaestre, es un muro que aguanta cien años. Mire estas juntas: ¡no cabría ni un pelo!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !
-  'venues.lodge.chat[2]': 'Una piedra se gira en la mano, nunca se le da la vuelta: su cara labrada debe quedar fuera. Recuérdelo, y sabrá más que muchos albañiles.', // Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.
-  'venues.lodge.chat[3]': '{g:Un héroe|Una heroína} que sabe levantar un muro recto, eso no se ve a menudo. Mis oficiales todavía hablan de ello, y se mantienen más derechos que sus plomadas.', // {g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.
+  'venues.lodge.chat[0]': 'Un barrio se mira como una cara: primero se recuerda lo que sobresale, la aguja de una capilla, la torre de un mago. Lo demás viene solo.', // Un quartier, ça se regarde comme un visage : on retient d’abord ce qui dépasse, la flèche d’une chapelle, la tour d’un mage. Le reste suit.
+  'venues.lodge.chat[1]': 'Mire este plano, burgomaestre: cada casa en su sitio, cada calle recta. Un barrio bien trazado es un barrio que dura cien años.', // Regardez-moi ce plan, bourgmestre : chaque maison à sa place, chaque rue droite. Un quartier bien tracé, c’est un quartier qui tient cent ans.
+  'venues.lodge.chat[2]': 'Mi bandera la planto siempre en la misma esquina. Gire el plano como quiera: siga la bandera, y nunca se perderá.', // Mon drapeau, je le plante toujours au même coin. Tournez le plan comme vous voulez : suivez le drapeau, et vous ne vous perdrez jamais.
+  'venues.lodge.chat[3]': '{g:Un héroe|Una heroína} que reconstruye un barrio de memoria no se ve todos los días. Mis oficiales aún hablan de ello, y repasan sus planos por la noche.', // {g:Un héros|Une héroïne} qui rebâtit un quartier de mémoire, on n’en voit pas souvent. Mes compagnons en parlent encore, et revoient leurs plans le soir.
   'venues.lodge.chat[4]': 'Bram me forja los cinceles, Doña Ysolde me vende la piedra demasiado cara. Cada cual con su oficio, y el mío es que todo se tenga en pie.', // Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.
   'venues.lodge.tips[0]': 'En mis planos veo esto:', // Sur mes plans, je vois ceci :
   'venues.lodge.tips[1]': 'Mis oficiales me lo han señalado desde lo alto del andamio:', // Mes compagnons me l’ont signalé du haut de l’échafaudage :
   'venues.lodge.tips[2]': 'Un consejo de constructora, burgomaestre:', // Un conseil de bâtisseuse, bourgmestre :
-  'venues.lodge.glad[0]': '¡Encaja!', // Elle entre !
-  'venues.lodge.glad[1]': '¡Bien visto!', // Bien vu !
-  'venues.lodge.glad[2]': '¡Al milímetro!', // Juste au millimètre !
-  'venues.lodge.glad[3]': '¡Eso es una hilada!', // Voilà une assise !
+  'venues.lodge.glad[0]': '¡Bien visto!', // Bien vu !
+  'venues.lodge.glad[1]': '¡Casi todo está!', // Presque tout y est !
+  'venues.lodge.glad[2]': '¡Eso sí es un barrio!', // Voilà un quartier qui se tient !
+  'venues.lodge.glad[3]': '¡Buena memoria!', // Bonne mémoire !
   'venues.lodge.cross[0]': '¡Mire mejor!', // Regardez mieux !
-  'venues.lodge.cross[1]': '¡Esa no!', // Pas celle-là !
-  'venues.lodge.cross[2]': '¡Primero el hueco, luego la piedra!', // Le trou d’abord, la pierre ensuite !
-  'venues.lodge.chain[0]': '¡Qué ojo!', // Quel coup d’œil !
-  'venues.lodge.chain[1]': '¡El muro sube solo!', // Le mur monte tout seul !
-  'venues.lodge.chain[2]': '¡Eso es aprender el oficio!', // Voilà le métier qui rentre !
-  'venues.lodge.after[0]': 'El muro se ha derrumbado… Solo es piedra, burgomaestre: se recoge y se vuelve a empezar. Todo maestro ha visto caer su primer muro.', // Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.
-  'venues.lodge.after[1]': 'Unas cuantas hiladas puestas, y rectas además. Mis planos le harán ahorrar un poco en sus obras.', // Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.
-  'venues.lodge.after[2]': '¡Buen muro! Las juntas apretadas, el aplomo justo. Mis planos son suyos un tiempo: sus obras costarán menos.', // Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
-  'venues.lodge.after[3]': '¡Un muro de maestro! No cabría ni la hoja de un cuchillo. Mis mejores planos son suyos: sus obras costarán mucho menos, y todos sabrán qué ojo eligió esas piedras.', // Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quel œil a choisi ces pierres.
+  'venues.lodge.cross[1]': '¡Ese no es mi barrio!', // Ce n’est pas mon quartier, ça !
+  'venues.lodge.cross[2]': '¡Primero el plano, luego las casas!', // Le plan d’abord, les maisons ensuite !
+  'venues.lodge.chain[0]': '¡Perfecto, hasta el último adoquín!', // Parfait, au pavé près !
+  'venues.lodge.chain[1]': '¡Mi barrio, trazo a trazo!', // Mon quartier, trait pour trait !
+  'venues.lodge.chain[2]': '¡Así se aprende el oficio!', // Voilà le métier qui rentre !
+  'venues.lodge.after[0]': 'Lo dejamos aquí por hoy… Solo es papel, burgomaestre: se enrolla y se vuelve a empezar. Todo maestro ha confundido sus primeros planos.', // On s’arrête là pour aujourd’hui… Ce n’est que du papier, bourgmestre : on le roule, et on recommence. Tous les maîtres ont mélangé leurs premiers plans.
+  'venues.lodge.after[1]': 'Unos cuantos barrios reconstruidos, y ninguno torcido. Mis planos le harán ahorrar un poco en sus obras.', // Quelques quartiers rebâtis, et pas de travers. Mes plans vous feront gagner un peu sur vos chantiers.
+  'venues.lodge.after[2]': '¡Buen trabajo! Cada casa en su sitio, cada calle donde yo la tracé. Mis planos son suyos un tiempo: sus obras costarán menos.', // Beau travail ! Chaque maison à sa place, chaque rue où je l’avais tracée. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
+  'venues.lodge.after[3]': '¡Un trabajo de maestro! Cualquiera diría que tenía mi plano delante. Mis mejores planos son suyos: sus obras costarán mucho menos, y todos sabrán qué memoria reconstruyó este barrio.', // Un travail de maître ! On croirait que vous aviez mon plan sous les yeux. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quelle mémoire a rebâti ce quartier.
 });

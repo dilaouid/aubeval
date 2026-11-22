@@ -35,13 +35,14 @@ const Minigames = (() => {
     text(Math.max(0, Math.ceil(left)) + ' s', 324, 33, 15, left < 8 ? C.bad : C.text, 'right', true);
     UI.bar(28, 48, 298, 12, left / total, left < 8 ? C.bad : C.accent);
   }
-  function scoreBox(d, label, score) {
+  /** The score top right and the next medal; `color` the score's (gold unless a game says otherwise, as for a score below 0). */
+  function scoreBox(d, label, score, color = C.gold) {
     const x = 938, w = 330;
     let m = 0;
     d.medals.forEach((t, i) => { if (score >= t) m = i + 1; });
     const from = m ? d.medals[m - 1] : 0, to = d.medals[Math.min(2, m)];
     UI.plate(x, 12, w, 60);
-    UI.label(label, x + 18, 33, 15, C.dim, 'left'); UI.label(String(score), x + w - 58, 32, 22, C.gold, 'right');
+    UI.label(label, x + 18, 33, 15, C.dim, 'left'); UI.label(String(score), x + w - 58, 32, 22, color, 'right');
     Venue.pix(Venue.medalImg(m), x + w - 48, 18, 2);
     UI.bar(x + 16, 48, w - 148, 12, m >= 3 ? 1 : (score - from) / (to - from), ['#c9762e', '#cfd6e6', C.gold, C.gold][m]);
     if (m < 3) text(tr('vn_medal_' + (m + 1)) + ' ' + to, x + w - 58, 54, 11, C.text, 'right', true);

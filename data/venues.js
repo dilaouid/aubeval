@@ -64,10 +64,10 @@ Object.assign(DATA.strings, {
   bq_score: 'Parades', bq_hits_n: 'Coups reçus', bq_keys: 'Flèches du clavier, ou clic sur un côté',
   bq_quick: 'Vif ! +{n}', bq_good: 'Paré +{n}', bq_wrong: 'Mauvais côté !', bq_late: 'Touché !', bq_feinted: 'Feinte !',
   bq_end_hits: 'Trop de coups reçus !',
-  // La bonne pierre
-  lg_score: 'Pierres posées', lg_faults_n: 'Fautes', lg_keys: 'Touches 1 à 4, ou clic sur une pierre', lg_chain: 'Chaîne ×{n}',
-  lg_set: 'Posée +{n}', lg_chained: 'En chaîne ! +{n}', lg_wrong: 'Elle n’entre pas !',
-  lg_end_strikes: 'Le mur s’est écroulé !',
+  // Le quartier d'Aveline
+  lg_score: 'Score', lg_misses_n: 'Ratés', lg_plan: 'Plan d’Aveline', lg_yours: 'Votre quartier', lg_seen: 'J’ai vu !', lg_peek: 'Revoir le plan', lg_peek_cost: '−{n}', lg_check: 'Valider',
+  lg_likeness: 'Ressemblance : {n} %', lg_quarter: '+{n}', lg_perfect: 'Parfait ! +{n}', lg_miss: 'Raté !',
+  lg_end_misses: 'Aveline arrête la leçon !', lg_keys: 'Flèches, 1 à {n}, Suppr · Espace : revoir · Entrée : valider',
 });
 
 // What a place's gift is called and how it reads (`{n}` is the share, in percent). The key is what
@@ -263,27 +263,32 @@ DATA.venues = {
   },
   lodge: {
     keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 2 }, faces64: { glad: 0, cross: 4 },
-    title: 'La bonne pierre', unit: 'pierres posées',
-    how: 'Choisissez la seule pierre qui entre dans le trou du mur.',
+    title: 'Le quartier d’Aveline', unit: 'points',
+    how: 'Retenez le quartier d’Aveline, puis rebâtissez-le de mémoire.',
     // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
-    say: 'Une leçon de bâtisseuse, en trois coups d’œil :',
-    steps: ['Il reste un trou', 'Une seule pierre y entre', '{n} fautes : le mur tombe'],
-    news: [{ id: 'turn', text: 'Les pierres arrivent tournées' }, { id: 'mirror', text: 'Retournée, elle n’entre jamais' }],
-    legend: ['Bonne pierre : {n}', 'Vite, en chaîne : {n}'],
-    medals: [10, 20, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
-    // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
-    // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
-    // (config.js lodge_chain and lodge_chain_gap: what a chain is; lodge_strikes: the wrong stones the wall bears)
-    ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3 },
-    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
-    ready: ['Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !', 'Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !', 'Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.'],
-    wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],
-    chat: ['Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.', 'Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !', 'Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.',
-      '{g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.'],
+    say: 'Une leçon de bâtisseuse : regardez bien, puis rebâtissez.',
+    steps: ['Retenez le quartier', 'Rebâtissez-le de mémoire', 'Revoir le plan : −{n} points'],
+    news: [{ id: 'turn', text: 'Plan tourné : suivez le drapeau' }],
+    legend: ['Bâtiment juste : +{n}', 'Bâtiment faux : −{n}', 'Quartier parfait : +{n}'],
+    medals: [30, 55, 75], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
+    // Aveline's quarter (js/blueprint.js): a `side` × `side` grid, one side more every `sideEvery` wins up to `sideMax`;
+    // `count` buildings, one more a win, at most `countMax` and `fill` of the cells; `kinds` kinds in the palette, one
+    // more every `kindsEvery` wins up to `kindsMax`; the plan shown `show` s, `showStep` less a win, `showMin` at least;
+    // shown turned from `turnedFrom` wins (config.js lodge_*: the clock, the misses, the price of a second look, the points)
+    ramp: { side: 3, sideEvery: 3, sideMax: 5, count: 4, countMax: 9, fill: 0.6, kinds: 4, kindsEvery: 2, kindsMax: 6,
+      show: 5, showStep: 0.4, showMin: 2.5, turnedFrom: 3 },
+    // the buildings of Aveline's quarters, in the order of their keys: all 2 × 2 in the village, each with its own roof and walls
+    // (the bakery, the café, the weaver and the roastery wear the house's red roof: left out); the first four the most unlike
+    kinds: ['house', 'forge', 'chapel', 'mage_tower', 'goldsmith', 'lumber_hut'],
+    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur retient un quartier d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
+    ready: ['Mon quartier est sur la table, bourgmestre. Regardez-le bien : tout à l’heure, c’est vous qui le bâtirez !', 'Une maison ici, une chapelle là… Je vous le montre une fois, et vous me le rebâtissez de mémoire. On s’y met ?', 'Une leçon de bâtisseuse, ça vous dit ? Un bon plan se retient d’un regard, et se rebâtit sans hésiter.'],
+    wait: ['Je redessine mes quartiers. Repassez tout à l’heure : mes plans, eux, ne bougeront pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],
+    chat: ['Un quartier, ça se regarde comme un visage : on retient d’abord ce qui dépasse, la flèche d’une chapelle, la tour d’un mage. Le reste suit.', 'Regardez-moi ce plan, bourgmestre : chaque maison à sa place, chaque rue droite. Un quartier bien tracé, c’est un quartier qui tient cent ans.', 'Mon drapeau, je le plante toujours au même coin. Tournez le plan comme vous voulez : suivez le drapeau, et vous ne vous perdrez jamais.',
+      '{g:Un héros|Une héroïne} qui rebâtit un quartier de mémoire, on n’en voit pas souvent. Mes compagnons en parlent encore, et revoient leurs plans le soir.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.'],
     tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé du haut de l’échafaudage :', 'Un conseil de bâtisseuse, bourgmestre :'],
-    glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Regardez mieux !', 'Pas celle-là !', 'Le trou d’abord, la pierre ensuite !'],
-    chain: ['Quel coup d’œil !', 'Le mur monte tout seul !', 'Voilà le métier qui rentre !'],
-    after: ['Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.', 'Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quel œil a choisi ces pierres.'],
+    glad: ['Bien vu !', 'Presque tout y est !', 'Voilà un quartier qui se tient !', 'Bonne mémoire !'], cross: ['Regardez mieux !', 'Ce n’est pas mon quartier, ça !', 'Le plan d’abord, les maisons ensuite !'],
+    chain: ['Parfait, au pavé près !', 'Mon quartier, trait pour trait !', 'Voilà le métier qui rentre !'],
+    after: ['On s’arrête là pour aujourd’hui… Ce n’est que du papier, bourgmestre : on le roule, et on recommence. Tous les maîtres ont mélangé leurs premiers plans.', 'Quelques quartiers rebâtis, et pas de travers. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau travail ! Chaque maison à sa place, chaque rue où je l’avais tracée. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un travail de maître ! On croirait que vous aviez mon plan sous les yeux. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quelle mémoire a rebâti ce quartier.'],
   },
 };
 DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'];
