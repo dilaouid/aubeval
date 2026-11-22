@@ -10,6 +10,9 @@
 // or a lesson shifts nothing. A text that holds the hero's name in French (a getter) stays a
 // getter: its translation writes {hero} where the name goes.
 //
+// A text can also agree with the hero's gender: {g:masculine|feminine} is a hole filled by gendered()
+// (js/ui.js) from the chosen hero; I18N.gender does the cutting, and a layer writes its own two forms.
+//
 // Only words change: ids, rules, numbers and the save are the same in every language. The choice
 // is kept apart from the save (localStorage 'aubeval.lang'); ?lang=en in the address imposes one.
 // This file loads after config.js and before data/: it picks the language, writes the <script>

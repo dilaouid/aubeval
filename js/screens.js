@@ -10,6 +10,8 @@ const ui = {};
 // bar: the build bar's open tab; stroke: the last tile a held pointer drew on (the axe: the last screen point it swept).
 // rot: 1 when the building on the pointer is turned (R); wall: the tile a rampart being drawn starts
 // from (the pointer held down); wallVoid: that drawing was called off, until the button comes up.
+// heroPick: the hero's id being picked on the naming screen (null elsewhere); nameEdit: true when that screen
+// retouches the hero of a game under way instead of naming one before a new game.
 // selU: the ids of the soldiers the player has selected; box: the selection box being drawn (Shift + drag).
 function resetUi() { Object.assign(ui, { selU: [], box: null, panel: null, sel: null, placing: null, moving: null, tool: null, rot: 0, wall: null, wallShape: null, wallVoid: false, bar: DATA.buildTabs[0].id, stroke: null, tab: 'main', toasts: [], floats: [], disp: {}, wipeArm: 0, away: null, banner: null, saveT: 0, titleWipe: 0, titleT: 0 }); }
 resetUi();
@@ -881,9 +883,10 @@ const scenes = (() => {
     text(tr('level', { n: h.lvl }), sx, y, 20, C.gold, 'left', true);
     text(`${h.xp} / ${Hero.xpNeed(h.lvl)} XP`, x + w, y, 14, C.dim, 'right'); y += 18;
     UI.bar(sx, y, sw, 14, h.xp / Hero.xpNeed(h.lvl), C.accent); y += 28;
-    UI.icon('icon.hp', sx + 12, y + 8, 32); text(String(st.hp), sx + 30, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.atk', sx + 78, y + 8, 32); text(fmtNum(st.atk), sx + 96, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.def', sx + 144, y + 8, 32); text(fmtNum(st.def), sx + 162, y + 9, 17, C.text, 'left', true); y += 32;
+    const stats = [['icon.hp', String(st.hp)], ['icon.atk', fmtNum(st.atk)], ['icon.def', fmtNum(st.def)]]; // health, attack, defence, spread over the width beside the plate
+    const span = k => stats.reduce((n, [, v]) => n + 28 + UI.width(v, k, true), 0), fs = [17, 16, 15, 14].find(k => span(k) + 12 <= sw) || 14, tot = span(fs); // big numbers shrink the figures, never touch the next icon
+    for (let i = 0, ax = sx, gap = Math.min(16, (sw - tot) / 2); i < 3; i++) { const [ic, v] = stats[i]; UI.icon(ic, ax + 12, y + 8, 24); text(v, ax + 28, y + 9, fs, C.text, 'left', true); ax += 28 + UI.width(v, fs, true) + gap; }
+    y += 32;
     const ms = state.mission && DATA.missions.find(k => k.id === state.mission.id);
     const trip = !ms && Explore.onTrip(); // away at a place found in the wild (js/explore.js)
     UI.wrap(ms ? tr('mission_run', { title: ms.title }) + ' · ' + fmtTime(state.mission.left) : trip ? tr('ex_trip') : tr('at_village'), sx, y - 2, sw, 14, ms || trip ? C.accent : C.dim, 18);
@@ -1172,16 +1175,22 @@ const scenes = (() => {
     else { reset(); openNaming(); } // a new game: the hero is named first
   }
 
-  // ---- Naming the hero, before a new game ----
+  // ---- Naming the hero: before a new game, or from the hero's panel to change look and name (ui.nameEdit) ----
   // The name is typed into a real text field laid over the canvas (accents, paste, a phone's
-  // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name.
+  // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name,
+  // the look in state.hero.look, both written only on « Commencer » / « Valider ».
   const NAME_BOX = { x: 500, y: 400, w: 420, h: 56 }; // the field, in logical units
   let nameField = null;
   /** Goes to hero `id` (ui.heroPick): the field follows unless the player typed a name of his own (Hero.nameFor). */
   function pickHero(id) {
     if (!DATA.heroes.some(h => h.id === id) || id === ui.heroPick) return;
-    ui.heroPick = id; ui.nameWhy = null; nameField.value = Hero.nameFor(nameField.value, id); sfx('click');
+    ui.heroPick = id; ui.nameWhy = null; sfx('click');
+    const v = Hero.nameFor(nameField.value, id);
+    if (v !== nameField.value) { nameField.value = v; nameField.select(); } // a proposed name replaced: ready to be typed over; the player's own name stays, caret and all
+    tuneField();
   }
+  /** The field says what it asks, and proposes the name, of the hero being picked (a screen reader reads « votre héroïne » for Isaure). */
+  function tuneField() { nameField.setAttribute('aria-label', tr('name_ask')); nameField.placeholder = heroLook().name; }
   /** The next hero (d = 1) or the one before (d = -1), round the four. */
   function stepHero(d) { const n = DATA.heroes.length, i = DATA.heroes.findIndex(h => h.id === heroLook().id); pickHero(DATA.heroes[(i + d + n) % n].id); }
   function field() {
@@ -1210,6 +1219,7 @@ const scenes = (() => {
     scene = 'naming'; ui.nameWhy = null; ui.nameEdit = !!(opts && opts.edit);
     ui.heroPick = ui.nameEdit ? heroLook().id : DATA.heroes[0].id; // a new game starts on the first hero
     f.value = ui.nameEdit ? state.hero.name : DATA.heroes[0].name; // the default, ready to keep with Entrée or to type over
+    tuneField();
     f.style.display = 'block'; placeField(); f.focus(); f.select();
   }
   function closeNaming() { ui.heroPick = null; ui.nameEdit = false; if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
@@ -1235,8 +1245,8 @@ const scenes = (() => {
     const edit = ui.nameEdit; closeNaming();
     if (edit) leaveEdit(); else { scene = 'title'; ui.titleWipe = 0; }
   }
-  /** Another land: reset() makes a new game, but the hero being picked and the name being typed are kept. */
-  function otherMap() { const pick = ui.heroPick, edit = ui.nameEdit, v = nameField.value; reset(Village.drawSeed(false)); ui.heroPick = pick; ui.nameEdit = edit; nameField.value = v; }
+  /** Another land: a new game (reset() starts it over, but leaves ui.heroPick, ui.nameEdit and the field alone: resetUi only assigns its own keys), so the hero being picked and the name being typed stay. */
+  function otherMap() { reset(Village.drawSeed(false)); }
   function drawNaming() {
     World.draw({ dim: 0.62 });
     const px = 290, py = 40, pw = 700, ph = 620, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax }, pick = heroLook().id;
@@ -1252,7 +1262,7 @@ const scenes = (() => {
       UI.region(cx, cy, 150, 176, () => { pickHero(h.id); nameField.focus(); });
     });
     const sy = b.y - 74; // beside the field: the hero in battle, and walking on the spot
-    UI.sprite(Hero.art('battle'), px + 36, sy, 2, 1);
+    UI.sprite(Hero.art('battle'), px + 36, sy + 3, 2, 1); // 50 art pixels tall, feet on its last row: 125 units, so its feet stand on the figure's ground line, sy + 128
     const w = World.unitSprite('hero', 0, 1, true, ui.titleT);
     blit(w, px + 136, sy + 128 - w.height * PX, 1);
     if (!ui.nameEdit) { // a new game: the land behind the panel, and another one to start on
@@ -1432,7 +1442,7 @@ const scenes = (() => {
       },
       draw: drawTitle,
     },
-    naming: { // the hero's name, before a new game: typed into the field, Entrée starts, Échap goes back
+    naming: { // the hero's look and name, before a new game or (ui.nameEdit) from the hero's panel: typed into the field, Entrée confirms, Échap goes back
       update(dt) {
         ui.titleT += dt;
         if (pressed('Enter') || pressed('NumpadEnter')) { nameConfirm(); return; }

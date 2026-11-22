@@ -127,7 +127,7 @@ DATA.strings = {
   safe_zone: 'Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.',
   // hero
   hero_look: 'Changer d’apparence', hero_look_raid: 'Pas pendant un raid.',
-  hero_title: '{g:Le héros|L’héroïne}',equip: 'Équiper', equipped: 'Équipé', nothing: 'rien', weapon: 'Arme', armor: 'Armure',
+  hero_title: '{g:Le héros|L’héroïne}', equip: 'Équiper', equipped: 'Équipé', nothing: 'rien', weapon: 'Arme', armor: 'Armure',
   inventory: 'Équipement forgé', inventory_empty: 'Rien encore : forgez une arme à la Forge.',
   at_village: 'Au village : {g:il|elle} garde l’hôtel de ville.',
   level_up: 'Niveau {n} !',

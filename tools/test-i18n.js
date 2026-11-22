@@ -122,9 +122,9 @@ test('gender leaves other holes, plain text and empty forms alone', () => {
   assert.strictEqual(T.I18N.gender('{g:le héros|l’héroïne}', 'f'), 'l’héroïne');
 });
 test('a malformed gender hole is kept as written, and reported', () => {
-  for (const bad of ['{g:seul}', '{g:a|b|c}', '{g:a|{hero}}']) {
-    assert.strictEqual(T.I18N.gender(bad, 'f'), bad);
-    assert.strictEqual(T.I18N.genderBad(bad), true);
+  for (const hole of ['{g:seul}', '{g:a|b|c}', '{g:a|{hero}}']) {
+    assert.strictEqual(T.I18N.gender(hole, 'f'), hole);
+    assert.strictEqual(T.I18N.genderBad(hole), true);
   }
   assert.strictEqual(T.I18N.genderBad('{g:il|elle} et {hero}'), false);
 });
@@ -132,6 +132,14 @@ test('check reports a malformed gender hole as kind gender', () => {
   const errs = T.check(new Map([['strings.x', 'seul'], ['strings.y', '{g:a|b}']]), { 'strings.x': '{g:seul}', 'strings.y': 'c' });
   assert.ok(errs.some(e => e.kind === 'gender' && e.path === 'strings.x'));
   assert.ok(!errs.some(e => e.path === 'strings.y')); // a gender hole on one side only is no difference of holes
+});
+test('no text of the real data holds a malformed gender hole, in French and in each layer', () => {
+  const found = [...T.paths(T.loadData())].filter(([, t]) => T.I18N.genderBad(t)).map(([p, t]) => 'fr  ' + p + '  ' + t);
+  for (const lang of ['en', 'es']) {
+    const layer = Object.assign({}, ...Object.values(T.readLayers(lang)));
+    for (const [p, t] of Object.entries(layer)) if (t != null && T.I18N.genderBad(t)) found.push(lang + '  ' + p + '  ' + t);
+  }
+  assert.strictEqual(found.length, 0, found.length + ' found:\n' + found.slice(0, 40).join('\n'));
 });
 test('no bare « héros » in the French texts', () => {
   const found = [...T.paths(T.loadData())].filter(([p, t]) => T.GENDER.fr.bare.test(T.unholed(t)) && !T.genderOk('fr', p));
@@ -157,12 +165,12 @@ test('Spanish gender suspects are all accounted for', () => {
 test('the gender detector flags an unholed text and passes a holed one, in every language', () => {
   const cases = {
     fr: { bad: ['{hero} est arrivé', 'le héros', 'Envoyez {hero} : il revient'], good: ['{hero} est {g:arrivé|arrivée}', '{g:le héros|l’héroïne}', '{hero} est au marché'] },
-    en: { bad: ['{hero} is back: he rests', 'Send the hero to his post', 'Well met, my lord {hero}'], good: ['{hero} is back: {g:he|she} rests', 'Send the hero to {g:his|her} post', 'The warlord is here', 'the hero’s blade'] },
+    en: { bad: ['{hero} is back: he rests', 'Send the hero to his post', 'Well met, my lord {hero}'], good: ['{hero} is back: {g:he|she} rests', 'Send the hero to {g:his|her} post', 'The warlord is here', 'the hero’s blade', '{lord} greets {hero}'] },
     es: { bad: ['el héroe', '{hero} está listo', 'Envía a {hero}: él vuelve', '{hero} ha llegado y está cansado'], good: ['{g:el héroe|la heroína}', '{hero} está {g:listo|lista}', '{hero} hace lo que puede', 'El soldado está cansado'] },
   };
-  for (const [lang, { bad, good }] of Object.entries(cases)) {
-    const texts = new Map([...bad.map((t, i) => ['bad' + i, t]), ...good.map((t, i) => ['good' + i, t])]);
-    assert.deepStrictEqual(T.genderSuspects(lang, texts).map(x => x.path), bad.map((t, i) => 'bad' + i), lang);
+  for (const [lang, { bad: flagged, good }] of Object.entries(cases)) {
+    const texts = new Map([...flagged.map((t, i) => ['bad' + i, t]), ...good.map((t, i) => ['good' + i, t])]);
+    assert.deepStrictEqual(T.genderSuspects(lang, texts).map(x => x.path), flagged.map((t, i) => 'bad' + i), lang);
   }
 });
 

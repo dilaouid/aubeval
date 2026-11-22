@@ -2,6 +2,8 @@
 // Question: Faire tourner les chaînes du village pour armer le héros, puis le voir gagner ses combats et repousser un raid, donne-t-il envie de revenir pendant vingt minutes ?
 // Date: 2026-11-19
 // The hero: his sheet, his gear (forged by the village), his levels and his idle missions.
+// Which hero the player chose, among DATA.heroes: Hero.art(kind, id) picks his or her sprite (the old one while an image
+// is missing), Hero.nameFor(current, id) the name the naming field shows after a change of hero.
 'use strict';
 
 const Hero = (() => {

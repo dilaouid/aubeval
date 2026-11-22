@@ -51,6 +51,7 @@ const Music = (() => {
       case 'venue': return Venue.id;
       case 'play': return state.raid && state.raid.active ? 'raid' : 'world';
       case 'pause': return cur; // the game goes quiet, the music with it
+      case 'naming': return ui.nameEdit ? cur : null; // changing look from a running game: the track goes on; naming a new game is silent
       default: return null;
     }
   }

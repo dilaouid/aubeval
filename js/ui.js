@@ -14,13 +14,13 @@ function heroName(of) {
   return of ? DATA.strings[/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'hero_of_vowel' : 'hero_of'].split('{name}').join(n) : n;
 }
 /**
- * The hero the player looks at, { id, name, g } from DATA.heroes: the one being named (ui.heroPick), else the
+ * The hero the player looks at, { id, name, g } from DATA.heroes: the one being picked (ui.heroPick, on the naming screen only), else the
  * saved one on the title screen (read without loading the save), else the one of the game under way.
  * An id nobody knows, or none, is Aldric.
  */
 function heroLook() {
   let id;
-  if (typeof ui !== 'undefined' && ui && ui.heroPick) id = ui.heroPick;
+  if (typeof scene !== 'undefined' && scene === 'naming' && typeof ui !== 'undefined' && ui && ui.heroPick) id = ui.heroPick; // a pick counts on the naming screen only
   else if (typeof scene !== 'undefined' && scene === 'title' && typeof Save !== 'undefined') { const s = Save.hero(); id = s && s.look; }
   else if (typeof state !== 'undefined' && state && state.hero) id = state.hero.look;
   return DATA.heroes.find(h => h.id === id) || DATA.heroes[0];

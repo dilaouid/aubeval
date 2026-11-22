@@ -14,8 +14,9 @@ One folder per hero (data/world.js DATA.heroes), with what it has so far:
                    js/world.js reads), the first column standing and the others the walk, every
                    cell cropped to the same box so the feet stay where they are.
 
-Nothing is resampled. A frame of another size, or a figure that does not reach the bottom of its
-cell, is refused. tools/heroes/ids.tsv says where each raw image comes from.
+Nothing is resampled. A frame of another size (the frames of a map figure must all match), or a
+figure that does not reach the bottom of its cell, is refused. tools/heroes/ids.tsv says where each
+raw image comes from. Aldric's battle sprite and map sheet are not built here, on purpose (--check says "not built").
 
 Run from the root of the repository:
   python tools/make_heroes.py           builds everything found
@@ -96,6 +97,9 @@ def unit(hero):
         if len(walk) != COLS - 1:
             raise Refused('%s: %d walk frames, not %d' % (os.path.join(src, 'walk', d), len(walk), COLS - 1))
         cells.append([load(p) for p in [stand] + walk])
+    sizes = {im.size for row in cells for im in row}
+    if len(sizes) != 1:
+        raise Refused('%s: the frames are not all the same size (%s)' % (src, ', '.join('%dx%d' % z for z in sorted(sizes))))
     box = None  # the one box every frame is cropped to
     for row in cells:
         for im in row:

@@ -42,8 +42,37 @@ test('heroLook falls back to Aldric', () => {
   assert.strictEqual(L.heroLook().id, 'aldric');
   L.ctx.state.hero.look = 'isaure';
   assert.strictEqual(L.heroLook().id, 'isaure');
+});
+
+test('a pick counts on the naming screen only', () => {
+  const L = load({ look: 'isaure' });
   L.ctx.ui.heroPick = 'maelle';
+  L.ctx.scene = 'naming';
   assert.strictEqual(L.heroLook().id, 'maelle');
+  for (const sc of ['play', 'title', 'battle']) { L.ctx.scene = sc; assert.notStrictEqual(L.heroLook().id, 'maelle', sc); }
+  L.ctx.scene = 'play';
+  assert.strictEqual(L.heroLook().id, 'isaure');
+});
+
+test('on the title screen heroLook is the saved hero, else Aldric', () => {
+  const L = load({ look: 'isaure' });
+  L.ctx.scene = 'title';
+  for (const [saved, want] of [[{ look: 'maelle' }, 'maelle'], [null, 'aldric'], [{ look: 'nobody' }, 'aldric']]) {
+    L.ctx.Save = { hero: () => saved };
+    assert.strictEqual(L.heroLook().id, want, JSON.stringify(saved));
+  }
+});
+
+test('every hero has its three sprites, listed in the manifest and on disk', () => {
+  const { DATA, ctx } = load();
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'assets/manifest.js'), 'utf8'), ctx, { filename: 'assets/manifest.js' });
+  const A = ctx.ASSETS;
+  for (const h of DATA.heroes) for (const id of ['portrait.hero.' + h.id, 'hero.battle.' + h.id, 'iso.unit.hero.' + h.id]) {
+    const e = A[id];
+    assert.ok(e, id + ' is not in assets/manifest.js');
+    const file = typeof e === 'string' ? e : e.file || e.sheet || (e.frames && e.frames[0]);
+    assert.ok(file && fs.existsSync(path.join(ROOT, 'assets', file)), id + ': ' + file + ' is not under assets/');
+  }
 });
 
 test('withHero fills the name, then the gender', () => {
