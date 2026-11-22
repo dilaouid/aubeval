@@ -8,7 +8,7 @@ from PIL import Image
 
 import make_venues as M
 
-SKIN, CLOTH, RULE = (220, 170, 140, 255), (70, 110, 60, 255), (250, 250, 250, 255)
+SKIN, CLOTH, RULE = (220, 170, 140, 255), (70, 110, 60, 255), (219, 219, 219, 255)   # the rule as PixelLab leaves it: a light grey
 
 
 def figure(bottom, rule=False, dx=0):

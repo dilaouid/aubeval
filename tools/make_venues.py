@@ -31,7 +31,7 @@ OUT = 'assets/sprites/venue'
 ROOM = (640, 360)             # a room, the size the game draws it at
 CELL, FRAMES = 160, 8         # a keeper's frame, and the frames of her loop
 RULE_ROWS = 3                 # the rule is thin: at most this many rows
-LIGHT = 225                   # ... and light: every channel of every pixel of it at least this
+LIGHT = 200                   # ... and light: every channel of every pixel of it at least this (the rule seen so far is a 219 grey)
 
 
 class Refused(Exception):
