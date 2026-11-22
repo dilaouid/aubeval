@@ -1482,7 +1482,7 @@ function buildDemo() {
   };
   for (const [k, dx, dy, rot] of [['lumber_hut', -6, -6], ['lumber_hut', -3, -6], ['sawmill', 0, -6], ['forge', 5, -5], ['house', -8, -2, 1], ['house', -8, 1, 1], ['house', -5, 7],
     ['farm', 8, -1], ['bakery', 8, 3, 1], ['quarry', 4, -9], ['watchtower', -7, 5], ['watchtower', 11, 7], ['mage_tower', 9, 8],
-    ['barracks', -5, 2], ['cafe', 5, 8], ['market', -4, -3], ['house', -9, -6], ['house', 9, -4],
+    ['barracks', -5, 2], ['cafe', 5, 8], ['market', -4, -3], ['lodge', -2, 4], ['house', -9, -6], ['house', 9, -4],
     ['fountain', 1, 9], ['lamp', 0, 4], ['lamp', 4, 4], ['bench', -1, 10], ['flowers', 4, 10], ['well', -3, 4], ['statue', 5, 11], ['stall', -4, 10], ['banner', 1, 4], ['banner', 3, 4], ['barrels', 6, 5], ['hedge', 0, 12], ['hedge', 4, 12]]) put(k, dx, dy, rot);
   for (let x = -10; x <= 13; x++) if (x !== 2) put('palisade', x, 13);      // a rampart below the village, with a gate
   for (let y = -3; y <= 12; y++) { put('palisade', -10, y); put('palisade', 13, y); }

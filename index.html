@@ -152,7 +152,7 @@
     js/camp.js           the goblin camp: its garrison, the soldiers' assault, its fall and the next camp
     js/city.js           the city's rank, the citizens' orders, the hero's popularity, the taxes, the great works, the legacy tree (data/city.js)
     js/explore.js        the fog over the land, the places found in it, the expeditions (data/explore.js)
-    js/venue.js          the places entered full screen (café, market, forge, bakery), their keeper and their mini-games (data/venues.js)
+    js/venue.js          the places entered full screen (café, market, forge, bakery, barracks, builders' lodge), their keeper and their mini-games (data/venues.js)
     js/minigame-bakery.js  the bakery's mini-game, « La fournée » (the other places' games: js/minigames.js)
     js/minigame-barracks.js  the barracks' mini-game, « Parade ! »
     js/stones.js         the builders' lodge's stones: shapes, turns, which stone fits a hole (pure)
@@ -440,7 +440,7 @@ TutoCheck.lines(TutoCheck.run(DATA)).forEach(l => console.warn(l)); // the tutor
 if (scene === 'title' && ((!params.has('scene') && params.get('manual') !== '1' && !CHEAP) || params.has('loading'))) scene = 'loading'; // a player's start: the images first (js/screens.js), then the title. ?loading=0.45 holds it there, for a screenshot
 if (Number(params.get('zoom')) > 0) state.cam.k = Number(params.get('zoom')); // ?zoom=0.5: open at this zoom, for a screenshot of the wide map
 if (scene === 'battle') Battle.start((params.get('foes') || 'gobelin,brute,chaman').split(',').filter(id => DATA.enemies[id]), { title: 'Aperçu du combat', boss: params.has('boss') }); // ?scene=battle&foes=grakk&boss, with &demo=1 for a grown village's deck
-if (scene === 'venue') Venue.preview(params.get('venue'), params.get('game')); // ?scene=venue&venue=cafe|market|forge, &game=1 for its mini-game under way (js/venue.js preview lists the rest)
+if (scene === 'venue') Venue.preview(params.get('venue'), params.get('game')); // ?scene=venue&venue=cafe|market|forge|bakery|barracks|lodge, &game=1 for its mini-game under way (js/venue.js preview lists the rest)
 last = clock.now();
 if (params.get('manual') === '1') drawFrame();
 else { requestAnimationFrame(frame); setInterval(timer, 50); }

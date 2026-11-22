@@ -488,13 +488,13 @@ DATA.tutorial = {
           ] },
       ] },
 
-    { id: 'venue', title: 'Entrer chez un tenancier', about: 'Le Café, le Marché et la Forge se visitent : un tenancier, un jeu, des médailles.', when: { after: 'popularity', venue: true },
-      covers: ['do:venue', 'do:game', 'do:medal', 'venue:cafe', 'venue:market', 'venue:forge', 'game:cafe', 'game:market', 'game:forge'],
+    { id: 'venue', title: 'Entrer chez un tenancier', about: 'Les bâtiments d’un tenancier se visitent : un jeu, des médailles, un cadeau.', when: { after: 'popularity', venue: true },
+      covers: ['do:venue', 'do:game', 'do:medal', 'venue:cafe', 'venue:market', 'venue:forge', 'venue:bakery', 'venue:barracks', 'game:cafe', 'game:market', 'game:forge', 'game:bakery', 'game:barracks'],
       steps: [
         { id: 'door',
           say: [
-            'Trois bâtiments se visitent : le Café, le Marché et la Forge. À l’intérieur, leur tenancier vous attend… avec un jeu.',
-            'Au Café, « {game:cafe} » : servir les bonnes tasses. Au Marché, « {game:market} » : arrêter l’aiguille au bon moment. À la Forge, « {game:forge} » : frapper en rythme.',
+            'Certains bâtiments se visitent : le Café, le Marché, la Forge, la Boulangerie, la Caserne… Leur panneau a un bouton « Entrer », et à l’intérieur, leur tenancier vous attend avec un jeu.',
+            'Au Café, « {game:cafe} » : servir les bonnes tasses. À la Forge, « {game:forge} » : frapper en rythme. À la Boulangerie, « {game:bakery} » : sortir le pain bien doré. À la Caserne, « {game:barracks} » : lever le bouclier du bon côté.',
             'Une médaille de bronze, d’argent ou d’or rend {hero} plus populaire, et laisse un cadeau pendant {t:venue_buff_time} : de meilleurs prix, une forge plus vive, une lame mieux battue…',
             'Chaque jeu se repose {t:venue_wait} après une partie, et se corse à chaque victoire. On n’entre pas pendant un raid. Une fois dedans, je me tais : {keeper} explique son jeu lui-même.',
           ],
@@ -741,6 +741,20 @@ DATA.tutorial = {
           say: [
             { text: 'Quatre maisons de Négociants : l’Orfèvre change l’or et la pierre en bijoux.', show: 'card:goldsmith' },
             'Les bijoux, avec une rue superbe — fontaines, statues, arbres et fleurs —, font des Nobles, la plus haute classe d’Aubeval. Il leur faut le rang de Cité, et {g:un héros|une héroïne} populaire.',
+          ] },
+      ] },
+
+    { id: 'lodge', title: 'La Loge des bâtisseurs', about: 'La Loge d’Aveline : son jeu de la bonne pierre, et ses plans qui font bâtir moins cher.', when: { unlocked: 'lodge' },
+      covers: ['b:lodge', 'venue:lodge', 'game:lodge'],
+      steps: [
+        { id: 'lodge',
+          say: ['Aubeval est une Ville, bourgmestre : ses bâtisseurs méritent leur Loge. La mienne, enfin ! Il n’y en a qu’une, et c’est là que je dresserai vos plans.'],
+          task: 'Onglet Habitat : posez la « Loge » sur la place qui brille.',
+          point: ['build:lodge'], already: { built: { lodge: 1 } }, goal: { gain: { 'b:lodge': 1 } } },
+        { id: 'stone',
+          say: [
+            'La Loge se visite, comme le Café : « Entrer », et je vous y attends avec « {game:lodge} ». Un mur, un trou, quatre pierres taillées : à vous de trouver celle qui entre.',
+            'Une médaille, et mes plans sont à vous un moment : constructions et améliorations moins chères. Chaque niveau de la Loge les fait durer plus longtemps.',
           ] },
       ] },
 

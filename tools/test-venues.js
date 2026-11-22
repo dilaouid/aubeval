@@ -575,6 +575,16 @@ test('plans d\'Aveline: the real lodge\'s gift lasts 300 s at level 1 and 580 s 
   assert.deepStrictEqual(Array.from(L.DATA.venues.lodge.buffs.build), [0, 0.05, 0.1, 0.15]);
 });
 
+test('the tutorial covers the six places, their games and the lodge', () => {
+  const L = load();
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/tuto-check.js'), 'utf8'), L.ctx, { filename: 'js/tuto-check.js' });
+  const r = vm.runInContext('TutoCheck', L.ctx).run(L.DATA), missing = r.missing.map(f => f.id);
+  assert.deepStrictEqual(Array.from(L.DATA.venueOrder), ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge']);
+  const want = L.DATA.venueOrder.flatMap(k => ['venue:' + k, 'game:' + k]).concat('b:lodge');
+  const bare = Array.from(want.filter(id => missing.includes(id))); // a plain array of this realm, not the sandbox's
+  assert.deepStrictEqual(bare, [], 'no lesson covers ' + bare.join(', '));
+});
+
 if (require.main === module) {
   let bad = 0;
   for (const t of tests) {
