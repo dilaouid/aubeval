@@ -456,6 +456,15 @@ test('quartier: the plan hides at « J’ai vu ! », and an Enter held down does
   assert.strictEqual(g.quarters, 0, 'the held Enter validated');
 });
 
+test('quartier: during the host’s countdown the plan cannot be hidden early (it is not shown yet)', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  g.seen(); // a click on « J'ai vu ! » before the game steps
+  assert.strictEqual(g.phase, 'show');
+  assert.ok(!g.started, 'started before its first step');
+  g.update(STEP, NO_INPUT); g.seen();
+  assert.strictEqual(g.phase, 'build');
+});
+
 test('quartier: a copied plan is perfect and worth right + perfect + speed', () => {
   const L = load(), T = L.tune, g = start(L, 'lodge', 0);
   toBuild(g); copy(g);
@@ -467,6 +476,12 @@ test('quartier: a copied plan is perfect and worth right + perfect + speed', () 
   assert.strictEqual(g.quarters, 1);
 });
 
+test('quartier: an empty grid cannot be checked (an Enter that comes as the plan hides is no miss)', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  toBuild(g); g.validate();
+  assert.strictEqual(g.phase, 'build'); assert.strictEqual(g.misses, 0); assert.strictEqual(g.quarters, 0);
+});
+
 test('quartier: the clock stops while the quarters are compared', () => {
   const L = load(), g = start(L, 'lodge', 0);
   toBuild(g); copy(g); g.validate();
@@ -476,7 +491,7 @@ test('quartier: the clock stops while the quarters are compared', () => {
 
 test('quartier: three quarters under half bring the lesson to an end', () => {
   const L = load(), g = start(L, 'lodge', 0);
-  for (let q = 0; q < 3; q++) { toBuild(g); g.validate(); }
+  for (let q = 0; q < 3; q++) { toBuild(g); g.put(0, 0, g.plan.kinds.findIndex(k => k !== g.plan.cells[0])); g.validate(); } // one wrong building
   assert.strictEqual(g.misses, L.tune.lodge_misses);
   assert.strictEqual(g.lost, true, 'not lost');
   assert.strictEqual(g.done, true, 'not done');
@@ -523,6 +538,23 @@ test('quartier: time running out mid-quarter scores nothing and is no miss', () 
   assert.strictEqual(g.lost, false);
   assert.strictEqual(g.misses, 0);
   assert.strictEqual(g.score, 0);
+});
+
+test('quartier: Space peeks and never builds at the mouse; a click builds on the cell under it, a right click clears it', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  toBuild(g);
+  L.ctx.mouse = { x: 1040, y: 325 }; // the middle of the 3 × 3 grid, on the right of the screen (js/minigame-lodge.js GRID)
+  L.ctx.pressed = k => k === 'Space'; g.update(STEP, { act: true, alt: false }); L.ctx.pressed = () => false;
+  assert.strictEqual(g.phase, 'peek');
+  assert.ok(g.grid.every(c => c === null), 'Space built at the mouse');
+  for (let i = 0; i < 60 * L.tune.lodge_peek_time + 5; i++) g.update(STEP, NO_INPUT);
+  g.select(1); g.update(STEP, { act: true, alt: false });
+  assert.strictEqual(g.grid[1 * 3 + 1], g.plan.kinds[1], 'a click builds the picked building on the cell');
+  assert.deepStrictEqual(plain(g.cursor), { x: 1, y: 1 }, 'the cursor follows the click');
+  g.update(STEP, { act: false, alt: true });
+  assert.ok(g.grid.every(c => c === null), 'a right click clears');
+  L.ctx.mouse = { x: 20, y: 20 }; g.update(STEP, { act: true, alt: false });
+  assert.ok(g.grid.every(c => c === null), 'a click off the grid builds nothing');
 });
 
 test('quartier: a hand that errs scores less than a sure one', () => {

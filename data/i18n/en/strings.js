@@ -900,6 +900,8 @@ I18N.add('en', {
   'strings.bq_end_hits': 'Too many hits taken!', // Trop de coups reçus !
   'strings.lg_score': 'Score', // Score
   'strings.lg_misses_n': 'Misses', // Ratés
+  'strings.lg_plan': 'Aveline’s plan', // Plan d’Aveline
+  'strings.lg_yours': 'Your quarter', // Votre quartier
   'strings.lg_seen': 'Got it!', // J’ai vu !
   'strings.lg_peek': 'See the plan again', // Revoir le plan
   'strings.lg_peek_cost': '−{n}', // −{n}

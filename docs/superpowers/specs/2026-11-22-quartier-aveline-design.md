@@ -40,7 +40,8 @@ autant de quartiers que possible.
    - **« Revoir le plan »** (bouton, ou Espace) : le plan réapparaît 1,5 s à la place de la grille (on ne
      pose rien pendant ce temps) et **coûte 2 points** au score de la partie.
 3. **La comparaison.** « Valider » (bouton, ou Entrée) : les deux quartiers côte à côte, un ✓ ou un ✗ sur
-   chaque case qui compte, le pourcentage de ressemblance et les points gagnés, environ 1,5 s. Le chrono
+   chaque case qui compte, le pourcentage de ressemblance et les points gagnés, environ 1,5 s. Une grille
+   vide ne se valide pas (bouton grisé) : un Entrée qui arrive juste quand le plan se cache n'est pas un raté. Le chrono
    est **arrêté** pendant la comparaison *(mon choix : ne pas punir le temps de lecture)*. Puis le
    quartier suivant.
 
@@ -121,12 +122,13 @@ s'écroulait). Réglage `lodge_misses`.
 1. Le joueur automatique sans erreur, à un rythme humain rapide *(mon choix : `pace` 0,8 s par bâtiment ; à 0,35 s il irait bien plus vite qu’une personne, et les médailles réglées sur lui seraient trop dures)*, obtient
    l'or au niveau 0 et au moins le bronze au niveau 10 ; les médailles sont réglées pour cela, puis
    vérifiées à la main pour qu'un humain attentif décroche l'argent au niveau 0.
-2. Le jeu se joue entièrement au clavier et entièrement à la souris, se met en pause (Échap),
+2. Pendant le compte à rebours du lieu, le plan reste caché (pas de regard gratuit).
+3. Le jeu se joue entièrement au clavier et entièrement à la souris, se met en pause (Échap),
    s'abandonne, et se termine seul.
-3. Les cartes d'aide montrent : le plan, la reconstruction (touches), « Revoir le plan » et son prix ;
+4. Les cartes d'aide montrent : le plan, la reconstruction (touches), « Revoir le plan » et son prix ;
    la carte « Nouveau ! » du plan tourné et du drapeau dès la 3e victoire.
-4. Une sauvegarde existante garde la série, le record et l'attente de la Loge (rien de sauvegardé ne change).
-5. Tous les tests du projet passent, en trois langues sans texte français oublié.
+5. Une sauvegarde existante garde la série, le record et l'attente de la Loge (rien de sauvegardé ne change).
+6. Tous les tests du projet passent, en trois langues sans texte français oublié.
 
 ## Mes choix (à corriger si besoin)
 - Chrono arrêté pendant la comparaison ; drapeau plutôt que boussole ; seuils de vitesse par bâtiment ;

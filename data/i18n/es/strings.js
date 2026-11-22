@@ -900,6 +900,8 @@ I18N.add('es', {
   'strings.bq_end_hits': '¡Demasiados golpes recibidos!', // Trop de coups reçus !
   'strings.lg_score': 'Puntos', // Score
   'strings.lg_misses_n': 'Fallos', // Ratés
+  'strings.lg_plan': 'Plano de Aveline', // Plan d’Aveline
+  'strings.lg_yours': 'Su barrio', // Votre quartier
   'strings.lg_seen': '¡Visto!', // J’ai vu !
   'strings.lg_peek': 'Ver el plano otra vez', // Revoir le plan
   'strings.lg_peek_cost': '−{n}', // −{n}

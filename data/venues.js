@@ -65,7 +65,7 @@ Object.assign(DATA.strings, {
   bq_quick: 'Vif ! +{n}', bq_good: 'Paré +{n}', bq_wrong: 'Mauvais côté !', bq_late: 'Touché !', bq_feinted: 'Feinte !',
   bq_end_hits: 'Trop de coups reçus !',
   // Le quartier d'Aveline
-  lg_score: 'Score', lg_misses_n: 'Ratés', lg_seen: 'J’ai vu !', lg_peek: 'Revoir le plan', lg_peek_cost: '−{n}', lg_check: 'Valider',
+  lg_score: 'Score', lg_misses_n: 'Ratés', lg_plan: 'Plan d’Aveline', lg_yours: 'Votre quartier', lg_seen: 'J’ai vu !', lg_peek: 'Revoir le plan', lg_peek_cost: '−{n}', lg_check: 'Valider',
   lg_likeness: 'Ressemblance : {n} %', lg_quarter: '+{n}', lg_perfect: 'Parfait ! +{n}', lg_miss: 'Raté !',
   lg_end_misses: 'Aveline arrête la leçon !', lg_keys: 'Flèches, 1 à {n}, Suppr · Espace : revoir · Entrée : valider',
 });
@@ -277,8 +277,9 @@ DATA.venues = {
     // shown turned from `turnedFrom` wins (config.js lodge_*: the clock, the misses, the price of a second look, the points)
     ramp: { side: 3, sideEvery: 3, sideMax: 5, count: 4, countMax: 9, fill: 0.6, kinds: 4, kindsEvery: 2, kindsMax: 6,
       show: 5, showStep: 0.4, showMin: 2.5, turnedFrom: 3 },
-    // the buildings of Aveline's quarters, in the order of their keys (all 2 × 2 in the village, told apart at a glance)
-    kinds: ['house', 'bakery', 'forge', 'chapel', 'cafe', 'mage_tower'],
+    // the buildings of Aveline's quarters, in the order of their keys: all 2 × 2 in the village, each with its own roof and walls
+    // (the bakery, the café, the weaver and the roastery wear the house's red roof: left out); the first four the most unlike
+    kinds: ['house', 'forge', 'chapel', 'mage_tower', 'goldsmith', 'lumber_hut'],
     greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
     ready: ['Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !', 'Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !', 'Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.'],
     wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],
