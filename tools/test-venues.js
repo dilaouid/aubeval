@@ -84,22 +84,26 @@ test('every place of venueOrder has its building, its keeper, its game, and well
   }
 });
 
-// « Jouer » has the keeper say how + ' ' + keys in her box (js/venue.js offer()): four lines, a fifth runs over the key hint
-const RULES_MAX = 330;
-test('a place\'s rules fit the keeper\'s box, in the three languages', () => {
+// « Jouer » shows the game's cards (js/venue.js drawHowto): a card's words hold on two short lines even
+// four cards across, the keeper's line on one or two, the play button's tip stays a sentence
+const CARD_MAX = 42, SAY_MAX = 90, HOW_MAX = 110;
+test('a place\'s cards, line and tip stay short, in the three languages', () => {
   const { DATA } = load(), long = [];
-  const langs = { fr: id => [DATA.venues[id].how, DATA.venues[id].keys] };
+  const fr = id => { const v = DATA.venues[id]; return { how: v.how, say: v.say, cards: v.steps.concat(v.news.map(n => n.text)) }; };
+  const langs = { fr };
   for (const lang of ['en', 'es']) {
-    const layer = Object.assign({}, ...Object.values(T.readLayers(lang)));
-    langs[lang] = id => [layer['venues.' + id + '.how'], layer['venues.' + id + '.keys']];
+    const layer = Object.assign({}, ...Object.values(T.readLayers(lang))), at = (id, k) => layer['venues.' + id + '.' + k];
+    langs[lang] = id => { const v = DATA.venues[id]; return { how: at(id, 'how'), say: at(id, 'say'),
+      cards: v.steps.map((_, i) => at(id, 'steps[' + i + ']')).concat(v.news.map(n => at(id, 'news[' + n.id + '].text'))) }; };
   }
   for (const id of DATA.venueOrder) for (const lang in langs) {
-    const [how, keys] = langs[lang](id);
-    assert.ok(how && keys, id + ' (' + lang + '): no how or keys');
-    const n = (how + ' ' + keys).length;
-    if (n > RULES_MAX) long.push(id + ' (' + lang + '): ' + n);
+    const t = langs[lang](id), where = id + ' (' + lang + ')';
+    assert.ok(t.how && t.say && t.cards.every(Boolean), where + ': a text is missing');
+    if (t.how.length > HOW_MAX) long.push(where + ' how ' + t.how.length);
+    if (t.say.length > SAY_MAX) long.push(where + ' say ' + t.say.length);
+    for (const c of t.cards) if (c.length > CARD_MAX) long.push(where + ' « ' + c + ' » ' + c.length);
   }
-  assert.deepStrictEqual(long, [], 'longer than ' + RULES_MAX + ' characters: ' + long.join(', '));
+  assert.deepStrictEqual(long, [], 'too long: ' + long.join(', '));
 });
 
 test('an unknown place has no game', () => {
@@ -707,6 +711,41 @@ test('the tutorial covers the six places, their games and the lodge', () => {
   const want = L.DATA.venueOrder.flatMap(k => ['venue:' + k, 'game:' + k]).concat('b:lodge');
   const bare = Array.from(want.filter(id => missing.includes(id))); // a plain array of this realm, not the sandbox's
   assert.deepStrictEqual(bare, [], 'no lesson covers ' + bare.join(', '));
+});
+
+test('every place explains its game in pictures: three cards, a keeper\'s line, a legend', () => {
+  const { DATA, Minigames } = load();
+  for (const id of DATA.venueOrder) {
+    const d = DATA.venues[id], h = Minigames.howto(id, { level: 0, d });
+    assert.ok(h, id + ': no howto');
+    assert.ok(typeof d.say === 'string' && d.say, id + ': no short line for the keeper');
+    assert.strictEqual(h.cards.length, 3, id + ': cards at level 0');
+    for (const c of h.cards) {
+      assert.ok(typeof c.text === 'string' && c.text.length > 0, id + ': a card without words');
+      assert.ok(c.text.split(' ').length <= 8, id + ': a card says too much: ' + c.text);
+      assert.strictEqual(typeof c.draw, 'function', id + ': a card without a picture');
+      assert.ok(Array.isArray(c.keys), id + ': keys');
+      assert.ok(!c.fresh, id + ': a new twist at level 0');
+    }
+    assert.ok(h.cards.some(c => c.keys.length), id + ': no card shows a key');
+    assert.ok(Array.isArray(h.legend) && h.legend.every(l => typeof l.text === 'string' && l.text), id + ': legend');
+    assert.strictEqual(d.keys, undefined, id + ': the old wall of keys is still there');
+  }
+});
+
+test('a new twist gets its « Nouveau ! » card when it comes up, four cards at most', () => {
+  const { DATA, Minigames, tune } = load();
+  const fresh = (id, level) => Minigames.howto(id, { level, d: DATA.venues[id] }).cards.filter(c => c.fresh).length;
+  const V = DATA.venues;
+  assert.ok(fresh('bakery', V.bakery.breads.find(b => b.id === 'brioche').from) >= 1, 'bakery: the brioche');
+  assert.ok(fresh('barracks', V.barracks.ramp.feintFrom) >= 1, 'barracks: the feints');
+  assert.ok(fresh('barracks', V.barracks.ramp.doubleFrom) >= 1, 'barracks: the double blows');
+  assert.ok(fresh('lodge', V.lodge.ramp.turnFrom) >= 1, 'lodge: the turned stones');
+  assert.ok(fresh('lodge', V.lodge.ramp.mirrorFrom) >= 1, 'lodge: the mirror stone');
+  for (const id of DATA.venueOrder) for (let L = 0; L <= tune.venue_streak_max; L++) {
+    const n = Minigames.howto(id, { level: L, d: V[id] }).cards.length;
+    assert.ok(n >= 3 && n <= 4, `${id} at ${L}: ${n} cards`);
+  }
 });
 
 if (require.main === module) {

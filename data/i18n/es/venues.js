@@ -29,8 +29,13 @@ I18N.add('es', {
   'venues.cafe.name': 'El Café de Aubeval', // Le Café d’Aubeval
   'venues.cafe.title': 'El ajetreo', // Le coup de feu
   'venues.cafe.unit': 'monedas de propina', // sous de pourboire
-  'venues.cafe.how': 'Los clientes piden y luego su globo se cierra: sirva las tazas correctas, en orden, antes de que se agote su paciencia.', // Les clients commandent, puis leur bulle se referme : servez les bonnes tasses, dans l’ordre, avant que leur patience ne s’use.
-  'venues.cafe.keys': 'Teclas 1 a 6, o clic en las tazas. Una taza errónea cuesta paciencia, pero el cliente repite.', // Touches 1 à 6, ou clic sur les tasses. Une tasse fausse coûte de la patience, mais le client répète.
+  'venues.cafe.how': 'Sirva las tazas correctas, en orden, antes de que se agote la paciencia.', // Servez les bonnes tasses, dans l’ordre, avant que la patience ne s’use.
+  'venues.cafe.say': '¿Me echa una mano? Mire, es muy sencillo:', // Un coup de main ? Regardez, c’est tout simple :
+  'venues.cafe.steps[0]': 'Recuerde el pedido', // Retenez la commande
+  'venues.cafe.steps[1]': 'Luego el globo se cierra', // Puis la bulle se referme
+  'venues.cafe.steps[2]': '¡Sírvalas en orden!', // Servez-les dans l’ordre !
+  'venues.cafe.legend[0]': 'Taza errónea: baja la paciencia', // Mauvaise tasse : sa patience baisse
+  'venues.cafe.legend[1]': '{n} clientes idos: se acabó', // {n} clients partis : c’est fini
   'venues.cafe.drinks[noir].name': 'Solo', // Noir
   'venues.cafe.drinks[creme].name': 'Con leche', // Crème
   'venues.cafe.drinks[noisette].name': 'Cortado', // Noisette
@@ -74,8 +79,14 @@ I18N.add('es', {
   'venues.market.name': 'La Lonja del Mercado', // La Halle du Marché
   'venues.market.title': 'Regateo', // Marchandage
   'venues.market.unit': '% de rebaja', // % de rabais
-  'venues.market.how': 'Detenga la aguja en la zona verde para bajar el precio. Tras cada ronda: apretar más o cerrar el trato. Apriete una vez de más y ella se marcha.', // Arrêtez l’aiguille dans la zone verte pour faire baisser le prix. Après chaque manche : pousser encore, ou toper. Poussez une fois de trop et elle s’en va.
-  'venues.market.keys': 'Espacio o clic: detener la aguja. ↑: apretar más. Intro: cerrar el trato.', // Espace ou clic : arrêter l’aiguille. ↑ : pousser encore. Entrée : toper.
+  'venues.market.how': 'Pare la aguja en el verde, y luego apriete más o cierre el trato.', // Arrêtez l’aiguille dans le vert, puis poussez encore ou topez.
+  'venues.market.say': 'Así se regatea en mi puesto:', // Voici comment on marchande chez moi :
+  'venues.market.steps[0]': 'Pare la aguja en el verde', // Arrêtez l’aiguille dans le vert
+  'venues.market.steps[1]': 'Y el precio baja', // Et le prix baisse
+  'venues.market.steps[2]': 'Apriete más… ¡o cierre el trato!', // Poussez encore… ou topez !
+  'venues.market.legend[0]': 'Verde: −{n} %', // Vert : −{n} %
+  'venues.market.legend[1]': 'Dorado: −{n} %', // Doré : −{n} %
+  'venues.market.legend[2]': 'Si aprieta demasiado, se va', // Trop poussée, elle s’en va
   'venues.market.lots[0].name': 'Un lote de especias de Levante', // Un lot d’épices du Levant
   'venues.market.lots[1].name': 'Diez rollos de tela fina', // Dix rouleaux d’étoffe fine
   'venues.market.lots[2].name': 'Tres sacos de café de las islas', // Trois sacs de café des îles
@@ -115,8 +126,13 @@ I18N.add('es', {
   'venues.forge.name': 'La Forja de Bram', // La Forge de Bram
   'venues.forge.title': 'Batir el hierro', // Battre le fer
   'venues.forge.unit': '% de calidad', // % de qualité
-  'venues.forge.how': 'Golpee cuando la marca llegue al yunque y mantenga el calor en su franja con el fuelle. Una cadena de golpes certeros hace volar las chispas.', // Frappez quand la marque arrive sur l’enclume, et gardez la chaleur dans sa bande avec le soufflet. Une chaîne de coups justes fait voler les étincelles.
-  'venues.forge.keys': 'Espacio o clic: golpear. B, ↑ o clic derecho: fuelle.', // Espace ou clic : frapper. B, ↑ ou clic droit : soufflet.
+  'venues.forge.how': 'Golpee el yunque a compás, y mantenga el hierro caliente con el fuelle.', // Frappez en rythme sur l’enclume, et gardez le fer chaud avec le soufflet.
+  'venues.forge.say': 'Escuche bien, todo es cuestión de ritmo:', // Écoutez bien, c’est une affaire de rythme :
+  'venues.forge.steps[0]': 'Golpee cuando llegue la marca', // Frappez quand la marque arrive
+  'venues.forge.steps[1]': 'Mantenga el calor en el verde', // Gardez la chaleur dans le vert
+  'venues.forge.steps[2]': 'Encadene: ¡saltan chispas!', // Enchaînez : des étincelles !
+  'venues.forge.legend[0]': 'Zona dorada: golpe perfecto', // Zone dorée : coup parfait
+  'venues.forge.legend[1]': 'Hierro frío o ardiendo: golpe perdido', // Fer froid ou brûlant : coup gâché
   'venues.forge.greet': '¡Ah, {g:el héroe|la heroína}! Deje esa espada, tome este martillo. Una hoja se bate entre dos: yo sujeto, usted golpea.', // Ah, {g:le héros|l’héroïne} ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.
   'venues.forge.ready[0]': 'El hierro está al rojo. ¿Usted golpea y yo sujeto?', // Le fer est au rouge. Vous frappez, je tiens ?
   'venues.forge.ready[1]': 'Tengo una hoja que espera su martillo. ¿El suyo?', // J’ai une lame qui attend son marteau. Le vôtre ?
@@ -148,8 +164,16 @@ I18N.add('es', {
   'venues.bakery.name': 'La Panadería', // La Boulangerie
   'venues.bakery.title': 'La hornada', // La fournée
   'venues.bakery.unit': 'panes dorados', // pains dorés
-  'venues.bakery.how': 'Cada horno cuece un pan, de pálido a dorado y luego tostado, y al final se quema. Sáquelo cuando esté dorado, en el corazón de la ventana si puede. Cuatro panes quemados y la hornada está perdida.', // Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.
-  'venues.bakery.keys': 'Una tecla por horno (1, 2, 3…), o clic en un horno. Dorado: 2, en el corazón: 3, tostado: 1, pálido: nada.', // Une touche par four (1, 2, 3…), ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.
+  'venues.bakery.how': 'Saque cada pan del horno cuando esté dorado, antes de que se queme.', // Sortez chaque pain du four quand il est doré, avant qu’il ne brûle.
+  'venues.bakery.say': 'Mire, {g:mi niño|mi niña}, es muy sencillo:', // Regardez, {g:mon grand|ma grande}, c’est tout simple :
+  'venues.bakery.steps[0]': 'El pan se cuece y se quema', // Le pain cuit, puis brûle
+  'venues.bakery.steps[1]': 'Sáquelo cuando esté dorado', // Sortez-le quand il est doré
+  'venues.bakery.steps[2]': '{n} panes quemados: perdido', // {n} pains brûlés : perdu
+  'venues.bakery.news[brioche].text': 'Nuevo: el brioche, más lento', // Nouveau : la brioche, plus lente
+  'venues.bakery.legend[0]': 'Pálido: 0', // Pâle : 0
+  'venues.bakery.legend[1]': 'Dorado: {golden}', // Doré : {golden}
+  'venues.bakery.legend[2]': 'En su punto: {perfect}', // Au cœur : {perfect}
+  'venues.bakery.legend[3]': 'Tostado: {dark}', // Foncé : {dark}
   'venues.bakery.breads[baguette].name': 'Baguette', // Baguette
   'venues.bakery.breads[miche].name': 'Hogaza', // Miche
   'venues.bakery.breads[brioche].name': 'Brioche', // Brioche
@@ -183,8 +207,15 @@ I18N.add('es', {
   'venues.barracks.name': 'El Cuartel', // La Caserne
   'venues.barracks.title': '¡En guardia!', // Parade !
   'venues.barracks.unit': 'paradas', // parades
-  'venues.barracks.how': 'La capitana anuncia un lado: alce el escudo de ese lado antes de que se cierre el anillo. Cuanto más gane, más se complica: fintas, donde la orden cambia y quien ya paró recibe el golpe, y luego golpes dobles. Cinco golpes recibidos y el ejercicio se pierde.', // La capitaine annonce un côté : levez le bouclier de ce côté avant que l’anneau se referme. Plus vous gagnez, plus ça se corse : feintes, où l’ordre change en route et qui a déjà paré est touché, puis coups doubles. Cinq coups reçus, et l’exercice est perdu.
-  'venues.barracks.keys': 'Flechas o clic en un lado. Lado equivocado, o tarde: tocado.', // Flèches ou clic sur un côté. Mauvais côté, ou trop tard : touché.
+  'venues.barracks.how': 'Levante el escudo del lado anunciado antes de que caiga el golpe.', // Levez le bouclier du côté annoncé avant que le coup ne tombe.
+  'venues.barracks.say': 'Escúcheme bien, {g:héroe|heroína}:', // Écoutez-moi bien, {g:héros|héroïne} :
+  'venues.barracks.steps[0]': 'Yo anuncio un lado', // J’annonce un côté
+  'venues.barracks.steps[1]': '¡Escudo a ese lado, rápido!', // Bouclier de ce côté, vite !
+  'venues.barracks.steps[2]': '{n} golpes recibidos: perdido', // {n} coups reçus : perdu
+  'venues.barracks.news[feint].text': 'Finta: la orden cambia a medias', // Feinte : l’ordre change en route
+  'venues.barracks.news[double].text': 'Golpes dobles: dos lados seguidos', // Coups doubles : deux côtés de suite
+  'venues.barracks.legend[0]': 'Anillo dorado: {n}', // Anneau doré : {n}
+  'venues.barracks.legend[1]': 'A tiempo: {n}', // À temps : {n}
   'venues.barracks.sides[up].name': 'Arriba', // Haut
   'venues.barracks.sides[up].shout': '¡Arriba!', // En haut !
   'venues.barracks.sides[right].name': 'Derecha', // Droite
@@ -227,8 +258,15 @@ I18N.add('es', {
   'venues.lodge.name': 'La Logia de los constructores', // La Loge des bâtisseurs
   'venues.lodge.title': 'La piedra justa', // La bonne pierre
   'venues.lodge.unit': 'piedras puestas', // pierres posées
-  'venues.lodge.how': 'El muro sube, y en él queda un hueco: de las cuatro piedras talladas, solo una encaja. Una piedra se gira, nunca se le da la vuelta. Cuatro piedras equivocadas, y el muro se derrumba.', // Le mur monte, et il y reste un trou : des quatre pierres taillées, une seule y entre. Une pierre se tourne, elle ne se retourne jamais. Quatre mauvaises pierres, et le mur s’écroule.
-  'venues.lodge.keys': 'Teclas 1 a 4, o clic en una piedra. Piedra justa: 1; deprisa y sin fallos, desde la tercera de una cadena: 2.', // Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1 ; vite et sans faute, dès la troisième d’une chaîne : 2.
+  'venues.lodge.how': 'Elija la única piedra que encaja en el hueco del muro.', // Choisissez la seule pierre qui entre dans le trou du mur.
+  'venues.lodge.say': 'Una lección de constructora, en tres vistazos:', // Une leçon de bâtisseuse, en trois coups d’œil :
+  'venues.lodge.steps[0]': 'Queda un hueco', // Il reste un trou
+  'venues.lodge.steps[1]': 'Solo una piedra encaja', // Une seule pierre y entre
+  'venues.lodge.steps[2]': '{n} fallos: el muro cae', // {n} fautes : le mur tombe
+  'venues.lodge.news[turn].text': 'Las piedras llegan giradas', // Les pierres arrivent tournées
+  'venues.lodge.news[mirror].text': 'Volteada, nunca encaja', // Retournée, elle n’entre jamais
+  'venues.lodge.legend[0]': 'Piedra correcta: {n}', // Bonne pierre : {n}
+  'venues.lodge.legend[1]': 'Rápido, en cadena: {n}', // Vite, en chaîne : {n}
   'venues.lodge.greet': '¡{g:Bienvenido|Bienvenida} a la Logia, burgomaestre! Aquí trazo los planos de Aubeval, y aquí aprenden el oficio mis oficiales. Un buen constructor elige su piedra de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
   'venues.lodge.ready[0]': 'El muro espera su próxima hilada. Tome una piedra, burgomaestre, ¡y veamos ese ojo!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
   'venues.lodge.ready[1]': 'Mis oficiales han tallado un montón de piedras, y solo una encaja en el hueco. ¡A usted le toca encontrarla, y deprisa!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !

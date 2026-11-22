@@ -194,6 +194,21 @@ const Minigames = (() => {
   // =====================================================================================
   // Marchandage (market)
   // =====================================================================================
+  /** The bargaining dial: a half circle of radius `r` round (cx, cy), its zone `z` ({ c, w }) green with a gold heart, the needle at `pos` (0..1) in `col`. */
+  function dial(cx, cy, r, z, pos, col) {
+    const C = UI.C, PI = Math.PI, k = r / 112;
+    const arc = (a0, a1, c, lw) => { ctx.strokeStyle = c; ctx.lineWidth = lw * k; ctx.beginPath(); ctx.arc(cx, cy, r, PI + a0 * PI, PI + a1 * PI); ctx.stroke(); };
+    arc(0, 1, C.ink, 36); arc(0.004, 0.996, '#5a3a22', 30);
+    arc(clamp(z.c - z.w / 2, 0, 1), clamp(z.c + z.w / 2, 0, 1), '#58b83a', 30);
+    arc(z.c - z.w * tune.market_perfect / 2, z.c + z.w * tune.market_perfect / 2, C.gold, 30);
+    for (let i = 1; i < 10; i++) { const a = PI + i / 10 * PI; ctx.fillStyle = 'rgba(20,13,8,0.5)'; ctx.fillRect(cx + Math.cos(a) * (r + 12 * k) - 1, cy + Math.sin(a) * (r + 12 * k) - 1, 3, 3); }
+    const a = PI + pos * PI, nx = cx + Math.cos(a) * (r + 20 * k), ny = cy + Math.sin(a) * (r + 20 * k);
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = C.ink; ctx.lineWidth = Math.max(5, 9 * k); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
+    ctx.strokeStyle = col; ctx.lineWidth = Math.max(3, 5 * k); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
+    ctx.lineCap = 'butt';
+    ctx.fillStyle = C.ink; ctx.fillRect(cx - 12 * k, cy - 12 * k, 24 * k, 14 * k); ctx.fillStyle = '#8f5f1c'; ctx.fillRect(cx - 9 * k, cy - 9 * k, 18 * k, 11 * k);
+  }
   function market(o) {
     const d = o.d, L = o.level, R = d.ramp, total = tune.market_time;
     const g = { score: 0, done: false, lost: false, why: '', t: 0, round: 1, gain: 0, pat: 1, pos: 0, dir: 1, phase: 'swing', hold: 0, zone: null, last: null, lot: d.lots[Math.floor(rng() * d.lots.length)], pops: [], bot: 0 };
@@ -263,18 +278,8 @@ const Minigames = (() => {
       UI.label(tr('mk_patience'), 42, 384, 13, moodColor(g.pat), 'left'); UI.bar(40, 398, 278, 14, g.pat, moodColor(g.pat));
       // the dial, and the two ways on
       UI.panel(PANEL.x, PANEL.y, PANEL.w, PANEL.h);
-      const cx = 640, cy = 702, r = 112, PI = Math.PI;
-      const arc = (a0, a1, col, lw) => { ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); ctx.arc(cx, cy, r, PI + a0 * PI, PI + a1 * PI); ctx.stroke(); };
-      arc(0, 1, C.ink, 36); arc(0.004, 0.996, '#5a3a22', 30);
-      arc(clamp(z.c - z.w / 2, 0, 1), clamp(z.c + z.w / 2, 0, 1), '#58b83a', 30);
-      arc(z.c - z.w * tune.market_perfect / 2, z.c + z.w * tune.market_perfect / 2, C.gold, 30);
-      for (let i = 1; i < 10; i++) { const a = PI + i / 10 * PI; ctx.fillStyle = 'rgba(20,13,8,0.5)'; ctx.fillRect(cx + Math.cos(a) * (r + 12) - 1, cy + Math.sin(a) * (r + 12) - 1, 3, 3); }
-      const a = PI + g.pos * PI, nx = cx + Math.cos(a) * (r + 20), ny = cy + Math.sin(a) * (r + 20);
-      ctx.lineCap = 'round';
-      ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
-      ctx.strokeStyle = g.phase === 'swing' ? '#f6eedb' : g.last === 'miss' ? C.bad : C.gold; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
-      ctx.lineCap = 'butt';
-      ctx.fillStyle = C.ink; ctx.fillRect(cx - 12, cy - 12, 24, 14); ctx.fillStyle = '#8f5f1c'; ctx.fillRect(cx - 9, cy - 9, 18, 11);
+      const cx = 640, cy = 702, r = 112;
+      dial(cx, cy, r, z, g.pos, g.phase === 'swing' ? '#f6eedb' : g.last === 'miss' ? C.bad : C.gold);
       text(tr('mk_dear'), cx - r - 34, cy - 10, 13, C.bad, 'right', true); text(tr('mk_cheap'), cx + r + 34, cy - 10, 13, C.good, 'left', true);
       if (g.phase === 'swing') { UI.label(tr('mk_stop'), 250, 620, 17, Math.sin(g.t * 8) > -0.4 ? C.gold : C.text); text(tr('mk_round', { n: g.round }), 250, 652, 13, C.dim, 'center'); }
       else if (g.phase === 'gone') UI.label(tr('mk_gone'), 250, 634, 24, C.bad);
@@ -397,9 +402,160 @@ const Minigames = (() => {
     return Object.assign(g, { update, draw, auto });
   }
 
-  const MAKE = Object.create(null); // place -> its game's factory, filled by add()
-  /** Registers a place's game: factory(o) gives a new game. A js/minigame-<place>.js file calls it for its own place. */
-  function add(id, factory) { MAKE[id] = factory; }
+  // =====================================================================================
+  // How each game is played, in pictures (the intro's cards, js/venue.js frames them)
+  // =====================================================================================
+  /** A data text with its {holes} filled: fill('{n} brûlés', { n: 4 }). {g:…|…} is left to the drawing. */
+  const fill = (str, vars) => String(str).replace(/\{(\w+)\}/g, (m, k) => (vars && k in vars ? vars[k] : m));
+  /** A game's words for a new twist: its d.news entry of that id ({ id, text }). */
+  const news = (d, id) => (d.news.find(n => n.id === id) || { text: id }).text;
+  /** A thick arrow pointing right, from x to x + w, its middle on y. */
+  function arrow(x, y, w, col = UI.C.gold) {
+    ctx.fillStyle = UI.C.ink; ctx.fillRect(x - 2, y - 5, w - 8, 10);
+    for (let i = 0; i < 9; i++) ctx.fillRect(x + w - 12 + i, y - 11 + i, 2, 22 - 2 * i);
+    ctx.fillStyle = col; ctx.fillRect(x, y - 3, w - 10, 6);
+    for (let i = 0; i < 7; i++) ctx.fillRect(x + w - 11 + i, y - 8 + i, 1, 16 - 2 * i);
+  }
+  /** A tick (ok) or a cross, about 24 wide, round (cx, cy). */
+  function mark(ok, cx, cy) {
+    ctx.lineCap = 'round';
+    for (const [lw, c] of [[9, UI.C.ink], [5, ok ? UI.C.good : UI.C.bad]]) {
+      ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.beginPath();
+      if (ok) { ctx.moveTo(cx - 10, cy); ctx.lineTo(cx - 3, cy + 8); ctx.lineTo(cx + 11, cy - 9); }
+      else { ctx.moveTo(cx - 9, cy - 9); ctx.lineTo(cx + 9, cy + 9); ctx.moveTo(cx + 9, cy - 9); ctx.lineTo(cx - 9, cy + 9); }
+      ctx.stroke();
+    }
+    ctx.lineCap = 'butt';
+  }
+  /** A pretend button in a picture: a box and its words, never clickable. */
+  function fakeButton(x, y, w, h, lab, on, size = 14) {
+    UI.box(x, y, w, h, on ? UI.C.btnP : UI.C.btn, on ? UI.C.gold : UI.C.lineL);
+    UI.label(lab, x + w / 2, y + h / 2 + 1, size, on ? UI.C.gold : UI.C.text);
+  }
+  /** A numbered key box, as the games draw them on their buttons. */
+  function keyBox(x, y, n) { UI.box(x, y, 22, 22, UI.C.ink, UI.C.lineL); UI.label(String(n), x + 11, y + 12, 13, UI.C.gold); }
+  /** The key labels the cards show: Space, Enter, a click, a right click (translated). */
+  const KEY = { space: () => tr('ht_key_space'), enter: () => tr('ht_key_enter'), click: () => tr('ht_key_click'), right: () => tr('ht_key_rclick') };
+  /** A drink order the café's cards show: the first, third and second drinks. */
+  const SHOWN_ORDER = [0, 2, 1];
+
+  function cafeHow(o) {
+    const d = o.d, R = d.ramp, n = Math.min(d.drinks.length, R.first + Math.floor(o.level / R.drinksEvery)), C = UI.C;
+    /** The customer, his order over him: open (the cups), shut (the ?), or `done` cups served. */
+    function scene(x, y, w, h, open) {
+      const f = Venue.face(d.guests[0], 0), k = Math.min(1.5, (h - 12) / f.height), bw = 3 * 40 + 14, x0 = x + w / 2 - (f.width * k + 8 + bw) / 2;
+      Venue.pix(f, x0, y + h - f.height * k - 4, k);
+      const bx = x0 + f.width * k + 8, by = y + 14;
+      UI.plate(bx, by, bw, 60);
+      SHOWN_ORDER.forEach((c, i) => { Venue.pix(cup(open ? d.drinks[c] : null), bx + 8 + i * 40, by + 12, 2); if (!open) UI.label('?', bx + 24 + i * 40, by + 30, 16, C.gold); });
+      ctx.fillStyle = C.lineL; ctx.fillRect(bx - 8, by + 34, 8, 6); ctx.fillRect(bx - 14, by + 38, 6, 4); // from his mouth
+      UI.bar(bx + 4, by + 70, bw - 8, 10, open ? 0.85 : 0.08, C.accent);
+    }
+    return {
+      cards: [
+        { text: d.steps[0], keys: [], draw: (x, y, w, h) => scene(x, y, w, h, true) },
+        { text: d.steps[1], keys: [], draw: (x, y, w, h) => scene(x, y, w, h, false) },
+        { text: d.steps[2], keys: [n > 1 ? `1–${n}` : '1', KEY.click()], draw(x, y, w, h) {
+          const m = Math.min(n, 4), bw = 54, gap = 6, x0 = x + w / 2 - (m * bw + (m - 1) * gap) / 2;
+          UI.plate(x + w / 2 - 70, y + 4, 140, 46); // the order, the first cup already served
+          SHOWN_ORDER.forEach((c, i) => { ctx.globalAlpha = i ? 1 : 0.5; Venue.pix(cup(d.drinks[c]), x + w / 2 - 62 + i * 44, y + 11, 2); ctx.globalAlpha = 1; });
+          mark(true, x + w / 2 - 34, y + 22);
+          for (let i = 0; i < m; i++) {
+            const bx = x0 + i * (bw + gap), on = i === SHOWN_ORDER[1];
+            UI.box(bx, y + h - 80, bw, 76, on ? 'rgba(255,215,94,0.3)' : C.btn, on ? C.gold : C.lineL);
+            Venue.pix(cup(d.drinks[i]), bx + 11, y + h - 56, 2); keyBox(bx + 3, y + h - 77, i + 1);
+          }
+        } },
+      ],
+      legend: d.legend.map(t => ({ text: fill(t, { n: tune.cafe_strikes }) })),
+    };
+  }
+
+  function marketHow(o) {
+    const d = o.d, C = UI.C, lot = d.lots[0], cut = Math.round(lot.price * (1 - d.perfect / 100));
+    return {
+      cards: [
+        { text: d.steps[0], keys: [KEY.space(), KEY.click()], draw: (x, y, w, h) => dial(x + w / 2, y + h - 22, Math.min(92, h - 46), { c: 0.62, w: 0.24 }, 0.63, C.gold) },
+        { text: d.steps[1], keys: [], draw(x, y, w, h) {
+          const cy = y + h / 2 + 4, mid = x + w / 2;
+          UI.icon(DATA.resources[lot.res].icon, mid, cy - 46, 32);
+          const old = tr('gold_n', { n: lot.price }), ow = UI.width(old, 18, true);
+          text(old, mid - 56, cy + 12, 18, C.dim, 'center', true);
+          ctx.fillStyle = C.bad; ctx.fillRect(mid - 56 - ow / 2 - 3, cy + 11, ow + 6, 3);
+          arrow(mid - 16, cy + 12, 34);
+          UI.label(tr('gold_n', { n: cut }), mid + 66, cy + 12, 22, C.gold);
+          text('−' + tr('pct', { n: d.perfect }), mid + 66, cy + 40, 14, C.good, 'center', true);
+        } },
+        { text: d.steps[2], keys: ['↑', KEY.enter()], draw(x, y, w, h) {
+          const bw = Math.min(112, (w - 30) / 2), x0 = x + w / 2 - bw - 6;
+          fakeButton(x0, y + 18, bw, 48, tr('mk_push').split(' (')[0], false, 13);
+          fakeButton(x0 + bw + 12, y + 18, bw, 48, tr('mk_deal').split(' (')[0], true, 13);
+          text(tr('mk_patience'), x + w / 2, y + 92, 12, C.dim, 'center', true);
+          UI.bar(x + w / 2 - 100, y + 104, 200, 14, 0.3, moodColor(0.3));
+        } },
+      ],
+      legend: [
+        { text: fill(d.legend[0], { n: d.good }), color: '#58b83a' },
+        { text: fill(d.legend[1], { n: d.perfect }), color: C.gold },
+        { text: d.legend[2] },
+      ],
+    };
+  }
+
+  function forgeHow(o) {
+    const d = o.d, C = UI.C;
+    /** The anvil at (ax, ay) with its blade glowing. */
+    function anvilAt(ax, ay, heat) {
+      Venue.pix(anvil(), ax - 40, ay + 6, 2);
+      ctx.fillStyle = C.ink; ctx.fillRect(ax - 44, ay, 84, 10); ctx.fillStyle = heatColor(heat); ctx.fillRect(ax - 42, ay + 2, 80, 6);
+    }
+    return {
+      cards: [
+        { text: d.steps[0], keys: [KEY.space(), KEY.click()], draw(x, y, w, h) {
+          const ax = x + 56, ty = y + h / 2 + 6;
+          ctx.fillStyle = C.ink; ctx.fillRect(ax, ty - 5, w - 60, 10); ctx.fillStyle = '#5a3a22'; ctx.fillRect(ax + 2, ty - 3, w - 64, 6);
+          ctx.fillStyle = 'rgba(255,215,94,0.35)'; ctx.fillRect(ax - 14, ty - 22, 28, 44);
+          for (const dx of [8, 70, 132]) { ctx.save(); ctx.translate(ax + dx, ty); ctx.rotate(Math.PI / 4); ctx.fillStyle = C.ink; ctx.fillRect(-10, -10, 20, 20); ctx.fillStyle = dx === 8 ? C.gold : '#f6eedb'; ctx.fillRect(-7, -7, 14, 14); ctx.restore(); }
+          ctx.strokeStyle = C.gold; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(ax, ty, 20, 0, Math.PI * 2); ctx.stroke();
+          Venue.pix(hammer(), ax - 6, ty - 66, 3);
+          Venue.pix(anvil(), ax - 40, ty + 12, 2);
+        } },
+        { text: d.steps[1], keys: ['B', '↑', KEY.right()], draw(x, y, w, h) {
+          const gx = x + w / 2 + 40, gy = y + 8, gw = 28, gh = h - 16, yOf = v => gy + gh - v * gh;
+          ctx.fillStyle = C.ink; ctx.fillRect(gx - 3, gy - 3, gw + 6, gh + 6); ctx.fillStyle = '#2a1a10'; ctx.fillRect(gx, gy, gw, gh);
+          ctx.fillStyle = 'rgba(155,232,95,0.3)'; ctx.fillRect(gx, yOf(0.75), gw, 0.3 * gh);
+          for (let v = 0; v < 0.6 * gh; v += 5) { ctx.fillStyle = heatColor(v / gh); ctx.fillRect(gx + 4, gy + gh - v - 5, gw - 8, 5); }
+          ctx.fillStyle = C.good; ctx.fillRect(gx - 8, yOf(0.75) - 2, gw + 16, 3); ctx.fillRect(gx - 8, yOf(0.45), gw + 16, 3);
+          Venue.pix(bellows(), gx - 120, y + h / 2 - 20, 3);
+          ctx.fillStyle = 'rgba(255,255,255,0.6)'; for (let i = 0; i < 3; i++) ctx.fillRect(gx - 40 + i * 8, y + h / 2 - 10 + (i % 2) * 6, 4, 4); // the puff
+        } },
+        { text: d.steps[2], keys: [], draw(x, y, w, h) {
+          const ax = x + w / 2, ay = y + h - 50;
+          anvilAt(ax, ay, 0.66);
+          for (let i = 0; i < 28; i++) { const a = -Math.PI * (0.08 + 0.84 * ((i * 0.618) % 1)), r = 24 + (i * 37) % 76; ctx.fillStyle = i % 3 ? PAL.fireL : '#ffffff'; ctx.fillRect(ax + Math.cos(a) * r - 3, ay + Math.sin(a) * r - 3, 6, 6); }
+          UI.label(tr('fg_chain', { n: 8 }), ax + 84, y + 24, 18, C.gold);
+        } },
+      ],
+      legend: [{ text: d.legend[0], color: C.gold }, { text: d.legend[1], color: C.bad }],
+    };
+  }
+
+  const MAKE = Object.create(null), HOW = Object.create(null); // place -> its game's factory, and its cards, filled by add()
+  /**
+   * Registers a place's game: factory(o) gives a new game; howto(o) (o = { level, d }) its intro's cards:
+   * { cards: [{ text, keys: [label], draw(x, y, w, h, t), fresh }], legend: [{ text, color?, pic?() }] }.
+   * A js/minigame-<place>.js file calls it for its own place.
+   */
+  function add(id, factory, how) { MAKE[id] = factory; if (how) HOW[id] = how; }
+  /**
+   * The cards that explain a place's game at a streak `level`, or null when it has none: its own
+   * cards, then a « Nouveau ! » card for the newest twist only (its list says the twists in the order they come).
+   */
+  function howto(id, o) {
+    if (!HOW[id]) return null;
+    const h = HOW[id](o), base = h.cards.filter(c => !c.fresh), fresh = h.cards.filter(c => c.fresh);
+    return { cards: base.concat(fresh.slice(-1)), legend: h.legend || [] };
+  }
   /** Whether a place has a game. */
   function has(id) { return !!MAKE[id]; }
   /** A new game of a place: o = { level, d (its entry in data/venues.js), react(kind, word), away() } from js/venue.js. */
@@ -407,8 +563,9 @@ const Minigames = (() => {
     if (!MAKE[id]) throw new Error('no game for ' + id);
     return MAKE[id](o);
   }
-  add('cafe', cafe); add('market', market); add('forge', forge);
-  // What every game draws with, for the games of other files: their frame, their score, the words that rise.
-  const kit = { PANEL, BLUE, sprite, head, scoreBox, stepPops, drawPops, moodColor };
-  return { add, has, make, kit };
+  add('cafe', cafe, cafeHow); add('market', market, marketHow); add('forge', forge, forgeHow);
+  // What every game draws with, for the games of other files: their frame, their score, the words that
+  // rise, and what their intro's cards draw with.
+  const kit = { PANEL, BLUE, sprite, head, scoreBox, stepPops, drawPops, moodColor, fill, news, arrow, mark, fakeButton, keyBox, KEY };
+  return { add, has, make, howto, kit };
 })();

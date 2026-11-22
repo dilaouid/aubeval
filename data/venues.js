@@ -21,6 +21,7 @@ Object.assign(DATA.strings, {
   // before, during and after a game
   vn_intro_go: 'C’est parti ! (Entrée)', vn_intro_back: 'Pas maintenant', vn_intro_goal: 'Bronze {a} · Argent {b} · Or {c} {unit}',
   vn_intro_level: 'Série de {n} : le jeu se corse.',
+  ht_new: 'Nouveau !', ht_key_space: 'Espace', ht_key_enter: 'Entrée', ht_key_click: 'clic', ht_key_rclick: 'clic droit',
   vn_go: 'Partez !', vn_time: 'Temps',
   vn_pause: 'Pause', vn_pause_text: 'Abandonner compte comme une partie perdue.', vn_resume: 'Reprendre (Échap)', vn_quit: 'Abandonner',
   vn_res_0: 'Perdu…', vn_res_1: 'Médaille de bronze', vn_res_2: 'Médaille d’argent', vn_res_3: 'Médaille d’or !',
@@ -104,8 +105,12 @@ DATA.venues = {
   cafe: {
     keeper: 'innkeeper', name: 'Le Café d’Aubeval', line: 0.78, tall: 0.72, faces: { glad: 0, cross: 2 }, faces64: { glad: 3, cross: 6 },
     title: 'Le coup de feu', unit: 'sous de pourboire',
-    how: 'Les clients commandent, puis leur bulle se referme : servez les bonnes tasses, dans l’ordre, avant que leur patience ne s’use.',
-    keys: 'Touches 1 à 6, ou clic sur les tasses. Une tasse fausse coûte de la patience, mais le client répète.',
+    how: 'Servez les bonnes tasses, dans l’ordre, avant que la patience ne s’use.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Un coup de main ? Regardez, c’est tout simple :',
+    steps: ['Retenez la commande', 'Puis la bulle se referme', 'Servez-les dans l’ordre !'],
+    news: [],
+    legend: ['Mauvaise tasse : sa patience baisse', '{n} clients partis : c’est fini'],
     medals: [20, 34, 48], pop: [0, 4, 7, 10], buffs: { pop: [0, 0.1, 0.2, 0.3] },
     // drinks: `first` of them at the start, one more every `drinksEvery` wins; cups in an order: `cups`,
     // one more every `cupsEvery` wins and one more in the second half of the rush, `cupsMax` at most;
@@ -135,8 +140,12 @@ DATA.venues = {
   market: {
     keeper: 'merchant', name: 'La Halle du Marché', line: 0.78, tall: 0.72, faces: { glad: 2, cross: 4 }, faces64: { glad: 1, cross: 0 },
     title: 'Marchandage', unit: '% de rabais',
-    how: 'Arrêtez l’aiguille dans la zone verte pour faire baisser le prix. Après chaque manche : pousser encore, ou toper. Poussez une fois de trop et elle s’en va.',
-    keys: 'Espace ou clic : arrêter l’aiguille. ↑ : pousser encore. Entrée : toper.',
+    how: 'Arrêtez l’aiguille dans le vert, puis poussez encore ou topez.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Voici comment on marchande chez moi :',
+    steps: ['Arrêtez l’aiguille dans le vert', 'Et le prix baisse', 'Poussez encore… ou topez !'],
+    news: [],
+    legend: ['Vert : −{n} %', 'Doré : −{n} %', 'Trop poussée, elle s’en va'],
     medals: [12, 22, 32], pop: [0, 2, 4, 6], buffs: { buy: [0, 0.05, 0.1, 0.15], sell: [0, 0.05, 0.1, 0.15] },
     // a stop in the zone takes `good` percent off the price, a perfect one `perfect` and gives her
     // back `relief` of her patience; `cap`: the most she will ever give. Each win in a row takes
@@ -164,8 +173,12 @@ DATA.venues = {
   forge: {
     keeper: 'smith', name: 'La Forge de Bram', line: 0.78, tall: 0.72, faces: { glad: 3, cross: 0 }, faces64: { glad: 3, cross: 1 },
     title: 'Battre le fer', unit: '% de qualité',
-    how: 'Frappez quand la marque arrive sur l’enclume, et gardez la chaleur dans sa bande avec le soufflet. Une chaîne de coups justes fait voler les étincelles.',
-    keys: 'Espace ou clic : frapper. B, ↑ ou clic droit : soufflet.',
+    how: 'Frappez en rythme sur l’enclume, et gardez le fer chaud avec le soufflet.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Écoutez bien, c’est une affaire de rythme :',
+    steps: ['Frappez quand la marque arrive', 'Gardez la chaleur dans le vert', 'Enchaînez : des étincelles !'],
+    news: [],
+    legend: ['Zone dorée : coup parfait', 'Fer froid ou brûlant : coup gâché'],
     medals: [45, 65, 82], pop: [0, 2, 4, 6], buffs: { atk: [0, 0.06, 0.12, 0.2], forge: [0, 0.15, 0.25, 0.4] },
     // a blow is worth `perfect` or `good`; each win in a row adds `bpm` beats a minute, takes `band`
     // off the half-width of the good heat and adds `cool` (a share) to how fast the blade cools.
@@ -190,8 +203,12 @@ DATA.venues = {
   bakery: {
     keeper: 'baker', name: 'La Boulangerie', music: 'cafe', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 4 }, faces64: { glad: 3, cross: 1 },
     title: 'La fournée', unit: 'pains dorés',
-    how: 'Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.',
-    keys: 'Une touche par four (1, 2, 3…), ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.',
+    how: 'Sortez chaque pain du four quand il est doré, avant qu’il ne brûle.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Regardez, {g:mon grand|ma grande}, c’est tout simple :',
+    steps: ['Le pain cuit, puis brûle', 'Sortez-le quand il est doré', '{n} pains brûlés : perdu'],
+    news: [{ id: 'brioche', text: 'Nouveau : la brioche, plus lente' }],
+    legend: ['Pâle : 0', 'Doré : {golden}', 'Au cœur : {perfect}', 'Foncé : {dark}'],
     medals: [24, 38, 52], pop: [0, 2, 4, 6], buffs: { rise: [0, 0.2, 0.4, 0.6] },
     // a loaf taken golden is worth `golden`, in the heart of the window `perfect`, dark `dark`; pale, nothing.
     // ovens: `ovens` at the start, one more every `ovensEvery` wins, `ovensMax` at most; each win takes
@@ -216,8 +233,12 @@ DATA.venues = {
   barracks: {
     keeper: 'captain', name: 'La Caserne', music: 'forge', line: 0.78, tall: 0.72, faces: { glad: 5, cross: 3 }, faces64: { glad: 2, cross: 4 },
     title: 'Parade !', unit: 'parades',
-    how: 'La capitaine annonce un côté : levez le bouclier de ce côté avant que l’anneau se referme. Plus vous gagnez, plus ça se corse : feintes, où l’ordre change en route et qui a déjà paré est touché, puis coups doubles. Cinq coups reçus, et l’exercice est perdu.',
-    keys: 'Flèches ou clic sur un côté. Mauvais côté, ou trop tard : touché.',
+    how: 'Levez le bouclier du côté annoncé avant que le coup ne tombe.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Écoutez-moi bien, {g:héros|héroïne} :',
+    steps: ['J’annonce un côté', 'Bouclier de ce côté, vite !', '{n} coups reçus : perdu'],
+    news: [{ id: 'feint', text: 'Feinte : l’ordre change en route' }, { id: 'double', text: 'Coups doubles : deux côtés de suite' }],
+    legend: ['Anneau doré : {n}', 'À temps : {n}'],
     medals: [22, 34, 46], pop: [0, 2, 4, 6], buffs: { soldier: [0, 0.1, 0.2, 0.3] },
     // the right side parried is worth `good`, in the first part of the wait (config.js barracks_quick) `quick`.
     // each win takes `lead` (a share) off the wait; feints come from `feintFrom` wins, double blows from `doubleFrom`
@@ -243,8 +264,12 @@ DATA.venues = {
   lodge: {
     keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 2 }, faces64: { glad: 0, cross: 4 },
     title: 'La bonne pierre', unit: 'pierres posées',
-    how: 'Le mur monte, et il y reste un trou : des quatre pierres taillées, une seule y entre. Une pierre se tourne, elle ne se retourne jamais. Quatre mauvaises pierres, et le mur s’écroule.',
-    keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1 ; vite et sans faute, dès la troisième d’une chaîne : 2.',
+    how: 'Choisissez la seule pierre qui entre dans le trou du mur.',
+    // the intro's cards (js/minigames.js howto): the keeper's short line, a few words a card, the new twists, what each result is worth
+    say: 'Une leçon de bâtisseuse, en trois coups d’œil :',
+    steps: ['Il reste un trou', 'Une seule pierre y entre', '{n} fautes : le mur tombe'],
+    news: [{ id: 'turn', text: 'Les pierres arrivent tournées' }, { id: 'mirror', text: 'Retournée, elle n’entre jamais' }],
+    legend: ['Bonne pierre : {n}', 'Vite, en chaîne : {n}'],
     medals: [10, 20, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
     // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
     // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped

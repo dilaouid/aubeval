@@ -473,7 +473,7 @@ const Venue = (() => {
   function offer() {
     const d = V[v.id], w = waitOf(v.id);
     if (w > 0) { sfx('error'); say(pick(d.wait)); return; }
-    v.mode = 'intro'; v.focus = 0; say(d.how + ' ' + d.keys);
+    v.mode = 'intro'; v.focus = 0; v.how = Minigames.howto(v.id, { level: level(v.id), d }); say(v.how ? d.say : d.how);
   }
   function startGame() {
     v.game = Minigames.make(v.id, { level: level(v.id), d: V[v.id], react, away: () => { v.k.away = true; } });
@@ -670,6 +670,51 @@ const Venue = (() => {
       text(String(i + 1), RIGHT.x + RIGHT.w - 16, y + bh / 2 + 1, 11, C.dim, 'center', true);
     });
   }
+  /**
+   * How the game is played, in pictures, over the place: its cards side by side, each numbered, its
+   * picture (drawn by the game, Minigames.howto), a few words and its keys; a « Nouveau ! » card is
+   * framed in gold. Under them, the legend: what each result is worth.
+   */
+  function drawHowto(h) {
+    const P = { x: 100, y: 196, w: 1080, h: 338 }, k = h.cards.length, pad = 18, gap = 14, cw = (P.w - 2 * pad - (k - 1) * gap) / k, ch = P.h - 2 * pad - 40;
+    UI.panel(P.x, P.y, P.w, P.h);
+    const blink = Math.sin(v.t * 5) > -0.3;
+    h.cards.forEach((c, i) => {
+      const x = P.x + pad + i * (cw + gap), y = P.y + pad;
+      UI.box(x, y, cw, ch, c.fresh ? '#3a2614' : '#2a1c12', c.fresh ? C.gold : C.lineL);
+      const ph = ch - 92; // the picture, then the words and the keys under it
+      ctx.save(); ctx.beginPath(); ctx.rect(x + 4, y + 4, cw - 8, ph); ctx.clip();
+      c.draw(x + 6, y + 6, cw - 12, ph - 4, v.t);
+      ctx.restore();
+      ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(x + 18, y + 18, 14, 0, Math.PI * 2); ctx.fill(); // its number, in a gold disc
+      ctx.fillStyle = C.gold; ctx.beginPath(); ctx.arc(x + 18, y + 18, 11, 0, Math.PI * 2); ctx.fill();
+      text(String(i + 1), x + 18, y + 19, 14, C.ink, 'center', true);
+      if (c.fresh) { const nw = UI.width(tr('ht_new'), 13, true) + 20; UI.plate(x + cw - nw - 6, y + 6, nw, 26, 'bad'); UI.label(tr('ht_new'), x + cw - 6 - nw / 2, y + 20, 13, '#ffffff'); }
+      let size = 17, lines = wrapLines(c.text, cw - 20, size);
+      if (lines.length > 2) { size = 15; lines = wrapLines(c.text, cw - 20, size); }
+      lines.slice(0, 2).forEach((l, j) => UI.label(l, x + cw / 2, y + ph + 20 + j * (size + 4), size, C.text));
+      const chips = c.keys.map(kk => ({ s: kk, w: UI.width(kk, 13, true) + 18 })), all = chips.reduce((a, q) => a + q.w + 8, -8);
+      let kx = x + cw / 2 - all / 2;
+      for (const q of chips) { // the keys, blinking
+        UI.box(kx, y + ch - 36, q.w, 28, C.ink, blink ? C.gold : C.lineL); UI.label(q.s, kx + q.w / 2, y + ch - 21, 13, C.gold);
+        kx += q.w + 8;
+      }
+    });
+    // the legend: a picture or a colour, and what it is worth
+    let size = 14, items = h.legend.map(l => ({ l, w: UI.width(l.text, size, true) + (l.pic || l.color ? 26 : 0) }));
+    const total = () => items.reduce((a, q) => a + q.w + 30, -30);
+    if (total() > P.w - 40) { size = 12; items = h.legend.map(l => ({ l, w: UI.width(l.text, size, true) + (l.pic || l.color ? 26 : 0) })); }
+    let lx = P.x + P.w / 2 - total() / 2;
+    const ly = P.y + P.h - pad - 14;
+    items.forEach((q, i) => {
+      if (i) text('·', lx - 15, ly, size, C.dim, 'center', true);
+      let tx = lx;
+      if (q.l.pic) { const img = q.l.pic(), s = Math.min(2, 20 / img.width); pix(img, lx, ly - img.height * s / 2, s); tx += 26; }
+      else if (q.l.color) { ctx.fillStyle = C.ink; ctx.fillRect(lx, ly - 8, 18, 16); ctx.fillStyle = q.l.color; ctx.fillRect(lx + 2, ly - 6, 14, 12); tx += 26; }
+      text(q.l.text, tx, ly, size, C.text, 'left', true);
+      lx += q.w + 30;
+    });
+  }
   function shadowText(s, x, y, size, c, font) { text(s, x + 4, y + 4, size, '#120e1c', 'center', true, font); text(s, x, y, size, c, 'center', true, font); }
   function drawResult() {
     const r = v.res, d = V[v.id], x = 56, y = 78, w = 480, h = 470;
@@ -722,6 +767,7 @@ const Venue = (() => {
       const nw = UI.width(d.name, 19, true) + 44;
       UI.plate(12, 12, nw, 44); UI.label(d.name, 12 + nw / 2, 35, 19, C.gold);
       drawCard(); drawFame(); drawBox(); drawChoices();
+      if (v.mode === 'intro' && v.how) drawHowto(v.how);
     } else {
       v.game.draw();
       drawWord();

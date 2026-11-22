@@ -123,5 +123,48 @@
     return Object.assign(g, { update, draw, auto, take });
   }
 
-  Minigames.add('bakery', bakery);
+  /** The intro's cards: the loaf bakes, out when golden, the burnt ones end it; the brioche when it comes. */
+  function howto(o) {
+    const d = o.d, P = d.points, C = UI.C, { fill, arrow, mark, keyBox, KEY } = Minigames.kit, miche = d.breads.find(b => b.id === 'miche') || d.breads[0];
+    const n = Math.min(d.ramp.ovensMax, d.ramp.ovens + Math.floor(o.level / d.ramp.ovensEvery));
+    const brioche = d.breads.find(b => b.id === 'brioche');
+    /** The baking gauge, pale to dark, its golden window and heart, the needle at `t`. */
+    function gauge(gx, gy, gw, t) {
+      const from = tune.bakery_gold_from, to = tune.bakery_gold_to, mid = (from + to) / 2, w = to - from;
+      ctx.fillStyle = C.ink; ctx.fillRect(gx - 2, gy - 2, gw + 4, 18);
+      ctx.fillStyle = TONES[0]; ctx.fillRect(gx, gy, gw * from, 14);
+      ctx.fillStyle = '#58b83a'; ctx.fillRect(gx + gw * from, gy, gw * w, 14);
+      ctx.fillStyle = C.gold; ctx.fillRect(gx + gw * (mid - w * tune.bakery_perfect / 2), gy, Math.max(2, gw * w * tune.bakery_perfect), 14);
+      ctx.fillStyle = TONES[2]; ctx.fillRect(gx + gw * to, gy, gw * (1 - to), 14);
+      const nx = gx + gw * t; ctx.fillStyle = C.ink; ctx.fillRect(nx - 3, gy - 6, 6, 26); ctx.fillStyle = '#ffffff'; ctx.fillRect(nx - 1, gy - 4, 2, 22);
+    }
+    const cards = [
+      { text: d.steps[0], keys: [], draw(x, y, w, h) { // the same loaf four times: pale, golden, dark, burnt
+        const step = Math.min(64, (w - 16) / 4), x0 = x + w / 2 - 2 * step;
+        for (let t = 0; t < 4; t++) { Venue.pix(loaf(miche, t), x0 + t * step + (step - 54) / 2, y + h / 2 - 22, 3); if (t < 3) arrow(x0 + t * step + step - 12, y + h / 2 + 26, 24, C.dim); }
+        UI.label(tr('bk_golden', { n: P.golden }), x0 + step * 1.5, y + h / 2 - 40, 13, C.good);
+      } },
+      { text: d.steps[1], keys: [n > 1 ? `1–${n}` : '1', KEY.click()], draw(x, y, w, h) {
+        const ox = x + w / 2 - 110, oy = y + h / 2 - 44;
+        Venue.pix(oven(), ox, oy, 3);
+        ctx.fillStyle = 'rgba(255,140,40,0.3)'; ctx.fillRect(ox + 15, oy + 27, 60, 36);
+        Venue.pix(loaf(miche, 1), ox + 18, oy + 34, 3);
+        keyBox(ox - 4, oy - 4, 1);
+        gauge(ox + 104, oy + 30, 116, (tune.bakery_gold_from + tune.bakery_gold_to) / 2);
+        mark(true, ox + 162, oy + 78);
+      } },
+      { text: fill(d.steps[2], { n: tune.bakery_strikes }), keys: [], draw(x, y, w, h) {
+        const k = tune.bakery_strikes, step = Math.min(58, (w - 20) / k), x0 = x + w / 2 - k * step / 2;
+        for (let i = 0; i < k; i++) Venue.pix(loaf(miche, 3), x0 + i * step + (step - 54) / 2, y + h / 2 - 30, 3);
+        mark(false, x + w / 2, y + h / 2 + 34);
+      } },
+    ];
+    if (brioche && o.level >= (brioche.from || 0) && brioche.from) cards.push({ fresh: true, text: Minigames.kit.news(d, 'brioche'), keys: [], draw(x, y, w, h) {
+      Venue.pix(loaf(brioche, 1), x + w / 2 - 36, y + h / 2 - 30, 4);
+    } });
+    const tone = (t, img) => ({ text: fill(d.legend[t], P), pic: img });
+    return { cards, legend: [tone(0, () => loaf(miche, 0)), tone(1, () => loaf(miche, 1)), { text: fill(d.legend[2], P), color: C.gold }, tone(3, () => loaf(miche, 2))] };
+  }
+
+  Minigames.add('bakery', bakery, howto);
 })();

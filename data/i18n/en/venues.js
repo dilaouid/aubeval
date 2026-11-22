@@ -29,8 +29,13 @@ I18N.add('en', {
   'venues.cafe.name': 'The Aubeval Café', // Le Café d’Aubeval
   'venues.cafe.title': 'The Rush', // Le coup de feu
   'venues.cafe.unit': 'pennies in tips', // sous de pourboire
-  'venues.cafe.how': 'Customers order, then their bubble closes: serve the right cups, in order, before their patience wears thin.', // Les clients commandent, puis leur bulle se referme : servez les bonnes tasses, dans l’ordre, avant que leur patience ne s’use.
-  'venues.cafe.keys': 'Keys 1 to 6, or click the cups. A wrong cup costs patience, but the customer repeats.', // Touches 1 à 6, ou clic sur les tasses. Une tasse fausse coûte de la patience, mais le client répète.
+  'venues.cafe.how': 'Serve the right cups, in order, before their patience wears thin.', // Servez les bonnes tasses, dans l’ordre, avant que la patience ne s’use.
+  'venues.cafe.say': 'Lend a hand? Look, it’s quite simple:', // Un coup de main ? Regardez, c’est tout simple :
+  'venues.cafe.steps[0]': 'Remember the order', // Retenez la commande
+  'venues.cafe.steps[1]': 'Then the bubble closes', // Puis la bulle se referme
+  'venues.cafe.steps[2]': 'Serve them in order!', // Servez-les dans l’ordre !
+  'venues.cafe.legend[0]': 'Wrong cup: patience drops', // Mauvaise tasse : sa patience baisse
+  'venues.cafe.legend[1]': '{n} customers gone: it’s over', // {n} clients partis : c’est fini
   'venues.cafe.drinks[noir].name': 'Black', // Noir
   'venues.cafe.drinks[creme].name': 'White', // Crème
   'venues.cafe.drinks[noisette].name': 'Macchiato', // Noisette
@@ -74,8 +79,14 @@ I18N.add('en', {
   'venues.market.name': 'The Market Hall', // La Halle du Marché
   'venues.market.title': 'Haggling', // Marchandage
   'venues.market.unit': 'percent off', // % de rabais
-  'venues.market.how': 'Stop the needle in the green zone to bring the price down. After each round: push further, or shake on it. Push once too often and she walks away.', // Arrêtez l’aiguille dans la zone verte pour faire baisser le prix. Après chaque manche : pousser encore, ou toper. Poussez une fois de trop et elle s’en va.
-  'venues.market.keys': 'Space or click: stop the needle. ↑: push further. Enter: shake on it.', // Espace ou clic : arrêter l’aiguille. ↑ : pousser encore. Entrée : toper.
+  'venues.market.how': 'Stop the needle in the green, then push further or shake on it.', // Arrêtez l’aiguille dans le vert, puis poussez encore ou topez.
+  'venues.market.say': 'Here’s how we haggle at my stall:', // Voici comment on marchande chez moi :
+  'venues.market.steps[0]': 'Stop the needle in the green', // Arrêtez l’aiguille dans le vert
+  'venues.market.steps[1]': 'And the price drops', // Et le prix baisse
+  'venues.market.steps[2]': 'Push further… or shake on it!', // Poussez encore… ou topez !
+  'venues.market.legend[0]': 'Green: −{n}%', // Vert : −{n} %
+  'venues.market.legend[1]': 'Gold: −{n}%', // Doré : −{n} %
+  'venues.market.legend[2]': 'Pushed too far, she walks off', // Trop poussée, elle s’en va
   'venues.market.lots[0].name': 'A lot of Levantine spices', // Un lot d’épices du Levant
   'venues.market.lots[1].name': 'Ten rolls of fine cloth', // Dix rouleaux d’étoffe fine
   'venues.market.lots[2].name': 'Three sacks of island coffee', // Trois sacs de café des îles
@@ -115,8 +126,13 @@ I18N.add('en', {
   'venues.forge.name': 'Bram’s Forge', // La Forge de Bram
   'venues.forge.title': 'Beat the Iron', // Battre le fer
   'venues.forge.unit': 'percent quality', // % de qualité
-  'venues.forge.how': 'Strike when the mark reaches the anvil, and keep the heat in its band with the bellows. A chain of true blows sends the sparks flying.', // Frappez quand la marque arrive sur l’enclume, et gardez la chaleur dans sa bande avec le soufflet. Une chaîne de coups justes fait voler les étincelles.
-  'venues.forge.keys': 'Space or click: strike. B, ↑ or right-click: bellows.', // Espace ou clic : frapper. B, ↑ ou clic droit : soufflet.
+  'venues.forge.how': 'Strike the anvil in rhythm, and keep the iron hot with the bellows.', // Frappez en rythme sur l’enclume, et gardez le fer chaud avec le soufflet.
+  'venues.forge.say': 'Listen well, it’s all about rhythm:', // Écoutez bien, c’est une affaire de rythme :
+  'venues.forge.steps[0]': 'Strike when the mark arrives', // Frappez quand la marque arrive
+  'venues.forge.steps[1]': 'Keep the heat in the green', // Gardez la chaleur dans le vert
+  'venues.forge.steps[2]': 'Chain them: sparks fly!', // Enchaînez : des étincelles !
+  'venues.forge.legend[0]': 'Gold zone: perfect blow', // Zone dorée : coup parfait
+  'venues.forge.legend[1]': 'Cold or scorching iron: wasted blow', // Fer froid ou brûlant : coup gâché
   'venues.forge.greet': 'Ah, the hero! Put down that sword, take this hammer. A blade takes two to beat: I hold, you strike.', // Ah, {g:le héros|l’héroïne} ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.
   'venues.forge.ready[0]': 'The iron’s red-hot. You strike, I hold?', // Le fer est au rouge. Vous frappez, je tiens ?
   'venues.forge.ready[1]': 'I’ve a blade waiting for its hammer. Yours?', // J’ai une lame qui attend son marteau. Le vôtre ?
@@ -148,8 +164,16 @@ I18N.add('en', {
   'venues.bakery.name': 'The Bakery', // La Boulangerie
   'venues.bakery.title': 'The Batch', // La fournée
   'venues.bakery.unit': 'golden loaves', // pains dorés
-  'venues.bakery.how': 'Each oven bakes a loaf, from pale to golden to dark, and it burns at the end. Take it out when it is golden, in the heart of the window if you can. Four loaves burnt and the batch is lost.', // Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.
-  'venues.bakery.keys': 'One key per oven (1, 2, 3…), or click an oven. Golden: 2, in the heart: 3, dark: 1, pale: nothing.', // Une touche par four (1, 2, 3…), ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.
+  'venues.bakery.how': 'Take each loaf out of the oven when it is golden, before it burns.', // Sortez chaque pain du four quand il est doré, avant qu’il ne brûle.
+  'venues.bakery.say': 'Look, {g:my lad|my lass}, it’s quite simple:', // Regardez, {g:mon grand|ma grande}, c’est tout simple :
+  'venues.bakery.steps[0]': 'The loaf bakes, then burns', // Le pain cuit, puis brûle
+  'venues.bakery.steps[1]': 'Take it out when golden', // Sortez-le quand il est doré
+  'venues.bakery.steps[2]': '{n} loaves burnt: lost', // {n} pains brûlés : perdu
+  'venues.bakery.news[brioche].text': 'New: the brioche, slower', // Nouveau : la brioche, plus lente
+  'venues.bakery.legend[0]': 'Pale: 0', // Pâle : 0
+  'venues.bakery.legend[1]': 'Golden: {golden}', // Doré : {golden}
+  'venues.bakery.legend[2]': 'Heart: {perfect}', // Au cœur : {perfect}
+  'venues.bakery.legend[3]': 'Dark: {dark}', // Foncé : {dark}
   'venues.bakery.breads[baguette].name': 'Baguette', // Baguette
   'venues.bakery.breads[miche].name': 'Round loaf', // Miche
   'venues.bakery.breads[brioche].name': 'Brioche', // Brioche
@@ -183,8 +207,15 @@ I18N.add('en', {
   'venues.barracks.name': 'The Barracks', // La Caserne
   'venues.barracks.title': 'Parry!', // Parade !
   'venues.barracks.unit': 'parries', // parades
-  'venues.barracks.how': 'The captain calls a side: raise your shield on that side before the ring closes. The more you win, the harder it gets: feints, where the order changes on the way and whoever has already parried is hit, then double blows. Five hits taken and the drill is lost.', // La capitaine annonce un côté : levez le bouclier de ce côté avant que l’anneau se referme. Plus vous gagnez, plus ça se corse : feintes, où l’ordre change en route et qui a déjà paré est touché, puis coups doubles. Cinq coups reçus, et l’exercice est perdu.
-  'venues.barracks.keys': 'Arrows or click a side. Wrong side, or too late: hit.', // Flèches ou clic sur un côté. Mauvais côté, ou trop tard : touché.
+  'venues.barracks.how': 'Raise your shield on the side called before the blow lands.', // Levez le bouclier du côté annoncé avant que le coup ne tombe.
+  'venues.barracks.say': 'Listen to me closely, {g:hero|heroine}:', // Écoutez-moi bien, {g:héros|héroïne} :
+  'venues.barracks.steps[0]': 'I call a side', // J’annonce un côté
+  'venues.barracks.steps[1]': 'Shield on that side, quick!', // Bouclier de ce côté, vite !
+  'venues.barracks.steps[2]': '{n} hits taken: lost', // {n} coups reçus : perdu
+  'venues.barracks.news[feint].text': 'Feint: the order changes midway', // Feinte : l’ordre change en route
+  'venues.barracks.news[double].text': 'Double blows: two sides in a row', // Coups doubles : deux côtés de suite
+  'venues.barracks.legend[0]': 'Gold ring: {n}', // Anneau doré : {n}
+  'venues.barracks.legend[1]': 'In time: {n}', // À temps : {n}
   'venues.barracks.sides[up].name': 'Up', // Haut
   'venues.barracks.sides[up].shout': 'High!', // En haut !
   'venues.barracks.sides[right].name': 'Right', // Droite
@@ -227,8 +258,15 @@ I18N.add('en', {
   'venues.lodge.name': 'The Builders’ Lodge', // La Loge des bâtisseurs
   'venues.lodge.title': 'The Right Stone', // La bonne pierre
   'venues.lodge.unit': 'stones set', // pierres posées
-  'venues.lodge.how': 'The wall goes up, and a hole is left in it: of the four cut stones, only one fits. A stone can be turned, never flipped over. Four wrong stones and the wall comes down.', // Le mur monte, et il y reste un trou : des quatre pierres taillées, une seule y entre. Une pierre se tourne, elle ne se retourne jamais. Quatre mauvaises pierres, et le mur s’écroule.
-  'venues.lodge.keys': 'Keys 1 to 4, or click a stone. Right stone: 1; quick and without a fault, from the third of a chain on: 2.', // Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1 ; vite et sans faute, dès la troisième d’une chaîne : 2.
+  'venues.lodge.how': 'Pick the only stone that fits the hole in the wall.', // Choisissez la seule pierre qui entre dans le trou du mur.
+  'venues.lodge.say': 'A builder’s lesson, in three glances:', // Une leçon de bâtisseuse, en trois coups d’œil :
+  'venues.lodge.steps[0]': 'A hole is left', // Il reste un trou
+  'venues.lodge.steps[1]': 'Only one stone fits', // Une seule pierre y entre
+  'venues.lodge.steps[2]': '{n} faults: the wall falls', // {n} fautes : le mur tombe
+  'venues.lodge.news[turn].text': 'The stones come turned', // Les pierres arrivent tournées
+  'venues.lodge.news[mirror].text': 'Flipped, it never fits', // Retournée, elle n’entre jamais
+  'venues.lodge.legend[0]': 'Right stone: {n}', // Bonne pierre : {n}
+  'venues.lodge.legend[1]': 'Quick, in a chain: {n}', // Vite, en chaîne : {n}
   'venues.lodge.greet': 'Welcome to the Lodge, burgomaster! This is where I draw up the plans of Aubeval, and where my journeymen learn the trade. A good builder picks a stone at a glance: come and show me yours, and my plans will have you building for less.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
   'venues.lodge.ready[0]': 'The wall is waiting for its next course. Take a stone, burgomaster, and let’s see that eye of yours!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
   'venues.lodge.ready[1]': 'My journeymen have cut a whole heap of stones, and only one fits the hole. Up to you to find it, and quickly!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !

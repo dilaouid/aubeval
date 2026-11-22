@@ -801,6 +801,11 @@ I18N.add('en', {
   'strings.vn_intro_back': 'Not now', // Pas maintenant
   'strings.vn_intro_goal': 'Bronze {a} · Silver {b} · Gold {c} {unit}', // Bronze {a} · Argent {b} · Or {c} {unit}
   'strings.vn_intro_level': 'Streak of {n}: the game gets harder.', // Série de {n} : le jeu se corse.
+  'strings.ht_new': 'New!', // Nouveau !
+  'strings.ht_key_space': 'Space', // Espace
+  'strings.ht_key_enter': 'Enter', // Entrée
+  'strings.ht_key_click': 'click', // clic
+  'strings.ht_key_rclick': 'right click', // clic droit
   'strings.vn_go': 'Go!', // Partez !
   'strings.vn_time': 'Time', // Temps
   'strings.vn_pause': 'Pause', // Pause

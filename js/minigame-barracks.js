@@ -158,5 +158,49 @@
     return Object.assign(g, { update, draw, auto, parry });
   }
 
-  Minigames.add('barracks', barracks);
+  /** The intro's cards: the side called, the shield raised there in time, the hits that end it; the feints and double blows when they come. */
+  function howto(o) {
+    const d = o.d, R = d.ramp, P = d.points, C = UI.C, { fill, arrow, mark } = Minigames.kit, side = id => d.sides.find(s => s.id === id);
+    /** The captain's call in a bubble, (x, y) its top left; `struck` crosses it out. Gives its width. */
+    function shout(x, y, id, struck) {
+      const s = side(id).shout, w = UI.width(s, 16, true) + 28;
+      UI.plate(x, y, w, 38); UI.label(s, x + w / 2, y + 20, 16, struck ? C.dim : C.gold);
+      if (struck) { ctx.fillStyle = C.bad; ctx.fillRect(x + 10, y + 18, w - 20, 3); }
+      return w;
+    }
+    /** The hero in the middle of (x, y, w, h), the recruit coming from the right, the shield on `guard` (or low), the ring closing at `ring` (0 open .. 1 shut). */
+    function drill(x, y, w, h, guard, ring) {
+      const cx = x + w / 2 - 20, cy = y + h - 52, hr = hero(), sh = shield(), rc = recruit();
+      Venue.pix(rc, cx + 88, cy - 30, 3);
+      if (ring != null) {
+        ctx.lineWidth = 4; ctx.strokeStyle = ring < 0.5 ? C.gold : '#ffffff';
+        ctx.beginPath(); ctx.arc(cx + 54, cy, 12 + 40 * (1 - ring), 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = C.bad; ctx.beginPath(); ctx.arc(cx + 54, cy, 6, 0, Math.PI * 2); ctx.fill();
+      }
+      Venue.pix(hr, cx - 24, cy - 33, 3);
+      if (guard) Venue.pix(sh, cx + 18, cy - 20, 3); else Venue.pix(sh, cx - 4, cy - 6, 3);
+    }
+    const cards = [
+      { text: d.steps[0], keys: [], draw(x, y, w, h) { shout(x + w / 2 - 50, y + 4, 'right'); drill(x, y, w, h, false, null); } },
+      { text: d.steps[1], keys: ['← ↑ → ↓', Minigames.kit.KEY.click()], draw(x, y, w, h) { drill(x, y, w, h, true, 0.3); mark(true, x + w / 2 + 70, y + 22); } },
+      { text: fill(d.steps[2], { n: tune.barracks_hits }), keys: [], draw(x, y, w, h) {
+        ctx.fillStyle = 'rgba(220,40,40,0.35)'; ctx.fillRect(x + w / 2 - 70, y + h - 104, 80, 100);
+        drill(x, y, w, h, false, 1);
+        UI.label('× ' + tune.barracks_hits, x + w / 2 - 30, y + 20, 20, C.bad);
+      } },
+    ];
+    if (o.level >= R.feintFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'feint'), keys: [], draw(x, y, w, h) {
+      const w1 = shout(x + 8, y + h / 2 - 34, 'right', true);
+      arrow(x + 14 + w1, y + h / 2 - 15, 28);
+      shout(x + 48 + w1, y + h / 2 - 34, 'down');
+    } });
+    if (o.level >= R.doubleFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'double'), keys: [], draw(x, y, w, h) {
+      const w1 = shout(x + 8, y + h / 2 - 34, 'up');
+      UI.label('+', x + 24 + w1, y + h / 2 - 14, 22, C.gold);
+      shout(x + 40 + w1, y + h / 2 - 34, 'left');
+    } });
+    return { cards, legend: [{ text: fill(d.legend[0], { n: P.quick }), color: C.gold }, { text: fill(d.legend[1], { n: P.good }), color: '#ffffff' }] };
+  }
+
+  Minigames.add('barracks', barracks, howto);
 })();

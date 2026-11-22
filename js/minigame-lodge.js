@@ -122,5 +122,56 @@
     return Object.assign(g, { update, draw, auto, choose });
   }
 
-  Minigames.add('lodge', lodge);
+  /** The intro's cards: the hole, the one stone that fits, the faults that bring the wall down; turned stones and the mirror when they come. */
+  function howto(o) {
+    const d = o.d, R = d.ramp, C = UI.C, { fill, mark, keyBox } = Minigames.kit;
+    let seed = 0, r = null; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+    for (let k = 7; k < 99; k++) { seed = k; r = Stones.round(0, R, rnd); if (!Stones.fits(r.hole, Stones.mirror(r.hole))) break; } // the same hole on every visit, one its mirror does not fit
+    const hole = r.hole;
+    /** A stone's cells at (x, y), `s` pixels a cell; `cx` true: (x, y) is its middle. */
+    function stone(cells, x, y, s, cx) {
+      const sz = size(cells), x0 = cx ? x - sz.w * s / 2 : x, y0 = cx ? y - sz.h * s / 2 : y;
+      for (const [a, b] of cells) block(x0 + a * s, y0 + b * s, s, STONE, STONE_HI, STONE_LO);
+    }
+    /** A piece of wall, `cols` wide and `rows` high, the hole cut in its top course; (x, y) its top left. */
+    function wall(x, y, s, cols, rows) {
+      const hs = size(hole), hc = Math.floor((cols - hs.w) / 2), cut = new Set(hole.map(([a, b]) => (hc + a) + ',' + b));
+      for (let row = 0; row < rows; row++) for (let col = 0; col < cols; col++) {
+        if (cut.has(col + ',' + row)) { ctx.fillStyle = DARK; ctx.fillRect(x + col * s, y + row * s, s, s); continue; }
+        block(x + col * s, y + row * s, s, (row + col * 3) % 4 ? WALL : WALL_LO, WALL_HI, WALL_LO);
+      }
+    }
+    const S = 16, cols = 9;
+    const cards = [
+      { text: d.steps[0], keys: [], draw: (x, y, w, h) => wall(x + w / 2 - cols * S / 2, y + 14, S, cols, Math.floor((h - 20) / S)) },
+      { text: d.steps[1], keys: ['1–4', Minigames.kit.KEY.click()], draw(x, y, w, h) {
+        const step = (w - 8) / 4, x0 = x + w / 2 - 2 * step;
+        for (let i = 0; i < 4; i++) {
+          const cx = x0 + i * step + step / 2, cy = y + h / 2 - 6, sz = size(r.stones[i]), s = Math.min(16, Math.floor((step - 12) / Math.max(sz.w, sz.h)));
+          stone(r.stones[i], cx, cy, s, true); keyBox(cx - 11, y + 4, i + 1);
+          mark(i === r.right, cx, y + h - 22);
+        }
+      } },
+      { text: fill(d.steps[2], { n: tune.lodge_strikes }), keys: [], draw(x, y, w, h) {
+        for (let i = 0; i < 7; i++) { const a = i * 0.9, sx = x + w / 2 - 70 + i * 22, sy = y + h - 30 - (i % 3) * 14; ctx.save(); ctx.translate(sx, sy); ctx.rotate(a); block(-9, -9, 18, WALL, WALL_HI, WALL_LO); ctx.restore(); }
+        UI.label('× ' + tune.lodge_strikes, x + w / 2, y + 30, 20, C.bad);
+      } },
+    ];
+    if (o.level >= R.turnFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'turn'), keys: [], draw(x, y, w, h) {
+      const cy = y + h / 2 - 6, s = 18, t = Stones.turn(hole);
+      stone(t, x + w / 2 - 60, cy, s, true);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(x + w / 2, cy, 16, Math.PI * 1.1, Math.PI * 2.3); ctx.stroke();
+      ctx.strokeStyle = C.gold; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x + w / 2, cy, 16, Math.PI * 1.1, Math.PI * 2.3); ctx.stroke();
+      stone(hole, x + w / 2 + 60, cy, s, true); mark(true, x + w / 2 + 60, y + h - 18);
+    } });
+    if (o.level >= R.mirrorFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'mirror'), keys: [], draw(x, y, w, h) {
+      const cy = y + h / 2 - 6, s = 18;
+      stone(hole, x + w / 2 - 60, cy, s, true); mark(true, x + w / 2 - 60, y + h - 18);
+      ctx.fillStyle = C.lineL; ctx.fillRect(x + w / 2 - 1, y + 16, 3, h - 32); // the mirror's line
+      stone(Stones.mirror(hole), x + w / 2 + 60, cy, s, true); mark(false, x + w / 2 + 60, y + h - 18);
+    } });
+    return { cards, legend: [{ text: fill(d.legend[0], { n: 1 }) }, { text: fill(d.legend[1], { n: 2 }), color: C.gold }] };
+  }
+
+  Minigames.add('lodge', lodge, howto);
 })();
