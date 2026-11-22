@@ -176,10 +176,10 @@ DATA.venues = {
     after: ['Cette lame-là ira aux clous. On recommencera.', 'Elle coupe. C’est déjà ça.', 'Belle lame ! Votre bras s’en souviendra au combat.', 'Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.'],
   },
   bakery: {
-    keeper: 'baker', name: 'La Boulangerie', music: 'cafe', line: 0.78, tall: 0.72, faces: { glad: 3, cross: 1 }, faces64: { glad: 3, cross: 1 },
+    keeper: 'baker', name: 'La Boulangerie', music: 'cafe', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 4 }, faces64: { glad: 3, cross: 1 },
     title: 'La fournée', unit: 'pains dorés',
     how: 'Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.',
-    keys: 'Touches 1 à 5, ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.',
+    keys: 'Une touche par four (1, 2, 3…), ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.',
     medals: [24, 38, 52], pop: [0, 2, 4, 6], buffs: { rise: [0, 0.2, 0.4, 0.6] },
     // a loaf taken golden is worth `golden`, in the heart of the window `perfect`, dark `dark`; pale, nothing.
     // ovens: `ovens` at the start, one more every `ovensEvery` wins, `ovensMax` at most; each win takes
@@ -192,14 +192,14 @@ DATA.venues = {
       { id: 'miche', name: 'Miche', bake: 1 },
       { id: 'brioche', name: 'Brioche', bake: 1.4, from: 2 },
     ],
-    greet: 'Entrez donc, il fait bon près des fours ! Ici on se lève avant le coq. Et quand trois fournées cuisent à la fois, deux mains de plus ne sont pas de trop.',
-    ready: ['Les fours sont chauds, {g:héros|héroïne}. Vous me donnez un coup de main ?', 'La pâte a levé, la fournée n’attend que vous.', 'Trois fours, deux mains : il m’en faut deux de plus. Les vôtres ?'],
-    wait: ['Les fours se reposent. Revenez quand la pâte aura levé.', 'Je pétris la prochaine fournée. Repassez tout à l’heure.'],
-    chat: ['Une miche chaude et le monde va mieux.', 'Le pain, ça ne se presse pas. Sauf quand il brûle.', 'Une ville qui mange bien est une ville qui chante.',
-      '{g:Le héros|L’héroïne} qui sort le pain du four : les voisins n’en reviennent pas.', 'Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir.'],
-    tips: ['Au fournil, on dit que', 'Mes clients du matin me l’ont dit :', 'Entre deux fournées, j’ai appris que'],
-    glad: ['Doré à point !', 'Parfait !', 'Ça sent bon !'], cross: ['Trop tôt !', 'Encore pâle…', 'Patience !'], lost: ['Ça sent le brûlé !', 'Le four ! Le four !'],
-    after: ['Tout a brûlé… On ouvrira les fenêtres et on recommencera.', 'Quelques bons pains. Les voisins mangeront.', 'Belle fournée ! Toute la rue sent le pain chaud.', 'Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir, et le sourire avec.'],
+    greet: 'Entrez donc, {g:mon grand|ma grande}, il fait bon près des fours ! Ici on se lève avant le coq pour que tout Aubeval ait son pain. Et quand les fournées cuisent toutes à la fois, deux mains de plus ne sont jamais de trop.',
+    ready: ['Les fours sont chauds et la pâte a levé. Vous retroussez vos manches ?', 'Mes fours chauffent tous à la fois, et je n’ai que deux mains. Vous me prêtez les vôtres ?', 'La fournée n’attend que vous. Et gare : un pain, ça n’attend personne.'],
+    wait: ['La pâte lève, et ça ne se presse pas. Revenez tout à l’heure, je vous garde une place près du four.', 'Je pétris la prochaine fournée. Repassez dans un moment… et prenez donc un croûton en sortant.'],
+    chat: ['Une miche chaude et le monde va mieux.', 'Farine, eau, sel, et une nuit de patience : le bon pain ne demande rien d’autre.', 'Vos paysans mangent comme quatre. Tant mieux : un village qui mange bien est un village qui chante.',
+      '{g:Un héros|Une héroïne} qui part se battre le ventre creux ? Pas tant que je tiens ce fournil. Tenez, une brioche, et pas de manières.', 'Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir… et je lui en garde deux de plus.'],
+    tips: ['Au fournil, on ne parle que de ça :', 'Mes clients du matin me l’ont glissé avec la monnaie :', 'Ça se dit entre deux fournées :'],
+    glad: ['Doré à point !', 'Ah, ça, c’est du pain !', 'Sentez-moi cette croûte !'], cross: ['Trop tôt, il est tout pâle !', 'Encore pâle…', 'Patience, voyons !'], lost: ['Ça sent le brûlé !', 'Le four ! Le four !', 'Oh, mon pauvre pain…'],
+    after: ['Tout a brûlé… On ouvre les fenêtres, on chasse la fumée, et on recommence. Ce n’est que du pain.', 'Quelques bons pains, et des voisins qui ne se coucheront pas le ventre vide. C’est un début.', 'Belle fournée ! Toute la rue sent le pain chaud, et les maisons ont le sourire.', 'Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir… et chacun saura quelles mains l’ont sorti du four.'],
   },
 };
 DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery'];
