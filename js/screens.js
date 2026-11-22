@@ -384,7 +384,7 @@ const scenes = (() => {
     }
     if (Raid.hudExtra) Raid.hudExtra(rx, ry + 58, 320); // a siege: its warlord, and the button that challenges him
   }
-  const TAB_ICONS = { city: 'icon.village', build: 'icon.build', defense: 'icon.defense', decor: 'icon.decor', land: 'icon.terrain' };
+  const TAB_ICONS = { city: 'icon.village', build: 'icon.build', defense: 'icon.defense', works: 'icon.monument', decor: 'icon.decor', land: 'icon.terrain' };
   function drawCards() { // the build bar: one card per building, the locked ones as "????" silhouettes
     if (!UI.nine('bottombar', 0, BOTTOM, W, H - BOTTOM)) { ctx.fillStyle = C.bg; ctx.fillRect(0, BOTTOM, W, H - BOTTOM); ctx.fillStyle = C.lineL; ctx.fillRect(0, BOTTOM, W, 2); }
     UI.region(0, BOTTOM, W, H - BOTTOM, null);
