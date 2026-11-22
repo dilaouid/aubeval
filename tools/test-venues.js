@@ -182,6 +182,98 @@ test('pain chaud: a fed house\'s satisfaction climbs 60 % more a meal with the g
   assert.strictEqual(City.mealSat(b, false), hungry, 'a missed meal changed');
 });
 
+// ---- Parade ! (barracks) ----
+const STEP = 1 / 60, NO_INPUT = { act: false, alt: false };
+
+test('parade: a flawless guard gets gold, and bronze at least deep in a streak', () => {
+  const bot = { pace: 0.05, err: 0 };
+  const r0 = play('barracks', { level: 0, bot }), r10 = play('barracks', { level: 10, bot });
+  assert.strictEqual(r0.medal, 3, 'level 0: ' + JSON.stringify(r0));
+  assert.ok(r10.medal >= 1, 'level 10: ' + JSON.stringify(r10));
+  // deep in a streak there are feints: the flawless hand waits each one out and is never hit
+  const L = load(), g = start(L, 'barracks', 10);
+  for (let i = 0; i < 60 * 40 && !g.done; i++) { g.auto(STEP, bot); g.update(STEP, NO_INPUT); }
+  assert.ok(g.feints > 0, 'no feint at level 10');
+  assert.strictEqual(g.hits, 0, 'the flawless hand was hit ' + g.hits + ' times');
+});
+
+test('parade: standing still loses the drill', () => {
+  const L = load(), g = start(L, 'barracks', 0);
+  for (let i = 0; i < 60 * 36 && !g.done; i++) g.update(STEP, NO_INPUT);
+  assert.strictEqual(g.lost, true, 'not lost');
+  assert.strictEqual(g.done, true, 'not done');
+  assert.ok(typeof g.why === 'string' && g.why.length > 0, 'no why');
+});
+
+test('parade: ends on its own', () => {
+  const L = load(), r = play('barracks', { L, bot: { pace: 0.05, err: 0 }, secs: L.tune.barracks_time + 1 });
+  assert.strictEqual(r.done, true, 'not done by ' + (L.tune.barracks_time + 1) + ' s');
+  assert.strictEqual(r.lost, false, 'lost');
+});
+
+test('parade: one press, one parry', () => {
+  const L = load(), g = start(L, 'barracks', 0);
+  g.blow = { side: 'up', t: 0.5 };
+  L.ctx.pressed = k => k === 'ArrowUp'; // held down: the stub says so at every step
+  // held 90 steps: the drill keeps its beat, so the next blow is called only when this one would have landed, plus the gap
+  for (let i = 0; i < 90; i++) g.update(STEP, NO_INPUT);
+  L.ctx.pressed = () => false;
+  assert.ok(g.blow, 'no blow came after the parry: the test proves nothing');
+  assert.strictEqual(g.parries, 1, 'parries');
+  assert.strictEqual(g.hits, 0, 'the held key counted against the next blow');
+  assert.strictEqual(g.score, 2, 'score');
+});
+
+test('parade: the right side in time is worth 2, in the first third 3; the wrong side or too late is a hit', () => {
+  const L = load(), g = start(L, 'barracks', 0);
+  const worth = (blow, side) => { g.blow = blow; const s = g.score; g.parry(side); return g.score - s; };
+  assert.strictEqual(worth({ side: 'right', t: 0.1 }, 'right'), 3, 'quick');
+  assert.strictEqual(g.blow, null, 'a parried blow is over');
+  assert.strictEqual(worth({ side: 'right', t: 0.6 }, 'right'), 2, 'in time');
+  assert.strictEqual(g.hits, 0);
+  assert.strictEqual(worth({ side: 'right', t: 0.6 }, 'left'), 0, 'wrong side');
+  assert.strictEqual(g.hits, 1, 'the wrong side is a hit');
+  g.blow = { side: 'down', t: 0.99 };
+  for (let i = 0; i < 5; i++) g.update(STEP, NO_INPUT);
+  assert.strictEqual(g.hits, 2, 'a blow not parried is a hit');
+  const s = g.score; g.parry('down');
+  assert.strictEqual(g.score, s, 'a parry after the blow landed is worth nothing');
+  assert.strictEqual(g.hits, 2, 'a parry with no blow coming is no hit');
+});
+
+test('parade: who parries the first side of a feint is hit; who waits parries', () => {
+  const L = load(), g = start(L, 'barracks', 2);
+  g.blow = { side: 'up', t: 0.1, feint: { at: 0.5, to: 'left' } };
+  g.parry('up');
+  assert.strictEqual(g.hits, 1, 'parrying the side first called');
+  g.blow = { side: 'up', t: 0.1, feint: { at: 0.5, to: 'left' } };
+  for (let i = 0; i < 120 && g.blow && g.blow.side !== 'left'; i++) g.update(STEP, NO_INPUT);
+  assert.ok(g.blow && g.blow.side === 'left', 'the feint never turned');
+  const s = g.score; g.parry('left');
+  assert.strictEqual(g.score - s, 2, 'waiting it out');
+  assert.strictEqual(g.hits, 1);
+});
+
+// ---- Bien drillés (the barracks' gift) ----
+/** The real js/units.js in the sandbox L, with no barracks and no city bonus. */
+function loadUnits(L) {
+  L.ctx.City = { bonus: () => 0 };
+  L.ctx.state.units = [];
+  L.ctx.state.venue = L.Venue.fresh();
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/units.js'), 'utf8'), L.ctx, { filename: 'js/units.js' });
+  return vm.runInContext('Units', L.ctx);
+}
+
+test('bien drillés: a soldier deals 30 % more with the gold gift, has the same health, and deals the same without', () => {
+  const L = load(), Units = loadUnits(L), u = { kind: 'militia' };
+  const atk = Units.atkOf('militia'), hp = Units.maxHp(u);
+  assert.strictEqual(atk, L.DATA.units.militia.atk * Units.drill(), 'without the gift');
+  L.ctx.state.venue.buffs.soldier = { v: 0.3, left: 100, total: 300, from: 'barracks' };
+  assert.strictEqual(L.Venue.buff('soldier'), 0.3);
+  assert.ok(Math.abs(Units.atkOf('militia') - 1.3 * atk) < 1e-12, 'with the gift: ' + Units.atkOf('militia') + ', without: ' + atk);
+  assert.strictEqual(Units.maxHp(u), hp, 'health changed');
+});
+
 if (require.main === module) {
   let bad = 0;
   for (const t of tests) {

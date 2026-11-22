@@ -17,7 +17,7 @@ const I18N = globalThis.I18N;
 
 const FIELDS = new Set(('name card desc title text hint say task about styles flavor how keys label short trait one plural ' +
   'opens unit busy sad raid greet gone cold hot stages names chiefs chat lines glad cross leaves lost thanks tips wait ' +
-  'ready chain okay pushed').split(' '));
+  'ready chain okay pushed shout feinted').split(' '));
 const ALL = ['strings', 'tutorial.strings', 'legacyBranches']; // every text under these
 const SKIP = ['tutorial.mechanics']; // the tutorial check's own notes, never shown
 const ONLY = { from: /^city\.orders\b/, after: /\]$/ }; // a field that is text only there: an order's sender, a venue's lines (not a lesson's `after`)

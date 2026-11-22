@@ -210,6 +210,14 @@ window.CONFIG = {
   bakery_perfect: { value: 0.25, min: 0.05, max: 1, step: 0.05 },    // share of the golden window, in its middle, where a loaf is perfect
   bakery_reload: { value: 0.5, min: 0, max: 3, step: 0.1 },          // seconds an oven stands empty before the next loaf goes in
   bakery_strikes: { value: 4, min: 1, max: 10, step: 1 },            // loaves that may burn: at this many the batch is lost
+  barracks_time: { value: 36, min: 15, max: 90, step: 1 },           // barracks, « Parade ! »: seconds the drill lasts
+  barracks_lead: { value: 1.3, min: 0.3, max: 4, step: 0.05 },       // seconds between the side called and the blow landing, before any streak
+  barracks_lead_min: { value: 0.55, min: 0.2, max: 3, step: 0.05 },  // ... and the least it ever gets, deep in a streak
+  barracks_gap: { value: 0.45, min: 0, max: 3, step: 0.05 },         // seconds between a blow over and the next side called (none inside a double blow)
+  barracks_quick: { value: 0.33, min: 0.05, max: 1, step: 0.01 },    // share of the lead, from its start, in which a parry is « Vif ! »
+  barracks_feint: { value: 0.3, min: 0, max: 1, step: 0.05 },        // share of the blows that are feints, once they have come (data/venues.js ramp.feintFrom)
+  barracks_double: { value: 0.25, min: 0, max: 1, step: 0.05 },      // share of the blows that are double, once they have come (ramp.doubleFrom)
+  barracks_hits: { value: 5, min: 1, max: 10, step: 1 },             // blows that may land: at this many the drill is lost
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----
   fog_cell: { value: 4, min: 2, max: 16, step: 1 },                  // tiles on one side of a cell of fog: a cell is seen or not, whole

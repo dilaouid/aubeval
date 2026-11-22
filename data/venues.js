@@ -59,6 +59,10 @@ Object.assign(DATA.strings, {
   bk_score: 'Pains dorés', bk_burnt_n: 'Brûlés', bk_keys: 'Touches 1 à {n}, ou clic sur un four',
   bk_perfect: 'Parfait ! +{n}', bk_golden: 'Doré +{n}', bk_dark: 'Foncé +{n}', bk_pale: 'Trop pâle…', bk_burnt: 'Brûlé !',
   bk_reload: 'On enfourne…', bk_end_strikes: 'La fournée a brûlé !',
+  // Parade !
+  bq_score: 'Parades', bq_hits_n: 'Coups reçus', bq_keys: 'Flèches du clavier, ou clic sur un côté',
+  bq_quick: 'Vif ! +{n}', bq_good: 'Paré +{n}', bq_wrong: 'Mauvais côté !', bq_late: 'Touché !', bq_feinted: 'Feinte !',
+  bq_end_hits: 'Trop de coups reçus !',
 });
 
 // What a place's gift is called and how it reads (`{n}` is the share, in percent). The key is what
@@ -70,6 +74,7 @@ DATA.venueBuffs = {
   atk: { name: 'Lame bien battue', text: 'Attaque {g:du héros|de l’héroïne} +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
   forge: { name: 'Feu vif', text: 'Forge {n} % plus rapide', short: 'forge +{n} %', icon: 'icon.time', alt: 'icon.time' },
   rise: { name: 'Pain chaud', text: 'Satisfaction des maisons {n} % plus rapide', short: 'satisfaction +{n} %', icon: 'icon.bread', alt: 'icon.bread' },
+  soldier: { name: 'Bien drillés', text: 'Les soldats frappent {n} % plus fort', short: 'soldats +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
 };
 
 // The places, by the kind of building they are (data/buildings.js).
@@ -88,6 +93,7 @@ DATA.venueBuffs = {
 //   greet / ready / wait   his or her line on entering: first visit, game ready, game not ready
 //   chat       banter, said in turn under « Discuter »; tips: how he or she starts a word on the city
 //   glad, cross, after     words during the game, and the line after it by result (lost .. gold)
+//                          (other lists of words a game says: lost, okay, pushed, chain, feinted)
 DATA.venues = {
   cafe: {
     keeper: 'innkeeper', name: 'Le Café d’Aubeval', line: 0.78, tall: 0.72, faces: { glad: 0, cross: 2 }, faces64: { glad: 3, cross: 6 },
@@ -201,5 +207,32 @@ DATA.venues = {
     glad: ['Doré à point !', 'Ah, ça, c’est du pain !', 'Sentez-moi cette croûte !'], cross: ['Trop tôt, il est tout pâle !', 'Encore pâle…', 'Patience, voyons !'], lost: ['Ça sent le brûlé !', 'Le four ! Le four !', 'Oh, mon pauvre pain…'],
     after: ['Tout a brûlé… On ouvre les fenêtres, on chasse la fumée, et on recommence. Ce n’est que du pain.', 'Quelques bons pains, et des voisins qui ne se coucheront pas le ventre vide. C’est un début.', 'Belle fournée ! Toute la rue sent le pain chaud, et les maisons ont le sourire.', 'Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir… et chacun saura quelles mains l’ont sorti du four.'],
   },
+  barracks: {
+    keeper: 'captain', name: 'La Caserne', music: 'forge', line: 0.78, tall: 0.72, faces: { glad: 2, cross: 4 }, faces64: { glad: 2, cross: 4 },
+    title: 'Parade !', unit: 'parades',
+    how: 'La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Gare aux feintes : l’ordre peut changer en route. Cinq coups reçus, et l’exercice est perdu.',
+    keys: 'Les flèches du clavier, ou clic sur un côté. Bon côté : 2, dans le premier tiers : 3. Mauvais côté, ou trop tard : touché.',
+    medals: [22, 34, 46], pop: [0, 2, 4, 6], buffs: { soldier: [0, 0.1, 0.2, 0.3] },
+    // the right side parried is worth `good`, in the first part of the wait (config.js barracks_quick) `quick`.
+    // each win takes `lead` (a share) off the wait; feints come from `feintFrom` wins, double blows from `doubleFrom`
+    points: { quick: 3, good: 2 },
+    ramp: { lead: 0.04, feintFrom: 2, doubleFrom: 4 },
+    // the four sides a blow comes from: `arrow` is its key, `shout` what the captain calls
+    sides: [
+      { id: 'up', name: 'Haut', arrow: '↑', shout: 'En haut !' },
+      { id: 'right', name: 'Droite', arrow: '→', shout: 'À droite !' },
+      { id: 'down', name: 'Bas', arrow: '↓', shout: 'En bas !' },
+      { id: 'left', name: 'Gauche', arrow: '←', shout: 'À gauche !' },
+    ],
+    greet: 'Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et la troupe apprend en vous voyant faire.',
+    ready: ['Une recrue attend son tour, l’épée de bois à la main. Vous prenez le bouclier ?', 'Bouclier au bras, {g:héros|héroïne} ! J’annonce le côté, vous parez.', 'Mes recrues ont besoin de voir comment on pare. Vous leur montrez ?'],
+    wait: ['La troupe souffle. On reprend l’exercice tout à l’heure.', 'Je fais l’appel. Repassez dans un moment, le bouclier vous attend.'],
+    chat: ['Une parade vaut mieux que deux bandages.', 'Quand le cor sonne, venez me voir : un exercice au son du cor, et mes soldats frapperont plus fort quand les gobelins arriveront.', 'Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.',
+      '{g:Un héros|Une héroïne} qui pare avec la troupe, ça donne du cœur aux plus jeunes.', 'Bram forge les lames, Mélisande nourrit la troupe. Moi, j’apprends à tout ce monde à rester en vie.'],
+    tips: ['Rapport de la garde :', 'Mes sentinelles me l’ont signalé :', 'Au rassemblement du matin, on disait que'],
+    glad: ['Vif !', 'Belle parade !', 'Voilà un bouclier !'], cross: ['L’autre côté !', 'Écoutez l’ordre !', 'Pas par là !'], lost: ['Touché !', 'Trop lent !', 'Le bouclier, voyons !'],
+    feinted: ['Feinte ! Attendez l’ordre.', 'Vous avez mordu !', 'On ne pare pas avant l’ordre !'],
+    after: ['Cinq coups reçus… Pansez-vous, et on recommence plus tard.', 'Ça pare. Mes recrues ont vu comment on tient un bouclier.', 'Belle garde ! La troupe a regardé, et elle frappera plus fort.', 'Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais.'],
+  },
 };
-DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery'];
+DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks'];

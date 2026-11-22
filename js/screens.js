@@ -826,7 +826,7 @@ const scenes = (() => {
     const free = Units.free();
     text(tr('train_title'), x, y + 10, 15, C.gold, 'left', true); text(tr('pop_free', { n: free }), x + w, y + 10, 13, free > 0 ? C.good : C.bad, 'right', true); y += 24;
     y = drawLine(b, x, y, w);
-    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(U[k].atk * Units.drill()) }));
+    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(Units.atkOf(k)) }));
     if (b.rally) { // where the recruits go: said, and a button to take it away
       text(tr('rally_on'), x, y + 15, 13, C.good, 'left', true);
       UI.button(x + w - 150, y + 2, 150, 28, tr('rally_clear'), Units.clearRally, { size: 12, tip: tr('rally_help') });

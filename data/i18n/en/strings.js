@@ -880,6 +880,15 @@ I18N.add('en', {
   'strings.bk_burnt': 'Burnt!', // Brûlé !
   'strings.bk_reload': 'In it goes…', // On enfourne…
   'strings.bk_end_strikes': 'The batch burnt!', // La fournée a brûlé !
+  'strings.bq_score': 'Parries', // Parades
+  'strings.bq_hits_n': 'Hits taken', // Coups reçus
+  'strings.bq_keys': 'Arrow keys, or click a side', // Flèches du clavier, ou clic sur un côté
+  'strings.bq_quick': 'Quick! +{n}', // Vif ! +{n}
+  'strings.bq_good': 'Parried +{n}', // Paré +{n}
+  'strings.bq_wrong': 'Wrong side!', // Mauvais côté !
+  'strings.bq_late': 'Hit!', // Touché !
+  'strings.bq_feinted': 'Feint!', // Feinte !
+  'strings.bq_end_hits': 'Too many hits taken!', // Trop de coups reçus !
   'strings.ex_title': 'Exploration', // Exploration
   'strings.ex_known': 'Known lands: {pct}%', // Terres connues : {pct} %
   'strings.ex_help': 'Beyond the village, the mist hides the land. Your buildings, your soldiers, the hero and the scouts lift it, and find what it hides.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.

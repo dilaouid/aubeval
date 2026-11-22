@@ -880,6 +880,15 @@ I18N.add('es', {
   'strings.bk_burnt': '¡Quemado!', // Brûlé !
   'strings.bk_reload': 'Al horno…', // On enfourne…
   'strings.bk_end_strikes': '¡La hornada se quemó!', // La fournée a brûlé !
+  'strings.bq_score': 'Paradas', // Parades
+  'strings.bq_hits_n': 'Golpes recibidos', // Coups reçus
+  'strings.bq_keys': 'Flechas del teclado, o clic en un lado', // Flèches du clavier, ou clic sur un côté
+  'strings.bq_quick': '¡Rápido! +{n}', // Vif ! +{n}
+  'strings.bq_good': 'Parado +{n}', // Paré +{n}
+  'strings.bq_wrong': '¡Lado equivocado!', // Mauvais côté !
+  'strings.bq_late': '¡Tocado!', // Touché !
+  'strings.bq_feinted': '¡Finta!', // Feinte !
+  'strings.bq_end_hits': '¡Demasiados golpes recibidos!', // Trop de coups reçus !
   'strings.ex_title': 'Exploración', // Exploration
   'strings.ex_known': 'Tierras conocidas: {pct} %', // Terres connues : {pct} %
   'strings.ex_help': 'Fuera de la aldea, la bruma oculta las tierras. Sus edificios, sus soldados, {g:el héroe|la heroína} y los exploradores la disipan y descubren lo que esconde.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.

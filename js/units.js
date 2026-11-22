@@ -67,6 +67,8 @@ const Units = (() => {
   /** What the barracks' level adds to every soldier. */
   function drill() { const b = barracks(); return (1 + ((b ? b.lvl : 1) - 1) * tune.soldier_level_step) * (1 + City.bonus('soldier')); } // THREAT hook: the city's bonus to soldiers (great works, legacy)
   const maxHp = u => Math.round(def(u).hp * drill());
+  /** What a soldier of this kind strikes for now: the barracks' drill, and the barracks' gift (« Bien drillés ») while it runs. Not his health. */
+  const atkOf = kind => U[kind].atk * drill() * (1 + Venue.buff('soldier'));
   const reset = () => { stale = true; };
   const touch = () => { stale = true; };
 
@@ -294,7 +296,7 @@ const Units = (() => {
     u.moving = false; u.dx = tx - u.x; u.dy = ty - u.y;
     if (u.cd <= 0) {
       u.cd = d.rate; u.swing = 0.18;
-      if (target) Raid.hurt(target, d.atk * drill(), false); else Camp.hit(at, d.atk * drill());
+      if (target) Raid.hurt(target, atkOf(u.kind), false); else Camp.hit(at, atkOf(u.kind));
       const p = target ? Raid.pos(target) : at;
       if (!melee(u)) { Raid.shots.push({ x0: u.x, y0: u.y, z0: 12, x1: p.x, y1: p.y, z1: 6, t: 0 }); sfx('arrow'); } else sfx('hit');
     }
@@ -343,5 +345,5 @@ const Units = (() => {
     return best;
   }
 
-  return { tick, rates, away, reset, touch, add, train, cancel, refund, line, lineMax, setRally, clearRally, dismiss, blocked, cost, count, soldiers, byId, free, drill, maxHp, isSoldier, isWorker, melee, hurt, blocker, afterRaid, order, recall, pickAt, rally, barracks };
+  return { tick, rates, away, reset, touch, add, train, cancel, refund, line, lineMax, setRally, clearRally, dismiss, blocked, cost, count, soldiers, byId, free, drill, maxHp, atkOf, isSoldier, isWorker, melee, hurt, blocker, afterRaid, order, recall, pickAt, rally, barracks };
 })();
