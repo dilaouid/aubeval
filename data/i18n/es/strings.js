@@ -870,6 +870,16 @@ I18N.add('es', {
   'strings.fg_cold': '¡Muy frío!', // Trop froid !
   'strings.fg_hot': '¡Quema!', // Ça brûle !
   'strings.fg_early': 'Al aire', // Dans le vide
+  'strings.bk_score': 'Panes dorados', // Pains dorés
+  'strings.bk_burnt_n': 'Quemados', // Brûlés
+  'strings.bk_keys': 'Teclas 1 a {n}, o clic en un horno', // Touches 1 à {n}, ou clic sur un four
+  'strings.bk_perfect': '¡Perfecto! +{n}', // Parfait ! +{n}
+  'strings.bk_golden': 'Dorado +{n}', // Doré +{n}
+  'strings.bk_dark': 'Tostado +{n}', // Foncé +{n}
+  'strings.bk_pale': 'Demasiado pálido…', // Trop pâle…
+  'strings.bk_burnt': '¡Quemado!', // Brûlé !
+  'strings.bk_reload': 'Al horno…', // On enfourne…
+  'strings.bk_end_strikes': '¡La hornada se quemó!', // La fournée a brûlé !
   'strings.ex_title': 'Exploración', // Exploration
   'strings.ex_known': 'Tierras conocidas: {pct} %', // Terres connues : {pct} %
   'strings.ex_help': 'Fuera de la aldea, la bruma oculta las tierras. Sus edificios, sus soldados, {g:el héroe|la heroína} y los exploradores la disipan y descubren lo que esconde.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.

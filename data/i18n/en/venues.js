@@ -17,6 +17,9 @@ I18N.add('en', {
   'venueBuffs.forge.name': 'Roaring Fire', // Feu vif
   'venueBuffs.forge.text': 'Forge {n}% faster', // Forge {n} % plus rapide
   'venueBuffs.forge.short': 'forge +{n}%', // forge +{n} %
+  'venueBuffs.rise.name': 'Warm bread', // Pain chaud
+  'venueBuffs.rise.text': 'Houses’ satisfaction {n} % faster', // Satisfaction des maisons {n} % plus rapide
+  'venueBuffs.rise.short': 'satisfaction +{n} %', // satisfaction +{n} %
   'venues.cafe.name': 'The Aubeval Café', // Le Café d’Aubeval
   'venues.cafe.title': 'The Rush', // Le coup de feu
   'venues.cafe.unit': 'pennies in tips', // sous de pourboire
@@ -136,4 +139,38 @@ I18N.add('en', {
   'venues.forge.after[1]': 'It cuts. That’s something.', // Elle coupe. C’est déjà ça.
   'venues.forge.after[2]': 'Fine blade! Your arm will remember it in battle.', // Belle lame ! Votre bras s’en souviendra au combat.
   'venues.forge.after[3]': 'A legendary blade! Strike like that in battle and nothing will stand.', // Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.
+  'venues.bakery.name': 'The Bakery', // La Boulangerie
+  'venues.bakery.title': 'The Batch', // La fournée
+  'venues.bakery.unit': 'golden loaves', // pains dorés
+  'venues.bakery.how': 'Each oven bakes a loaf, from pale to golden to dark, and it burns at the end. Take it out when it is golden, in the heart of the window if you can. Four loaves burnt and the batch is lost.', // Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.
+  'venues.bakery.keys': 'Keys 1 to 5, or click an oven. Golden: 2, in the heart: 3, dark: 1, pale: nothing.', // Touches 1 à 5, ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.
+  'venues.bakery.breads[baguette].name': 'Baguette', // Baguette
+  'venues.bakery.breads[miche].name': 'Round loaf', // Miche
+  'venues.bakery.breads[brioche].name': 'Brioche', // Brioche
+  'venues.bakery.greet': 'Come in, it’s warm by the ovens! Here we rise before the rooster. And when three batches bake at once, two more hands are never too many.', // Entrez donc, il fait bon près des fours ! Ici on se lève avant le coq. Et quand trois fournées cuisent à la fois, deux mains de plus ne sont pas de trop.
+  'venues.bakery.ready[0]': 'The ovens are hot, hero. Will you lend me a hand?', // Les fours sont chauds, {g:héros|héroïne}. Vous me donnez un coup de main ?
+  'venues.bakery.ready[1]': 'The dough has risen, the batch is only waiting for you.', // La pâte a levé, la fournée n’attend que vous.
+  'venues.bakery.ready[2]': 'Three ovens, two hands: I need two more. Yours?', // Trois fours, deux mains : il m’en faut deux de plus. Les vôtres ?
+  'venues.bakery.wait[0]': 'The ovens are resting. Come back when the dough has risen.', // Les fours se reposent. Revenez quand la pâte aura levé.
+  'venues.bakery.wait[1]': 'I’m kneading the next batch. Drop by again in a while.', // Je pétris la prochaine fournée. Repassez tout à l’heure.
+  'venues.bakery.chat[0]': 'A warm loaf and the world looks brighter.', // Une miche chaude et le monde va mieux.
+  'venues.bakery.chat[1]': 'Bread can’t be hurried. Except when it’s burning.', // Le pain, ça ne se presse pas. Sauf quand il brûle.
+  'venues.bakery.chat[2]': 'A town that eats well is a town that sings.', // Une ville qui mange bien est une ville qui chante.
+  'venues.bakery.chat[3]': 'The hero taking bread out of the oven: the neighbours can’t believe their eyes.', // {g:Le héros|L’héroïne} qui sort le pain du four : les voisins n’en reviennent pas.
+  'venues.bakery.chat[4]': 'Gaspard dunks my croissants in his coffee. I pretend not to see.', // Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir.
+  'venues.bakery.tips[0]': 'At the bakehouse, they say', // Au fournil, on dit que
+  'venues.bakery.tips[1]': 'My morning customers told me:', // Mes clients du matin me l’ont dit :
+  'venues.bakery.tips[2]': 'Between two batches, I heard that', // Entre deux fournées, j’ai appris que
+  'venues.bakery.glad[0]': 'Golden, just right!', // Doré à point !
+  'venues.bakery.glad[1]': 'Perfect!', // Parfait !
+  'venues.bakery.glad[2]': 'Smells good!', // Ça sent bon !
+  'venues.bakery.cross[0]': 'Too early!', // Trop tôt !
+  'venues.bakery.cross[1]': 'Still pale…', // Encore pâle…
+  'venues.bakery.cross[2]': 'Patience!', // Patience !
+  'venues.bakery.lost[0]': 'Something’s burning!', // Ça sent le brûlé !
+  'venues.bakery.lost[1]': 'The oven! The oven!', // Le four ! Le four !
+  'venues.bakery.after[0]': 'It all burnt… We’ll open the windows and start again.', // Tout a brûlé… On ouvrira les fenêtres et on recommencera.
+  'venues.bakery.after[1]': 'A few good loaves. The neighbours will eat.', // Quelques bons pains. Les voisins mangeront.
+  'venues.bakery.after[2]': 'A fine batch! The whole street smells of warm bread.', // Belle fournée ! Toute la rue sent le pain chaud.
+  'venues.bakery.after[3]': 'A batch fit for a king! All Aubeval will have warm bread tonight, and a smile with it.', // Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir, et le sourire avec.
 });

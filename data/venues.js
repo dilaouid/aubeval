@@ -55,6 +55,10 @@ Object.assign(DATA.strings, {
   fg_quality: 'Qualité de la lame', fg_chain: 'Chaîne ×{n}', fg_heat: 'Chaleur', fg_bellows: 'Soufflet', fg_bellows_tip: 'Soufflet\nB, ↑ ou clic droit : ranime le feu.',
   fg_strike: 'Espace ou clic : frapper', fg_pump: 'B, ↑ ou clic droit : soufflet',
   fg_ok: 'Bonne chauffe', fg_perfect: 'Parfait !', fg_good: 'Bien', fg_miss: 'Raté', fg_cold: 'Trop froid !', fg_hot: 'Ça brûle !', fg_early: 'Dans le vide',
+  // La fournée
+  bk_score: 'Pains dorés', bk_burnt_n: 'Brûlés', bk_keys: 'Touches 1 à {n}, ou clic sur un four',
+  bk_perfect: 'Parfait ! +{n}', bk_golden: 'Doré +{n}', bk_dark: 'Foncé +{n}', bk_pale: 'Trop pâle…', bk_burnt: 'Brûlé !',
+  bk_reload: 'On enfourne…', bk_end_strikes: 'La fournée a brûlé !',
 });
 
 // What a place's gift is called and how it reads (`{n}` is the share, in percent). The key is what
@@ -65,11 +69,13 @@ DATA.venueBuffs = {
   sell: { name: 'Prix d’amie', text: 'Ventes au marché +{n} %', short: 'ventes +{n} %', icon: 'icon.trade', alt: 'icon.gold' },
   atk: { name: 'Lame bien battue', text: 'Attaque {g:du héros|de l’héroïne} +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
   forge: { name: 'Feu vif', text: 'Forge {n} % plus rapide', short: 'forge +{n} %', icon: 'icon.time', alt: 'icon.time' },
+  rise: { name: 'Pain chaud', text: 'Satisfaction des maisons {n} % plus rapide', short: 'satisfaction +{n} %', icon: 'icon.bread', alt: 'icon.bread' },
 };
 
 // The places, by the kind of building they are (data/buildings.js).
 //   keeper     who stands in the middle (data/people.js DATA.keepers)
 //   name       the place, on its plate
+//   music      for a place without a track of its own (js/music.js): the place whose track it plays
 //   line       where a keeper's image stands on a backdrop image, as a share of the screen's height
 //              (the drawn interiors know their own counter); tall: how high he or she is, same share
 //   faces      frames of the keeper's big strip ('venue.char.<keeper>') held for a moment: glad (a good
@@ -169,5 +175,31 @@ DATA.venues = {
     chain: ['Ça, c’est forger !', 'Elle chante !'], cold: 'Trop froid ! Le soufflet !', hot: 'Ça brûle ! Doucement !',
     after: ['Cette lame-là ira aux clous. On recommencera.', 'Elle coupe. C’est déjà ça.', 'Belle lame ! Votre bras s’en souviendra au combat.', 'Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.'],
   },
+  bakery: {
+    keeper: 'baker', name: 'La Boulangerie', music: 'cafe', line: 0.78, tall: 0.72, faces: { glad: 3, cross: 1 }, faces64: { glad: 3, cross: 1 },
+    title: 'La fournée', unit: 'pains dorés',
+    how: 'Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.',
+    keys: 'Touches 1 à 5, ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.',
+    medals: [24, 38, 52], pop: [0, 2, 4, 6], buffs: { rise: [0, 0.2, 0.4, 0.6] },
+    // a loaf taken golden is worth `golden`, in the heart of the window `perfect`, dark `dark`; pale, nothing.
+    // ovens: `ovens` at the start, one more every `ovensEvery` wins, `ovensMax` at most; each win takes
+    // `bake` (a share) off every baking time and `window` (a share) off the golden window
+    points: { perfect: 3, golden: 2, dark: 1 },
+    ramp: { ovens: 3, ovensEvery: 3, ovensMax: 5, bake: 0.03, window: 0.04 },
+    // the loaves: `bake` multiplies config.js bakery_bake (the miche's time to burn); `from`: the wins in a row from which it comes up
+    breads: [
+      { id: 'baguette', name: 'Baguette', bake: 0.7 },
+      { id: 'miche', name: 'Miche', bake: 1 },
+      { id: 'brioche', name: 'Brioche', bake: 1.4, from: 2 },
+    ],
+    greet: 'Entrez donc, il fait bon près des fours ! Ici on se lève avant le coq. Et quand trois fournées cuisent à la fois, deux mains de plus ne sont pas de trop.',
+    ready: ['Les fours sont chauds, {g:héros|héroïne}. Vous me donnez un coup de main ?', 'La pâte a levé, la fournée n’attend que vous.', 'Trois fours, deux mains : il m’en faut deux de plus. Les vôtres ?'],
+    wait: ['Les fours se reposent. Revenez quand la pâte aura levé.', 'Je pétris la prochaine fournée. Repassez tout à l’heure.'],
+    chat: ['Une miche chaude et le monde va mieux.', 'Le pain, ça ne se presse pas. Sauf quand il brûle.', 'Une ville qui mange bien est une ville qui chante.',
+      '{g:Le héros|L’héroïne} qui sort le pain du four : les voisins n’en reviennent pas.', 'Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir.'],
+    tips: ['Au fournil, on dit que', 'Mes clients du matin me l’ont dit :', 'Entre deux fournées, j’ai appris que'],
+    glad: ['Doré à point !', 'Parfait !', 'Ça sent bon !'], cross: ['Trop tôt !', 'Encore pâle…', 'Patience !'], lost: ['Ça sent le brûlé !', 'Le four ! Le four !'],
+    after: ['Tout a brûlé… On ouvrira les fenêtres et on recommencera.', 'Quelques bons pains. Les voisins mangeront.', 'Belle fournée ! Toute la rue sent le pain chaud.', 'Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir, et le sourire avec.'],
+  },
 };
-DATA.venueOrder = ['cafe', 'market', 'forge'];
+DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery'];

@@ -115,6 +115,73 @@ test('a gift lasts venue_buff_time', () => {
   assert.strictEqual(Venue.giftTime('cafe', 'pop'), tune.venue_buff_time);
 });
 
+// ---- La fournée (bakery) ----
+/** A new game of a place at `level`, in the sandbox L, its keeper's words thrown away. */
+const start = (L, id, level) => L.Minigames.make(id, { level, d: L.DATA.venues[id], react: () => {}, away: () => {} });
+
+test('la fournée: a flawless baker gets gold, and bronze at least deep in a streak', () => {
+  const bot = { pace: 0.05, err: 0 };
+  const r0 = play('bakery', { level: 0, bot }), r10 = play('bakery', { level: 10, bot });
+  assert.strictEqual(r0.medal, 3, 'level 0: ' + JSON.stringify(r0));
+  assert.ok(r10.medal >= 1, 'level 10: ' + JSON.stringify(r10));
+});
+
+test('la fournée: doing nothing loses the batch', () => {
+  const L = load(), g = start(L, 'bakery', 0);
+  for (let i = 0; i < 60 * 36 && !g.done; i++) g.update(1 / 60, { act: false, alt: false });
+  assert.strictEqual(g.lost, true, 'not lost');
+  assert.strictEqual(g.done, true, 'not done');
+  assert.ok(typeof g.why === 'string' && g.why.length > 0, 'no why');
+});
+
+test('la fournée: ends on its own', () => {
+  const L = load(), r = play('bakery', { L, bot: { pace: 0.05, err: 0 }, secs: L.tune.bakery_time + 1 });
+  assert.strictEqual(r.done, true, 'not done by ' + (L.tune.bakery_time + 1) + ' s');
+  assert.strictEqual(r.lost, false, 'lost');
+});
+
+test('la fournée: one press, one loaf', () => {
+  const L = load(), g = start(L, 'bakery', 0);
+  g.ovens[0].state = 'baking'; g.ovens[0].t = 0.6;
+  L.ctx.pressed = k => k === 'Digit1';
+  const before = g.score;
+  for (let i = 0; i < 30; i++) g.update(1 / 60, { act: false, alt: false });
+  L.ctx.pressed = () => false;
+  assert.ok(g.score - before === 2 || g.score - before === 3, 'score went up by ' + (g.score - before));
+});
+
+test('la fournée: a pale loaf is worth nothing, a golden one 2, the heart of the window 3, a dark one 1', () => {
+  const L = load(), g = start(L, 'bakery', 0), T = L.tune, c = (T.bakery_gold_from + T.bakery_gold_to) / 2;
+  const worth = t => { g.ovens[0].state = 'baking'; g.ovens[0].t = t; const s = g.score; g.take(0); return g.score - s; };
+  assert.strictEqual(worth(0.3), 0, 'pale');
+  assert.strictEqual(worth(T.bakery_gold_from + 0.01), 2, 'edge of the window');
+  assert.strictEqual(worth(c), 3, 'heart of the window');
+  assert.strictEqual(worth(0.9), 1, 'dark');
+  assert.strictEqual(g.ovens[0].state, 'empty', 'a loaf taken leaves its oven empty');
+});
+
+// ---- Pain chaud (the bakery's gift) ----
+/** The real js/city.js in the sandbox L, over a village of one house of the first class at normal tax. */
+function loadCity(L) {
+  const cls = L.DATA.classes[0];
+  L.ctx.Village = { classOf: () => cls };
+  L.ctx.state.city = { tax: { [cls.id]: 1 }, pop: 0 };
+  L.ctx.state.prestige = { tree: {} };
+  L.ctx.state.venue = L.Venue.fresh();
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/city.js'), 'utf8'), L.ctx, { filename: 'js/city.js' });
+  return vm.runInContext('City', L.ctx);
+}
+
+test('pain chaud: a fed house\'s satisfaction climbs 60 % more a meal with the gold gift, and no faster without', () => {
+  const L = load(), City = loadCity(L), b = { kind: 'house', cls: 0 };
+  const fed = City.mealSat(b, true), hungry = City.mealSat(b, false);
+  assert.ok(fed > 0, 'a meal gives nothing');
+  L.ctx.state.venue.buffs.rise = { v: 0.6, left: 100, total: 300, from: 'bakery' };
+  assert.strictEqual(L.Venue.buff('rise'), 0.6);
+  assert.ok(Math.abs(City.mealSat(b, true) - 1.6 * fed) < 1e-12, 'with the gift: ' + City.mealSat(b, true) + ', without: ' + fed);
+  assert.strictEqual(City.mealSat(b, false), hungry, 'a missed meal changed');
+});
+
 if (require.main === module) {
   let bad = 0;
   for (const t of tests) {

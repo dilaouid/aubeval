@@ -870,6 +870,16 @@ I18N.add('en', {
   'strings.fg_cold': 'Too cold!', // Trop froid !
   'strings.fg_hot': 'Too hot!', // Ça brûle !
   'strings.fg_early': 'Thin air', // Dans le vide
+  'strings.bk_score': 'Golden loaves', // Pains dorés
+  'strings.bk_burnt_n': 'Burnt', // Brûlés
+  'strings.bk_keys': 'Keys 1 to {n}, or click an oven', // Touches 1 à {n}, ou clic sur un four
+  'strings.bk_perfect': 'Perfect! +{n}', // Parfait ! +{n}
+  'strings.bk_golden': 'Golden +{n}', // Doré +{n}
+  'strings.bk_dark': 'Dark +{n}', // Foncé +{n}
+  'strings.bk_pale': 'Too pale…', // Trop pâle…
+  'strings.bk_burnt': 'Burnt!', // Brûlé !
+  'strings.bk_reload': 'In it goes…', // On enfourne…
+  'strings.bk_end_strikes': 'The batch burnt!', // La fournée a brûlé !
   'strings.ex_title': 'Exploration', // Exploration
   'strings.ex_known': 'Known lands: {pct}%', // Terres connues : {pct} %
   'strings.ex_help': 'Beyond the village, the mist hides the land. Your buildings, your soldiers, the hero and the scouts lift it, and find what it hides.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.

@@ -201,6 +201,15 @@ window.CONFIG = {
   forge_band: { value: 0.17, min: 0.05, max: 0.4, step: 0.01 },      // half-width of the band of good heat, as a share of the gauge
   forge_cold_mult: { value: 0.4, min: 0, max: 1, step: 0.05 },       // share of a blow's worth kept when the heat is out of its band
   forge_chain: { value: 5, min: 2, max: 20, step: 1 },               // good blows in a row that set the sparks flying (each then counts a tenth more)
+  bakery_time: { value: 36, min: 15, max: 90, step: 1 },             // bakery, « La fournée »: seconds the batch lasts
+  bakery_bake: { value: 5, min: 1, max: 20, step: 0.5 },             // seconds a miche takes to burn, before any streak (the other loaves: their `bake` in data/venues.js)
+  bakery_bake_min: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // ... and the least any loaf takes, deep in a streak
+  bakery_gold_from: { value: 0.55, min: 0.1, max: 0.9, step: 0.01 }, // where the golden window starts, as a share of the baking
+  bakery_gold_to: { value: 0.8, min: 0.2, max: 0.98, step: 0.01 },   // ... and where it ends (it narrows round its middle as the streak grows)
+  bakery_window_min: { value: 0.1, min: 0.02, max: 0.5, step: 0.01 }, // the narrowest the golden window ever gets, as a share of the baking
+  bakery_perfect: { value: 0.25, min: 0.05, max: 1, step: 0.05 },    // share of the golden window, in its middle, where a loaf is perfect
+  bakery_reload: { value: 0.5, min: 0, max: 3, step: 0.1 },          // seconds an oven stands empty before the next loaf goes in
+  bakery_strikes: { value: 4, min: 1, max: 10, step: 1 },            // loaves that may burn: at this many the batch is lost
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----
   fog_cell: { value: 4, min: 2, max: 16, step: 1 },                  // tiles on one side of a cell of fog: a cell is seen or not, whole

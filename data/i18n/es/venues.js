@@ -17,6 +17,9 @@ I18N.add('es', {
   'venueBuffs.forge.name': 'Fuego vivo', // Feu vif
   'venueBuffs.forge.text': 'Forja un {n} % más rápida', // Forge {n} % plus rapide
   'venueBuffs.forge.short': 'forja +{n} %', // forge +{n} %
+  'venueBuffs.rise.name': 'Pan caliente', // Pain chaud
+  'venueBuffs.rise.text': 'Satisfacción de las casas un {n} % más rápida', // Satisfaction des maisons {n} % plus rapide
+  'venueBuffs.rise.short': 'satisfacción +{n} %', // satisfaction +{n} %
   'venues.cafe.name': 'El Café de Aubeval', // Le Café d’Aubeval
   'venues.cafe.title': 'El ajetreo', // Le coup de feu
   'venues.cafe.unit': 'monedas de propina', // sous de pourboire
@@ -136,4 +139,38 @@ I18N.add('es', {
   'venues.forge.after[1]': 'Corta. Algo es algo.', // Elle coupe. C’est déjà ça.
   'venues.forge.after[2]': '¡Buena hoja! Su brazo la recordará en combate.', // Belle lame ! Votre bras s’en souviendra au combat.
   'venues.forge.after[3]': '¡Una hoja de leyenda! Golpee así en combate y nada resistirá.', // Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.
+  'venues.bakery.name': 'La Panadería', // La Boulangerie
+  'venues.bakery.title': 'La hornada', // La fournée
+  'venues.bakery.unit': 'panes dorados', // pains dorés
+  'venues.bakery.how': 'Cada horno cuece un pan, de pálido a dorado y luego tostado, y al final se quema. Sáquelo cuando esté dorado, en el corazón de la ventana si puede. Cuatro panes quemados y la hornada está perdida.', // Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.
+  'venues.bakery.keys': 'Teclas 1 a 5, o clic en un horno. Dorado: 2, en el corazón: 3, tostado: 1, pálido: nada.', // Touches 1 à 5, ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.
+  'venues.bakery.breads[baguette].name': 'Baguette', // Baguette
+  'venues.bakery.breads[miche].name': 'Hogaza', // Miche
+  'venues.bakery.breads[brioche].name': 'Brioche', // Brioche
+  'venues.bakery.greet': '¡Pase, pase, junto a los hornos se está bien! Aquí madrugamos más que el gallo. Y cuando cuecen tres hornadas a la vez, dos manos más nunca sobran.', // Entrez donc, il fait bon près des fours ! Ici on se lève avant le coq. Et quand trois fournées cuisent à la fois, deux mains de plus ne sont pas de trop.
+  'venues.bakery.ready[0]': 'Los hornos están calientes, {g:héroe|heroína}. ¿Me echa una mano?', // Les fours sont chauds, {g:héros|héroïne}. Vous me donnez un coup de main ?
+  'venues.bakery.ready[1]': 'La masa ha subido, la hornada solo le espera a usted.', // La pâte a levé, la fournée n’attend que vous.
+  'venues.bakery.ready[2]': 'Tres hornos, dos manos: me faltan dos más. ¿Las suyas?', // Trois fours, deux mains : il m’en faut deux de plus. Les vôtres ?
+  'venues.bakery.wait[0]': 'Los hornos descansan. Vuelva cuando la masa haya subido.', // Les fours se reposent. Revenez quand la pâte aura levé.
+  'venues.bakery.wait[1]': 'Estoy amasando la próxima hornada. Pase más tarde.', // Je pétris la prochaine fournée. Repassez tout à l’heure.
+  'venues.bakery.chat[0]': 'Una hogaza caliente y el mundo va mejor.', // Une miche chaude et le monde va mieux.
+  'venues.bakery.chat[1]': 'El pan no se apresura. Salvo cuando se quema.', // Le pain, ça ne se presse pas. Sauf quand il brûle.
+  'venues.bakery.chat[2]': 'Una ciudad que come bien es una ciudad que canta.', // Une ville qui mange bien est une ville qui chante.
+  'venues.bakery.chat[3]': '{g:El héroe|La heroína} sacando el pan del horno: los vecinos no dan crédito.', // {g:Le héros|L’héroïne} qui sort le pain du four : les voisins n’en reviennent pas.
+  'venues.bakery.chat[4]': 'Gaspard moja mis cruasanes en su café. Hago como que no lo veo.', // Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir.
+  'venues.bakery.tips[0]': 'En el obrador se dice que', // Au fournil, on dit que
+  'venues.bakery.tips[1]': 'Mis clientes de la mañana me han dicho:', // Mes clients du matin me l’ont dit :
+  'venues.bakery.tips[2]': 'Entre dos hornadas, me enteré de que', // Entre deux fournées, j’ai appris que
+  'venues.bakery.glad[0]': '¡Dorado a punto!', // Doré à point !
+  'venues.bakery.glad[1]': '¡Perfecto!', // Parfait !
+  'venues.bakery.glad[2]': '¡Qué bien huele!', // Ça sent bon !
+  'venues.bakery.cross[0]': '¡Demasiado pronto!', // Trop tôt !
+  'venues.bakery.cross[1]': 'Aún pálido…', // Encore pâle…
+  'venues.bakery.cross[2]': '¡Paciencia!', // Patience !
+  'venues.bakery.lost[0]': '¡Huele a quemado!', // Ça sent le brûlé !
+  'venues.bakery.lost[1]': '¡El horno! ¡El horno!', // Le four ! Le four !
+  'venues.bakery.after[0]': 'Todo se quemó… Abriremos las ventanas y volveremos a empezar.', // Tout a brûlé… On ouvrira les fenêtres et on recommencera.
+  'venues.bakery.after[1]': 'Unos cuantos panes buenos. Los vecinos comerán.', // Quelques bons pains. Les voisins mangeront.
+  'venues.bakery.after[2]': '¡Buena hornada! Toda la calle huele a pan caliente.', // Belle fournée ! Toute la rue sent le pain chaud.
+  'venues.bakery.after[3]': '¡Una hornada de rey! Todo Aubeval tendrá pan caliente esta noche, y una sonrisa con él.', // Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir, et le sourire avec.
 });
