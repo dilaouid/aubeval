@@ -130,7 +130,7 @@ window.ASSETS = {
   ...Object.fromEntries(['cafe', 'market', 'forge'].map(k => ['venue.bg.' + k, { file: `sprites/venue/bg_${k}.png`, w: 640, h: 360 }])),
   ...Object.fromEntries(['innkeeper', 'merchant', 'smith'].map(k => ['venue.char.' + k, { sheet: `sprites/venue/char_${k}.png`, cols: 8, rows: 1 }])),
 
-  'bg.battle': 'sprites/bg_battle.png',
+  'bg.battle': { frames: ['sprites/bg_battle.png', 'sprites/bg_battle_boss.png'] }, // the Ronces by day, and at dusk for a boss (tools/make_boss_backdrop.py grades the first into the second)
   'enemy.brute': 'sprites/enemy_brute.png',
   'enemy.chaman': 'sprites/enemy_chaman.png',
   'enemy.gobelin': 'sprites/enemy_gobelin.png',
