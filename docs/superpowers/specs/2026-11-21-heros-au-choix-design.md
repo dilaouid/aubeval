@@ -21,6 +21,9 @@ tout ce qui vient après la Capitale (factions, ruines, unités, civilisation go
 - Non-but : un sprite de combat par palier d'arme. Chaque héros a une seule image de combat,
   comme Aldric aujourd'hui (les paliers relèvent du chantier « sprites manquants »).
 - Non-but : refaire les images d'Aldric qui existent (combat, carte). Seul son portrait est neuf.
+  (Le 2026-11-22, le joueur a demandé que son sprite de combat soit refait : il venait d'un autre
+  générateur, sans visage, et jurait avec les trois nouveaux. Sa figurine de carte reste celle
+  d'origine.)
 - Non-but : mettre à jour le README, ses captures, ou le dossier du prototype d'origine.
 - Anti-but : une sauvegarde existante qui change de héros toute seule ou perd quoi que ce soit.
 - Anti-but : un nom tapé par le joueur écrasé parce qu'il a changé de héros.

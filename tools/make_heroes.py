@@ -16,7 +16,8 @@ One folder per hero (data/world.js DATA.heroes), with what it has so far:
 
 Nothing is resampled. A frame of another size (the frames of a map figure must all match), or a
 figure that does not reach the bottom of its cell, is refused. tools/heroes/ids.tsv says where each
-raw image comes from. Aldric's battle sprite and map sheet are not built here, on purpose (--check says "not built").
+raw image comes from. Aldric's map sheet is not built here, on purpose (assets/sprites/iso/unit_hero.png, from the first
+set of figures): --check says "not built" for it.
 
 Run from the root of the repository:
   python tools/make_heroes.py           builds everything found
