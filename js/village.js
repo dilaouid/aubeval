@@ -480,13 +480,17 @@ const Village = (() => {
     state.res[res] -= tune.trade_lot; gain('gold', sellPrice(res)); sfx('coin'); return true;
   }
   function scaleCost(c, k) { const o = {}; for (const r in c) o[r] = Math.max(1, Math.ceil(c[r] * k)); return o; }
-  /** What Aveline's plans (the lodge's gift, Venue.buff('build')) leave of a price: all of it for a great work, and when none runs. */
-  const plans = kind => B[kind].monument ? 1 : 1 - Venue.buff('build');
+  /**
+   * What the lodge leaves of a price: its standing discount (Venue.lodgePerks) and Aveline's gift (Venue.buff('build'))
+   * together, at most config lodge_plans_cap off. All of it for a great work, and when neither runs.
+   */
+  const plans = kind => B[kind].monument ? 1 : 1 - Math.min(tune.lodge_plans_cap, Venue.buff('build') + Venue.lodgePerks().plans);
   /** The price of one more of this kind: each one already built raises it. */
   function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale * plans(kind)); }
   function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale * plans(b.kind)); }
-  function refund(b) { return scaleCost(B[b.kind].cost, tune.refund_pct); }
-  function repairCost(b) { return scaleCost(B[b.kind].cost, tune.repair_pct); }
+  /** A demolition gives back refund_pct of the base price, the lodge adding a little, never more than 1 minus the discount cap (buying then demolishing never pays). */
+  function refund(b) { return scaleCost(B[b.kind].cost, Math.max(tune.refund_pct, Math.min(tune.refund_pct + Venue.lodgePerks().refund, 1 - tune.lodge_plans_cap))); }
+  function repairCost(b) { return scaleCost(B[b.kind].cost, tune.repair_pct * (1 - Venue.lodgePerks().repair)); }
   function canAfford(c) { for (const r in c) if (state.res[r] < c[r]) return false; return true; }
   function pay(c) { if (!canAfford(c)) return false; for (const r in c) state.res[r] -= c[r]; return true; }
   /** Adds to the stock (and to the lifetime totals the quests and the new start read). */
