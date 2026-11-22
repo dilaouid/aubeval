@@ -124,7 +124,7 @@ DATA.buildings = {
   lodge: {
     name: 'Loge des bâtisseurs', card: 'Loge', sprite: 'iso.lodge', w: 2, h: 2,
     cost: { planks: 60, stone: 60, gold: 150 }, unique: true, unlock: { rank: 2 }, glow: true, keeper: 'guide', beauty: 1,
-    desc: 'La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.',
+    desc: 'La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Posée, elle fait bâtir et améliorer moins cher, réparer à bon compte et rend davantage à la démolition. Chaque niveau renforce ces avantages et allonge les plans d’Aveline, son cadeau de jeu.',
   },
   sheep_farm: {
     name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,

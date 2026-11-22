@@ -112,7 +112,7 @@ Tenancière : Aveline (`guide`). **Bâtiment neuf**, type `lodge`.
   **Ville** (`unlock: { rank: 2 }`), coût de départ `{ planks: 60, stone: 60, gold: 150 }`,
   `beauty: 1`, fenêtres éclairées (`glow`), `keeper: 'guide'`. Il ne produit rien et ne rend aucun
   service aux maisons : on y entre, c'est tout. Quatre aspects (niveaux 1, 5, 10, 15) comme les
-  autres bâtiments.
+  autres bâtiments. *(Amendé par `2026-11-22-loge-utile-design.md` : la Loge a maintenant des effets permanents.)*
 - **Ses niveaux allongent son cadeau (choix du joueur).** Chaque niveau de la Loge au-dessus du
   premier ajoute 20 secondes à « Plans d'Aveline » (réglage `lodge_level_time` dans `config.js`) :
   5 minutes au niveau 1, 9 min 40 au niveau 15. La durée est fixée au moment où le cadeau est

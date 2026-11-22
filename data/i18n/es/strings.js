@@ -399,9 +399,12 @@ I18N.add('es', {
   'strings.up_double': '¡Hito: producción ×2!', // Palier : production ×2 !
   'strings.up_look': 'Nuevo aspecto', // Nouvelle apparence
   'strings.up_lodge': 'Planos de Aveline: +{n} s', // Plans d’Aveline : +{n} s
+  'strings.up_lodge_perks': 'Logia: descuento del {plans} %, reparaciones −{repair} %, reembolso del {refund} %', // Loge : rabais {plans} %, réparations −{repair} %, remboursement {refund} %
   'strings.sec_work': 'Trabajo', // Travail
   'strings.sec_defense': 'Defensa', // Défense
   'strings.sec_level': 'Nivel', // Niveau
+  'strings.sec_lodge': 'Los planos de la Logia', // Les plans de la Loge
+  'strings.lodge_perks_now': 'Descuento permanente del {plans} % en construcciones y mejoras (con el regalo de Aveline, {cap} % como máximo). Las reparaciones cuestan un {repair} % menos. Al demoler se devuelve el {refund} % del precio.', // Rabais permanent de {plans} % sur les constructions et les améliorations (avec le cadeau d’Aveline, {cap} % au plus). Réparations {repair} % moins chères. Démolition : {refund} % du prix rendus.
   'strings.sec_town': 'El barrio', // Le quartier
   'strings.sec_road': 'Camino', // Chemin
   'strings.serves': 'Sirve a las casas a {r} casillas alrededor: {n} ahora mismo.', // Sert les maisons à {r} cases autour : {n} en ce moment.

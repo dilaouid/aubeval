@@ -170,6 +170,32 @@ test('a gift won with no lodge standing lasts the plain time', () => {
   assert.strictEqual(Venue.giftTime('lodge', 'build'), 300);
 });
 
+// ---- Les avantages de la Loge (Venue.lodgePerks: what a standing lodge does, whatever the gift) ----
+const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, (msg || '') + ': ' + a + ' is not ' + b);
+const perks = (L, lvl, extra) => { L.ctx.state.buildings = lvl == null ? [] : [Object.assign({ kind: 'lodge', lvl }, extra)]; return plain(L.Venue.lodgePerks()); };
+
+test('lodge perks: none without a lodge', () => {
+  const L = load();
+  assert.deepStrictEqual(perks(L, null), { plans: 0, repair: 0, refund: 0 });
+  L.ctx.state.buildings = undefined;
+  assert.deepStrictEqual(plain(L.Venue.lodgePerks()), { plans: 0, repair: 0, refund: 0 }, 'no buildings at all');
+  assert.deepStrictEqual(plain(L.Venue.lodgePerks(0)), { plans: 0, repair: 0, refund: 0 }, 'level 0');
+});
+
+test('lodge perks: level 1 and level 15', () => {
+  const L = load(), p1 = perks(L, 1), p15 = perks(L, 15);
+  near(p1.plans, 0.02, 'plans 1'); near(p1.repair, 0.5 / 15, 'repair 1'); near(p1.refund, 0.04 / 15, 'refund 1');
+  near(p15.plans, 0.09, 'plans 15'); near(p15.repair, 0.5, 'repair 15'); near(p15.refund, 0.04, 'refund 15');
+  const q = L.Venue.lodgePerks(15);
+  near(q.plans, 0.09, 'plans given a level'); near(q.repair, 0.5, 'repair given a level'); near(q.refund, 0.04, 'refund given a level');
+});
+
+test('lodge perks: no more past level 15, and a damaged lodge keeps them', () => {
+  const L = load(), p15 = perks(L, 15);
+  assert.deepStrictEqual(perks(L, 40), p15, 'level 40');
+  assert.deepStrictEqual(perks(L, 15, { damaged: true }), p15, 'damaged');
+});
+
 // ---- La fournée (bakery) ----
 /** A new game of a place at `level`, in the sandbox L, its keeper's words thrown away. */
 const start = (L, id, level) => L.Minigames.make(id, { level, d: L.DATA.venues[id], react: () => {}, away: () => {} });
@@ -560,6 +586,104 @@ test('plans d\'Aveline: nothing is refunded for more than it was paid', () => {
   }
   L.ctx.state.venue.buffs.build.left = 0;
   for (const k in before) assert.deepStrictEqual(plain(Village.refund({ kind: k })), before[k], k + ': the refund changed with the gift');
+});
+
+// ---- The lodge's standing effects, in the prices (js/village.js) ----
+const withLodge = (L, lvl, extra) => { L.ctx.state.buildings = lvl ? [Object.assign({ uid: 1, kind: 'lodge', lvl, x: 0, y: 0 }, extra)] : []; };
+
+test('lodge: a standing lodge makes buildings and upgrades cheaper, up to a cap with the gift', () => {
+  const L = load(), { Village } = loadVillage(L), T = L.tune, B = L.DATA.buildings.chapel, up = { kind: 'chapel', lvl: 3 }; // a dear building: the lodge's one-unit minimum never binds on it
+  const cost = k => plain(Village.scaleCost(B.cost, k * T.cost_scale));
+  const upCost = k => plain(Village.scaleCost(B.cost, k * T.upgrade_cost_base * Math.pow(T.upgrade_cost_growth, 2) * T.cost_scale));
+  const check = (what, k) => {
+    assert.deepStrictEqual(plain(Village.cost('chapel')), cost(k), what + ': a chapel');
+    assert.deepStrictEqual(plain(Village.upgradeCost(up)), upCost(k), what + ': an upgrade');
+  };
+  withLodge(L, 0); check('no lodge', 1);
+  withLodge(L, 1); check('level 1', 0.98);
+  withLodge(L, 15); check('level 15', 0.91);
+  gift(L, 0.15); check('level 15 with the gift', 0.76);
+  gift(L, 0.5); check('level 15 with a strong gift', 0.75);
+  withLodge(L, 15, { damaged: true }); check('a damaged lodge', 0.75);
+  withLodge(L, 40); check('level 40', 0.75);
+});
+
+test('lodge: a standing lodge takes at least one unit off each resource, never down to the refund', () => {
+  const L = load(), { Village } = loadVillage(L);
+  withLodge(L, 0);
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 20, planks: 6 }, 'no lodge: the plain price the cases below start from');
+  withLodge(L, 1); // 2 %: 19.6 and 5.9 would round back up to 20 and 6
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 19, planks: 5 }, 'level 1');
+  gift(L, 0.15);
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 17, planks: 5 }, 'level 1 with the gift: a bigger cut still counts');
+  L.ctx.state.venue.buffs.build.left = 0;
+  // a price of 1 stays 1, and a lodge never makes a demolition pay: a cap set far too high is held at the refund
+  L.tune.lodge_plans_cap = 0.9; L.tune.lodge_plans_base = 0.8; withLodge(L, 15);
+  const B = L.DATA.buildings;
+  for (const k of L.DATA.buildOrder) {
+    if (!B[k] || B[k].monument) continue;
+    const paid = Village.cost(k), back = Village.refund({ kind: k });
+    for (const r in paid) assert.ok(paid[r] >= 1 && paid[r] >= back[r], k + ': ' + r + ' paid ' + paid[r] + ', back ' + back[r]);
+  }
+  withLodge(L, 0); L.tune.lodge_plans_base = 0.02;
+});
+
+test('lodge: repairs lose at least one unit of each resource too', () => {
+  const L = load(), { Village } = loadVillage(L);
+  withLodge(L, 0);
+  assert.deepStrictEqual(plain(Village.repairCost({ kind: 'forge' })), plain(Village.scaleCost(L.DATA.buildings.forge.cost, 0.3)), 'no lodge');
+  withLodge(L, 1);
+  const plainCost = plain(Village.scaleCost(L.DATA.buildings.forge.cost, 0.3)), got = plain(Village.repairCost({ kind: 'forge' }));
+  for (const r in plainCost) assert.strictEqual(got[r], Math.max(1, plainCost[r] - 1), 'forge ' + r);
+  assert.deepStrictEqual(plain(Village.scaleCost({ gold: 1 }, 0.3)), { gold: 1 });
+});
+
+test('lodge: a great work costs the same with the lodge standing', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings;
+  const works = Object.keys(B).filter(k => B[k].monument), seen = () => works.map(k => [plain(Village.cost(k)), plain(Village.upgradeCost({ kind: k, lvl: 1 })), plain(Village.upgradeCost({ kind: k, lvl: 3 }))]);
+  withLodge(L, 0); const before = seen();
+  withLodge(L, 15); gift(L, 0.15);
+  assert.deepStrictEqual(seen(), before);
+});
+
+test('lodge: repairs cost less, up to half', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings.house;
+  const at = lvl => { withLodge(L, lvl); return plain(Village.repairCost({ kind: 'house' })); };
+  assert.deepStrictEqual(at(0), plain(Village.scaleCost(B.cost, 0.3)), 'no lodge');
+  assert.deepStrictEqual(at(15), plain(Village.scaleCost(B.cost, 0.15)), 'level 15');
+  const sum = o => Object.values(o).reduce((a, b) => a + b, 0);
+  assert.ok(sum(at(15)) < sum(at(1)) && sum(at(1)) <= sum(at(0)), 'not going down');
+});
+
+test('lodge: demolition gives back up to 74 %', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings.house;
+  const at = lvl => { withLodge(L, lvl); return plain(Village.refund({ kind: 'house' })); };
+  assert.deepStrictEqual(at(0), plain(Village.scaleCost(B.cost, 0.7)), 'no lodge');
+  assert.deepStrictEqual(at(15), plain(Village.scaleCost(B.cost, 0.74)), 'level 15');
+  const one = at(1);
+  for (const r in one) assert.ok(one[r] >= at(0)[r] && one[r] <= at(15)[r], 'level 1, ' + r);
+});
+
+test('lodge: buying then demolishing never pays', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings;
+  withLodge(L, 15); gift(L, 0.5);
+  for (const k of L.DATA.buildOrder) {
+    if (!B[k]) continue;
+    const paid = Village.cost(k), back = Village.refund({ kind: k });
+    for (const r in back) assert.ok(back[r] <= paid[r], k + ': ' + r + ' refunded ' + back[r] + ', paid ' + paid[r]);
+  }
+  L.tune.lodge_plans_cap = 0.5; // a cap set lower than the share given back: the share is held to 1 minus the cap, but never below refund_pct
+  assert.deepStrictEqual(plain(Village.refund({ kind: 'house' })), plain(Village.scaleCost(B.house.cost, 0.7)));
+});
+
+test('lodge: a rampart\'s repairs and refunds follow the lodge', () => {
+  const L = load(), { Village } = loadVillage(L), wall = [{ kind: 'palisade', damaged: true }];
+  withLodge(L, 0); const r0 = plain(Village.rampartRepairCost(wall)), f0 = plain(Village.rampartRefund(wall));
+  withLodge(L, 15);
+  assert.deepStrictEqual(plain(Village.rampartRepairCost(wall)), plain(Village.repairCost(wall[0])));
+  const sum = o => Object.values(o).reduce((a, b) => a + b, 0);
+  assert.ok(sum(Village.rampartRepairCost(wall)) <= sum(r0) && sum(Village.rampartRefund(wall)) >= sum(f0));
+  assert.notDeepStrictEqual(plain(Village.rampartRepairCost(wall)), r0, 'no cheaper');
 });
 
 test('plans d\'Aveline: the real lodge\'s gift lasts 300 s at level 1 and 580 s at level 15', () => {

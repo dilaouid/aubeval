@@ -62,9 +62,24 @@ const Venue = (() => {
   function giftTime(id, key) {
     const d = V[id], per = d && d.perLevel ? tune[d.perLevel] : 0;
     if (!(per > 0)) return tune.venue_buff_time;
+    return tune.venue_buff_time + per * Math.max(0, topLevel(id) - 1);
+  }
+  /** The level of the highest building of this kind (0 when none stands, whole or not). */
+  function topLevel(kind) {
     let top = 0;
-    for (const b of (state && state.buildings) || []) if (b.kind === id && b.lvl > top) top = b.lvl;
-    return tune.venue_buff_time + per * Math.max(0, top - 1);
+    for (const b of (state && state.buildings) || []) if (b.kind === kind && b.lvl > top) top = b.lvl;
+    return top;
+  }
+  /**
+   * What a standing lodge does whatever its gift, as shares for the level `lvl` (the lodge standing's when left out; 0 when none):
+   * `plans` off buildings and upgrades, `repair` off a repair's price, `refund` more given back on a demolition.
+   * Past config lodge_max_level nothing grows; a damaged lodge keeps all of it.
+   */
+  function lodgePerks(lvl = topLevel('lodge')) {
+    lvl = Math.min(lvl, tune.lodge_max_level);
+    if (!(lvl > 0)) return { plans: 0, repair: 0, refund: 0 };
+    const k = lvl / tune.lodge_max_level;
+    return { plans: tune.lodge_plans_base + tune.lodge_plans_step * (lvl - 1), repair: tune.lodge_repair_cut * k, refund: tune.lodge_refund_gain * k };
   }
   /** How hard a place's game is: its winning streak, up to config venue_streak_max. */
   function level(id) { return Math.min(S().streak[id] || 0, tune.venue_streak_max); }
@@ -742,5 +757,5 @@ const Venue = (() => {
     if (v.game.done) { finish(); v.res.t = 1; console.log(`venue ${id} · série ${v.res.before} · score ${v.res.score} · médaille ${v.res.medal} · popularité +${v.res.pop}`); }
   }
 
-  return { fresh, adopt, tick, away, has, buff, giftTime, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; }, get id() { return v ? v.id : null; } };
+  return { fresh, adopt, tick, away, has, buff, giftTime, lodgePerks, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; }, get id() { return v ? v.id : null; } };
 })();
