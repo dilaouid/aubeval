@@ -188,17 +188,29 @@
       if (g.botI >= todo.length) validate();
     }
 
+    /**
+     * What each side shows: Aveline's plan `shown` (turned), `hidden` or `square` to the grid (once compared); the
+     * player's grid `empty` or `built`. Never both the plan and the player's buildings: a second look is not a check.
+     */
+    function view() {
+      const ph = g.phase;
+      return {
+        plan: (ph === 'show' && g.started) || ph === 'peek' ? 'shown' : ph === 'reveal' ? 'square' : 'hidden',
+        grid: ph === 'show' || ph === 'peek' ? 'empty' : 'built',
+      };
+    }
+
     function draw() {
-      const C = UI.C, n = g.plan.side, ph = g.phase, pl = layout(n, PLAN_X, TOP), gl = layout(n, GRID_X, TOP), none = new Array(n * n).fill(null);
+      const C = UI.C, n = g.plan.side, ph = g.phase, vw = view(), pl = layout(n, PLAN_X, TOP), gl = layout(n, GRID_X, TOP), none = new Array(n * n).fill(null);
       head(d, total - g.t, total); scoreBox(d, tr('lg_score'), Math.round(g.score), g.score < 0 ? C.bad : C.gold);
       UI.plate(1118, 78, 150, 34); UI.label(`${tr('lg_misses_n')}${tr('colon')}${g.misses} / ${tune.lodge_misses}`, 1193, 96, 14, g.misses ? C.bad : C.dim);
       // on Aveline's left, her plan: shown (turned), hidden while one builds, square to the grid once compared
-      if ((ph === 'show' && g.started) || ph === 'peek') quarter(pl, g.plan.cells, PARCH, g.plan.turn);
-      else if (ph === 'reveal') quarter(pl, g.plan.cells, PARCH, 0);
+      if (vw.plan === 'shown') quarter(pl, g.plan.cells, PARCH, g.plan.turn);
+      else if (vw.plan === 'square') quarter(pl, g.plan.cells, PARCH, 0);
       else { quarter(pl, none, DIM, g.plan.turn); text('?', PLAN_X, TOP + pl.h * n / 2 + 14, 54, C.dim, 'center', true); }
-      // on her right, the player's grid: the cursor and the cell under the mouse while building, ticks and crosses once compared
+      // on her right, the player's grid (put away while the plan shows): the cursor and the cell under the mouse while building, ticks and crosses once compared
       const hover = ph === 'build' && typeof mouse !== 'undefined' ? gl.cellAt(mouse.x, mouse.y) : null;
-      quarter(gl, ph === 'show' ? none : g.grid, ph === 'show' ? DIM : GRASS, 0, gl.k, lay => {
+      quarter(gl, vw.grid === 'empty' ? none : g.grid, vw.grid === 'empty' ? DIM : GRASS, 0, gl.k, lay => {
         if (hover) { const c = lay.at(hover.x, hover.y); diamond(c.x, c.y, lay.cw, lay.h, 'rgba(255,240,180,0.25)', C.text, 2); }
         if (ph === 'build') { const c = lay.at(g.cursor.x, g.cursor.y); diamond(c.x, c.y, lay.cw - 4, lay.h - 2, null, C.gold, 3); }
       });
@@ -230,7 +242,7 @@
       });
       drawPops(g.pops);
     }
-    return Object.assign(g, { update, draw, auto, seen, select, put, move, peek, validate });
+    return Object.assign(g, { update, draw, auto, view, seen, select, put, move, peek, validate });
   }
 
   /** The intro's cards: look at the quarter, rebuild it from memory, a second look costs; the turned plan when it comes. */

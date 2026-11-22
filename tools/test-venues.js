@@ -482,6 +482,19 @@ test('quartier: an empty grid cannot be checked (an Enter that comes as the plan
   assert.strictEqual(g.phase, 'build'); assert.strictEqual(g.misses, 0); assert.strictEqual(g.quarters, 0);
 });
 
+test('quartier: a second look shows the plan in place of the grid, never both at once', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  g.update(STEP, NO_INPUT);
+  assert.deepStrictEqual(plain(g.view()), { plan: 'shown', grid: 'empty' }, 'the show');
+  toBuild(g); g.put(0, 0, 0);
+  assert.deepStrictEqual(plain(g.view()), { plan: 'hidden', grid: 'built' }, 'building');
+  g.peek();
+  assert.deepStrictEqual(plain(g.view()), { plan: 'shown', grid: 'empty' }, 'the peek shows the player’s grid');
+  for (let i = 0; i < 60 * L.tune.lodge_peek_time + 5; i++) g.update(STEP, NO_INPUT);
+  g.validate();
+  assert.deepStrictEqual(plain(g.view()), { plan: 'square', grid: 'built' }, 'compared');
+});
+
 test('quartier: the clock stops while the quarters are compared', () => {
   const L = load(), g = start(L, 'lodge', 0);
   toBuild(g); copy(g); g.validate();
