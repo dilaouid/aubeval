@@ -58,7 +58,7 @@ const Camp = (() => {
     if (!standing()) return [];
     ensure();
     const mid = Village.campMid(), R = tune.camp_alert * T;
-    return Units.soldiers().filter(u => !(u.down > 0) && Math.hypot(u.x - mid.x, u.y - mid.y) <= R);
+    return Units.soldiers().filter(u => Math.hypot(u.x - mid.x, u.y - mid.y) <= R);
   }
   /** Whether soldiers are at the camp now: the hero joins them. */
   const assaulted = () => attackers().length > 0;
@@ -182,7 +182,7 @@ const Camp = (() => {
   /** Sends every soldier on his feet to attack it. Returns how many went. */
   function attack() {
     if (!standing()) return 0;
-    const ids = Units.soldiers().filter(u => !(u.down > 0)).map(u => u.id), p = gate();
+    const ids = Units.soldiers().map(u => u.id), p = gate();
     if (!ids.length || !Units.order(ids, p.x, p.y)) return 0;
     toast(tr('camp_sent', { n: ids.length }), UI.C.accent);
     return ids.length;

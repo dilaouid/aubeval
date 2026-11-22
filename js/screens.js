@@ -10,6 +10,8 @@ const ui = {};
 // bar: the build bar's open tab; stroke: the last tile a held pointer drew on (the axe: the last screen point it swept).
 // rot: 1 when the building on the pointer is turned (R); wall: the tile a rampart being drawn starts
 // from (the pointer held down); wallVoid: that drawing was called off, until the button comes up.
+// heroPick: the hero's id being picked on the naming screen (null elsewhere); nameEdit: true when that screen
+// retouches the hero of a game under way instead of naming one before a new game.
 // selU: the ids of the soldiers the player has selected; box: the selection box being drawn (Shift + drag).
 function resetUi() { Object.assign(ui, { selU: [], box: null, panel: null, sel: null, placing: null, moving: null, tool: null, rot: 0, wall: null, wallShape: null, wallVoid: false, bar: DATA.buildTabs[0].id, stroke: null, tab: 'main', toasts: [], floats: [], disp: {}, wipeArm: 0, away: null, banner: null, saveT: 0, titleWipe: 0, titleT: 0 }); }
 resetUi();
@@ -61,14 +63,22 @@ const scenes = (() => {
   function turnable() { const mv = ui.moving && Village.byUid(ui.moving), k = ui.placing || (mv && mv.kind); return !!k && Village.canTurn(k); }
   const shift = () => down.has('ShiftLeft') || down.has('ShiftRight');
   // ---- Soldiers: chosen with a click or a box, sent with the right button ----
-  const standing = () => Units.soldiers().filter(u => !(u.down > 0));
-  function selectAll() { ui.selU = standing().map(u => u.id); if (!ui.selU.length) { toast(tr('no_soldiers'), C.bad); sfx('error'); } else sfx('click'); }
+  function selectAll() { ui.selU = Units.soldiers().map(u => u.id); if (!ui.selU.length) { toast(tr('no_soldiers'), C.bad); sfx('error'); } else sfx('click'); }
   /** Sends the selected soldiers to the map point under a screen point. False when there is nobody to send, or something else is in hand. */
   function orderAt(x, y) {
     if (!ui.selU.length || ui.placing || ui.moving || ui.tool || ui.wall || UI.hitAt(x, y)) return false;
     let p = World.toWorld(x, y);
     if (Camp.standing() && Camp.covers(p.x, p.y)) { p = Camp.gate(); toast(tr('camp_sent', { n: ui.selU.length }), C.accent); } // on the goblin camp: an assault, from its gate
     return Units.order(ui.selU, p.x, p.y);
+  }
+  /** Plants the barracks' rally point under a screen point: its panel open, no soldier chosen, nothing in hand. False otherwise. */
+  function rallyAt(x, y) {
+    const b = ui.panel === 'building' && Village.byUid(ui.sel);
+    if (!b || !B[b.kind].train || ui.selU.length || ui.placing || ui.moving || ui.tool || ui.wall || UI.hitAt(x, y)) return false;
+    const p = World.toWorld(x, y);
+    if (!Units.setRally(p.x, p.y)) return false;
+    World.ping(p.x, p.y); toast(tr('rally_set'), C.good); sfx('click');
+    return true;
   }
   /**
    * The tiles of the rampart being drawn, from where the button went down to the pointer, in the
@@ -143,7 +153,7 @@ const scenes = (() => {
   function playUpdate(dt) {
     const modal = ui.away || ui.banner, tut = Tuto.active(); // tut: the tutorial decides what a click, a key or a stroke may do
     for (const c of clicks) {
-      if (c.button === 2) { if (modal || !orderAt(c.x, c.y)) cancel(); continue; } // the right button: an order to the chosen soldiers, else it backs out
+      if (c.button === 2) { if (modal || !(orderAt(c.x, c.y) || rallyAt(c.x, c.y))) cancel(); continue; } // the right button: an order to the chosen soldiers, or the open barracks' rally point, else it backs out
       if (tut && !Tuto.click(c.x, c.y)) continue; // not what the guide is showing: the click is lost
       if (UI.click(c.x, c.y)) { if (scene !== 'play') return; continue; }
       if (!modal) worldClick(c.x, c.y);
@@ -159,12 +169,12 @@ const scenes = (() => {
     if (key('KeyG')) togglePanel('city');
     if (key('KeyE')) togglePanel('explore');
     if (key('KeyT')) selectAll();
-    if (ui.selU.length) ui.selU = ui.selU.filter(id => { const u = Units.byId(id); return u && !(u.down > 0); });
+    if (ui.selU.length) ui.selU = ui.selU.filter(id => Units.byId(id));
     if (ui.tool && ui.tool.startsWith('trap:') && !Raid.trapsOpen()) ui.tool = null; // the raid is over: the traps go back in the cart
     // the selection box: Shift held, the button down on the map with nothing in hand, and a slide
     if (ui.box && !mouse.down) {
       const bx = ui.box, x0 = Math.min(bx.x, bx.x1), x1 = Math.max(bx.x, bx.x1), y0 = Math.min(bx.y, bx.y1), y1 = Math.max(bx.y, bx.y1);
-      ui.selU = standing().filter(u => { const p = World.toScreen(u.x, u.y, 8); return p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1; }).map(u => u.id);
+      ui.selU = Units.soldiers().filter(u => { const p = World.toScreen(u.x, u.y, 8); return p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1; }).map(u => u.id);
       if (ui.selU.length) sfx('click');
       ui.box = null;
     } else if (ui.box) { ui.box.x1 = mouse.x; ui.box.y1 = mouse.y; }
@@ -261,7 +271,7 @@ const scenes = (() => {
   /** How many lines UI.wrap would take. */
   function linesOf(str, maxW, size) {
     ctx.font = `${size}px ${FONT}`; let n = 0;
-    for (const para of String(str).split('\n')) {
+    for (const para of String(gendered(str)).split('\n')) {
       let line = ''; n++;
       for (const word of para.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { n++; line = word; } else line = t; }
     }
@@ -431,6 +441,8 @@ const scenes = (() => {
   // ---- Side panels ----
   function drawForge(b, x, y, w) {
     text(tr('forge_title'), x, y + 10, 16, C.gold, 'left', true); y += 26;
+    const temper = b.lvl >= tune.milestone_levels; // the Trempe: from its first milestone, a +N is worth more
+    y = UI.wrap(temper ? tr('forge_perk_on', { pct: Math.round(Hero.plusBonus() * 100) }) : tr('forge_perk_off', { n: tune.milestone_levels }), x, y, w, 14, temper ? C.good : C.dim) + 6;
     if (b.craft) {
       text(tr('forging', { name: I[b.craft.item].name }), x, y + 8, 14, C.accent, 'left', true);
       UI.bar(x + 230, y, w - 230, 16, 1 - b.craft.left / b.craft.total, C.accent); y += 24;
@@ -444,7 +456,7 @@ const scenes = (() => {
       const price = Hero.craftCost(id);
       UI.cost(price, x, y + 32, { size: 14, gap: 8 });
       UI.button(x + w - 118, y + 4, 118, 36, own ? tr('forge_plus', { n: plus + 1 }) : tr('forge_do'), () => Hero.startCraft(b, id),
-        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? '\n' + tr('forge_plus_tip', { pct: Math.round(tune.plus_bonus * 100) }) : '') });
+        { size: 14, primary: !own, disabled: !!b.craft || b.damaged || !Village.canAfford(price), tip: it.name + '\n' + it.desc + (own ? '\n' + tr('forge_plus_tip', { pct: Math.round(Hero.plusBonus() * 100) }) : '') });
       Tuto.mark('forge:' + id, x + w - 118, y + 4, 118, 36);
       y += 46;
     }
@@ -614,7 +626,9 @@ const scenes = (() => {
     if (d.train) out.push(tr('up_army', { pct: Math.round(tune.soldier_level_step * 100) }));
     if (d.service) out.push(tr('up_service', { n: fmtNum(tune.service_radius_step) }));
     if (b.kind === 'hall') out.push(tr('up_hall'));
+    if (b.kind === 'lodge') out.push(tr('up_lodge', { n: tune.lodge_level_time })); // each level makes its gift last longer (js/venue.js giftTime)
     if (d.produces && n % ms === 0) out.push(tr('up_double'));
+    if (b.kind === 'forge' && n === ms) out.push(tr('up_forge_perk'));
     if (!d.looks && !d.decor && World.tier(n) > World.tier(b.lvl)) out.push(tr('up_look'));
     return out.join('\n');
   }
@@ -742,8 +756,8 @@ const scenes = (() => {
     y = UI.wrap(tr('camp_force', { n: cp.guards.length, all: Camp.roster(cp.lvl).length, hp: fmtNum(Math.max(0, cp.hp)), max: fmtNum(cp.max), fell: state.counters.campsDown || 0 }), x, y + 2, w, 14, C.dim);
     { const chief = Camp.chiefLine && Camp.chiefLine(); if (chief) { const top = y + 2; y = UI.wrap(chief, x, top, w, 14, C.accent); Tuto.mark('camp:chief', x, top, w, y - top); } } // THREAT hook: the chief of a camp risen after one fell (js/camp.js)
     y = UI.wrap(tr('camp_how'), x, y + 2, w, 13, C.dim) + 4;
-    const none = !Units.soldiers().some(u => !(u.down > 0));
-    UI.button(x, y, w, 34, tr('camp_attack'), () => { if (Camp.attack()) { ui.selU = standing().map(u => u.id); Object.assign(state.cam, World.camOn(c.x, c.y)); } }, { primary: true, size: 14, icon: 'icon.raid', disabled: none, tip: none ? tr('camp_no_soldiers') : null });
+    const none = !Units.soldiers().length;
+    UI.button(x, y, w, 34, tr('camp_attack'), () => { if (Camp.attack()) { ui.selU = Units.soldiers().map(u => u.id); Object.assign(state.cam, World.camOn(c.x, c.y)); } }, { primary: true, size: 14, icon: 'icon.raid', disabled: none, tip: none ? tr('camp_no_soldiers') : null });
     Tuto.mark('camp:attack', x, y, w, 34);
     y += 42;
     UI.button(x, y, w, 32, tr('camp_show'), () => { Object.assign(state.cam, World.camOn(c.x, c.y)); }, { size: 13, icon: 'icon.raid' });
@@ -779,7 +793,7 @@ const scenes = (() => {
     }
     return y;
   }
-  /** One kind of unit on a line: how many, its price, the button that trains one and the one that sends one home. */
+  /** One kind of unit on a line: how many, its price, the button that trains one (a soldier: with Shift, five) and the one that sends one home. */
   function unitRow(k, x, y, w, stats) {
     const d = U[k], miss = Quests.describe(d.unlock).filter(p => !p.ok);
     if (miss.length) { UI.icon('icon.lock', x + 8, y + 13, 16); text(`${d.name} · ${miss.map(p => p.text).join(', ')}`, x + 26, y + 13, 13, C.dim, 'left'); return y + 26; }
@@ -787,17 +801,38 @@ const scenes = (() => {
     if (stats) text(stats, x + w - 126, y + 11, 13, C.good, 'right');
     UI.cost(Units.cost(k), x, y + 31, { size: 13, gap: 6 });
     const why = Units.blocked(k);
-    UI.button(x + w - 118, y + 3, 84, 36, tr('train'), () => Units.train(k), { size: 14, primary: !why, disabled: !!why, tip: d.name + '\n' + d.desc + (why ? '\n' + why : '') });
+    UI.button(x + w - 118, y + 3, 84, 36, tr('train'), () => Units.train(k, d.role === 'soldier' && shift() ? 5 : 1), { size: 14, primary: !why, disabled: !!why, tip: d.name + '\n' + d.desc + (d.role === 'soldier' ? '\n' + tr('train_many_tip') : '') + (why ? '\n' + why : '') });
     Tuto.mark('train:' + k, x + w - 118, y + 3, 84, 36);
     UI.button(x + w - 30, y + 3, 30, 36, '−', () => Units.dismiss(k), { size: 18, disabled: !Units.count(k), tip: tr('dismiss_tip') });
     return y + 44;
   }
-  /** The barracks: the recruit at drill, a line per kind of soldier, and the two orders for all of them. */
+  /**
+   * The barracks' training line, in boxes: the recruit at drill first, with his bar, then those
+   * waiting. A click on a box takes that recruit out and gives his price back. Returns the y under it.
+   */
+  function drawLine(b, x, y, w) {
+    const line = Units.line(b), S = 42, G = 4, per = Math.max(1, Math.floor((w + G) / (S + G)));
+    text(tr(line.length ? 'training' : 'train_idle', { name: line.length ? U[line[0].kind].name : '' }), x, y + 9, 14, line.length ? C.accent : C.dim, 'left', true);
+    text(`${line.length} / ${Units.lineMax()}`, x + w, y + 9, 13, C.dim, 'right'); y += 22;
+    line.forEach((r, i) => {
+      const bx = x + (i % per) * (S + G), by = y + Math.floor(i / per) * (S + G), s = World.unitSprite(U[r.kind].sprite, 0, 1, false, 0);
+      UI.button(bx, by, S, S, '', () => Units.cancel(i), { on: i === 0, tip: U[r.kind].name + '\n' + tr('train_cancel_tip') });
+      ctx.globalAlpha = i === 0 ? 1 : 0.6; blit(s, bx + (S - s.width) / 2, by + (S - 4 - s.height) / 2, 1 / PX); ctx.globalAlpha = 1; // at its own size, not the map's
+      if (i === 0) { ctx.fillStyle = C.ink; ctx.fillRect(bx + 3, by + S - 8, S - 6, 5); ctx.fillStyle = C.accent; ctx.fillRect(bx + 4, by + S - 7, Math.round((S - 8) * r.frac), 3); } // how far his drill is
+    });
+    return y + Math.max(1, Math.ceil(line.length / per)) * (S + G) + 2;
+  }
+  /** The barracks: its training line, a row per kind of soldier, its rally point, and the two orders for all of them. */
   function drawBarracks(b, x, y, w) {
     const free = Units.free();
     text(tr('train_title'), x, y + 10, 15, C.gold, 'left', true); text(tr('pop_free', { n: free }), x + w, y + 10, 13, free > 0 ? C.good : C.bad, 'right', true); y += 24;
-    if (b.train) { text(tr('training', { name: U[b.train.kind].name }), x, y + 9, 14, C.accent, 'left', true); UI.bar(x + 190, y, w - 190, 16, 1 - b.train.left / b.train.total, C.accent); y += 24; }
-    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(U[k].atk * Units.drill()) }));
+    y = drawLine(b, x, y, w);
+    for (const k of DATA.unitOrder) if (U[k].role === 'soldier') y = unitRow(k, x, y, w, tr('unit_stats', { hp: Math.round(U[k].hp * Units.drill()), atk: fmtNum(Units.atkOf(k)) }));
+    if (b.rally) { // where the recruits go: said, and a button to take it away
+      text(tr('rally_on'), x, y + 15, 13, C.good, 'left', true);
+      UI.button(x + w - 150, y + 2, 150, 28, tr('rally_clear'), Units.clearRally, { size: 12, tip: tr('rally_help') });
+      y += 34;
+    } else y = UI.wrap(tr('rally_help'), x, y + 2, w, 12, C.dim, 16) + 4;
     return armyButtons(x, y + 2, w);
   }
   function armyButtons(x, y, w) {
@@ -834,26 +869,29 @@ const scenes = (() => {
     if (idle) y = UI.wrap(tr('workers_idle', { n: idle }), x, y, w, 13, C.bad);
     text(tr('soldiers'), x, y + 12, 15, C.gold, 'left', true); y += 24;
     if (!Units.barracks()) return UI.wrap(tr('soldiers_none'), x, y, w, 13, C.dim);
-    const down = Units.soldiers().filter(u => u.down > 0).length;
-    text(DATA.unitOrder.filter(k => U[k].role === 'soldier').map(k => `${U[k].plural} ${Units.count(k)}`).join(' · ') + (down ? ' · ' + tr('soldiers_down', { n: down }) : ''), x, y + 9, 13, C.text, 'left'); y += 22;
+    text(DATA.unitOrder.filter(k => U[k].role === 'soldier').map(k => `${U[k].plural} ${Units.count(k)}`).join(' · '), x, y + 9, 13, C.text, 'left'); y += 22;
     y = armyButtons(x, y, w);
     return UI.wrap(tr('soldiers_help'), x, y, w, 12, C.dim, 16);
   }
   function drawHero() {
-    const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48;
+    const h = state.hero, st = Hero.stats(), x = P.x + 24, w = P.w - 48, pid = Hero.art('portrait'), sh = pid && Art.sheet(pid), raid = !!state.raid.active;
     UI.panel(P.x, P.y, P.w, P.h, tr('hero_title') + ' · ' + heroName(), closePanel);
-    UI.sprite('hero.battle', x, P.y + 56, 2, Hero.weaponTier());
-    const sx = x + 100; let y = P.y + 72;
+    UI.plate(x, P.y + 56, 136, 136); // the portrait alive on a plate, as a shopkeeper's (drawKeeper); no portrait yet: the battle sprite
+    if (sh) { const s = Art.get(pid, Math.floor(state.t * tune.portrait_fps) % sh.cols), k = Math.min(1, 128 / (Math.max(s.width, s.height) * PX)); blit(s, x + 68 - s.width * PX * k / 2, P.y + 188 - s.height * PX * k, k); }
+    else UI.sprite(Hero.art('battle'), x + 4, P.y + 60, 2, Hero.weaponTier());
+    UI.button(x, P.y + 198, 136, 28, tr('hero_look'), () => openNaming({ edit: true }), { size: 12, disabled: raid, tip: raid ? tr('hero_look_raid') : null });
+    const sx = x + 148, sw = w - 148; let y = P.y + 72;
     text(tr('level', { n: h.lvl }), sx, y, 20, C.gold, 'left', true);
     text(`${h.xp} / ${Hero.xpNeed(h.lvl)} XP`, x + w, y, 14, C.dim, 'right'); y += 18;
-    UI.bar(sx, y, w - 100, 14, h.xp / Hero.xpNeed(h.lvl), C.accent); y += 28;
-    UI.icon('icon.hp', sx + 12, y + 8, 32); text(String(st.hp), sx + 30, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.atk', sx + 100, y + 8, 32); text(fmtNum(st.atk), sx + 118, y + 9, 17, C.text, 'left', true);
-    UI.icon('icon.def', sx + 188, y + 8, 32); text(fmtNum(st.def), sx + 206, y + 9, 17, C.text, 'left', true); y += 32;
+    UI.bar(sx, y, sw, 14, h.xp / Hero.xpNeed(h.lvl), C.accent); y += 28;
+    const stats = [['icon.hp', String(st.hp)], ['icon.atk', fmtNum(st.atk)], ['icon.def', fmtNum(st.def)]]; // health, attack, defence, spread over the width beside the plate
+    const span = k => stats.reduce((n, [, v]) => n + 28 + UI.width(v, k, true), 0), fs = [17, 16, 15, 14].find(k => span(k) + 12 <= sw) || 14, tot = span(fs); // big numbers shrink the figures, never touch the next icon
+    for (let i = 0, ax = sx, gap = Math.min(16, (sw - tot) / 2); i < 3; i++) { const [ic, v] = stats[i]; UI.icon(ic, ax + 12, y + 8, 24); text(v, ax + 28, y + 9, fs, C.text, 'left', true); ax += 28 + UI.width(v, fs, true) + gap; }
+    y += 32;
     const ms = state.mission && DATA.missions.find(k => k.id === state.mission.id);
     const trip = !ms && Explore.onTrip(); // away at a place found in the wild (js/explore.js)
-    UI.wrap(ms ? tr('mission_run', { title: ms.title }) + ' · ' + fmtTime(state.mission.left) : trip ? tr('ex_trip') : tr('at_village'), sx, y - 2, w - 100, 14, ms || trip ? C.accent : C.dim, 18);
-    UI.scrollBox('hero', x, P.y + 160, w, P.h - 176, y0 => heroBody(h, x, y0, w));
+    UI.wrap(ms ? tr('mission_run', { title: ms.title }) + ' · ' + fmtTime(state.mission.left) : trip ? tr('ex_trip') : tr('at_village'), sx, y - 2, sw, 14, ms || trip ? C.accent : C.dim, 18);
+    UI.scrollBox('hero', x, P.y + 236, w, P.h - 252, y0 => heroBody(h, x, y0, w));
   }
   /** The hero's gear, bag and skills, from y down. Returns the y under them. */
   function heroBody(h, x, y, w) {
@@ -890,7 +928,7 @@ const scenes = (() => {
       for (const id of more) {
         const c = DATA.cards[id];
         UI.icon('icon.lock', x + 8, y + 9, 16); text(c.name, x + 22, y + 9, 14, C.dim, 'left', true);
-        text(c.from === 'hero' ? tr('deck_locked', { n: c.lvl }) : tr('deck_build', { name: B[c.from].name }), x + w, y + 9, 13, C.dim, 'right'); y += 22;
+        text(c.from === 'hero' ? tr('deck_locked', { n: c.lvl }) : c.at ? tr('card_origin_lvl', { card: B[c.from].card, n: c.at }) : tr('deck_build', { name: B[c.from].name }), x + w, y + 9, 13, C.dim, 'right'); y += 22;
       }
     }
     return y;
@@ -1138,11 +1176,24 @@ const scenes = (() => {
     else { reset(); openNaming(); } // a new game: the hero is named first
   }
 
-  // ---- Naming the hero, before a new game ----
+  // ---- Naming the hero: before a new game, or from the hero's panel to change look and name (ui.nameEdit) ----
   // The name is typed into a real text field laid over the canvas (accents, paste, a phone's
-  // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name.
-  const NAME_BOX = { x: 470, y: 330, w: 420, h: 56 }; // the field, in logical units
+  // keyboard all work); the canvas draws the panel around it. It is kept in state.hero.name,
+  // the look in state.hero.look, both written only on « Commencer » / « Valider ».
+  const NAME_BOX = { x: 500, y: 400, w: 420, h: 56 }; // the field, in logical units
   let nameField = null;
+  /** Goes to hero `id` (ui.heroPick): the field follows unless the player typed a name of his own (Hero.nameFor). */
+  function pickHero(id) {
+    if (!DATA.heroes.some(h => h.id === id) || id === ui.heroPick) return;
+    ui.heroPick = id; ui.nameWhy = null; sfx('click');
+    const v = Hero.nameFor(nameField.value, id);
+    if (v !== nameField.value) { nameField.value = v; nameField.select(); } // a proposed name replaced: ready to be typed over; the player's own name stays, caret and all
+    tuneField();
+  }
+  /** The field says what it asks, and proposes the name, of the hero being picked (a screen reader reads « votre héroïne » for Isaure). */
+  function tuneField() { nameField.setAttribute('aria-label', tr('name_ask')); nameField.placeholder = heroLook().name; }
+  /** The next hero (d = 1) or the one before (d = -1), round the four. */
+  function stepHero(d) { const n = DATA.heroes.length, i = DATA.heroes.findIndex(h => h.id === heroLook().id); pickHero(DATA.heroes[(i + d + n) % n].id); }
   function field() {
     if (nameField) return nameField;
     const f = nameField = document.createElement('input');
@@ -1155,20 +1206,24 @@ const scenes = (() => {
       if (v !== f.value) { const at = Math.max(0, f.selectionStart - (f.value.length - v.length)); f.value = v; f.setSelectionRange(at, at); sfx('error'); }
       ui.nameWhy = null;
     });
-    f.addEventListener('keydown', e => {
+    f.addEventListener('keydown', e => { // the global keys skip an <input>, so the arrows are read here
       if (e.key === 'Enter') { e.preventDefault(); nameConfirm(); }
       else if (e.key === 'Escape') { e.preventDefault(); nameBack(); }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); stepHero(e.key === 'ArrowUp' ? -1 : 1); }
     });
     document.body.appendChild(f);
     return f;
   }
-  function openNaming() {
+  /** opts.edit: the retouching of a hero already in the game (kept in ui.nameEdit): the pick and the name start from his or hers, and the way out is back to his or her panel. */
+  function openNaming(opts) {
     const f = field();
-    scene = 'naming'; ui.nameWhy = null;
-    f.value = state.hero.name || DATA.hero.name; // the default, ready to keep with Entrée or to type over
+    scene = 'naming'; ui.nameWhy = null; ui.nameEdit = !!(opts && opts.edit);
+    ui.heroPick = ui.nameEdit ? heroLook().id : DATA.heroes[0].id; // a new game starts on the first hero
+    f.value = ui.nameEdit ? state.hero.name : DATA.heroes[0].name; // the default, ready to keep with Entrée or to type over
+    tuneField();
     f.style.display = 'block'; placeField(); f.focus(); f.select();
   }
-  function closeNaming() { if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
+  function closeNaming() { ui.heroPick = null; ui.nameEdit = false; if (nameField) { nameField.blur(); nameField.style.display = 'none'; } }
   /** Lays the text field over its box on the canvas, at the canvas's present size. */
   function placeField() {
     const r = canvas.getBoundingClientRect(), k = r.width / W, b = NAME_BOX, s = nameField.style;
@@ -1176,19 +1231,45 @@ const scenes = (() => {
     s.width = ((b.w - 8) * k) + 'px'; s.height = ((b.h - 8) * k) + 'px'; s.fontSize = (26 * k) + 'px';
   }
   function nameConfirm() {
+    if (scene !== 'naming') return; // a key read twice (the field, then the scene) leaves once
     const r = Hero.cleanName(nameField.value);
     if (r.why) { ui.nameWhy = r.why; sfx('error'); nameField.focus(); return; }
-    state.hero.name = r.name; closeNaming();
+    const edit = ui.nameEdit;
+    state.hero.name = r.name; state.hero.look = heroLook().id; closeNaming(); // only now is the choice written
+    if (edit) { Save.persist(); leaveEdit(); sfx('click'); return; } // a game under way: saved again, never begun
     Save.begin(); scene = 'play'; sfx('click');
   }
-  function nameBack() { closeNaming(); scene = 'title'; ui.titleWipe = 0; }
+  /** Back to the hero's panel, over the village, after retouching him or her. */
+  function leaveEdit() { scene = 'play'; ui.panel = 'hero'; }
+  function nameBack() {
+    if (scene !== 'naming') return;
+    const edit = ui.nameEdit; closeNaming();
+    if (edit) leaveEdit(); else { scene = 'title'; ui.titleWipe = 0; }
+  }
+  /** Another land: a new game (reset() starts it over, but leaves ui.heroPick, ui.nameEdit and the field alone: resetUi only assigns its own keys), so the hero being picked and the name being typed stay. */
+  function otherMap() { reset(Village.drawSeed(false)); }
   function drawNaming() {
     World.draw({ dim: 0.62 });
-    const px = 330, py = 150, pw = 620, ph = 400, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax };
+    const px = 290, py = 40, pw = 700, ph = 620, b = NAME_BOX, f = field(), lim = { min: DATA.hero.nameMin, max: DATA.hero.nameMax }, pick = heroLook().id;
     UI.panel(px, py, pw, ph, tr('name_title'));
-    UI.sprite('hero.battle', px + 34, b.y - 60, 2, 1);
-    text(tr('map_no', { n: state.mapSeed }), b.x, py + 72, 15, C.gold, 'left', true); // the land behind the panel, and another one to start on
-    UI.button(b.x + b.w - 170, py + 50, 170, 32, tr('map_other'), () => reset(Village.drawSeed(false)), { size: 13 });
+    DATA.heroes.forEach((h, i) => { // the four, side by side: the portrait alive, the proposed name; the chosen one framed in gold
+      const cx = px + 26 + i * 166, cy = py + 66, on = h.id === pick, hov = UI.over(cx, cy, 150, 176);
+      UI.box(cx, cy, 150, 176, hov && !on ? '#2a2030' : '#1b1420', on ? C.gold : C.lineL);
+      if (on) { ctx.strokeStyle = C.gold; ctx.lineWidth = 2; ctx.strokeRect(cx + 3, cy + 3, 144, 170); }
+      const pid = Hero.art('portrait', h.id), sh = pid && Art.sheet(pid); // no portrait yet: the hero's battle sprite
+      const s = sh ? Art.get(pid, Math.floor(ui.titleT * tune.portrait_fps) % sh.cols) : Art.get(Hero.art('battle', h.id), 1), k = Math.min(1, 128 / (Math.max(s.width, s.height) * PX));
+      blit(s, cx + 75 - s.width * PX * k / 2, cy + 8 + 128 - s.height * PX * k, k);
+      UI.label(h.name, cx + 75, cy + 156, 17, on ? C.gold : C.text);
+      UI.region(cx, cy, 150, 176, () => { pickHero(h.id); nameField.focus(); });
+    });
+    const sy = b.y - 74; // beside the field: the hero in battle, and walking on the spot
+    UI.sprite(Hero.art('battle'), px + 36, sy + 3, 2, 1); // 50 art pixels tall, feet on its last row: 125 units, so its feet stand on the figure's ground line, sy + 128
+    const w = World.unitSprite('hero', 0, 1, true, ui.titleT);
+    blit(w, px + 136, sy + 128 - w.height * PX, 1);
+    if (!ui.nameEdit) { // a new game: the land behind the panel, and another one to start on
+      text(tr('map_no', { n: state.mapSeed }), b.x, py + 288, 15, C.gold, 'left', true);
+      UI.button(b.x + b.w - 170, py + 272, 170, 32, tr('map_other'), otherMap, { size: 13 });
+    }
     UI.label(tr('name_ask'), b.x + b.w / 2, b.y - 36, 20, C.text);
     UI.box(b.x, b.y, b.w, b.h, '#1b1420', ui.nameWhy ? C.bad : document.activeElement === f ? C.gold : C.lineL);
     UI.region(b.x, b.y, b.w, b.h, () => f.focus());
@@ -1197,8 +1278,8 @@ const scenes = (() => {
     UI.wrap(ui.nameWhy ? tr(ui.nameWhy, lim) : tr('name_rule', lim), 640, b.y + b.h + 40, pw - 60, 14, ui.nameWhy ? C.bad : C.dim, 18, false, 'center');
     const by = py + ph - 96;
     UI.button(px + 40, by, 200, 46, tr('name_back'), nameBack, { size: 17 });
-    UI.button(px + pw - 300, by, 260, 46, tr('name_ok'), nameConfirm, { size: 18, primary: true });
-    text(tr('name_keys'), 640, by + 68, 13, C.dim, 'center');
+    UI.button(px + pw - 300, by, 260, 46, tr(ui.nameEdit ? 'name_ok_edit' : 'name_ok'), nameConfirm, { size: 18, primary: true });
+    text(tr(ui.nameEdit ? 'name_keys_edit' : 'name_keys'), 640, by + 68, 13, C.dim, 'center');
     placeField();
   }
   function drawTitle() {
@@ -1207,7 +1288,7 @@ const scenes = (() => {
     if (UI.ready('ui.logo')) { const lg = Art.get('ui.logo'); blit(lg, 640 - lg.width * PX / 2, 40 + bob); } // the PixelLab logo, at the world's pixel size
     else { text(TITLE, 644, 154 + bob, 104, '#120e1c', 'center', true, TITLE_FONT); text(TITLE, 640, 150 + bob, 104, C.gold, 'center', true, TITLE_FONT); }
     UI.label(tr('subtitle'), 640, 226, 22, C.text);
-    UI.sprite('hero.battle', 596, 250, 2, 1);
+    UI.sprite(Hero.art('battle'), 596, 250, 2, 1);
     // the first controls, two by two, under no frame; the full list waits in the pause
     const rows = DATA.strings.controls_title, gap = 64, cy = 392, lh = 38, n = Math.ceil(rows.length / 2);
     const colW = [0, 1].map(c => Math.max(0, ...rows.filter((_, i) => i % 2 === c).map(r => keyRow(r, 0, 0, { size: 18, draw: false }))));
@@ -1257,11 +1338,13 @@ const scenes = (() => {
       shadowText(names[i], x, y + 16, 15, C.text, 'center');
     });
     const en = DATA.enemies;
-    row(['hero.battle', 'enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk'], 230, 180, 230, [heroName() + ' (héros)', en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name], 1);
-    ['hero', 'villager', 'gobelin', 'brute', 'chaman', 'grakk'].forEach((kind, i) => { // the map's figures, facing the player
-      const s = World.unitSprite(kind, 0, 1, false, 0), x = 150 + i * 196;
+    const hs = DATA.heroes; // the four heroes, each as in battle (a frame holding the sword) and as a figurine facing the player
+    row(hs.map(h => Hero.art('battle', h.id)).concat(['enemy.gobelin', 'enemy.brute', 'enemy.chaman', 'enemy.grakk']), 230, 110, 150, hs.map(h => h.name + ' (héros)').concat([en.gobelin.name, en.brute.name, en.chaman.name, en.grakk.name]), 1);
+    const figs = hs.map(h => ({ id: Hero.art('unit', h.id), name: h.name })).concat(['villager', 'gobelin', 'brute', 'chaman', 'grakk'].map(k => ({ id: k, name: k[0].toUpperCase() + k.slice(1) })));
+    figs.forEach((f, i) => { // the map's figures, facing the player
+      const sh = i < hs.length ? Art.sheet(f.id) : null, s = i < hs.length ? (sh ? Art.get(f.id, 2 * sh.cols) : Art.get('unit.hero', 0)) : World.unitSprite(f.id, 0, 1, false, 0), x = 80 + i * 130;
       blit(s, x - s.width * PX / 2, 340 - s.height * PX);
-      shadowText(['Héros', 'Villageois', 'Gobelin', 'Brute', 'Chaman', 'Grakk'][i], x, 356, 15, C.text, 'center');
+      shadowText(f.name, x, 356, 15, C.text, 'center');
     });
     DATA.unitOrder.forEach((k, i) => { // the citizens at work and the soldiers
       const s = World.unitSprite(U[k].sprite, 0, 1, false, 0), x = 90 + i * 132;
@@ -1360,7 +1443,7 @@ const scenes = (() => {
       },
       draw: drawTitle,
     },
-    naming: { // the hero's name, before a new game: typed into the field, Entrée starts, Échap goes back
+    naming: { // the hero's look and name, before a new game or (ui.nameEdit) from the hero's panel: typed into the field, Entrée confirms, Échap goes back
       update(dt) {
         ui.titleT += dt;
         if (pressed('Enter') || pressed('NumpadEnter')) { nameConfirm(); return; }
@@ -1399,7 +1482,7 @@ function buildDemo() {
   };
   for (const [k, dx, dy, rot] of [['lumber_hut', -6, -6], ['lumber_hut', -3, -6], ['sawmill', 0, -6], ['forge', 5, -5], ['house', -8, -2, 1], ['house', -8, 1, 1], ['house', -5, 7],
     ['farm', 8, -1], ['bakery', 8, 3, 1], ['quarry', 4, -9], ['watchtower', -7, 5], ['watchtower', 11, 7], ['mage_tower', 9, 8],
-    ['barracks', -5, 2], ['cafe', 5, 8], ['market', -4, -3], ['house', -9, -6], ['house', 9, -4],
+    ['barracks', -5, 2], ['cafe', 5, 8], ['market', -4, -3], ['lodge', -2, 4], ['house', -9, -6], ['house', 9, -4],
     ['fountain', 1, 9], ['lamp', 0, 4], ['lamp', 4, 4], ['bench', -1, 10], ['flowers', 4, 10], ['well', -3, 4], ['statue', 5, 11], ['stall', -4, 10], ['banner', 1, 4], ['banner', 3, 4], ['barrels', 6, 5], ['hedge', 0, 12], ['hedge', 4, 12]]) put(k, dx, dy, rot);
   for (let x = -10; x <= 13; x++) if (x !== 2) put('palisade', x, 13);      // a rampart below the village, with a gate
   for (let y = -3; y <= 12; y++) { put('palisade', -10, y); put('palisade', 13, y); }
@@ -1433,7 +1516,7 @@ function buildDemo() {
   Object.assign(state.cam, World.camOn(m.x, m.y + 40));
   if (params.get('look') === 'raid') Object.assign(state.cam, World.camOn(stand.x + ux * 48, stand.y + uy * 48)); // ?look=raid: the view on the guard and the traps
   }
-  if (params.has('sel')) ui.selU = Units.soldiers().filter(u => !(u.down > 0)).map(u => u.id);               // ?sel: the guard selected
+  if (params.has('sel')) ui.selU = Units.soldiers().map(u => u.id);                                           // ?sel: the guard selected
   if (params.get('look') === 'camp') { const c = Village.campMid(); Object.assign(state.cam, World.camOn(c.x, c.y)); } // ?look=camp: the view on the goblin camp
   if (params.get('look') === 'houses') { const hs = state.buildings.filter(b => b.kind === 'house'), b = hs[2] || hs[0]; Object.assign(state.cam, World.camOn((b.x + 1) * 16, (b.y + 1) * 16)); } // ?look=houses
   if (params.get('place') && B[params.get('place')]) { ui.placing = params.get('place'); mouse.x = 560; mouse.y = 300; } // ?place=cafe: that building on the pointer, at the middle of the view

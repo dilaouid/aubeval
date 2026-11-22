@@ -16,7 +16,7 @@ I18N.add('en', {
   'buildings.sawmill.desc': 'Saws wood into planks.', // Scie le bois en planches.
   'buildings.forge.name': 'Forge', // Forge
   'buildings.forge.card': 'Forge', // Forge
-  'buildings.forge.desc': 'Forges the hero’s weapons and armour from what the village produces.', // Forge les armes et les armures du héros avec ce que le village produit.
+  'buildings.forge.desc': 'Forges the hero’s weapons and armour from what the village produces.', // Forge les armes et les armures {g:du héros|de l’héroïne} avec ce que le village produit.
   'buildings.house.name': 'House', // Maison
   'buildings.house.card': 'House', // Maison
   'buildings.house.styles[0]': 'Timber-framed', // Colombages
@@ -28,7 +28,7 @@ I18N.add('en', {
   'buildings.farm.desc': 'Grows wheat.', // Cultive le blé.
   'buildings.bakery.name': 'Bakery', // Boulangerie
   'buildings.bakery.card': 'Bakery', // Boulangerie
-  'buildings.bakery.desc': 'Bakes wheat into bread: what every one of your houses needs, and the hero’s rations.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations du héros.
+  'buildings.bakery.desc': 'Bakes wheat into bread: what every one of your houses needs, and the hero’s rations.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations {g:du héros|de l’héroïne}.
   'buildings.quarry.name': 'Quarry', // Carrière
   'buildings.quarry.card': 'Quarry', // Carrière
   'buildings.quarry.desc': 'Cuts stone, for second-tier weapons, chapels and mage towers. Noisy: keep it away from houses.', // Taille la pierre, pour les armes du deuxième palier, les chapelles et les tours de mage. Bruyante : tenez-la loin des maisons.
@@ -47,6 +47,9 @@ I18N.add('en', {
   'buildings.market.name': 'Market', // Marché
   'buildings.market.card': 'Market', // Marché
   'buildings.market.desc': 'Buy and sell your stores. Its caravans bring in the Burghers’ spices, and Merchants want it within reach.', // Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.
+  'buildings.lodge.name': 'Builders’ Lodge', // Loge des bâtisseurs
+  'buildings.lodge.card': 'Lodge', // Loge
+  'buildings.lodge.desc': 'The house of the master builders, where Aveline draws up the plans of Aubeval. Each level of the Lodge makes her plans last longer.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.
   'buildings.sheep_farm.name': 'Sheepfold', // Bergerie
   'buildings.sheep_farm.card': 'Sheepfold', // Bergerie
   'buildings.sheep_farm.desc': 'Sheep and their wool, for the weaving workshop.', // Des moutons et leur laine, pour l’atelier de tissage.
@@ -58,7 +61,7 @@ I18N.add('en', {
   'buildings.goldsmith.desc': 'Turns gold and fine stone into jewels, the Nobles’ luxury.', // Change l’or et la pierre fine en bijoux, le luxe des Nobles.
   'buildings.barracks.name': 'Barracks', // Caserne
   'buildings.barracks.card': 'Barracks', // Caserne
-  'buildings.barracks.desc': 'Trains your inhabitants as soldiers. Each level makes them stronger; a fallen soldier rises again there.', // Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.
+  'buildings.barracks.desc': 'Trains your inhabitants as soldiers, one after another. Each level makes them stronger. A fallen soldier is lost: another must be trained.', // Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.
   'buildings.watchtower.name': 'Watchtower', // Tour de guet
   'buildings.watchtower.card': 'Watchtower', // Tour de guet
   'buildings.watchtower.desc': 'An archer shoots at raiders within range. Raids always set out from the goblin camp: post your towers on their road.', // Un archer tire sur les pillards à portée. Les raids partent toujours du camp gobelin : postez vos tours sur leur route.
@@ -70,7 +73,7 @@ I18N.add('en', {
   'buildings.mage_tower.desc': 'A bolt of lightning that pierces armour and strikes a whole group.', // Un éclair qui perce les armures et touche tout un groupe.
   'buildings.cathedral.name': 'Cathedral', // Cathédrale
   'buildings.cathedral.card': 'Cathedral', // Cathédrale
-  'buildings.cathedral.desc': 'A great work of several hours: foundations, walls, roof, then the spires. Each stage makes meals happier and keeps the hero’s popularity from falling too low.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité du héros de tomber trop bas.
+  'buildings.cathedral.desc': 'A great work of several hours: foundations, walls, roof, then the spires. Each stage makes meals happier and keeps the hero’s popularity from falling too low.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité {g:du héros|de l’héroïne} de tomber trop bas.
   'buildings.castle.name': 'Castle', // Château
   'buildings.castle.card': 'Castle', // Château
   'buildings.castle.desc': 'Curtain walls, towers and keep. Each stage puts your stores out of the raiders’ reach and toughens your soldiers.', // Courtines, tours et donjon. Chaque étape met les réserves à l’abri des pillards et endurcit vos soldats.

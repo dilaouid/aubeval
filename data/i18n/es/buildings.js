@@ -16,7 +16,7 @@ I18N.add('es', {
   'buildings.sawmill.desc': 'Sierra la madera en tablones.', // Scie le bois en planches.
   'buildings.forge.name': 'Forja', // Forge
   'buildings.forge.card': 'Forja', // Forge
-  'buildings.forge.desc': 'Forja las armas y armaduras del héroe con lo que produce la aldea.', // Forge les armes et les armures du héros avec ce que le village produit.
+  'buildings.forge.desc': 'Forja las armas y armaduras {g:del héroe|de la heroína} con lo que produce la aldea.', // Forge les armes et les armures {g:du héros|de l’héroïne} avec ce que le village produit.
   'buildings.house.name': 'Casa', // Maison
   'buildings.house.card': 'Casa', // Maison
   'buildings.house.styles[0]': 'Entramado', // Colombages
@@ -28,7 +28,7 @@ I18N.add('es', {
   'buildings.farm.desc': 'Cultiva trigo.', // Cultive le blé.
   'buildings.bakery.name': 'Panadería', // Boulangerie
   'buildings.bakery.card': 'Panadería', // Boulangerie
-  'buildings.bakery.desc': 'Hornea el trigo en pan: lo que necesitan todas sus casas, y las raciones del héroe.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations du héros.
+  'buildings.bakery.desc': 'Hornea el trigo en pan: lo que necesitan todas sus casas, y las raciones {g:del héroe|de la heroína}.', // Cuit le blé en pain : le besoin de toutes vos maisons, et les rations {g:du héros|de l’héroïne}.
   'buildings.quarry.name': 'Cantera', // Carrière
   'buildings.quarry.card': 'Cantera', // Carrière
   'buildings.quarry.desc': 'Labra la piedra, para las armas de segundo grado, las capillas y las torres del mago. Ruidosa: manténgala lejos de las casas.', // Taille la pierre, pour les armes du deuxième palier, les chapelles et les tours de mage. Bruyante : tenez-la loin des maisons.
@@ -47,6 +47,9 @@ I18N.add('es', {
   'buildings.market.name': 'Mercado', // Marché
   'buildings.market.card': 'Mercado', // Marché
   'buildings.market.desc': 'Compre y venda sus reservas. Sus caravanas traen las especias de los Burgueses, y los Comerciantes lo quieren a su alcance.', // Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.
+  'buildings.lodge.name': 'Logia de los constructores', // Loge des bâtisseurs
+  'buildings.lodge.card': 'Logia', // Loge
+  'buildings.lodge.desc': 'La casa de los maestros constructores, donde Aveline traza los planos de Aubeval. Cada nivel de la Logia hace que sus planos duren más.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.
   'buildings.sheep_farm.name': 'Redil', // Bergerie
   'buildings.sheep_farm.card': 'Redil', // Bergerie
   'buildings.sheep_farm.desc': 'Ovejas y su lana, para el taller de tejido.', // Des moutons et leur laine, pour l’atelier de tissage.
@@ -58,7 +61,7 @@ I18N.add('es', {
   'buildings.goldsmith.desc': 'Convierte el oro y la piedra fina en joyas, el lujo de los Nobles.', // Change l’or et la pierre fine en bijoux, le luxe des Nobles.
   'buildings.barracks.name': 'Cuartel', // Caserne
   'buildings.barracks.card': 'Cuartel', // Caserne
-  'buildings.barracks.desc': 'Convierte a sus habitantes en soldados. Cada nivel los hace más fuertes; un soldado caído se levanta allí.', // Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.
+  'buildings.barracks.desc': 'Convierte a sus habitantes en soldados, uno tras otro. Cada nivel los hace más fuertes. Un soldado caído se pierde: hay que formar otro.', // Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.
   'buildings.watchtower.name': 'Atalaya', // Tour de guet
   'buildings.watchtower.card': 'Atalaya', // Tour de guet
   'buildings.watchtower.desc': 'Un arquero dispara a los saqueadores a su alcance. Las incursiones siempre salen del campamento goblin: aposte sus torres en su camino.', // Un archer tire sur les pillards à portée. Les raids partent toujours du camp gobelin : postez vos tours sur leur route.
@@ -70,7 +73,7 @@ I18N.add('es', {
   'buildings.mage_tower.desc': 'Un relámpago que atraviesa las armaduras y alcanza a todo un grupo.', // Un éclair qui perce les armures et touche tout un groupe.
   'buildings.cathedral.name': 'Catedral', // Cathédrale
   'buildings.cathedral.card': 'Catedral', // Cathédrale
-  'buildings.cathedral.desc': 'Una obra de varias horas: cimientos, muros, tejado y luego las agujas. Cada etapa alegra las comidas e impide que la popularidad del héroe caiga demasiado.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité du héros de tomber trop bas.
+  'buildings.cathedral.desc': 'Una obra de varias horas: cimientos, muros, tejado y luego las agujas. Cada etapa alegra las comidas e impide que la popularidad {g:del héroe|de la heroína} caiga demasiado.', // Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité {g:du héros|de l’héroïne} de tomber trop bas.
   'buildings.castle.name': 'Castillo', // Château
   'buildings.castle.card': 'Castillo', // Château
   'buildings.castle.desc': 'Lienzos, torres y torre del homenaje. Cada etapa pone las reservas a salvo de los saqueadores y endurece a sus soldados.', // Courtines, tours et donjon. Chaque étape met les réserves à l’abri des pillards et endurcit vos soldats.

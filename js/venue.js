@@ -11,6 +11,7 @@
 // used as soon as assets/manifest.js lists them. Until then the interior is painted here, in two
 // layers (what is behind the keeper, and the counter in front of him), and the keeper is his
 // 64x64 portrait strip drawn big. An optional 'venue.fg.<place>' is drawn over the keeper.
+// A place painted nowhere here gets a plain room (PAINT.plain) and nothing that moves in it.
 'use strict';
 
 const Venue = (() => {
@@ -53,6 +54,18 @@ const Venue = (() => {
   function buff(key) { const b = state && state.venue && state.venue.buffs ? state.venue.buffs[key] : null; return b && b.left > 0 ? Math.min(0.9, b.v) : 0; }
   /** Whether a building can be entered now: one of the places, standing whole, joined to the road, and no raid under way. */
   function has(b) { return !!b && !!V[b.kind] && !b.damaged && Village.onRoad(b) && !state.raid.active; }
+  /**
+   * Seconds the gift `key` won at the place `id` lasts: config venue_buff_time, plus, for a place
+   * whose `perLevel` names a config knob, that many seconds for each level of the highest building
+   * of its kind above the first (none when none stands).
+   */
+  function giftTime(id, key) {
+    const d = V[id], per = d && d.perLevel ? tune[d.perLevel] : 0;
+    if (!(per > 0)) return tune.venue_buff_time;
+    let top = 0;
+    for (const b of (state && state.buildings) || []) if (b.kind === id && b.lvl > top) top = b.lvl;
+    return tune.venue_buff_time + per * Math.max(0, top - 1);
+  }
   /** How hard a place's game is: its winning streak, up to config venue_streak_max. */
   function level(id) { return Math.min(S().streak[id] || 0, tune.venue_streak_max); }
   /** Seconds before a place's game can be played again; 0 when it is ready. */
@@ -277,6 +290,20 @@ const Venue = (() => {
       f.R(sx - 2, yC - 6, 36, 6, PAL.steelD); f.R(sx - 2, yC - 6, 36, 1, PAL.steelL); f.R(sx - 10, yC - 5, 8, 3, PAL.steelD); f.R(sx - 14, yC - 4, 4, 1, PAL.steelD);
       f.R(sx + 9, yC, 14, 5, '#5a6480'); f.R(sx + 4, yC + 5, 24, 5, PAL.steelD); f.R(sx + 4, yC + 5, 24, 1, PAL.steel);
     },
+    /** The room of any place painted nowhere above: a plastered wall over a wainscot, a board floor, a plain counter. */
+    plain(e) {
+      const { w, h, yC } = e, b = pen(e.back), f = pen(e.front), yF = yC + 4, ink = '#2a1a10';
+      b.R(0, 0, w, h, '#e6d2a8');
+      b.boards(0, yC - 34, w, 40, PAL.timber, PAL.timberD, PAL.timberL, 9);
+      b.R(0, yC - 36, w, 2, PAL.timberL); b.R(0, yC - 34, w, 1, PAL.timberD);
+      b.R(0, yF, w, h - yF, '#9a6234');
+      for (let y = yF, j = 0; y < h; y += 6, j++) { b.R(0, y, w, 1, '#6b3f22'); for (let x = (j * 23) % 40; x < w; x += 40) b.R(x, y, 1, 6, '#6b3f22'); }
+      b.R(0, yF, w, 2, '#472716', 0.6);
+      b.R(0, 0, w, 7, PAL.timberD); b.R(0, 2, w, 1, PAL.timber); b.R(0, 7, w, 2, ink);
+      const x0 = e.cx - 104;
+      f.R(x0, yC + 6, 208, h, PAL.timber);
+      f.R(x0 - 3, yC, 214, 5, PAL.plank); f.R(x0 - 3, yC, 214, 1, '#ffe7a8'); f.R(x0 - 3, yC + 5, 214, 2, PAL.plankD); f.R(x0 - 3, yC + 7, 214, 1, ink, 0.5);
+    },
   };
   /** What moves in a painted interior, drawn each frame on its pixel grid: steam, dust in the light, flames and sparks. */
   const AMBIENT = {
@@ -303,7 +330,7 @@ const Venue = (() => {
       const mk = () => { const cv = document.createElement('canvas'); cv.width = w; cv.height = h; return cv; };
       e = rooms[id] = { key, back: mk(), front: mk(), w, h, cx: Math.floor(w / 2), cy: Math.floor(h / 2) };
       e.yC = e.cy + 28;
-      PAINT[id](e);
+      (PAINT[id] || PAINT.plain)(e); // a place painted nowhere here gets the plain room
     }
     e.n = n; e.k = n / SCALE; e.real = Art.loaded('venue.bg.' + id);
     return e;
@@ -380,7 +407,7 @@ const Venue = (() => {
   }
 
   // ---- The visit ----
-  function say(line) { v.line = line; v.shown = 0; }
+  function say(line) { v.line = gendered(line); v.shown = 0; }
   const pick = list => list[Math.floor(state.t) % list.length]; // which of a keeper's lines: not a gameplay draw
   function enter(id, b) {
     const s = S(), d = V[id];
@@ -452,7 +479,8 @@ const Venue = (() => {
       const val = d.buffs[key][medal], cur = s.buffs[key];
       if (!val) continue;
       if (cur && cur.left > 0 && cur.v > val) { gifts.push({ key, v: val, kept: true }); continue; } // a better one runs: it stays
-      s.buffs[key] = { v: val, left: tune.venue_buff_time, total: tune.venue_buff_time, from: id };
+      const time = giftTime(id, key);
+      s.buffs[key] = { v: val, left: time, total: time, from: id };
       gifts.push({ key, v: val });
     }
     City.event('game', { venue: id, score: medal });
@@ -534,7 +562,7 @@ const Venue = (() => {
   }
 
   // ---- Drawing ----
-  function wrapLines(str, maxW, size) {
+  function wrapLines(str, maxW, size) { str = gendered(str);
     ctx.font = `${size}px ${FONT}`;
     const out = []; let line = '';
     for (const word of str.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = word; } else line = t; }
@@ -570,14 +598,16 @@ const Venue = (() => {
     UI.icon(ic('icon.popularity', 'icon.hero'), x + 26, y + 26, 16);
     UI.label(tr('vn_pop'), x + 40, y + 27, 14, C.gold, 'left'); UI.label(String(p), x + w - 18, y + 27, 17, C.text, 'right');
     UI.bar(x + 16, y + 40, w - 32, 12, p / 100, C.gold);
-    const keys = Object.keys(s.buffs).filter(k => BUFFS[k] && s.buffs[k].left > 0);
+    const keys = Object.keys(s.buffs).filter(k => BUFFS[k] && s.buffs[k].left > 0).sort((p, q) => s.buffs[p].left - s.buffs[q].left); // the nearest to their end first
     text(tr('vn_gifts'), x + 16, y + 66, 11, C.dim, 'left', true);
     if (!keys.length) { UI.wrap(tr('vn_no_gift'), x + 16, y + 76, w - 32, 12, C.dim, 15); return; }
+    const MAX = 5, shown = keys.length > MAX ? keys.slice(0, MAX - 1) : keys; // the box holds five lines: past that, the fifth counts the rest
     const lh = keys.length > 4 ? 12 : 15, size = keys.length > 4 ? 10 : 11;
-    keys.forEach((k, i) => {
+    shown.forEach((k, i) => {
       const yy = y + 82 + i * lh, b = s.buffs[k];
       text(giftText(k, b.v), x + 16, yy, size, C.good, 'left', true); text(fmtTime(b.left), x + w - 16, yy, size, b.left < 30 ? C.accent : C.text, 'right', true);
     });
+    if (shown.length < keys.length) text(tr('vn_gifts_more', { n: keys.length - shown.length }), x + 16, y + 82 + shown.length * lh, size, C.dim, 'left', true);
   }
   /** The game's card, top right: its name, what each medal is worth, the record and the streak. */
   function drawCard() {
@@ -644,7 +674,7 @@ const Venue = (() => {
     for (const g of r.gifts) {
       const b = BUFFS[g.key];
       UI.icon(ic(b.icon, b.alt), x + 40, yy + 12, 16);
-      yy = UI.wrap(tr(g.kept ? 'vn_res_kept' : 'vn_res_gift', { text: giftText(g.key, g.v), t: fmtTime(tune.venue_buff_time) }), x + 56, yy, w - 90, 15, g.kept ? C.dim : C.good, 20, !g.kept) + 2;
+      yy = UI.wrap(tr(g.kept ? 'vn_res_kept' : 'vn_res_gift', { text: giftText(g.key, g.v), t: fmtTime(giftTime(v.id, g.key)) }), x + 56, yy, w - 90, 15, g.kept ? C.dim : C.good, 20, !g.kept) + 2;
     }
     yy += 10;
     yy = UI.wrap(tr(r.streak > r.before ? 'vn_res_streak_up' : r.streak < r.before ? 'vn_res_streak_down' : 'vn_res_streak_same', { n: r.streak }), x + 30, yy, w - 60, 14, r.streak > r.before ? C.accent : C.dim, 19);
@@ -668,7 +698,7 @@ const Venue = (() => {
     if (B.real) cover(Art.get('venue.bg.' + v.id));
     else {
       ctx.drawImage(B.back, 0, 0, B.w * B.k, B.h * B.k);
-      AMBIENT[v.id](B, v.t, (x, y, w, h, c, a) => { ctx.globalAlpha = clamp(a, 0, 1); ctx.fillStyle = c; ctx.fillRect(Math.round(x) * B.k, Math.round(y) * B.k, w * B.k, h * B.k); ctx.globalAlpha = 1; });
+      if (AMBIENT[v.id]) AMBIENT[v.id](B, v.t, (x, y, w, h, c, a) => { ctx.globalAlpha = clamp(a, 0, 1); ctx.fillStyle = c; ctx.fillRect(Math.round(x) * B.k, Math.round(y) * B.k, w * B.k, h * B.k); ctx.globalAlpha = 1; });
     }
     drawKeeper(B);
     if (!B.real) ctx.drawImage(B.front, 0, 0, B.w * B.k, B.h * B.k);
@@ -712,5 +742,5 @@ const Venue = (() => {
     if (v.game.done) { finish(); v.res.t = 1; console.log(`venue ${id} · série ${v.res.before} · score ${v.res.score} · médaille ${v.res.medal} · popularité +${v.res.pop}`); }
   }
 
-  return { fresh, adopt, tick, away, has, buff, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; }, get id() { return v ? v.id : null; } };
+  return { fresh, adopt, tick, away, has, buff, giftTime, open, update, draw, preview, level, wait: waitOf, react, pix, outline, face, faceCount, medalImg, get active() { return !!v; }, get id() { return v ? v.id : null; } };
 })();

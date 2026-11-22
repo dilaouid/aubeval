@@ -34,7 +34,6 @@
 //                  works (produces, houses, serves, trades, forges, trains) needs one: a paved tile
 //                  beside it, joined by paths to a paved tile beside the hall (js/village.js Roads)
 //   looks          'class': a house's look follows its citizens' class, not its level (one look per class, per style);
-//                  'one': a single look at every level (its tier looks are still to make);
 //                  'stage': a great work's look follows the stage of its works (4 looks: foundations,
 //                  walls, roof, finished)
 //   monument       true: a great work (js/city.js). Placed like any building, which lays its
@@ -65,7 +64,7 @@ DATA.buildings = {
   forge: {
     name: 'Forge', card: 'Forge', sprite: 'iso.forge', w: 2, h: 2,
     cost: { planks: 8 }, unique: true, craft: true, unlock: { built: { sawmill: 1 } }, glow: true, beauty: -1, smoke: [[26, 2], [26, 2], [26, 2], [27, 4]], keeper: 'smith',
-    desc: 'Forge les armes et les armures du héros avec ce que le village produit.',
+    desc: 'Forge les armes et les armures {g:du héros|de l’héroïne} avec ce que le village produit.',
   },
   house: {
     name: 'Maison', card: 'Maison', sprite: 'iso.house', w: 2, h: 2, looks: 'class',
@@ -84,7 +83,7 @@ DATA.buildings = {
     name: 'Boulangerie', card: 'Boulangerie', sprite: 'iso.bakery', w: 2, h: 2,
     cost: { wood: 20, planks: 25 }, growth: 1.4, consumes: { wheat: 2 }, produces: { bread: 1 }, cycle: 3,
     unlock: { pop: 8 }, glow: true, smoke: [[52, 2], [52, 2], [55, 2], [50, 2]], keeper: 'baker',
-    desc: 'Cuit le blé en pain : le besoin de toutes vos maisons, et les rations du héros.',
+    desc: 'Cuit le blé en pain : le besoin de toutes vos maisons, et les rations {g:du héros|de l’héroïne}.',
   },
   quarry: {
     name: 'Carrière', card: 'Carrière', sprite: 'iso.quarry', w: 3, h: 2,
@@ -93,25 +92,25 @@ DATA.buildings = {
     desc: 'Taille la pierre, pour les armes du deuxième palier, les chapelles et les tours de mage. Bruyante : tenez-la loin des maisons.',
   },
   coffee_farm: {
-    looks: 'one', name: 'Plantation de caféiers', card: 'Caféiers', sprite: 'iso.coffee_farm', w: 3, h: 3,
+    name: 'Plantation de caféiers', card: 'Caféiers', sprite: 'iso.coffee_farm', w: 3, h: 3,
     cost: { wood: 60, planks: 30, gold: 60 }, growth: 1.4, produces: { beans: 1 }, cycle: 3,
     unlock: { pop: 24 }, beauty: 1,
     desc: 'Des rangées de caféiers aux cerises rouges : les grains que la brûlerie torréfie.',
   },
   roastery: {
-    looks: 'one', name: 'Brûlerie', card: 'Brûlerie', sprite: 'iso.roastery', w: 2, h: 2,
+    name: 'Brûlerie', card: 'Brûlerie', sprite: 'iso.roastery', w: 2, h: 2,
     cost: { planks: 50, stone: 20, gold: 60 }, growth: 1.5, consumes: { beans: 2 }, produces: { coffee: 1 }, cycle: 4,
     unlock: { pop: 24 }, glow: true, beauty: -1,
     desc: 'Torréfie les grains en café : ce qu’il faut à vos paysans pour devenir artisans.',
   },
   cafe: {
-    looks: 'one', name: 'Café', card: 'Café', sprite: 'iso.cafe', w: 2, h: 2,
+    name: 'Café', card: 'Café', sprite: 'iso.cafe', w: 2, h: 2,
     cost: { planks: 40, stone: 15, gold: 80 }, growth: 1.3, service: { radius: 10 },
     unlock: { pop: 24 }, glow: true, keeper: 'innkeeper', beauty: 1,
     desc: 'On s’y retrouve autour d’une tasse. Les maisons à sa portée ont leur café du coin : il le faut aux Artisans et au-dessus.',
   },
   chapel: {
-    looks: 'one', name: 'Chapelle', card: 'Chapelle', sprite: 'iso.chapel', w: 2, h: 2,
+    name: 'Chapelle', card: 'Chapelle', sprite: 'iso.chapel', w: 2, h: 2,
     cost: { stone: 120, planks: 60, gold: 250 }, growth: 1.4, service: { radius: 14 },
     unlock: { cls: { artisan: 4 } }, glow: true, beauty: 3,
     desc: 'Une cloche et un vitrail. Les Bourgeois et au-dessus la veulent à portée de leur maison.',
@@ -122,20 +121,25 @@ DATA.buildings = {
     service: { radius: 14 }, unlock: { cls: { artisan: 4 } }, glow: true, keeper: 'merchant', beauty: 1,
     desc: 'Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.',
   },
+  lodge: {
+    name: 'Loge des bâtisseurs', card: 'Loge', sprite: 'iso.lodge', w: 2, h: 2,
+    cost: { planks: 60, stone: 60, gold: 150 }, unique: true, unlock: { rank: 2 }, glow: true, keeper: 'guide', beauty: 1,
+    desc: 'La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.',
+  },
   sheep_farm: {
-    looks: 'one', name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,
+    name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,
     cost: { wood: 80, planks: 40, gold: 120 }, growth: 1.4, produces: { wool: 1 }, cycle: 4,
     unlock: { cls: { burgher: 4 } },
     desc: 'Des moutons et leur laine, pour l’atelier de tissage.',
   },
   weaver: {
-    looks: 'one', name: 'Atelier de tissage', card: 'Tissage', sprite: 'iso.weaver', w: 2, h: 2,
+    name: 'Atelier de tissage', card: 'Tissage', sprite: 'iso.weaver', w: 2, h: 2,
     cost: { planks: 100, stone: 50, gold: 200 }, growth: 1.5, consumes: { wool: 2 }, produces: { cloth: 1 }, cycle: 6,
     unlock: { cls: { burgher: 4 } }, glow: true, beauty: -1,
     desc: 'Tisse la laine en étoffes, que réclament les Négociants.',
   },
   goldsmith: {
-    looks: 'one', name: 'Orfèvre', card: 'Orfèvre', sprite: 'iso.goldsmith', w: 2, h: 2,
+    name: 'Orfèvre', card: 'Orfèvre', sprite: 'iso.goldsmith', w: 2, h: 2,
     cost: { stone: 200, planks: 100, gold: 800 }, growth: 1.6, consumes: { gold: 30, stone: 5 }, produces: { jewel: 1 }, cycle: 10,
     unlock: { cls: { merchant: 4 } }, glow: true,
     desc: 'Change l’or et la pierre fine en bijoux, le luxe des Nobles.',
@@ -143,7 +147,7 @@ DATA.buildings = {
   barracks: {
     name: 'Caserne', card: 'Caserne', sprite: 'iso.barracks', w: 3, h: 2,
     cost: { wood: 40, planks: 25, gold: 20 }, unique: true, train: true, unlock: { quest: 'm1' }, keeper: 'captain', beauty: -1,
-    desc: 'Forme vos habitants en soldats. Chaque niveau les rend plus forts ; un soldat tombé s’y relève.',
+    desc: 'Forme vos habitants en soldats, à la file. Chaque niveau les rend plus forts. Un soldat tombé est perdu : il faut en former un autre.',
   },
   watchtower: {
     name: 'Tour de guet', card: 'Tour de guet', sprite: 'iso.watchtower', w: 1, h: 1,
@@ -170,7 +174,7 @@ DATA.buildings = {
   cathedral: {
     name: 'Cathédrale', card: 'Cathédrale', sprite: 'iso.cathedral', w: 4, h: 4, monument: true, unique: true, looks: 'stage',
     cost: { stone: 600, planks: 400, gold: 1500 }, unlock: { rank: 2 }, beauty: 6,
-    desc: 'Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité du héros de tomber trop bas.',
+    desc: 'Un chantier de plusieurs heures : fondations, murs, toiture, puis les flèches. Chaque étape rend les repas plus heureux et empêche la popularité {g:du héros|de l’héroïne} de tomber trop bas.',
   },
   castle: {
     name: 'Château', card: 'Château', sprite: 'iso.castle', w: 5, h: 5, monument: true, unique: true, looks: 'stage',
@@ -208,7 +212,7 @@ DATA.tools = {
 // A trap's card is only named here: it is looked up when the bar is drawn.
 DATA.buildTabs = [
   { id: 'build', name: 'Production', items: ['lumber_hut', 'sawmill', 'forge', 'farm', 'bakery', 'quarry', 'coffee_farm', 'roastery', 'sheep_farm', 'weaver', 'goldsmith'] },
-  { id: 'city', name: 'Habitat', items: ['house', 'cafe', 'chapel', 'market', 'tool:path'] },
+  { id: 'city', name: 'Habitat', items: ['house', 'cafe', 'chapel', 'market', 'lodge', 'tool:path'] },
   { id: 'defense', name: 'Défense', items: ['watchtower', 'palisade', 'mage_tower', 'barracks', 'trap:spikes', 'trap:tar', 'trap:powder'] },
   { id: 'works', name: 'Chantiers', items: ['cathedral', 'castle', 'lighthouse'] },
   { id: 'decor', name: 'Décor', items: ['fountain', 'well', 'statue', 'stall', 'lamp', 'banner', 'bench', 'flowers', 'barrels', 'hedge'] },

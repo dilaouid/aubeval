@@ -10,6 +10,9 @@
 // or a lesson shifts nothing. A text that holds the hero's name in French (a getter) stays a
 // getter: its translation writes {hero} where the name goes.
 //
+// A text can also agree with the hero's gender: {g:masculine|feminine} is a hole filled by gendered()
+// (js/ui.js) from the chosen hero; I18N.gender does the cutting, and a layer writes its own two forms.
+//
 // Only words change: ids, rules, numbers and the save are the same in every language. The choice
 // is kept apart from the save (localStorage 'aubeval.lang'); ?lang=en in the address imposes one.
 // This file loads after config.js and before data/: it picks the language, writes the <script>
@@ -63,6 +66,11 @@
     return true;
   }
 
+  /** Resolves each {g:masculine|feminine} for g 'm' or 'f'; anything else, a malformed hole too, is left as written. */
+  function gender(s, g) { return String(s).replace(/\{g:([^|{}]*)\|([^|{}]*)\}/g, (m, a, b) => (g === 'f' ? b : a)); }
+  /** True if a {g: is left once the well-formed holes are resolved: a typo in a text. */
+  function genderBad(s) { return gender(s, 'm').indexOf('{g:') >= 0; }
+
   /** The language: the address (?lang=), then the stored choice, then the browser's, else French. */
   function pick(env) {
     env = env || {};
@@ -80,7 +88,7 @@
 
   const I18N = {
     langs: LANGS, files: FILES, lang: 'fr', layers,
-    parse, get, put, pick,
+    parse, get, put, pick, gender, genderBad,
     /** Called by the layer files: adds texts to a language. A null text is one still to translate. */
     add(lang, map) { Object.assign(layers[lang] || (layers[lang] = {}), map); },
     /** Each language's name, in itself: what the language buttons say. */

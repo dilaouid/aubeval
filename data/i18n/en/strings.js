@@ -15,13 +15,15 @@ I18N.add('en', {
   'strings.start_continue': 'Enter or click: return to your village', // Entrée ou clic : reprendre votre village
   'strings.start_wipe': 'N: new game (erases the save)', // N : nouvelle partie (efface la sauvegarde)
   'strings.start_wipe_confirm': 'N once more to confirm', // N encore une fois pour confirmer
-  'strings.name_title': 'Your hero', // Votre héros
-  'strings.name_ask': 'What is your hero’s name?', // Quel est le nom de votre héros ?
+  'strings.name_title': 'Your hero', // {g:Votre héros|Votre héroïne}
+  'strings.name_ask': 'What is your hero’s name?', // Quel est le nom de {g:votre héros|votre héroïne} ?
   'strings.name_rule': '{min} to {max} characters: letters, spaces, hyphens, apostrophes.', // De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.
   'strings.name_ok': 'Begin', // Commencer
   'strings.name_back': 'Back', // Retour
-  'strings.name_keys': 'Enter: begin · Esc: back', // Entrée : commencer · Échap : retour
-  'strings.name_empty': 'Your hero needs a name.', // Votre héros a besoin d’un nom.
+  'strings.name_keys': 'Enter: begin · ↑ ↓: change hero · Esc: back', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_ok_edit': 'Confirm', // Valider
+  'strings.name_keys_edit': 'Enter: confirm · ↑ ↓: change hero · Esc: back', // Entrée : valider · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_empty': 'Your hero needs a name.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'A little short: at least {min} characters.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Too long: {max} characters at most.', // Trop long : {max} caractères au plus.
   'strings.name_chars': 'Only letters, spaces, hyphens and apostrophes.', // Seulement des lettres, des espaces, des traits d’union et des apostrophes.
@@ -79,7 +81,7 @@ I18N.add('en', {
   'strings.controls[4].rows[0][0][0]': 'K', // K
   'strings.controls[4].rows[0][1]': 'People', // Peuple
   'strings.controls[4].rows[0][2][0]': 'H', // H
-  'strings.controls[4].rows[0][3]': 'Hero', // Héros
+  'strings.controls[4].rows[0][3]': 'Hero', // {g:Héros|Héroïne}
   'strings.controls[4].rows[0][4][0]': 'J', // J
   'strings.controls[4].rows[0][5]': 'Quests', // Quêtes
   'strings.controls[4].rows[1][0][0]': 'V', // V
@@ -92,7 +94,7 @@ I18N.add('en', {
   'strings.paused': 'Pause', // Pause
   'strings.pause_hint': 'P or Esc to resume', // P ou Échap pour reprendre
   'strings.btn_people': 'People (K)', // Peuple (K)
-  'strings.btn_hero': 'Hero (H)', // Héros (H)
+  'strings.btn_hero': 'Hero (H)', // {g:Héros|Héroïne} (H)
   'strings.btn_quests': 'Quests (J)', // Quêtes (J)
   'strings.btn_menu': 'Village (V)', // Village (V)
   'strings.pop_free': 'free: {n}', // libres : {n}
@@ -116,10 +118,10 @@ I18N.add('en', {
   'strings.locked_quest': 'Locked', // Verrouillée
   'strings.tier': 'Rank {n}', // Rang {n}
   'strings.done': 'Complete', // Accomplie
-  'strings.hero_away': 'The hero is on a mission', // Le héros est en mission
+  'strings.hero_away': 'The hero is on a mission', // {g:Le héros|L’héroïne} est en mission
   'strings.raid_on': 'A raid is under way', // Un raid est en cours
-  'strings.start_mission': 'Send the hero', // Envoyer le héros
-  'strings.mission_back': '{title}: the hero is back.', // {title} : le héros est rentré.
+  'strings.start_mission': 'Send the hero', // Envoyer {g:le héros|l’héroïne}
+  'strings.mission_back': '{title}: the hero is back.', // {title} : {g:le héros|l’héroïne} est {g:rentré|rentrée}.
   'strings.mission_run': 'On a mission: {title}', // En mission : {title}
   'strings.next_chapter': 'More to come: one more chapter in data/quests.js, and the story goes on.', // La suite arrive : un chapitre de plus dans data/quests.js, et l’histoire reprend.
   'strings.chapter_done': 'Chapter complete!', // Chapitre terminé !
@@ -174,7 +176,7 @@ I18N.add('en', {
   'strings.forging': 'In progress: {name}', // En cours : {name}
   'strings.forge_do': 'Forge', // Forger
   'strings.forge_plus': 'Reinforce +{n}', // Renforcer +{n}
-  'strings.forged': '{name} is ready. Equip it in the hero’s sheet (H).', // {name} est prête. Équipez-la dans la fiche du héros (H).
+  'strings.forged': '{name} is ready. Equip it in the hero’s sheet (H).', // {name} est prête. Équipez-la dans la fiche {g:du héros|de l’héroïne} (H).
   'strings.owned': 'Forged', // Forgée
   'strings.people_title': 'The people of Aubeval', // Le peuple d’Aubeval
   'strings.classes': 'Classes', // Classes
@@ -198,19 +200,26 @@ I18N.add('en', {
   'strings.dismiss_tip': 'Send one of these home: they become a free inhabitant again.', // Renvoyer un de ceux-ci chez lui : il redevient un habitant libre.
   'strings.no_citizen': 'No free inhabitants: build or raise houses.', // Aucun habitant libre : bâtissez ou élevez des maisons.
   'strings.need_barracks': 'You need Barracks.', // Il faut une Caserne.
-  'strings.train_busy': 'The Barracks is already training a recruit.', // La Caserne forme déjà une recrue.
+  'strings.queue_full': 'The Barracks’ line is full.', // La file de la Caserne est pleine.
   'strings.train_title': 'Recruits', // Recrues
   'strings.training': 'In training: {name}', // À l’exercice : {name}
+  'strings.train_idle': 'Nobody in training.', // Personne à l’exercice.
   'strings.unit_ready': '{name} ready, in front of the Barracks.', // {name} prêt, devant la Caserne.
-  'strings.unit_down': 'Down!', // À terre !
+  'strings.unit_ready_rally': '{name} ready: off to the rally point.', // {name} prêt : il rejoint le point de ralliement.
+  'strings.unit_dead': 'Fallen!', // Tombé !
+  'strings.train_many_tip': 'Shift + click: order 5 in a row.', // Maj + clic : en commander 5 à la file.
+  'strings.train_cancel_tip': 'Click: cancel this recruit and get their price back.', // Clic : annuler cette recrue et récupérer son prix.
+  'strings.rally_help': 'Right-click on the map with this panel open: recruits will go there as they come out.', // Clic droit sur la carte, ce panneau ouvert : les recrues s’y rendront en sortant.
+  'strings.rally_set': 'Rally point set: recruits will go there.', // Point de ralliement posé : les recrues s’y rendront.
+  'strings.rally_on': 'Rally point set.', // Point de ralliement posé.
+  'strings.rally_clear': 'Remove the rally point', // Enlever le ralliement
   'strings.soldiers': 'Soldiers', // Soldats
   'strings.soldiers_none': 'Build Barracks (Defence tab) to train soldiers.', // Bâtissez une Caserne (onglet Défense) pour former des soldats.
-  'strings.soldiers_down': '{n} down', // {n} à terre
   'strings.soldiers_help': 'Click a soldier or Shift + drag to select, right-click to send. They hold the spot and charge any raider who comes near.', // Clic sur un soldat ou Maj + glisser pour choisir, clic droit pour envoyer. Ils gardent l’endroit et chargent les pillards qui s’en approchent.
   'strings.select_all': 'All soldiers', // Tous les soldats
   'strings.recall': 'Recall', // Rappel
   'strings.recall_tip': 'All soldiers return to the Barracks.', // Tous les soldats reviennent devant la Caserne.
-  'strings.no_soldiers': 'No soldier standing.', // Aucun soldat debout.
+  'strings.no_soldiers': 'No soldiers.', // Aucun soldat.
   'strings.sel_hint': 'Soldiers selected: {n} · right-click: send them · Esc: release', // Soldats choisis : {n} · clic droit : les envoyer · Échap : lâcher
   'strings.trade_title': 'Trade (lots of {n})', // Commerce (par {n})
   'strings.buy': 'Buy {p} gold', // Acheter {p} or
@@ -226,7 +235,9 @@ I18N.add('en', {
   'strings.trap_locked': 'Traps come with the first raid.', // Les pièges arrivent avec le premier raid.
   'strings.trap_hint': 'Click or drag along the raiders’ path. Right-click or Esc to put away.', // Cliquez ou glissez sur le chemin des pillards. Clic droit ou Échap pour ranger.
   'strings.safe_zone': 'Safe zone: {n} tiles around it (+{step} per level). No raider appears there.', // Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.
-  'strings.hero_title': 'The hero', // Le héros
+  'strings.hero_look': 'Change look', // Changer d’apparence
+  'strings.hero_look_raid': 'Not during a raid.', // Pas pendant un raid.
+  'strings.hero_title': 'The hero', // {g:Le héros|L’héroïne}
   'strings.equip': 'Equip', // Équiper
   'strings.equipped': 'Equipped', // Équipé
   'strings.nothing': 'nothing', // rien
@@ -234,7 +245,7 @@ I18N.add('en', {
   'strings.armor': 'Armour', // Armure
   'strings.inventory': 'Forged gear', // Équipement forgé
   'strings.inventory_empty': 'Nothing yet: forge a weapon at the Forge.', // Rien encore : forgez une arme à la Forge.
-  'strings.at_village': 'In the village: guarding the Town Hall.', // Au village : il garde l’hôtel de ville.
+  'strings.at_village': 'In the village: guarding the Town Hall.', // Au village : {g:il|elle} garde l’hôtel de ville.
   'strings.level_up': 'Level {n}!', // Niveau {n} !
   'strings.raid_in': 'Raid #{n} in {time}', // Raid n°{n} dans {time}
   'strings.raid_call': 'Call', // Appeler
@@ -243,12 +254,13 @@ I18N.add('en', {
   'strings.raid_warn': 'The horn sounds: a raid leaves the goblin camp, from {dir}! Lay your traps (Defence tab).', // La corne sonne : un raid quitte le camp gobelin, par {dir} ! Posez vos pièges (onglet Défense).
   'strings.raid_start': 'The raiders are coming!', // Les pillards arrivent !
   'strings.raid_won': 'Raid repelled! Bounty: {gold} gold', // Raid repoussé ! Prime : {gold} or
+  'strings.raid_losses': 'Soldiers fallen: {n}.', // Soldats tombés : {n}.
   'strings.raid_lost': 'Raid lost: stores plundered. Repair, then strengthen your ramparts.', // Raid perdu : réserves pillées. Réparez, puis renforcez vos remparts.
   'strings.pillage': 'Plundered!', // Pillé !
   'strings.victory': 'Victory!', // Victoire !
   'strings.defeat': 'Defeat', // Défaite
   'strings.defeat_text': '{hero} falls back to the village. Nothing is lost.', // {hero} se replie au village. Rien n’est perdu.
-  'strings.defeat_tip': 'New buildings and their levels give better cards; the Forge, a better blade. The deck is set in the Hero sheet.', // De nouveaux bâtiments et leurs niveaux donnent de meilleures cartes ; la Forge, une meilleure lame. Le paquet se règle dans la fiche du Héros.
+  'strings.defeat_tip': 'New buildings and their levels give better cards; the Forge, a better blade. The deck is set in the Hero sheet.', // De nouveaux bâtiments et leurs niveaux donnent de meilleures cartes ; la Forge, une meilleure lame. Le paquet se règle dans la fiche {g:du Héros|de l’Héroïne}.
   'strings.retry': 'Try again', // Réessayer
   'strings.to_village': 'Back to the village', // Retour au village
   'strings.back': 'Back', // Retour
@@ -267,7 +279,7 @@ I18N.add('en', {
   'strings.card_from': 'Card from: {from}', // Carte de : {from}
   'strings.no_energy': 'Not enough Breath', // Pas assez de souffle
   'strings.no_stock': 'Not enough {res} in the village', // Pas assez de {res} au village
-  'strings.full_health': '{hero} is not wounded', // {hero} n’est pas blessé
+  'strings.full_health': '{hero} is not wounded', // {hero} n’est pas {g:blessé|blessée}
   'strings.coming': 'Incoming: {n}', // Arrive : {n}
   'strings.coming_left': ' · after Guard: {n}', //  · après la Garde : {n}
   'strings.it_hit': 'Attack {n}', // Attaque {n}
@@ -313,7 +325,7 @@ I18N.add('en', {
   'strings.tally_cards': 'New cards in the deck: {n}', // Nouvelles cartes dans le paquet : {n}
   'strings.help_tip': 'Battle rules (H)', // Les règles du combat (H)
   'strings.help_title': 'Battle: the village’s hand', // Le combat : la main du village
-  'strings.battle_help': 'Your deck is your village: each kind of standing building adds its card, stronger as the building levels up. {hero} adds some too.\n\nOn your turn, you draw 5 cards and have 3 points of Breath. A card’s blue number is its cost. Click an enemy to mark it: your blows will land on it. Unplayed cards are discarded.\n\nEach enemy shows above its head what it will do. Guard absorbs damage until your next turn. “Incoming” adds up what awaits you.\n\nOn the enemies’ turn, each blow closes a ring around {hero}: Space (or a click) the moment it touches the golden circle, and half the blow is parried. Right on it, the parry is perfect: no damage, and {hero} ripostes. Too soon, and it’s missed.\n\nThe deck is set in the Hero sheet: a card left in the village will no longer be drawn.', // Votre paquet, c’est votre village : chaque sorte de bâtiment debout y met sa carte, plus forte quand le bâtiment monte de niveau. {hero} y ajoute les siennes.\n\nÀ votre tour, vous piochez 5 cartes et avez 3 points de souffle. Le chiffre bleu d’une carte est son prix. Cliquez un ennemi pour le marquer : vos coups iront sur lui. Les cartes non jouées sont défaussées.\n\nChaque ennemi annonce au-dessus de sa tête ce qu’il fera. La Garde absorbe les dégâts jusqu’à votre prochain tour. « Arrive » additionne ce qui vous attend.\n\nAu tour des ennemis, chaque coup referme un anneau sur {hero} : Espace (ou un clic) à l’instant où il touche le cercle doré, et le coup est paré à moitié. En plein dessus, la parade est parfaite : aucun dégât, et {hero} riposte. Trop tôt, c’est raté.\n\nLe paquet se règle dans la fiche du Héros : une carte laissée au village ne sera plus piochée.
+  'strings.battle_help': 'Your deck is your village: each kind of standing building adds its card, stronger as the building levels up. {hero} adds some too.\n\nOn your turn, you draw 5 cards and have 3 points of Breath. A card’s blue number is its cost. Click an enemy to mark it: your blows will land on it. Unplayed cards are discarded.\n\nEach enemy shows above its head what it will do. Guard absorbs damage until your next turn. “Incoming” adds up what awaits you.\n\nOn the enemies’ turn, each blow closes a ring around {hero}: Space (or a click) the moment it touches the golden circle, and half the blow is parried. Right on it, the parry is perfect: no damage, and {hero} ripostes. Too soon, and it’s missed.\n\nThe deck is set in the Hero sheet: a card left in the village will no longer be drawn.', // Votre paquet, c’est votre village : chaque sorte de bâtiment debout y met sa carte, plus forte quand le bâtiment monte de niveau. {hero} y ajoute les siennes.\n\nÀ votre tour, vous piochez 5 cartes et avez 3 points de souffle. Le chiffre bleu d’une carte est son prix. Cliquez un ennemi pour le marquer : vos coups iront sur lui. Les cartes non jouées sont défaussées.\n\nChaque ennemi annonce au-dessus de sa tête ce qu’il fera. La Garde absorbe les dégâts jusqu’à votre prochain tour. « Arrive » additionne ce qui vous attend.\n\nAu tour des ennemis, chaque coup referme un anneau sur {hero} : Espace (ou un clic) à l’instant où il touche le cercle doré, et le coup est paré à moitié. En plein dessus, la parade est parfaite : aucun dégât, et {hero} riposte. Trop tôt, c’est raté.\n\nLe paquet se règle dans la fiche {g:du Héros|de l’Héroïne} : une carte laissée au village ne sera plus piochée.
   'strings.deck': 'Battle deck', // Paquet de combat
   'strings.deck_count': '{n} cards', // {n} cartes
   'strings.deck_help': 'Each standing building sends its card; its level makes it stronger. Untick a card to leave it in the village (a deck of at least {min} cards).', // Chaque bâtiment debout envoie sa carte ; son niveau la renforce. Décochez une carte pour la laisser au village (paquet de {min} cartes au moins).
@@ -341,7 +353,7 @@ I18N.add('en', {
   'strings.wipe': 'Start over', // Tout recommencer
   'strings.wipe_confirm': 'Click again to erase everything', // Cliquez encore pour tout effacer
   'strings.prestige_title': 'New Start', // Nouveau départ
-  'strings.prestige_text': 'Trades the village (buildings, stores, raids) for Renown, kept forever. The hero, the hero’s gear and quests remain.', // Échange le village (bâtiments, réserves, raids) contre de la Renommée, gardée pour toujours. Le héros, son équipement et ses quêtes restent.
+  'strings.prestige_text': 'Trades the village (buildings, stores, raids) for Renown, kept forever. The hero, the hero’s gear and quests remain.', // Échange le village (bâtiments, réserves, raids) contre de la Renommée, gardée pour toujours. {g:Le héros|L’héroïne}, son équipement et ses quêtes restent.
   'strings.prestige_gain': 'Now: +{n} Renown (production and taxes +{pct}%)', // Maintenant : +{n} Renommée (production et impôts +{pct} %)
   'strings.prestige_have': 'Renown: {n} (production +{pct}%)', // Renommée : {n} (production +{pct} %)
   'strings.prestige_do': 'Make a New Start', // Prendre un nouveau départ
@@ -386,6 +398,7 @@ I18N.add('en', {
   'strings.up_hall': 'Less plunder, wider safe zone', // Moins de pillage, zone sûre plus large
   'strings.up_double': 'Milestone: production ×2!', // Palier : production ×2 !
   'strings.up_look': 'New look', // Nouvelle apparence
+  'strings.up_lodge': 'Aveline’s Plans: +{n} s', // Plans d’Aveline : +{n} s
   'strings.sec_work': 'Work', // Travail
   'strings.sec_defense': 'Defence', // Défense
   'strings.sec_level': 'Level', // Niveau
@@ -420,7 +433,7 @@ I18N.add('en', {
   'strings.camp_info': 'The goblin camp is {n} tiles away, towards {dir}. Every raid sets out from it.', // Le camp gobelin est à {n} cases, vers {dir}. Tous les raids en partent.
   'strings.camp_show': 'See the goblin camp', // Voir le camp gobelin
   'strings.camp_force': 'Garrison: {n} / {all} guards · palisade {hp} / {max} · camps destroyed: {fell}', // Garnison : {n} / {all} gardes · palissade {hp} / {max} · camps détruits : {fell}
-  'strings.camp_how': 'Send your soldiers: the button below, or select them and right-click the camp. They cut down the garrison, then the palisade; the hero joins them if in the village. Left alone, the camp recovers.', // Envoyez vos soldats : bouton ci-dessous, ou sélectionnez-les et clic droit sur le camp. Ils abattent la garnison puis la palissade ; le héros les rejoint s’il est au village. Laissé seul, le camp se relève.
+  'strings.camp_how': 'Send your soldiers: the button below, or select them and right-click the camp. They cut down the garrison, then the palisade; the hero joins them if in the village. Left alone, the camp recovers.', // Envoyez vos soldats : bouton ci-dessous, ou sélectionnez-les et clic droit sur le camp. Ils abattent la garnison puis la palissade ; {g:le héros|l’héroïne} les rejoint {g:s’il|si elle} est au village. Laissé seul, le camp se relève.
   'strings.camp_attack': 'Attack the camp', // Attaquer le camp
   'strings.camp_no_soldiers': 'No soldiers on their feet: train some at the barracks.', // Aucun soldat sur pied : formez-en à la caserne.
   'strings.camp_sent': '{n} soldiers march on the goblin camp.', // {n} soldats marchent sur le camp gobelin.
@@ -507,7 +520,7 @@ I18N.add('en', {
   'strings.elite_banner_sub': 'The city draws craftier raiders', // La cité attire des pillards plus rusés
   'strings.elite_banner_text': 'From now on, every raid comes with a scourge, heralded by the horn: {name}. {trait}\nThe higher the city climbs, the more they stack. Each adds {pct}% to the bounty.', // À partir de maintenant, chaque raid vient avec un fléau, annoncé au son de la corne : {name}. {trait}\nPlus la cité monte, plus ils en cumulent. Chacun ajoute {pct} % à la prime.
   'strings.duel_btn': 'Challenge {name}', // Défier {name}
-  'strings.duel_tip': 'Challenge {name} to a duel\n{hero} faces the warlord alone, with cards, once per siege.\nVictory: the chief is out of the fight, the raiders lose heart and some flee.\nOtherwise: the chief marches with the column and counts double at your gate.', // Défier {name} en duel\n{hero} l’affronte seul, aux cartes, une seule fois par siège.\nVainqueur : le chef est hors de combat, ses pillards perdent courage et certains fuient.\nSinon : il marche avec sa colonne et compte double à votre porte.
+  'strings.duel_tip': 'Challenge {name} to a duel\n{hero} faces the warlord alone, with cards, once per siege.\nVictory: the chief is out of the fight, the raiders lose heart and some flee.\nOtherwise: the chief marches with the column and counts double at your gate.', // Défier {name} en duel\n{hero} l’affronte {g:seul|seule}, aux cartes, une seule fois par siège.\nVainqueur : le chef est hors de combat, ses pillards perdent courage et certains fuient.\nSinon : il marche avec sa colonne et compte double à votre porte.
   'strings.duel_away': '{hero} is on a mission: no one to issue the challenge.', // {hero} est en mission : personne pour le défier.
   'strings.duel_title': 'Duel · {name}', // Duel · {name}
   'strings.duel_hint': 'A duel can be tried only once per siege. The next warlord will come with the next siege: better cards and a better blade by then.', // Un duel ne se tente qu’une fois par siège. Le prochain chef de guerre viendra avec le prochain siège : de meilleures cartes et une meilleure lame d’ici là.
@@ -610,7 +623,7 @@ I18N.add('en', {
   'strings.need_quest_short': 'Quest', // Quête
   'strings.need_raids': 'Raids repelled ({n}/{all})', // Raids repoussés ({n}/{all})
   'strings.need_raids_short': 'Raid', // Raid
-  'strings.need_hero': 'Hero level {n}', // Héros niveau {n}
+  'strings.need_hero': 'Hero level {n}', // {g:Héros|Héroïne} niveau {n}
   'strings.need_hero_short': 'Level {n}', // Niveau {n}
   'strings.need_weapon': 'A weapon equipped', // Une arme équipée
   'strings.need_armor': 'Armour equipped', // Une armure équipée
@@ -625,6 +638,9 @@ I18N.add('en', {
   'strings.pop_tip': 'Houses lodge inhabitants. Their number unlocks new buildings.', // Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.
   'strings.raid_call_tip': 'Call the raid now\nBounty +{pct}% if you repel it.', // Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.
   'strings.forge_plus_tip': 'Each +1 adds {pct}% of its bonuses.', // Chaque +1 ajoute {pct} % de ses bonus.
+  'strings.forge_perk_on': 'Tempering: each +N is worth {pct}% of its bonuses.', // Trempe : chaque +N vaut {pct} % de ses bonus.
+  'strings.forge_perk_off': 'Level {n}: Tempering (stronger +N) and the Red-hot Iron card.', // Niveau {n} : Trempe (+N plus forts) et carte Fer rouge.
+  'strings.up_forge_perk': 'Milestone: Tempering and the Red-hot Iron card!', // Palier : Trempe et carte Fer rouge !
   'strings.contracts_none': 'Contracts come with the quest “Hold the Village”. Each victory raises their rank: enemies and bounties grow without limit.', // Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.
   'strings.fg_bellows_keys': 'B · ↑ · right-click', // B · ↑ · clic droit
   'strings.span_min': '{m} minute', // {m} minute
@@ -637,11 +653,11 @@ I18N.add('en', {
   'strings.city_t_taxes': 'Taxes', // Impôts
   'strings.city_t_works': 'Great Works', // Chantiers
   'strings.city_t_legacy': 'Legacy', // Héritage
-  'strings.city_hud_tip': '{name} · hero’s popularity {n} / 100\nClick to open the City (G).', // {name} · popularité du héros {n} / 100\nCliquez pour ouvrir la Cité (G).
+  'strings.city_hud_tip': '{name} · hero’s popularity {n} / 100\nClick to open the City (G).', // {name} · popularité {g:du héros|de l’héroïne} {n} / 100\nCliquez pour ouvrir la Cité (G).
   'strings.city_hud_tip_order': 'An order can be honoured.', // Une commande peut être honorée.
   'strings.city_hud_tip_rank': 'The next rank can be proclaimed.', // Le rang suivant peut être proclamé.
   'strings.city_need_rank': 'City rank: {name} (here: {have})', // Rang de cité : {name} (ici : {have})
-  'strings.city_need_pop': 'Hero’s popularity {n} (here: {have})', // Popularité du héros {n} (ici : {have})
+  'strings.city_need_pop': 'Hero’s popularity {n} (here: {have})', // Popularité {g:du héros|de l’héroïne} {n} (ici : {have})
   'strings.city_need_orders': 'Orders honoured ({have}/{n})', // Commandes honorées ({have}/{n})
   'strings.city_need_raids': 'Raids repelled by this village ({have}/{n})', // Raids repoussés par ce village ({have}/{n})
   'strings.city_need_raids_camp': ' · a razed camp counts as {k}', //  · un camp rasé en vaut {k}
@@ -661,7 +677,7 @@ I18N.add('en', {
   'strings.city_why_royal': 'Royal Siege repelled', // Siège royal repoussé
   'strings.city_rank_n': 'Rank {n}', // Rang {n}
   'strings.city_rank_gives': 'production and taxes +{pct}%', // production et impôts +{pct} %
-  'strings.city_pop_title': 'Hero’s popularity: {n} / 100', // Popularité du héros : {n} / 100
+  'strings.city_pop_title': 'Hero’s popularity: {n} / 100', // Popularité {g:du héros|de l’héroïne} : {n} / 100
   'strings.city_pop_gives': 'It gives: taxes +{tax}%, Market {mk}% cheaper to buy and {mk}% dearer to sell, +{house} inhabitant(s) per house.', // Elle donne : impôts +{tax} %, Marché {mk} % moins cher à l’achat et {mk} % plus cher à la vente, +{house} habitant(s) par maison.
   'strings.city_pop_next': 'One more inhabitant per house at {n}.', // Un habitant de plus par maison à {n}.
   'strings.city_pop_decay': 'It wears away by {n} a minute, never below {floor}. The higher it is, the slower it rises.', // Elle s’effrite de {n} par minute, jamais sous {floor}. Plus elle est haute, plus elle monte lentement.
@@ -719,7 +735,7 @@ I18N.add('en', {
   'strings.city_tax_fx_high': 'High: satisfaction capped at {cap}%, these houses no longer rise · popularity −{n}/min.', // Élevé : satisfaction plafonnée à {cap} %, ces maisons ne s’élèvent plus · popularité −{n}/min.
   'strings.city_tax_tip_low': 'Low\nTax ×{m}. Satisfaction rises {k} times faster: houses rise sooner.', // Bas\nImpôt ×{m}. La satisfaction monte {k} fois plus vite : les maisons s’élèvent plus tôt.
   'strings.city_tax_tip_normal': 'Normal\nThe usual tax.', // Normal\nL’impôt habituel.
-  'strings.city_tax_tip_high': 'High\nTax ×{m}. Satisfaction caps at {cap}%: these houses can no longer rise, and the hero loses {n} popularity per minute.', // Élevé\nImpôt ×{m}. La satisfaction plafonne à {cap} % : ces maisons ne peuvent plus s’élever, et le héros perd {n} de popularité par minute.
+  'strings.city_tax_tip_high': 'High\nTax ×{m}. Satisfaction caps at {cap}%: these houses can no longer rise, and the hero loses {n} popularity per minute.', // Élevé\nImpôt ×{m}. La satisfaction plafonne à {cap} % : ces maisons ne peuvent plus s’élever, et {g:le héros|l’héroïne} perd {n} de popularité par minute.
   'strings.city_tax_tip_now': 'Now: {now} gold/min · at this level: {then} gold/min', // Maintenant : {now} or/min · à ce niveau : {then} or/min
   'strings.city_works_help': 'Three monuments, opened by the ranks. This is where surpluses go: each stage costs thousands of resources and gives a lasting bonus to the whole town.', // Trois monuments, ouverts par les rangs. C’est là que partent les surplus : chaque étape coûte des milliers de ressources et donne un bonus permanent à toute la ville.
   'strings.city_work_gives': 'What it gives', // Ce qu’il donne
@@ -742,7 +758,7 @@ I18N.add('en', {
   'strings.city_ns_title': 'A New Start', // Un nouveau départ
   'strings.city_ns_gain': 'Now: +{n} Renown ({gold} for gold earned, {rank} for rank).', // Maintenant : +{n} Renommée ({gold} pour l’or gagné, {rank} pour le rang).
   'strings.city_ns_none': 'No Renown to gain yet: grow this village.', // Pas encore de Renommée à gagner : faites grandir ce village.
-  'strings.city_ns_keep': 'Kept: the hero, the quests, the legacy, sites discovered. Back to zero: buildings, stores, rank, orders, taxes and great works.', // Restent : le héros, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers.
+  'strings.city_ns_keep': 'Kept: the hero, the quests, the legacy, sites discovered. Back to zero: buildings, stores, rank, orders, taxes and great works.', // Restent : {g:le héros|l’héroïne}, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers.
   'strings.city_ns_stock': 'You will start again with: {list}.', // Vous repartirez avec : {list}.
   'strings.city_ns_do': 'Make a New Start', // Prendre un nouveau départ
   'strings.city_ns_sure': 'Click again to confirm', // Cliquez encore pour confirmer
@@ -754,7 +770,7 @@ I18N.add('en', {
   'strings.city_node_tip': '{name}\n{desc}\nNext level: {cost} Renown.', // {name}\n{desc}\nNiveau suivant : {cost} Renommée.
   'strings.city_node_req': '{name} lv. {n}', // {name} niv. {n}
   'strings.vn_pop': 'Popularity', // Popularité
-  'strings.vn_pop_tip': 'The hero’s popularity\nIt rises with games, quests and raids repelled, and sinks back over time. It weighs on tax, market prices and how many folk your houses lodge.', // La popularité du héros\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.
+  'strings.vn_pop_tip': 'The hero’s popularity\nIt rises with games, quests and raids repelled, and sinks back over time. It weighs on tax, market prices and how many folk your houses lodge.', // La popularité {g:du héros|de l’héroïne}\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.
   'strings.vn_play': 'Play: {title}', // Jouer : {title}
   'strings.vn_play_wait': 'Ready in {t}', // Prêt dans {t}
   'strings.vn_play_tip': '{title}\n{how}', // {title}\n{how}
@@ -767,6 +783,7 @@ I18N.add('en', {
   'strings.vn_keys': '↑ ↓ and Enter, or 1 · 2 · 3', // ↑ ↓ et Entrée, ou 1 · 2 · 3
   'strings.vn_gifts': 'Current gifts', // Cadeaux en cours
   'strings.vn_no_gift': 'No gift running: play!', // Aucun cadeau en cours : jouez !
+  'strings.vn_gifts_more': '+ {n} more', // + {n} autres
   'strings.vn_card_wins': 'To win', // À gagner
   'strings.vn_card_best': 'Best: {n}', // Record : {n}
   'strings.vn_card_none': 'Never played', // Jamais joué
@@ -794,7 +811,7 @@ I18N.add('en', {
   'strings.vn_res_score': '{n} {unit}', // {n} {unit}
   'strings.vn_res_best': 'New best!', // Nouveau record !
   'strings.vn_res_best_old': 'Best: {n}', // Record : {n}
-  'strings.vn_res_pop': 'Hero’s popularity +{n}', // Popularité du héros +{n}
+  'strings.vn_res_pop': 'Hero’s popularity +{n}', // Popularité {g:du héros|de l’héroïne} +{n}
   'strings.vn_res_nopop': 'No popularity this time.', // Pas de popularité cette fois.
   'strings.vn_res_gift': '{text} for {t}', // {text} pendant {t}
   'strings.vn_res_kept': '{text}: the current gift is better, so it is kept', // {text} : le cadeau en cours, meilleur, est gardé
@@ -810,8 +827,8 @@ I18N.add('en', {
   'strings.vn_tip_damaged': '{intro} {n} building(s) still await repairs.', // {intro} {n} bâtiment(s) attendent encore des réparations.
   'strings.vn_tip_starved': '{intro} a workshop has stopped ({name}): it is short of {res}.', // {intro} un atelier ne tourne plus ({name}) : il manque de {res}.
   'strings.vn_tip_raid': '{intro} the goblins are gathering. Keep your soldiers near the gates.', // {intro} les gobelins se rassemblent. Gardez vos soldats près des portes.
-  'strings.vn_tip_pop_low': '{intro} folk speak little of the hero these days. A game or two, and tongues will loosen.', // {intro} l’on parle peu du héros en ce moment. Un jeu ou deux, et les langues se délient.
-  'strings.vn_tip_pop_high': '{intro} the hero’s name is on everyone’s lips. Taxes come in better when the hero is loved.', // {intro} tout le monde n’a que le nom du héros à la bouche. L’impôt rentre mieux quand on l’aime.
+  'strings.vn_tip_pop_low': '{intro} folk speak little of the hero these days. A game or two, and tongues will loosen.', // {intro} l’on parle peu {g:du héros|de l’héroïne} en ce moment. Un jeu ou deux, et les langues se délient.
+  'strings.vn_tip_pop_high': '{intro} the hero’s name is on everyone’s lips. Taxes come in better when the hero is loved.', // {intro} tout le monde n’a que le nom {g:du héros|de l’héroïne} à la bouche. L’impôt rentre mieux quand on l’aime.
   'strings.vn_tip_game': '{intro} {name} has a game all ready for you ({place}).', // {intro} {name} a un jeu tout prêt pour vous ({place}).
   'strings.vn_tip_fine': '{intro} the town runs smoothly. A good time to think bigger.', // {intro} la ville tourne rond. Profitez-en pour voir plus grand.
   'strings.cf_served': 'Tips', // Pourboires
@@ -854,23 +871,50 @@ I18N.add('en', {
   'strings.fg_cold': 'Too cold!', // Trop froid !
   'strings.fg_hot': 'Too hot!', // Ça brûle !
   'strings.fg_early': 'Thin air', // Dans le vide
+  'strings.bk_score': 'Golden loaves', // Pains dorés
+  'strings.bk_burnt_n': 'Burnt', // Brûlés
+  'strings.bk_keys': 'Keys 1 to {n}, or click an oven', // Touches 1 à {n}, ou clic sur un four
+  'strings.bk_perfect': 'Perfect! +{n}', // Parfait ! +{n}
+  'strings.bk_golden': 'Golden +{n}', // Doré +{n}
+  'strings.bk_dark': 'Dark +{n}', // Foncé +{n}
+  'strings.bk_pale': 'Too pale…', // Trop pâle…
+  'strings.bk_burnt': 'Burnt!', // Brûlé !
+  'strings.bk_reload': 'In it goes…', // On enfourne…
+  'strings.bk_end_strikes': 'The batch burnt!', // La fournée a brûlé !
+  'strings.bq_score': 'Parries', // Parades
+  'strings.bq_hits_n': 'Hits taken', // Coups reçus
+  'strings.bq_keys': 'Arrow keys, or click a side', // Flèches du clavier, ou clic sur un côté
+  'strings.bq_quick': 'Quick! +{n}', // Vif ! +{n}
+  'strings.bq_good': 'Parried +{n}', // Paré +{n}
+  'strings.bq_wrong': 'Wrong side!', // Mauvais côté !
+  'strings.bq_late': 'Hit!', // Touché !
+  'strings.bq_feinted': 'Feint!', // Feinte !
+  'strings.bq_end_hits': 'Too many hits taken!', // Trop de coups reçus !
+  'strings.lg_score': 'Stones set', // Pierres posées
+  'strings.lg_faults_n': 'Faults', // Fautes
+  'strings.lg_keys': 'Keys 1 to 4, or click a stone', // Touches 1 à 4, ou clic sur une pierre
+  'strings.lg_chain': 'Chain ×{n}', // Chaîne ×{n}
+  'strings.lg_set': 'Set +{n}', // Posée +{n}
+  'strings.lg_chained': 'In a chain! +{n}', // En chaîne ! +{n}
+  'strings.lg_wrong': 'It doesn’t fit!', // Elle n’entre pas !
+  'strings.lg_end_strikes': 'The wall came down!', // Le mur s’est écroulé !
   'strings.ex_title': 'Exploration', // Exploration
   'strings.ex_known': 'Known lands: {pct}%', // Terres connues : {pct} %
-  'strings.ex_help': 'Beyond the village, the mist hides the land. Your buildings, your soldiers, the hero and the scouts lift it, and find what it hides.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, le héros et les éclaireurs la lèvent, et trouvent ce qu’elle cache.
+  'strings.ex_help': 'Beyond the village, the mist hides the land. Your buildings, your soldiers, the hero and the scouts lift it, and find what it hides.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.
   'strings.ex_lvl': 'lv. {n}', // niv. {n}
   'strings.ex_far': '{n} tiles towards {dir}', // {n} cases vers {dir}
   'strings.ex_far_short': '{n} tiles · {dir}', // {n} cases · {dir}
-  'strings.ex_trip': 'The hero’s expedition', // Le héros en expédition
+  'strings.ex_trip': 'The hero’s expedition', // {g:Le héros|L’héroïne} en expédition
   'strings.ex_trip_out': 'On the way to {name}', // En route vers {name}
   'strings.ex_trip_there': 'On site: {name}', // Sur place : {name}
   'strings.ex_trip_back': 'On the way back', // Sur le chemin du retour
-  'strings.ex_trip_none': 'The hero is in the village. Choose a site and send the hero there.', // Le héros est au village. Choisissez un lieu et envoyez-le.
-  'strings.ex_trip_mission': 'The hero is on a mission and will set out on returning.', // Le héros est en mission : il partira à son retour.
+  'strings.ex_trip_none': 'The hero is in the village. Choose a site and send the hero there.', // {g:Le héros|L’héroïne} est au village. Choisissez un lieu et envoyez-{g:le|la}.
+  'strings.ex_trip_mission': 'The hero is on a mission and will set out on returning.', // {g:Le héros|L’héroïne} est en mission : {g:il|elle} partira à son retour.
   'strings.ex_open': 'Open the site', // Ouvrir le lieu
-  'strings.ex_see_hero': 'Bring the view to the hero', // Amener la vue sur le héros
+  'strings.ex_see_hero': 'Bring the view to the hero', // Amener la vue sur {g:le héros|l’héroïne}
   'strings.ex_recall': 'Return', // Rentrer
-  'strings.ex_recall_tip': 'Call the hero back to the village\nOn arrival, the hero stands guard at the Town Hall again.', // Rappeler le héros au village\nIl reprend sa garde devant l’hôtel de ville en arrivant.
-  'strings.ex_arrived': '{hero} has arrived: {name}. Open Exploration (E).', // {hero} est arrivé : {name}. Ouvrez l’Exploration (E).
+  'strings.ex_recall_tip': 'Call the hero back to the village\nOn arrival, the hero stands guard at the Town Hall again.', // Rappeler {g:le héros|l’héroïne} au village\n{g:Il|Elle} reprend sa garde devant l’hôtel de ville en arrivant.
+  'strings.ex_arrived': '{hero} has arrived: {name}. Open Exploration (E).', // {hero} est {g:arrivé|arrivée} : {name}. Ouvrez l’Exploration (E).
   'strings.ex_home': '{hero} is back in the village.', // {hero} est de retour au village.
   'strings.ex_lost': 'The site can no longer be reached: {hero} turns home.', // Le lieu n’est plus accessible : {hero} rentre.
   'strings.ex_scouts': 'Scouts ({n}/{max} out)', // Éclaireurs ({n}/{max} dehors)
@@ -905,7 +949,7 @@ I18N.add('en', {
   'strings.ex_open_tip': 'Open this site’s page', // Ouvrir la page de ce lieu
   'strings.ex_back': '‹ All sites', // ‹ Tous les lieux
   'strings.ex_go': 'Go there', // Y aller
-  'strings.ex_go_tip': 'Send the hero\nJourney: {time}. Meanwhile, the village is left unguarded.', // Envoyer le héros\nTrajet : {time}. Pendant ce temps, il ne garde plus le village.
+  'strings.ex_go_tip': 'Send the hero\nJourney: {time}. Meanwhile, the village is left unguarded.', // Envoyer {g:le héros|l’héroïne}\nTrajet : {time}. Pendant ce temps, {g:il|elle} ne garde plus le village.
   'strings.ex_coming': 'On the way', // En route
   'strings.ex_fight': 'Fight', // Combattre
   'strings.ex_gift': 'Offer', // Offrir
@@ -913,7 +957,7 @@ I18N.add('en', {
   'strings.ex_deliver': 'Deliver', // Livrer
   'strings.ex_deepen': 'Dig deeper', // Creuser
   'strings.ex_done_btn': 'Explored', // Explorée
-  'strings.ex_need_hero': 'The hero must go there.', // Le héros doit s’y rendre.
+  'strings.ex_need_hero': 'The hero must go there.', // {g:Le héros|L’héroïne} doit s’y rendre.
   'strings.ex_go_time': 'Journey: {time}.', // Trajet : {time}.
   'strings.ex_foe_scale': 'strength +{pct}%', // force +{pct} %
   'strings.ex_lair_back': '{name} is teeming again ({lvl}).', // {name} est repeuplée ({lvl}).
@@ -922,8 +966,8 @@ I18N.add('en', {
   'strings.ex_foes': 'Who lurks there', // Qui s’y trouve
   'strings.ex_st_ruin': 'Raiders camp here', // Des pillards y campent
   'strings.ex_st_done': 'Explored', // Explorée
-  'strings.ex_st_here': 'The hero is here', // Le héros est sur place
-  'strings.ex_st_coming': 'The hero is on the way', // Le héros est en route
+  'strings.ex_st_here': 'The hero is here', // {g:Le héros|L’héroïne} est sur place
+  'strings.ex_st_coming': 'The hero is on the way', // {g:Le héros|L’héroïne} est en route
   'strings.ex_st_lair': 'Monsters nest here', // Des monstres y nichent
   'strings.ex_st_lair_again': 'Teeming again (cleared {n} times)', // Repeuplée ({n} fois vidée)
   'strings.ex_st_lair_wait': 'Empty · teeming again in {time}', // Vide · repeuplée dans {time}

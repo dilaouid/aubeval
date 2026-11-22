@@ -9,12 +9,12 @@ window.DATA = window.DATA || {};
 
 Object.assign(DATA.strings, {
   // the place
-  vn_pop: 'Popularité', vn_pop_tip: 'La popularité du héros\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.',
+  vn_pop: 'Popularité', vn_pop_tip: 'La popularité {g:du héros|de l’héroïne}\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.',
   vn_play: 'Jouer : {title}', vn_play_wait: 'Prêt dans {t}', vn_play_tip: '{title}\n{how}', vn_wait_tip: '{title}\n{name} reprend son souffle : le jeu sera prêt dans {t}.',
   vn_talk: 'Discuter', vn_talk_tip: 'Discuter\nUn mot de {name}, et ce qui se dit en ville.',
   vn_leave: 'Sortir (Échap)', vn_leave_tip: 'Sortir\nRetour au village.',
   vn_next: 'Espace ▸', vn_keys: '↑ ↓ et Entrée, ou 1 · 2 · 3',
-  vn_gifts: 'Cadeaux en cours', vn_no_gift: 'Aucun cadeau en cours : jouez !',
+  vn_gifts: 'Cadeaux en cours', vn_no_gift: 'Aucun cadeau en cours : jouez !', vn_gifts_more: '+ {n} autres',
   vn_card_wins: 'À gagner', vn_card_best: 'Record : {n}', vn_card_none: 'Jamais joué', vn_card_streak: 'Série : {n} · difficulté {lvl}',
   vn_card_ready: 'Prêt !', vn_medal_0: 'Perdu', vn_medal_1: 'Bronze', vn_medal_2: 'Argent', vn_medal_3: 'Or',
   vn_pop_gain: '+{n} popularité',
@@ -25,7 +25,7 @@ Object.assign(DATA.strings, {
   vn_pause: 'Pause', vn_pause_text: 'Abandonner compte comme une partie perdue.', vn_resume: 'Reprendre (Échap)', vn_quit: 'Abandonner',
   vn_res_0: 'Perdu…', vn_res_1: 'Médaille de bronze', vn_res_2: 'Médaille d’argent', vn_res_3: 'Médaille d’or !',
   vn_res_score: '{n} {unit}', vn_res_best: 'Nouveau record !', vn_res_best_old: 'Record : {n}',
-  vn_res_pop: 'Popularité du héros +{n}', vn_res_nopop: 'Pas de popularité cette fois.',
+  vn_res_pop: 'Popularité {g:du héros|de l’héroïne} +{n}', vn_res_nopop: 'Pas de popularité cette fois.',
   vn_res_gift: '{text} pendant {t}', vn_res_kept: '{text} : le cadeau en cours, meilleur, est gardé',
   vn_res_streak_up: 'Série : {n}. La prochaine partie sera plus dure, et paiera mieux.', vn_res_streak_same: 'Série : {n}.', vn_res_streak_down: 'Série retombée à {n} : le jeu redevient plus doux.',
   vn_res_wait: 'Prochaine partie ici dans {t}.', vn_res_ok: 'Continuer (Entrée)',
@@ -37,8 +37,8 @@ Object.assign(DATA.strings, {
   vn_tip_damaged: '{intro} {n} bâtiment(s) attendent encore des réparations.',
   vn_tip_starved: '{intro} un atelier ne tourne plus ({name}) : il manque de {res}.',
   vn_tip_raid: '{intro} les gobelins se rassemblent. Gardez vos soldats près des portes.',
-  vn_tip_pop_low: '{intro} l’on parle peu du héros en ce moment. Un jeu ou deux, et les langues se délient.',
-  vn_tip_pop_high: '{intro} tout le monde n’a que le nom du héros à la bouche. L’impôt rentre mieux quand on l’aime.',
+  vn_tip_pop_low: '{intro} l’on parle peu {g:du héros|de l’héroïne} en ce moment. Un jeu ou deux, et les langues se délient.',
+  vn_tip_pop_high: '{intro} tout le monde n’a que le nom {g:du héros|de l’héroïne} à la bouche. L’impôt rentre mieux quand on l’aime.',
   vn_tip_game: '{intro} {name} a un jeu tout prêt pour vous ({place}).',
   vn_tip_fine: '{intro} la ville tourne rond. Profitez-en pour voir plus grand.',
   // Le coup de feu
@@ -55,6 +55,18 @@ Object.assign(DATA.strings, {
   fg_quality: 'Qualité de la lame', fg_chain: 'Chaîne ×{n}', fg_heat: 'Chaleur', fg_bellows: 'Soufflet', fg_bellows_tip: 'Soufflet\nB, ↑ ou clic droit : ranime le feu.',
   fg_strike: 'Espace ou clic : frapper', fg_pump: 'B, ↑ ou clic droit : soufflet',
   fg_ok: 'Bonne chauffe', fg_perfect: 'Parfait !', fg_good: 'Bien', fg_miss: 'Raté', fg_cold: 'Trop froid !', fg_hot: 'Ça brûle !', fg_early: 'Dans le vide',
+  // La fournée
+  bk_score: 'Pains dorés', bk_burnt_n: 'Brûlés', bk_keys: 'Touches 1 à {n}, ou clic sur un four',
+  bk_perfect: 'Parfait ! +{n}', bk_golden: 'Doré +{n}', bk_dark: 'Foncé +{n}', bk_pale: 'Trop pâle…', bk_burnt: 'Brûlé !',
+  bk_reload: 'On enfourne…', bk_end_strikes: 'La fournée a brûlé !',
+  // Parade !
+  bq_score: 'Parades', bq_hits_n: 'Coups reçus', bq_keys: 'Flèches du clavier, ou clic sur un côté',
+  bq_quick: 'Vif ! +{n}', bq_good: 'Paré +{n}', bq_wrong: 'Mauvais côté !', bq_late: 'Touché !', bq_feinted: 'Feinte !',
+  bq_end_hits: 'Trop de coups reçus !',
+  // La bonne pierre
+  lg_score: 'Pierres posées', lg_faults_n: 'Fautes', lg_keys: 'Touches 1 à 4, ou clic sur une pierre', lg_chain: 'Chaîne ×{n}',
+  lg_set: 'Posée +{n}', lg_chained: 'En chaîne ! +{n}', lg_wrong: 'Elle n’entre pas !',
+  lg_end_strikes: 'Le mur s’est écroulé !',
 });
 
 // What a place's gift is called and how it reads (`{n}` is the share, in percent). The key is what
@@ -63,13 +75,18 @@ DATA.venueBuffs = {
   pop: { name: 'La tournée de Gaspard', text: 'Popularité des jeux +{n} %', short: 'jeux +{n} %', icon: 'icon.popularity', alt: 'icon.hero' },
   buy: { name: 'Prix d’amie', text: 'Achats au marché −{n} %', short: 'achats −{n} %', icon: 'icon.trade', alt: 'icon.gold' },
   sell: { name: 'Prix d’amie', text: 'Ventes au marché +{n} %', short: 'ventes +{n} %', icon: 'icon.trade', alt: 'icon.gold' },
-  atk: { name: 'Lame bien battue', text: 'Attaque du héros +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
+  atk: { name: 'Lame bien battue', text: 'Attaque {g:du héros|de l’héroïne} +{n} %', short: 'attaque +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
   forge: { name: 'Feu vif', text: 'Forge {n} % plus rapide', short: 'forge +{n} %', icon: 'icon.time', alt: 'icon.time' },
+  rise: { name: 'Pain chaud', text: 'Satisfaction des maisons {n} % plus rapide', short: 'satisfaction +{n} %', icon: 'icon.bread', alt: 'icon.bread' },
+  soldier: { name: 'Bien drillés', text: 'Les soldats frappent {n} % plus fort', short: 'soldats +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
+  build: { name: 'Plans d’Aveline', text: 'Constructions et améliorations {n} % moins chères', short: 'bâtir −{n} %', icon: 'icon.build', alt: 'icon.stone' },
 };
 
 // The places, by the kind of building they are (data/buildings.js).
 //   keeper     who stands in the middle (data/people.js DATA.keepers)
 //   name       the place, on its plate
+//   music      for a place without a track of its own (js/music.js): the place whose track it plays
+//   perLevel   a config.js knob: seconds each level of the place's building above the first adds to its gift (Venue.giftTime)
 //   line       where a keeper's image stands on a backdrop image, as a share of the screen's height
 //              (the drawn interiors know their own counter); tall: how high he or she is, same share
 //   faces      frames of the keeper's big strip ('venue.char.<keeper>') held for a moment: glad (a good
@@ -82,6 +99,7 @@ DATA.venueBuffs = {
 //   greet / ready / wait   his or her line on entering: first visit, game ready, game not ready
 //   chat       banter, said in turn under « Discuter »; tips: how he or she starts a word on the city
 //   glad, cross, after     words during the game, and the line after it by result (lost .. gold)
+//                          (other lists of words a game says: lost, okay, pushed, chain, feinted)
 DATA.venues = {
   cafe: {
     keeper: 'innkeeper', name: 'Le Café d’Aubeval', line: 0.78, tall: 0.72, faces: { glad: 0, cross: 2 }, faces64: { glad: 3, cross: 6 },
@@ -106,13 +124,13 @@ DATA.venues = {
     guests: ['baker', 'captain', 'steward', 'smith', 'merchant', 'guide'], // who comes for a cup: the town's own faces (portrait.<id>)
     thanks: ['Merci !', 'Parfait.', 'Ah, enfin !', 'Fameux.'], leaves: ['Trop long !', 'Je m’en vais !', 'Tant pis.'],
     greet: 'Entrez, entrez ! Ici on sert chaud et on parle fort. Quand la salle se remplit, un coup de main derrière le comptoir ne se refuse pas.',
-    ready: ['La salle se remplit, héros. Vous passez derrière le comptoir ?', 'Ça va être le coup de feu. Un tablier vous attend.', 'Les tasses sont chaudes, les clients arrivent. On y va ?'],
+    ready: ['La salle se remplit, {g:héros|héroïne}. Vous passez derrière le comptoir ?', 'Ça va être le coup de feu. Un tablier vous attend.', 'Les tasses sont chaudes, les clients arrivent. On y va ?'],
     wait: ['Laissez-moi essuyer mes tasses, on remet ça tout à l’heure.', 'La salle souffle un peu. Revenez dans un moment.'],
     chat: ['Une tasse noire et serrée, et la journée commence.', 'Un artisan sans café, c’est un paysan qui bâille.', 'Ici, on refait le monde. Et le village, parfois.',
-      'Quand le héros sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.', 'Maître Odon prend toujours un crème. Il dit que c’est pour les registres.'],
+      'Quand {g:le héros|l’héroïne} sert au comptoir, toute la rue vient voir. C’est bon pour vous, c’est bon pour moi.', 'Maître Odon prend toujours un crème. Il dit que c’est pour les registres.'],
     tips: ['On dit au comptoir que', 'Entre deux tasses, j’ai entendu que', 'Tendez l’oreille :'],
     glad: ['Et un de servi !', 'Bien joué !', 'Ça tourne !', 'Voilà !'], cross: ['Pas celle-là !', 'Aïe, la commande !', 'Non, non !'], lost: ['Encore un de parti…', 'Il reviendra. Peut-être.'],
-    after: ['La salle s’est vidée, et pas en bien… On réessaiera.', 'Pas mal pour un héros ! Les clients ont souri.', 'Beau service ! On va parler de vous dans toute la rue.', 'Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.'],
+    after: ['La salle s’est vidée, et pas en bien… On réessaiera.', 'Pas mal pour {g:un héros|une héroïne} ! Les clients ont souri.', 'Beau service ! On va parler de vous dans toute la rue.', 'Un service de roi ! Tournée générale, et tout Aubeval saura qui l’a servie.'],
   },
   market: {
     keeper: 'merchant', name: 'La Halle du Marché', line: 0.78, tall: 0.72, faces: { glad: 2, cross: 4 }, faces64: { glad: 1, cross: 0 },
@@ -136,7 +154,7 @@ DATA.venues = {
     ready: ['J’ai une belle affaire sur la table. Vous osez marchander ?', 'Un lot vient d’arriver. Faites-moi votre prix, qu’on rie un peu.', 'Voyons si vous comptez aussi bien que vous bâtissez.'],
     wait: ['Pas d’affaire pour l’instant, mon ami. La prochaine caravane arrive bientôt.', 'Laissez-moi refaire mes comptes. Revenez tout à l’heure.'],
     chat: ['Tout s’achète, mon ami. Surtout ce qui manque.', 'Mes épices viennent de plus loin que vos cartes.', 'Je vends cher, j’achète bas : c’est un métier.',
-      'Un héros qu’on aime paie moins cher. Les marchands aussi lisent les visages.', 'Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.'],
+      '{g:Un héros|Une héroïne} qu’on aime paie moins cher. Les marchands aussi lisent les visages.', 'Gaspard me doit trois sacs de café. Ne lui dites pas que je compte.'],
     tips: ['Entre nous,', 'Mes clients bavardent :', 'Une marchande entend tout :'],
     glad: ['Hmpf. Joli coup.', 'Vous m’étranglez !', 'D’où sortez-vous ce talent ?'], cross: ['Ha ! Non.', 'Vous rêvez.', 'À ce prix-là ? Jamais.'],
     okay: ['Soit…', 'Bon, bon.', 'Vous êtes dur.'], pushed: ['Encore ?!', 'Vous abusez…', 'Ma patience a un prix.'],
@@ -159,15 +177,88 @@ DATA.venues = {
       { tier: 1, bar: 'x.x.xxx.' }, { tier: 2, bar: 'xxx.x.x.' }, { tier: 3, bar: 'x.xxx.x.' },
       { tier: 5, bar: 'xxx.xxx.' }, { tier: 7, bar: 'x.xxxxx.' }, { tier: 9, bar: 'xxxxx.xx' },
     ],
-    greet: 'Ah, le héros ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.',
+    greet: 'Ah, {g:le héros|l’héroïne} ! Posez cette épée, prenez ce marteau. Une lame, ça se bat à deux : moi je tiens, vous frappez.',
     ready: ['Le fer est au rouge. Vous frappez, je tiens ?', 'J’ai une lame qui attend son marteau. Le vôtre ?', 'Le feu est bon. Montrez-moi ce bras.'],
     wait: ['Le fer refroidit, laissez-le reposer. On reforgera tout à l’heure.', 'Mes bras aussi ont besoin d’une pause. Revenez plus tard.'],
-    chat: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', 'Le héros casse, moi je répare.',
-      'Un héros qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.', 'Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.'],
+    chat: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', '{g:Le héros|L’héroïne} casse, moi je répare.',
+      '{g:Un héros|Une héroïne} qui bat son propre fer, les gens aiment ça. Ils viennent regarder par la fenêtre.', 'Dame Ysolde dit que mon fer est trop cher. Elle n’a jamais vu le sien.'],
     tips: ['Entre deux coups de marteau, j’entends que', 'Les gardes me l’ont dit :', 'Ça se sait à la forge :'],
     glad: ['Voilà !', 'Bien frappé !', 'Ça chante !'], cross: ['Raté !', 'Le rythme !', 'Écoutez le fer !'],
     chain: ['Ça, c’est forger !', 'Elle chante !'], cold: 'Trop froid ! Le soufflet !', hot: 'Ça brûle ! Doucement !',
     after: ['Cette lame-là ira aux clous. On recommencera.', 'Elle coupe. C’est déjà ça.', 'Belle lame ! Votre bras s’en souviendra au combat.', 'Une lame de légende ! Frappez comme ça au combat et rien ne tiendra.'],
   },
+  bakery: {
+    keeper: 'baker', name: 'La Boulangerie', music: 'cafe', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 4 }, faces64: { glad: 3, cross: 1 },
+    title: 'La fournée', unit: 'pains dorés',
+    how: 'Chaque four cuit un pain, de pâle à doré puis foncé, et il brûle au bout. Sortez-le quand il est doré, au cœur de la fenêtre si vous pouvez. Quatre pains brûlés, et la fournée est perdue.',
+    keys: 'Une touche par four (1, 2, 3…), ou clic sur un four. Doré : 2, au cœur : 3, foncé : 1, pâle : rien.',
+    medals: [24, 38, 52], pop: [0, 2, 4, 6], buffs: { rise: [0, 0.2, 0.4, 0.6] },
+    // a loaf taken golden is worth `golden`, in the heart of the window `perfect`, dark `dark`; pale, nothing.
+    // ovens: `ovens` at the start, one more every `ovensEvery` wins, `ovensMax` at most; each win takes
+    // `bake` (a share) off every baking time and `window` (a share) off the golden window
+    points: { perfect: 3, golden: 2, dark: 1 },
+    ramp: { ovens: 3, ovensEvery: 3, ovensMax: 5, bake: 0.03, window: 0.04 },
+    // the loaves: `bake` multiplies config.js bakery_bake (the miche's time to burn); `from`: the wins in a row from which it comes up
+    breads: [
+      { id: 'baguette', name: 'Baguette', bake: 0.7 },
+      { id: 'miche', name: 'Miche', bake: 1 },
+      { id: 'brioche', name: 'Brioche', bake: 1.4, from: 2 },
+    ],
+    greet: 'Entrez donc, {g:mon grand|ma grande}, il fait bon près des fours ! Ici on se lève avant le coq pour que tout Aubeval ait son pain. Et quand les fournées cuisent toutes à la fois, deux mains de plus ne sont jamais de trop.',
+    ready: ['Les fours sont chauds et la pâte a levé. Vous retroussez vos manches ?', 'Mes fours chauffent tous à la fois, et je n’ai que deux mains. Vous me prêtez les vôtres ?', 'La fournée n’attend que vous. Et gare : un pain, ça n’attend personne.'],
+    wait: ['La pâte lève, et ça ne se presse pas. Revenez tout à l’heure, je vous garde une place près du four.', 'Je pétris la prochaine fournée. Repassez dans un moment… et prenez donc un croûton en sortant.'],
+    chat: ['Une miche chaude et le monde va mieux.', 'Farine, eau, sel, et une nuit de patience : le bon pain ne demande rien d’autre.', 'Vos paysans mangent comme quatre. Tant mieux : un village qui mange bien est un village qui chante.',
+      '{g:Un héros|Une héroïne} qui part se battre le ventre creux ? Pas tant que je tiens ce fournil. Tenez, une brioche, et pas de manières.', 'Gaspard trempe mes croissants dans son café. Je fais semblant de ne pas voir… et je lui en garde deux de plus.'],
+    tips: ['Au fournil, on ne parle que de ça :', 'Mes clients du matin me l’ont glissé avec la monnaie :', 'Ça se dit entre deux fournées :'],
+    glad: ['Doré à point !', 'Ah, ça, c’est du pain !', 'Sentez-moi cette croûte !'], cross: ['Trop tôt, il est tout pâle !', 'Encore pâle…', 'Patience, voyons !'], lost: ['Ça sent le brûlé !', 'Le four ! Le four !', 'Oh, mon pauvre pain…'],
+    after: ['Tout a brûlé… On ouvre les fenêtres, on chasse la fumée, et on recommence. Ce n’est que du pain.', 'Quelques bons pains, et des voisins qui ne se coucheront pas le ventre vide. C’est un début.', 'Belle fournée ! Toute la rue sent le pain chaud, et les maisons ont le sourire.', 'Une fournée de roi ! Tout Aubeval aura du pain chaud ce soir… et chacun saura quelles mains l’ont sorti du four.'],
+  },
+  barracks: {
+    keeper: 'captain', name: 'La Caserne', music: 'forge', line: 0.78, tall: 0.72, faces: { glad: 5, cross: 3 }, faces64: { glad: 2, cross: 4 },
+    title: 'Parade !', unit: 'parades',
+    how: 'La capitaine annonce un côté : levez le bouclier de ce côté avant que l’anneau se referme. Plus vous gagnez, plus ça se corse : feintes, où l’ordre change en route et qui a déjà paré est touché, puis coups doubles. Cinq coups reçus, et l’exercice est perdu.',
+    keys: 'Flèches ou clic sur un côté. Mauvais côté, ou trop tard : touché.',
+    medals: [22, 34, 46], pop: [0, 2, 4, 6], buffs: { soldier: [0, 0.1, 0.2, 0.3] },
+    // the right side parried is worth `good`, in the first part of the wait (config.js barracks_quick) `quick`.
+    // each win takes `lead` (a share) off the wait; feints come from `feintFrom` wins, double blows from `doubleFrom`
+    points: { quick: 3, good: 2 },
+    ramp: { lead: 0.04, feintFrom: 2, doubleFrom: 4 },
+    // the four sides a blow comes from: `arrow` is its key, `shout` what the captain calls
+    sides: [
+      { id: 'up', name: 'Haut', arrow: '↑', shout: 'En haut !' },
+      { id: 'right', name: 'Droite', arrow: '→', shout: 'À droite !' },
+      { id: 'down', name: 'Bas', arrow: '↓', shout: 'En bas !' },
+      { id: 'left', name: 'Gauche', arrow: '←', shout: 'À gauche !' },
+    ],
+    greet: 'Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et toute la troupe apprend en vous voyant faire.',
+    ready: ['Une recrue attend son tour, l’épée de bois au poing. Bouclier au bras, et en position !', 'La corne a sonné ? Alors pas de temps à perdre : un exercice avant que les gobelins n’arrivent, et mes soldats frapperont plus fort.', 'Mes recrues ont besoin de voir comment on pare. Montrez-leur, {g:héros|héroïne}. J’annonce, vous parez.'],
+    wait: ['La troupe souffle. Repos, mais pas trop longtemps : on reprend l’exercice tout à l’heure.', 'Je fais l’appel et je compte les bosses. Repassez dans un moment, le bouclier vous attend.'],
+    chat: ['Une parade vaut mieux que deux bandages.', 'Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.', 'Mes recrues arrivent paysans et repartent soldats. Entre les deux, il y a moi.',
+      '{g:Un héros|Une héroïne} qui prend le bouclier avec la troupe, ça vaut tous mes discours. Même les plus jeunes se tiennent plus droit.', 'Bram forge les lames, Mélisande nourrit la troupe. Moi, j’apprends à tout ce monde à rester en vie.'],
+    tips: ['Rapport de la garde :', 'Mes sentinelles me l’ont signalé :', 'Au rassemblement du matin, ça se disait dans les rangs :'],
+    glad: ['Bien vu !', 'Belle parade !', 'Voilà un bouclier !', 'Pas mal. Pas mal du tout.'], cross: ['L’autre côté !', 'Écoutez l’ordre !', 'Pas par là !'], lost: ['Trop lent !', 'Le bouclier, voyons !', 'On dort ?'],
+    feinted: ['Feinte ! L’ordre a changé.', 'Vous avez mordu !', 'Écoutez jusqu’au bout !'],
+    after: ['Ce n’était pas un exercice, c’était une bagarre. Pansez-vous, et on reprend plus tard.', 'Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.', 'Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.', 'Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.'],
+  },
+  lodge: {
+    keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 2 }, faces64: { glad: 0, cross: 4 },
+    title: 'La bonne pierre', unit: 'pierres posées',
+    how: 'Le mur monte, et il y reste un trou : des quatre pierres taillées, une seule y entre. Une pierre se tourne, elle ne se retourne jamais. Quatre mauvaises pierres, et le mur s’écroule.',
+    keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1 ; vite et sans faute, dès la troisième d’une chaîne : 2.',
+    medals: [10, 20, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
+    // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
+    // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
+    // (config.js lodge_chain and lodge_chain_gap: what a chain is; lodge_strikes: the wrong stones the wall bears)
+    ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3 },
+    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
+    ready: ['Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !', 'Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !', 'Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.'],
+    wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],
+    chat: ['Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.', 'Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !', 'Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.',
+      '{g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.'],
+    tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé du haut de l’échafaudage :', 'Un conseil de bâtisseuse, bourgmestre :'],
+    glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Regardez mieux !', 'Pas celle-là !', 'Le trou d’abord, la pierre ensuite !'],
+    chain: ['Quel coup d’œil !', 'Le mur monte tout seul !', 'Voilà le métier qui rentre !'],
+    after: ['Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.', 'Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quel œil a choisi ces pierres.'],
+  },
 };
-DATA.venueOrder = ['cafe', 'market', 'forge'];
+DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'];

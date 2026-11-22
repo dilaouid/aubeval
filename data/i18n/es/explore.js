@@ -3,7 +3,7 @@
 // null: still to translate. Written by node tools/i18n.js extract es; translations already here are kept.
 I18N.add('es', {
   'explore.kinds.ruin.name': 'Ruina', // Ruine
-  'explore.kinds.ruin.desc': 'Viejas piedras que los saqueadores han hecho suyas. El héroe acude, los expulsa y registra lo que guardaban.', // De vieilles pierres que des pillards ont faites leurs. Le héros s’y rend, les en chasse, et fouille ce qu’ils gardaient.
+  'explore.kinds.ruin.desc': 'Viejas piedras que los saqueadores han hecho suyas. {g:El héroe|La heroína} acude, los expulsa y registra lo que guardaban.', // De vieilles pierres que des pillards ont faites leurs. {g:Le héros|L’héroïne} s’y rend, les en chasse, et fouille ce qu’ils gardaient.
   'explore.kinds.ruin.names[0]': 'Ruinas de la Torre Gris', // Ruines de la Tour-Grise
   'explore.kinds.ruin.names[1]': 'Ruinas del Fuerte Roto', // Ruines du Fort Brisé
   'explore.kinds.ruin.names[2]': 'Ruinas de la Vieja Vigía', // Ruines de la Vieille Vigie
@@ -25,7 +25,7 @@ I18N.add('es', {
   'explore.kinds.lair.names[6]': 'Guarida de Diente Hueco', // Tanière de la Dent-Creuse
   'explore.kinds.lair.names[7]': 'Antro del Tuerto', // Antre du Borgne
   'explore.kinds.hamlet.name': 'Aldea', // Hameau
-  'explore.kinds.hamlet.desc': 'Unos pocos tejados lejos de todo. Un primer regalo, llevado por el héroe, abre una ruta comercial que aporta oro cada minuto; cada entrega posterior estrecha la amistad y hace crecer la ruta.', // Quelques toits loin de tout. Un premier présent, porté par le héros, ouvre une route de commerce qui rapporte de l’or chaque minute ; chaque livraison ensuite resserre l’amitié et grossit la route.
+  'explore.kinds.hamlet.desc': 'Unos pocos tejados lejos de todo. Un primer regalo, llevado por {g:el héroe|la heroína}, abre una ruta comercial que aporta oro cada minuto; cada entrega posterior estrecha la amistad y hace crecer la ruta.', // Quelques toits loin de tout. Un premier présent, porté par {g:le héros|l’héroïne}, ouvre une route de commerce qui rapporte de l’or chaque minute ; chaque livraison ensuite resserre l’amitié et grossit la route.
   'explore.kinds.hamlet.names[0]': 'Aldea de Valbrume', // Hameau de Valbrume
   'explore.kinds.hamlet.names[1]': 'Aldea de los Tres Robles', // Hameau des Trois-Chênes
   'explore.kinds.hamlet.names[2]': 'Aldea de Pierrefeu', // Hameau de Pierrefeu
@@ -36,7 +36,7 @@ I18N.add('es', {
   'explore.kinds.hamlet.names[7]': 'Aldea del Fin del Mundo', // Hameau du Bout-du-Monde
   'explore.kinds.hamlet.names[8]': 'Aldea de Malval', // Hameau de Malval
   'explore.kinds.deposit.name': 'Yacimiento', // Gisement
-  'explore.kinds.deposit.desc': 'Una veta a flor de tierra. El héroe la reclama para la aldea: desde entonces envía su producción cada minuto. Se puede excavar más, nivel tras nivel.', // Une veine à fleur de terre. Le héros la revendique pour le village : elle envoie alors sa récolte chaque minute. On peut la creuser, niveau après niveau.
+  'explore.kinds.deposit.desc': 'Una veta a flor de tierra. {g:El héroe|La heroína} la reclama para la aldea: desde entonces envía su producción cada minuto. Se puede excavar más, nivel tras nivel.', // Une veine à fleur de terre. {g:Le héros|L’héroïne} la revendique pour le village : elle envoie alors sa récolte chaque minute. On peut la creuser, niveau après niveau.
   'explore.kinds.deposit.veins[stone].name': 'Cantera abandonada', // Carrière abandonnée
   'explore.kinds.deposit.veins[gold].name': 'Filón de oro', // Filon d’or
   'explore.kinds.deposit.veins[shard].name': 'Veta rúnica', // Veine runique

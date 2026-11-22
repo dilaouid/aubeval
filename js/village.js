@@ -272,9 +272,9 @@ const Village = (() => {
       land: { cut: {}, planted: {}, paved: {} }, // what the player changed on it, by tile index: felled, planted (flora id), paved
       res: {}, totals: {},                       // stock, and all that was ever gained in this village
       buildings: [], nextUid: 1, unlocked: {},
-      hero: { name: DATA.hero.name, lvl: 1, xp: 0, equip: { weapon: null, armor: null }, inv: [], plus: {}, bench: {} }, // bench: the battle cards left at home (js/cards.js)
+      hero: { name: DATA.hero.name, look: 'aldric', lvl: 1, xp: 0, equip: { weapon: null, armor: null }, inv: [], plus: {}, bench: {} }, // bench: the battle cards left at home (js/cards.js)
       quests: { done: {}, tiers: {} },
-      counters: { raidsWon: 0, raidsLost: 0, battlesWon: 0, chops: 0, campsDown: 0, cleared: 0, planted: 0, traps: 0 }, // cleared, planted, traps: what the tutorial's lessons watch grow
+      counters: { raidsWon: 0, raidsLost: 0, battlesWon: 0, chops: 0, campsDown: 0, cleared: 0, planted: 0, traps: 0, soldiersLost: 0 }, // cleared, planted, traps: what the tutorial's lessons watch grow
       raid: { n: 0, timer: null, warned: false, active: null, from: null, traps: [], camp: null }, // from: where the next raid comes out, in map pixels; traps: [{ kind, x, y, uses }] laid for this raid; camp: the goblin camp's top-left tile, found once
       units: [], nextUnit: 1,                    // the citizens trained as workers and soldiers (js/units.js)
       mission: null,
@@ -480,9 +480,11 @@ const Village = (() => {
     state.res[res] -= tune.trade_lot; gain('gold', sellPrice(res)); sfx('coin'); return true;
   }
   function scaleCost(c, k) { const o = {}; for (const r in c) o[r] = Math.max(1, Math.ceil(c[r] * k)); return o; }
+  /** What Aveline's plans (the lodge's gift, Venue.buff('build')) leave of a price: all of it for a great work, and when none runs. */
+  const plans = kind => B[kind].monument ? 1 : 1 - Venue.buff('build');
   /** The price of one more of this kind: each one already built raises it. */
-  function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale); }
-  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale); }
+  function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale * plans(kind)); }
+  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale * plans(b.kind)); }
   function refund(b) { return scaleCost(B[b.kind].cost, tune.refund_pct); }
   function repairCost(b) { return scaleCost(B[b.kind].cost, tune.repair_pct); }
   function canAfford(c) { for (const r in c) if (state.res[r] < c[r]) return false; return true; }
@@ -607,6 +609,7 @@ const Village = (() => {
   }
   function demolish(b) {
     if (B[b.kind].fixed) return;
+    if (B[b.kind].train) Units.refund(b); // the recruits in its line are paid back
     const r = refund(b); for (const k in r) state.res[k] += r[k];
     state.buildings.splice(state.buildings.indexOf(b), 1); stamp(b); Raid.touch(); touchTown(); Units.touch(); sfx('chop');
   }

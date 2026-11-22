@@ -3,7 +3,7 @@
 // null: still to translate. Written by node tools/i18n.js extract es; translations already here are kept.
 I18N.add('es', {
   'items.sword_1.name': 'Hoja de aprendiz', // Lame d'apprenti
-  'items.sword_1.desc': 'Una hoja sencilla con empuñadura de fresno. Duplica la fuerza del héroe.', // Une lame simple sur un manche de frêne. Elle double la force du héros.
+  'items.sword_1.desc': 'Una hoja sencilla con empuñadura de fresno. Duplica la fuerza {g:del héroe|de la heroína}.', // Une lame simple sur un manche de frêne. Elle double la force {g:du héros|de l’héroïne}.
   'items.armor_1.name': 'Pavés de roble', // Pavois de chêne
   'items.armor_1.desc': 'Un escudo de tablones con cerco de hierro.', // Un bouclier de planches cerclé de fer.
   'items.sword_2.name': 'Espada de acero de Aubeval', // Épée d'acier d'Aubeval

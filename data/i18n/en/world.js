@@ -38,4 +38,8 @@ I18N.add('en', {
   'resources.gold.name': 'Gold', // Or
   'resources.shard.name': 'Rune Shards', // Éclats runiques
   'hero.name': 'Aldric', // Aldric
+  'heroes[aldric].name': 'Aldric', // Aldric
+  'heroes[tancrede].name': 'Tancrède', // Tancrède
+  'heroes[isaure].name': 'Isaure', // Isaure
+  'heroes[maelle].name': 'Maëlle', // Maëlle
 });

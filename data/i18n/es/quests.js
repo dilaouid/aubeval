@@ -14,7 +14,7 @@ I18N.add('es', {
   'chapters[ch0].quests[p3].text': 'La madera en bruto no basta: hacen falta tablones.', // Le bois brut ne suffit pas : il faut des planches.
   'chapters[ch0].quests[p4].title': 'El fuego de la forja', // Le feu de la forge
   'chapters[ch0].quests[p4].hint': 'Coloque la Forja (8 tablones).', // Posez la Forge (8 planches).
-  'chapters[ch0].quests[p4].text': 'Con tablones se construye una forja. Con una forja se arma a un héroe.', // Avec des planches, on bâtit une forge. Avec une forge, on arme un héros.
+  'chapters[ch0].quests[p4].text': 'Con tablones se construye una forja. Con una forja se arma a {g:un héroe|una heroína}.', // Avec des planches, on bâtit une forge. Avec une forge, on arme {g:un héros|une héroïne}.
   'chapters[ch0].quests[p5].title': 'Una hoja para {hero}', // Une lame pour {hero}
   'chapters[ch0].quests[p5].hint': 'Haga clic en la Forja, forje la Hoja de aprendiz y equípela (H).', // Cliquez la Forge, forgez la Lame d'apprenti, puis équipez-la (H).
   'chapters[ch0].quests[p5].text': '{hero} espera ante la puerta, con las manos vacías.', // {hero} attend devant la porte, les mains vides.
@@ -23,7 +23,7 @@ I18N.add('es', {
   'chapters[ch1].quests[m1].hint': 'Abra las misiones (J) y parta al combate.', // Ouvrez les quêtes (J) et partez au combat.
   'chapters[ch1].quests[m1].text': 'Dos goblins merodean por las reservas. La hoja nueva tendrá uso.', // Deux gobelins rôdent autour des réserves. La lame neuve va servir.
   'chapters[ch1].quests[m2].title': 'Defender la aldea', // Tenir le village
-  'chapters[ch1].quests[m2].hint': 'Rechace una incursión: atalayas y murallas en el camino del campamento goblin, el héroe en la aldea.', // Repoussez un raid : tours de guet et remparts sur la route du camp gobelin, héros au village.
+  'chapters[ch1].quests[m2].hint': 'Rechace una incursión: atalayas y murallas en el camino del campamento goblin, {g:el héroe|la heroína} en la aldea.', // Repoussez un raid : tours de guet et remparts sur la route du camp gobelin, {g:héros|héroïne} au village.
   'chapters[ch1].quests[m2].text': 'Los goblins volverán en banda, siempre desde su campamento en las Zarzas. Un cuerno sonará antes de su llegada: defienda el camino que viene de allí.', // Les gobelins reviendront en bande, toujours de leur camp dans les Ronces. Une corne sonnera avant leur arrivée : défendez la route qui en vient.
   'chapters[ch1].quests[m3].title': 'La pista de los brutos', // La piste des brutes
   'chapters[ch1].quests[m3].hint': 'Hacen falta 8 habitantes para emprender la marcha. Cuando el bruto alce su maza, guarde sus cartas de Guardia para el turno siguiente, o pare justo en el impacto.', // Il faut 8 habitants pour monter l’expédition. Quand la brute lève sa massue, gardez vos cartes de Garde pour le tour suivant, ou parez pile à l’impact.

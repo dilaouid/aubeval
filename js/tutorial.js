@@ -62,7 +62,7 @@ const Tuto = (() => {
   const keyOf = () => course().id + ':' + at();
   /** Her lines for the step as it runs: a task already done drops the pages about doing it (`todo`). */
   const says = s => !s.say ? [] : cur && cur.skip ? s.say.filter(p => !p.todo) : s.say;
-  const pageOf = s => { const p = says(s)[cur.page]; return typeof p === 'string' ? { text: fill(p) } : { text: fill(p.text), show: p.show }; };
+  const pageOf = s => { const p = says(s)[cur.page]; return typeof p === 'string' ? { text: gendered(fill(p)) } : { text: gendered(fill(p.text)), show: p.show }; };
   const inside = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
   const grow = (r, n) => ({ x: r.x - n, y: r.y - n, w: r.w + 2 * n, h: r.h + 2 * n });
   const tileOf = (x, y) => { const p = World.toWorld(x, y); return { tx: Math.floor(p.x / T), ty: Math.floor(p.y / T) }; };
@@ -207,7 +207,7 @@ const Tuto = (() => {
     if (k === 'b') return Village.count(a);
     if (k === 'lvl') return state.buildings.reduce((n, b) => n + (b.kind === a ? b.lvl : 0), 0);
     if (k === 'u') return Units.count(a);
-    if (k === 'drill') { const b = Units.barracks(); return Units.count(a) + (b && b.train && b.train.kind === a ? 1 : 0); }
+    if (k === 'drill') return Units.count(a) + Units.line().filter(r => r.kind === a).length; // on his feet, at drill or waiting in the line
     if (k === 'orders') return state.city.done;
     if (k === 'rank') return state.city.rank;
     if (k === 'scouts') return state.explore.reach.reduce((n, r) => n + r, 0);
@@ -652,7 +652,7 @@ const Tuto = (() => {
   /** Her face now: a frame of her strip, or null while it is not there. */
   function face() { const id = 'portrait.' + D.guide.portrait, sh = Art.sheet(id); return sh ? Art.get(id, Math.floor(state.t * tune.portrait_fps) % sh.cols) : null; }
   function wrapLines(str, maxW, size) {
-    ctx.font = `${size}px ${FONT}`; const out = [];
+    str = gendered(str); ctx.font = `${size}px ${FONT}`; const out = [];
     let line = '';
     for (const word of str.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = word; } else line = t; }
     out.push(line);

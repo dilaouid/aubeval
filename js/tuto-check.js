@@ -102,7 +102,7 @@ const TutoCheck = (() => {
     }
     /** The words a line leaves open ({venue}, {game:cafe}, {t:venue_wait}...): each must still mean something. */
     function words(str, where) {
-      String(str).replace(/\{(\w+)(?::(\w+))?\}/g, (m, k, a) => {
+      String(str).replace(/\{g:[^|{}]*\|[^|{}]*\}/g, '').replace(/\{(\w+)(?::(\w+))?\}/g, (m, k, a) => {
         const ok = ['venue', 'keeper', 'lord', 'trait', 'chief', 'hero', 'de_hero'].includes(k) ? !a
           : k === 'game' ? !!(D.venues || {})[a]
           : k === 'n' || k === 't' ? !CFG || (!!CFG[a] && typeof CFG[a].value === 'number')

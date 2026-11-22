@@ -15,13 +15,15 @@ I18N.add('es', {
   'strings.start_continue': 'Intro o clic: volver a su aldea', // Entrée ou clic : reprendre votre village
   'strings.start_wipe': 'N: nueva partida (borra la partida guardada)', // N : nouvelle partie (efface la sauvegarde)
   'strings.start_wipe_confirm': 'N otra vez para confirmar', // N encore une fois pour confirmer
-  'strings.name_title': 'Su héroe', // Votre héros
-  'strings.name_ask': '¿Cómo se llama su héroe?', // Quel est le nom de votre héros ?
+  'strings.name_title': '{g:Su héroe|Su heroína}', // {g:Votre héros|Votre héroïne}
+  'strings.name_ask': '¿Cómo se llama {g:su héroe|su heroína}?', // Quel est le nom de {g:votre héros|votre héroïne} ?
   'strings.name_rule': 'De {min} a {max} caracteres: letras, espacios, guiones, apóstrofos.', // De {min} à {max} caractères : lettres, espaces, traits d’union, apostrophes.
   'strings.name_ok': 'Empezar', // Commencer
   'strings.name_back': 'Volver', // Retour
-  'strings.name_keys': 'Intro: empezar · Esc: volver', // Entrée : commencer · Échap : retour
-  'strings.name_empty': 'Su héroe necesita un nombre.', // Votre héros a besoin d’un nom.
+  'strings.name_keys': 'Intro: empezar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : commencer · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_ok_edit': 'Confirmar', // Valider
+  'strings.name_keys_edit': 'Intro: confirmar · ↑ ↓: cambiar de héroe · Esc: volver', // Entrée : valider · ↑ ↓ : changer de héros · Échap : retour
+  'strings.name_empty': '{g:Su héroe|Su heroína} necesita un nombre.', // {g:Votre héros|Votre héroïne} a besoin d’un nom.
   'strings.name_short': 'Algo corto: al menos {min} caracteres.', // Un peu court : au moins {min} caractères.
   'strings.name_long': 'Demasiado largo: {max} caracteres como máximo.', // Trop long : {max} caractères au plus.
   'strings.name_chars': 'Solo letras, espacios, guiones y apóstrofos.', // Seulement des lettres, des espaces, des traits d’union et des apostrophes.
@@ -79,7 +81,7 @@ I18N.add('es', {
   'strings.controls[4].rows[0][0][0]': 'K', // K
   'strings.controls[4].rows[0][1]': 'Pueblo', // Peuple
   'strings.controls[4].rows[0][2][0]': 'H', // H
-  'strings.controls[4].rows[0][3]': 'Héroe', // Héros
+  'strings.controls[4].rows[0][3]': '{g:Héroe|Heroína}', // {g:Héros|Héroïne}
   'strings.controls[4].rows[0][4][0]': 'J', // J
   'strings.controls[4].rows[0][5]': 'Misiones', // Quêtes
   'strings.controls[4].rows[1][0][0]': 'V', // V
@@ -92,7 +94,7 @@ I18N.add('es', {
   'strings.paused': 'Pausa', // Pause
   'strings.pause_hint': 'P o Esc para seguir', // P ou Échap pour reprendre
   'strings.btn_people': 'Pueblo (K)', // Peuple (K)
-  'strings.btn_hero': 'Héroe (H)', // Héros (H)
+  'strings.btn_hero': '{g:Héroe|Heroína} (H)', // {g:Héros|Héroïne} (H)
   'strings.btn_quests': 'Misiones (J)', // Quêtes (J)
   'strings.btn_menu': 'Aldea (V)', // Village (V)
   'strings.pop_free': 'libres: {n}', // libres : {n}
@@ -116,10 +118,10 @@ I18N.add('es', {
   'strings.locked_quest': 'Bloqueada', // Verrouillée
   'strings.tier': 'Rango {n}', // Rang {n}
   'strings.done': 'Cumplida', // Accomplie
-  'strings.hero_away': 'El héroe está de expedición', // Le héros est en mission
+  'strings.hero_away': '{g:El héroe|La heroína} está de expedición', // {g:Le héros|L’héroïne} est en mission
   'strings.raid_on': 'Hay una incursión en curso', // Un raid est en cours
-  'strings.start_mission': 'Enviar al héroe', // Envoyer le héros
-  'strings.mission_back': '{title}: el héroe ha vuelto.', // {title} : le héros est rentré.
+  'strings.start_mission': 'Enviar {g:al héroe|a la heroína}', // Envoyer {g:le héros|l’héroïne}
+  'strings.mission_back': '{title}: {g:el héroe|la heroína} ha vuelto.', // {title} : {g:le héros|l’héroïne} est {g:rentré|rentrée}.
   'strings.mission_run': 'De expedición: {title}', // En mission : {title}
   'strings.next_chapter': 'Lo que sigue: un capítulo más en data/quests.js, y la historia continúa.', // La suite arrive : un chapitre de plus dans data/quests.js, et l’histoire reprend.
   'strings.chapter_done': '¡Capítulo terminado!', // Chapitre terminé !
@@ -174,7 +176,7 @@ I18N.add('es', {
   'strings.forging': 'En curso: {name}', // En cours : {name}
   'strings.forge_do': 'Forjar', // Forger
   'strings.forge_plus': 'Reforzar +{n}', // Renforcer +{n}
-  'strings.forged': '{name}: lista. Equípela en la ficha del héroe (H).', // {name} est prête. Équipez-la dans la fiche du héros (H).
+  'strings.forged': '{name}: lista. Equípela en la ficha {g:del héroe|de la heroína} (H).', // {name} est prête. Équipez-la dans la fiche {g:du héros|de l’héroïne} (H).
   'strings.owned': 'Forjada', // Forgée
   'strings.people_title': 'El pueblo de Aubeval', // Le peuple d’Aubeval
   'strings.classes': 'Clases', // Classes
@@ -198,19 +200,26 @@ I18N.add('es', {
   'strings.dismiss_tip': 'Mandar a uno de ellos a casa: vuelve a ser un habitante libre.', // Renvoyer un de ceux-ci chez lui : il redevient un habitant libre.
   'strings.no_citizen': 'Ningún habitante libre: construya o ascienda casas.', // Aucun habitant libre : bâtissez ou élevez des maisons.
   'strings.need_barracks': 'Hace falta un Cuartel.', // Il faut une Caserne.
-  'strings.train_busy': 'El Cuartel ya está formando a un recluta.', // La Caserne forme déjà une recrue.
+  'strings.queue_full': 'La cola del Cuartel está llena.', // La file de la Caserne est pleine.
   'strings.train_title': 'Reclutas', // Recrues
   'strings.training': 'En instrucción: {name}', // À l’exercice : {name}
+  'strings.train_idle': 'Nadie en instrucción.', // Personne à l’exercice.
   'strings.unit_ready': '{name} listo, ante el Cuartel.', // {name} prêt, devant la Caserne.
-  'strings.unit_down': '¡Caído!', // À terre !
+  'strings.unit_ready_rally': '{name} listo: va al punto de reunión.', // {name} prêt : il rejoint le point de ralliement.
+  'strings.unit_dead': '¡Caído!', // Tombé !
+  'strings.train_many_tip': 'Mayús + clic: encargar 5 seguidos.', // Maj + clic : en commander 5 à la file.
+  'strings.train_cancel_tip': 'Clic: cancelar este recluta y recuperar su precio.', // Clic : annuler cette recrue et récupérer son prix.
+  'strings.rally_help': 'Clic derecho en el mapa, con este panel abierto: los reclutas irán allí al salir.', // Clic droit sur la carte, ce panneau ouvert : les recrues s’y rendront en sortant.
+  'strings.rally_set': 'Punto de reunión fijado: los reclutas irán allí.', // Point de ralliement posé : les recrues s’y rendront.
+  'strings.rally_on': 'Punto de reunión fijado.', // Point de ralliement posé.
+  'strings.rally_clear': 'Quitar el punto de reunión', // Enlever le ralliement
   'strings.soldiers': 'Soldados', // Soldats
   'strings.soldiers_none': 'Construya un Cuartel (pestaña Defensa) para formar soldados.', // Bâtissez une Caserne (onglet Défense) pour former des soldats.
-  'strings.soldiers_down': '{n} caídos', // {n} à terre
   'strings.soldiers_help': 'Clic en un soldado o Mayús + arrastrar para elegir, clic derecho para enviar. Guardan el lugar y cargan contra los saqueadores que se acercan.', // Clic sur un soldat ou Maj + glisser pour choisir, clic droit pour envoyer. Ils gardent l’endroit et chargent les pillards qui s’en approchent.
   'strings.select_all': 'Todos los soldados', // Tous les soldats
   'strings.recall': 'Reagrupar', // Rappel
   'strings.recall_tip': 'Todos los soldados vuelven ante el Cuartel.', // Tous les soldats reviennent devant la Caserne.
-  'strings.no_soldiers': 'Ningún soldado en pie.', // Aucun soldat debout.
+  'strings.no_soldiers': 'Ningún soldado.', // Aucun soldat.
   'strings.sel_hint': 'Soldados elegidos: {n} · clic derecho: enviarlos · Esc: soltar', // Soldats choisis : {n} · clic droit : les envoyer · Échap : lâcher
   'strings.trade_title': 'Comercio (lotes de {n})', // Commerce (par {n})
   'strings.buy': 'Comprar {p} oro', // Acheter {p} or
@@ -226,7 +235,9 @@ I18N.add('es', {
   'strings.trap_locked': 'Las trampas llegan con la primera incursión.', // Les pièges arrivent avec le premier raid.
   'strings.trap_hint': 'Haga clic o arrastre en el camino de los saqueadores. Clic derecho o Esc para terminar.', // Cliquez ou glissez sur le chemin des pillards. Clic droit ou Échap pour ranger.
   'strings.safe_zone': 'Zona segura: {n} casillas a su alrededor (+{step} por nivel). Ningún saqueador aparece en ella.', // Zone sûre : {n} cases autour de lui (+{step} par niveau). Aucun pillard n’y apparaît.
-  'strings.hero_title': 'El héroe', // Le héros
+  'strings.hero_look': 'Cambiar de aspecto', // Changer d’apparence
+  'strings.hero_look_raid': 'No durante una incursión.', // Pas pendant un raid.
+  'strings.hero_title': '{g:El héroe|La heroína}', // {g:Le héros|L’héroïne}
   'strings.equip': 'Equipar', // Équiper
   'strings.equipped': 'Equipado', // Équipé
   'strings.nothing': 'nada', // rien
@@ -234,7 +245,7 @@ I18N.add('es', {
   'strings.armor': 'Armadura', // Armure
   'strings.inventory': 'Equipo forjado', // Équipement forgé
   'strings.inventory_empty': 'Nada aún: forje un arma en la Forja.', // Rien encore : forgez une arme à la Forge.
-  'strings.at_village': 'En la aldea: guarda el ayuntamiento.', // Au village : il garde l’hôtel de ville.
+  'strings.at_village': 'En la aldea: guarda el ayuntamiento.', // Au village : {g:il|elle} garde l’hôtel de ville.
   'strings.level_up': '¡Nivel {n}!', // Niveau {n} !
   'strings.raid_in': 'Incursión n.º {n} en {time}', // Raid n°{n} dans {time}
   'strings.raid_call': 'Llamar', // Appeler
@@ -243,12 +254,13 @@ I18N.add('es', {
   'strings.raid_warn': 'Suena el cuerno: ¡una incursión sale del campamento goblin, por {dir}! Coloque sus trampas (pestaña Defensa).', // La corne sonne : un raid quitte le camp gobelin, par {dir} ! Posez vos pièges (onglet Défense).
   'strings.raid_start': '¡Llegan los saqueadores!', // Les pillards arrivent !
   'strings.raid_won': '¡Incursión rechazada! Prima: {gold} oro', // Raid repoussé ! Prime : {gold} or
+  'strings.raid_losses': 'Soldados caídos: {n}.', // Soldats tombés : {n}.
   'strings.raid_lost': 'Incursión perdida: reservas saqueadas. Repare y luego refuerce sus murallas.', // Raid perdu : réserves pillées. Réparez, puis renforcez vos remparts.
   'strings.pillage': '¡Saqueado!', // Pillé !
   'strings.victory': '¡Victoria!', // Victoire !
   'strings.defeat': 'Derrota', // Défaite
   'strings.defeat_text': '{hero} se repliega a la aldea. Nada está perdido.', // {hero} se replie au village. Rien n’est perdu.
-  'strings.defeat_tip': 'Nuevos edificios y sus niveles dan mejores cartas; la Forja, una hoja mejor. El mazo se ajusta en la ficha del Héroe.', // De nouveaux bâtiments et leurs niveaux donnent de meilleures cartes ; la Forge, une meilleure lame. Le paquet se règle dans la fiche du Héros.
+  'strings.defeat_tip': 'Nuevos edificios y sus niveles dan mejores cartas; la Forja, una hoja mejor. El mazo se ajusta en la ficha {g:del Héroe|de la Heroína}.', // De nouveaux bâtiments et leurs niveaux donnent de meilleures cartes ; la Forge, une meilleure lame. Le paquet se règle dans la fiche {g:du Héros|de l’Héroïne}.
   'strings.retry': 'Reintentar', // Réessayer
   'strings.to_village': 'Volver a la aldea', // Retour au village
   'strings.back': 'Volver', // Retour
@@ -267,7 +279,7 @@ I18N.add('es', {
   'strings.card_from': 'Carta de: {from}', // Carte de : {from}
   'strings.no_energy': 'Falta aliento', // Pas assez de souffle
   'strings.no_stock': 'Falta {res} en la aldea', // Pas assez de {res} au village
-  'strings.full_health': '{hero} no está herido', // {hero} n’est pas blessé
+  'strings.full_health': '{hero} no está {g:herido|herida}', // {hero} n’est pas {g:blessé|blessée}
   'strings.coming': 'Llega: {n}', // Arrive : {n}
   'strings.coming_left': ' · tras la Guardia: {n}', //  · après la Garde : {n}
   'strings.it_hit': 'Ataque {n}', // Attaque {n}
@@ -313,7 +325,7 @@ I18N.add('es', {
   'strings.tally_cards': 'Cartas nuevas en el mazo: {n}', // Nouvelles cartes dans le paquet : {n}
   'strings.help_tip': 'Las reglas del combate (H)', // Les règles du combat (H)
   'strings.help_title': 'El combate: la mano de la aldea', // Le combat : la main du village
-  'strings.battle_help': 'Su mazo es su aldea: cada tipo de edificio en pie aporta su carta, más fuerte cuando el edificio sube de nivel. {hero} añade las suyas.\n\nEn su turno, roba 5 cartas y tiene 3 puntos de aliento. La cifra azul de una carta es su precio. Haga clic en un enemigo para marcarlo: sus golpes irán a él. Las cartas no jugadas se descartan.\n\nCada enemigo anuncia sobre su cabeza lo que hará. La Guardia absorbe el daño hasta su próximo turno. «Llega» suma lo que le espera.\n\nEn el turno enemigo, cada golpe cierra un anillo sobre {hero}: Espacio (o un clic) justo cuando toca el círculo dorado, y el golpe queda parado a medias. De lleno, la parada es perfecta: ningún daño, y {hero} contraataca. Demasiado pronto, es un fallo.\n\nEl mazo se ajusta en la ficha del Héroe: una carta que se queda en la aldea ya no se roba.', // Votre paquet, c’est votre village : chaque sorte de bâtiment debout y met sa carte, plus forte quand le bâtiment monte de niveau. {hero} y ajoute les siennes.\n\nÀ votre tour, vous piochez 5 cartes et avez 3 points de souffle. Le chiffre bleu d’une carte est son prix. Cliquez un ennemi pour le marquer : vos coups iront sur lui. Les cartes non jouées sont défaussées.\n\nChaque ennemi annonce au-dessus de sa tête ce qu’il fera. La Garde absorbe les dégâts jusqu’à votre prochain tour. « Arrive » additionne ce qui vous attend.\n\nAu tour des ennemis, chaque coup referme un anneau sur {hero} : Espace (ou un clic) à l’instant où il touche le cercle doré, et le coup est paré à moitié. En plein dessus, la parade est parfaite : aucun dégât, et {hero} riposte. Trop tôt, c’est raté.\n\nLe paquet se règle dans la fiche du Héros : une carte laissée au village ne sera plus piochée.
+  'strings.battle_help': 'Su mazo es su aldea: cada tipo de edificio en pie aporta su carta, más fuerte cuando el edificio sube de nivel. {hero} añade las suyas.\n\nEn su turno, roba 5 cartas y tiene 3 puntos de aliento. La cifra azul de una carta es su precio. Haga clic en un enemigo para marcarlo: sus golpes irán a él. Las cartas no jugadas se descartan.\n\nCada enemigo anuncia sobre su cabeza lo que hará. La Guardia absorbe el daño hasta su próximo turno. «Llega» suma lo que le espera.\n\nEn el turno enemigo, cada golpe cierra un anillo sobre {hero}: Espacio (o un clic) justo cuando toca el círculo dorado, y el golpe queda parado a medias. De lleno, la parada es perfecta: ningún daño, y {hero} contraataca. Demasiado pronto, es un fallo.\n\nEl mazo se ajusta en la ficha {g:del Héroe|de la Heroína}: una carta que se queda en la aldea ya no se roba.', // Votre paquet, c’est votre village : chaque sorte de bâtiment debout y met sa carte, plus forte quand le bâtiment monte de niveau. {hero} y ajoute les siennes.\n\nÀ votre tour, vous piochez 5 cartes et avez 3 points de souffle. Le chiffre bleu d’une carte est son prix. Cliquez un ennemi pour le marquer : vos coups iront sur lui. Les cartes non jouées sont défaussées.\n\nChaque ennemi annonce au-dessus de sa tête ce qu’il fera. La Garde absorbe les dégâts jusqu’à votre prochain tour. « Arrive » additionne ce qui vous attend.\n\nAu tour des ennemis, chaque coup referme un anneau sur {hero} : Espace (ou un clic) à l’instant où il touche le cercle doré, et le coup est paré à moitié. En plein dessus, la parade est parfaite : aucun dégât, et {hero} riposte. Trop tôt, c’est raté.\n\nLe paquet se règle dans la fiche {g:du Héros|de l’Héroïne} : une carte laissée au village ne sera plus piochée.
   'strings.deck': 'Mazo de combate', // Paquet de combat
   'strings.deck_count': '{n} cartas', // {n} cartes
   'strings.deck_help': 'Cada edificio en pie envía su carta; su nivel la refuerza. Desmarque una carta para dejarla en la aldea (mazo de {min} cartas como mínimo).', // Chaque bâtiment debout envoie sa carte ; son niveau la renforce. Décochez une carte pour la laisser au village (paquet de {min} cartes au moins).
@@ -341,7 +353,7 @@ I18N.add('es', {
   'strings.wipe': 'Empezar de cero', // Tout recommencer
   'strings.wipe_confirm': 'Haga clic otra vez para borrarlo todo', // Cliquez encore pour tout effacer
   'strings.prestige_title': 'Nuevo comienzo', // Nouveau départ
-  'strings.prestige_text': 'Cambia la aldea (edificios, reservas, incursiones) por Renombre, que se conserva para siempre. El héroe, su equipo y sus misiones se quedan.', // Échange le village (bâtiments, réserves, raids) contre de la Renommée, gardée pour toujours. Le héros, son équipement et ses quêtes restent.
+  'strings.prestige_text': 'Cambia la aldea (edificios, reservas, incursiones) por Renombre, que se conserva para siempre. {g:El héroe|La heroína}, su equipo y sus misiones se quedan.', // Échange le village (bâtiments, réserves, raids) contre de la Renommée, gardée pour toujours. {g:Le héros|L’héroïne}, son équipement et ses quêtes restent.
   'strings.prestige_gain': 'Ahora: +{n} Renombre (producción e impuestos +{pct} %)', // Maintenant : +{n} Renommée (production et impôts +{pct} %)
   'strings.prestige_have': 'Renombre: {n} (producción +{pct} %)', // Renommée : {n} (production +{pct} %)
   'strings.prestige_do': 'Hacer un nuevo comienzo', // Prendre un nouveau départ
@@ -386,6 +398,7 @@ I18N.add('es', {
   'strings.up_hall': 'Menos saqueo, zona segura más amplia', // Moins de pillage, zone sûre plus large
   'strings.up_double': '¡Hito: producción ×2!', // Palier : production ×2 !
   'strings.up_look': 'Nuevo aspecto', // Nouvelle apparence
+  'strings.up_lodge': 'Planos de Aveline: +{n} s', // Plans d’Aveline : +{n} s
   'strings.sec_work': 'Trabajo', // Travail
   'strings.sec_defense': 'Defensa', // Défense
   'strings.sec_level': 'Nivel', // Niveau
@@ -420,7 +433,7 @@ I18N.add('es', {
   'strings.camp_info': 'El campamento goblin está a {n} casillas, hacia {dir}. Todas las incursiones salen de allí.', // Le camp gobelin est à {n} cases, vers {dir}. Tous les raids en partent.
   'strings.camp_show': 'Ver el campamento goblin', // Voir le camp gobelin
   'strings.camp_force': 'Guarnición: {n} / {all} guardias · empalizada {hp} / {max} · campamentos destruidos: {fell}', // Garnison : {n} / {all} gardes · palissade {hp} / {max} · camps détruits : {fell}
-  'strings.camp_how': 'Envíe a sus soldados: botón de abajo, o selecciónelos y clic derecho en el campamento. Abaten la guarnición y luego la empalizada; el héroe se les une si está en la aldea. Si se deja solo, el campamento se rehace.', // Envoyez vos soldats : bouton ci-dessous, ou sélectionnez-les et clic droit sur le camp. Ils abattent la garnison puis la palissade ; le héros les rejoint s’il est au village. Laissé seul, le camp se relève.
+  'strings.camp_how': 'Envíe a sus soldados: botón de abajo, o selecciónelos y clic derecho en el campamento. Abaten la guarnición y luego la empalizada; {g:el héroe|la heroína} se les une si está en la aldea. Si se deja solo, el campamento se rehace.', // Envoyez vos soldats : bouton ci-dessous, ou sélectionnez-les et clic droit sur le camp. Ils abattent la garnison puis la palissade ; {g:le héros|l’héroïne} les rejoint {g:s’il|si elle} est au village. Laissé seul, le camp se relève.
   'strings.camp_attack': 'Atacar el campamento', // Attaquer le camp
   'strings.camp_no_soldiers': 'Ningún soldado en pie: forme algunos en el cuartel.', // Aucun soldat sur pied : formez-en à la caserne.
   'strings.camp_sent': '{n} soldados marchan sobre el campamento goblin.', // {n} soldats marchent sur le camp gobelin.
@@ -507,7 +520,7 @@ I18N.add('es', {
   'strings.elite_banner_sub': 'La ciudad atrae saqueadores más astutos', // La cité attire des pillards plus rusés
   'strings.elite_banner_text': 'Desde ahora, cada incursión llega con un azote, anunciado al son del cuerno: {name}. {trait}\nCuanto más sube la ciudad, más azotes acumulan. Cada uno añade un {pct} % a la prima.', // À partir de maintenant, chaque raid vient avec un fléau, annoncé au son de la corne : {name}. {trait}\nPlus la cité monte, plus ils en cumulent. Chacun ajoute {pct} % à la prime.
   'strings.duel_btn': 'Desafiar a {name}', // Défier {name}
-  'strings.duel_tip': 'Desafiar a {name} en duelo\n{hero} se le enfrenta solo, a las cartas, una vez por asedio.\nSi vence: el jefe queda fuera de combate, sus saqueadores pierden el valor y algunos huyen.\nSi no: marcha con su columna y cuenta doble en su puerta.', // Défier {name} en duel\n{hero} l’affronte seul, aux cartes, une seule fois par siège.\nVainqueur : le chef est hors de combat, ses pillards perdent courage et certains fuient.\nSinon : il marche avec sa colonne et compte double à votre porte.
+  'strings.duel_tip': 'Desafiar a {name} en duelo\n{hero} se le enfrenta {g:solo|sola}, a las cartas, una vez por asedio.\nSi vence: el jefe queda fuera de combate, sus saqueadores pierden el valor y algunos huyen.\nSi no: marcha con su columna y cuenta doble en su puerta.', // Défier {name} en duel\n{hero} l’affronte {g:seul|seule}, aux cartes, une seule fois par siège.\nVainqueur : le chef est hors de combat, ses pillards perdent courage et certains fuient.\nSinon : il marche avec sa colonne et compte double à votre porte.
   'strings.duel_away': '{hero} está de expedición: nadie puede desafiarlo.', // {hero} est en mission : personne pour le défier.
   'strings.duel_title': 'Duelo · {name}', // Duel · {name}
   'strings.duel_hint': 'Un duelo solo se intenta una vez por asedio. El próximo caudillo llegará con el próximo asedio: de aquí a entonces, mejores cartas y una hoja mejor.', // Un duel ne se tente qu’une fois par siège. Le prochain chef de guerre viendra avec le prochain siège : de meilleures cartes et une meilleure lame d’ici là.
@@ -610,7 +623,7 @@ I18N.add('es', {
   'strings.need_quest_short': 'Misión', // Quête
   'strings.need_raids': 'Incursiones rechazadas ({n}/{all})', // Raids repoussés ({n}/{all})
   'strings.need_raids_short': 'Incursión', // Raid
-  'strings.need_hero': 'Héroe nivel {n}', // Héros niveau {n}
+  'strings.need_hero': '{g:Héroe|Heroína} nivel {n}', // {g:Héros|Héroïne} niveau {n}
   'strings.need_hero_short': 'Nivel {n}', // Niveau {n}
   'strings.need_weapon': 'Un arma equipada', // Une arme équipée
   'strings.need_armor': 'Una armadura equipada', // Une armure équipée
@@ -625,6 +638,9 @@ I18N.add('es', {
   'strings.pop_tip': 'Las casas alojan a los habitantes. Su número desbloquea nuevos edificios.', // Les maisons logent les habitants. Leur nombre débloque de nouveaux bâtiments.
   'strings.raid_call_tip': 'Llamar a la incursión ahora\nPrima +{pct} % si la rechaza.', // Appeler le raid maintenant\nPrime +{pct} % si vous le repoussez.
   'strings.forge_plus_tip': 'Cada +1 añade un {pct} % de sus bonificaciones.', // Chaque +1 ajoute {pct} % de ses bonus.
+  'strings.forge_perk_on': 'Temple: cada +N vale un {pct} % de sus bonificaciones.', // Trempe : chaque +N vaut {pct} % de ses bonus.
+  'strings.forge_perk_off': 'Nivel {n}: Temple (+N más fuertes) y la carta Hierro candente.', // Niveau {n} : Trempe (+N plus forts) et carte Fer rouge.
+  'strings.up_forge_perk': '¡Hito: Temple y la carta Hierro candente!', // Palier : Trempe et carte Fer rouge !
   'strings.contracts_none': 'Los contratos llegan con la misión «Defender la aldea». Cada victoria sube su rango: enemigos y primas crecen sin límite.', // Les contrats arrivent avec la quête « Tenir le village ». Chaque victoire en élève le rang : ennemis et primes grandissent sans limite.
   'strings.fg_bellows_keys': 'B · ↑ · clic derecho', // B · ↑ · clic droit
   'strings.span_min': '{m} minuto', // {m} minute
@@ -637,11 +653,11 @@ I18N.add('es', {
   'strings.city_t_taxes': 'Impuestos', // Impôts
   'strings.city_t_works': 'Obras', // Chantiers
   'strings.city_t_legacy': 'Legado', // Héritage
-  'strings.city_hud_tip': '{name} · popularidad del héroe {n} / 100\nHaga clic para abrir la Ciudad (G).', // {name} · popularité du héros {n} / 100\nCliquez pour ouvrir la Cité (G).
+  'strings.city_hud_tip': '{name} · popularidad {g:del héroe|de la heroína} {n} / 100\nHaga clic para abrir la Ciudad (G).', // {name} · popularité {g:du héros|de l’héroïne} {n} / 100\nCliquez pour ouvrir la Cité (G).
   'strings.city_hud_tip_order': 'Se puede cumplir un encargo.', // Une commande peut être honorée.
   'strings.city_hud_tip_rank': 'Se puede proclamar el rango siguiente.', // Le rang suivant peut être proclamé.
   'strings.city_need_rank': 'Rango de ciudad: {name} (aquí: {have})', // Rang de cité : {name} (ici : {have})
-  'strings.city_need_pop': 'Popularidad del héroe {n} (aquí: {have})', // Popularité du héros {n} (ici : {have})
+  'strings.city_need_pop': 'Popularidad {g:del héroe|de la heroína} {n} (aquí: {have})', // Popularité {g:du héros|de l’héroïne} {n} (ici : {have})
   'strings.city_need_orders': 'Encargos cumplidos ({have}/{n})', // Commandes honorées ({have}/{n})
   'strings.city_need_raids': 'Incursiones rechazadas por esta aldea ({have}/{n})', // Raids repoussés par ce village ({have}/{n})
   'strings.city_need_raids_camp': ' · un campamento arrasado vale {k}', //  · un camp rasé en vaut {k}
@@ -661,7 +677,7 @@ I18N.add('es', {
   'strings.city_why_royal': 'Asedio real rechazado', // Siège royal repoussé
   'strings.city_rank_n': 'Rango {n}', // Rang {n}
   'strings.city_rank_gives': 'producción e impuestos +{pct} %', // production et impôts +{pct} %
-  'strings.city_pop_title': 'Popularidad del héroe: {n} / 100', // Popularité du héros : {n} / 100
+  'strings.city_pop_title': 'Popularidad {g:del héroe|de la heroína}: {n} / 100', // Popularité {g:du héros|de l’héroïne} : {n} / 100
   'strings.city_pop_gives': 'Otorga: impuestos +{tax} %, en el Mercado compra un {mk} % más barato y vende un {mk} % más caro, +{house} habitante(s) por casa.', // Elle donne : impôts +{tax} %, Marché {mk} % moins cher à l’achat et {mk} % plus cher à la vente, +{house} habitant(s) par maison.
   'strings.city_pop_next': 'Un habitante más por casa con {n}.', // Un habitant de plus par maison à {n}.
   'strings.city_pop_decay': 'Se desgasta {n} por minuto, nunca por debajo de {floor}. Cuanto más alta, más despacio sube.', // Elle s’effrite de {n} par minute, jamais sous {floor}. Plus elle est haute, plus elle monte lentement.
@@ -719,7 +735,7 @@ I18N.add('es', {
   'strings.city_tax_fx_high': 'Alto: satisfacción limitada al {cap} %, estas casas ya no ascienden · popularidad −{n}/min.', // Élevé : satisfaction plafonnée à {cap} %, ces maisons ne s’élèvent plus · popularité −{n}/min.
   'strings.city_tax_tip_low': 'Bajo\nImpuesto ×{m}. La satisfacción sube {k} veces más rápido: las casas ascienden antes.', // Bas\nImpôt ×{m}. La satisfaction monte {k} fois plus vite : les maisons s’élèvent plus tôt.
   'strings.city_tax_tip_normal': 'Normal\nEl impuesto de siempre.', // Normal\nL’impôt habituel.
-  'strings.city_tax_tip_high': 'Alto\nImpuesto ×{m}. La satisfacción se limita al {cap} %: estas casas ya no pueden ascender, y el héroe pierde {n} de popularidad por minuto.', // Élevé\nImpôt ×{m}. La satisfaction plafonne à {cap} % : ces maisons ne peuvent plus s’élever, et le héros perd {n} de popularité par minute.
+  'strings.city_tax_tip_high': 'Alto\nImpuesto ×{m}. La satisfacción se limita al {cap} %: estas casas ya no pueden ascender, y {g:el héroe|la heroína} pierde {n} de popularidad por minuto.', // Élevé\nImpôt ×{m}. La satisfaction plafonne à {cap} % : ces maisons ne peuvent plus s’élever, et {g:le héros|l’héroïne} perd {n} de popularité par minute.
   'strings.city_tax_tip_now': 'Ahora: {now} oro/min · a este nivel: {then} oro/min', // Maintenant : {now} or/min · à ce niveau : {then} or/min
   'strings.city_works_help': 'Tres monumentos, abiertos por los rangos. Ahí van los excedentes: cada etapa cuesta miles de recursos y da una bonificación permanente a toda la ciudad.', // Trois monuments, ouverts par les rangs. C’est là que partent les surplus : chaque étape coûte des milliers de ressources et donne un bonus permanent à toute la ville.
   'strings.city_work_gives': 'Lo que otorga', // Ce qu’il donne
@@ -742,7 +758,7 @@ I18N.add('es', {
   'strings.city_ns_title': 'Un nuevo comienzo', // Un nouveau départ
   'strings.city_ns_gain': 'Ahora: +{n} Renombre ({gold} por el oro ganado, {rank} por el rango).', // Maintenant : +{n} Renommée ({gold} pour l’or gagné, {rank} pour le rang).
   'strings.city_ns_none': 'Aún no hay Renombre que ganar: haga crecer esta aldea.', // Pas encore de Renommée à gagner : faites grandir ce village.
-  'strings.city_ns_keep': 'Se conservan: el héroe, sus misiones, el legado, los lugares descubiertos. Vuelven a cero: edificios, reservas, rango, encargos, impuestos y obras.', // Restent : le héros, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers.
+  'strings.city_ns_keep': 'Se conservan: {g:el héroe|la heroína}, sus misiones, el legado, los lugares descubiertos. Vuelven a cero: edificios, reservas, rango, encargos, impuestos y obras.', // Restent : {g:le héros|l’héroïne}, ses quêtes, l’héritage, les lieux découverts. Repartent de zéro : bâtiments, réserves, rang, commandes, impôts et chantiers.
   'strings.city_ns_stock': 'Volverá a empezar con: {list}.', // Vous repartirez avec : {list}.
   'strings.city_ns_do': 'Hacer un nuevo comienzo', // Prendre un nouveau départ
   'strings.city_ns_sure': 'Haga clic otra vez para confirmar', // Cliquez encore pour confirmer
@@ -754,7 +770,7 @@ I18N.add('es', {
   'strings.city_node_tip': '{name}\n{desc}\nNivel siguiente: {cost} Renombre.', // {name}\n{desc}\nNiveau suivant : {cost} Renommée.
   'strings.city_node_req': '{name} nv. {n}', // {name} niv. {n}
   'strings.vn_pop': 'Popularidad', // Popularité
-  'strings.vn_pop_tip': 'La popularidad del héroe\nSube con los juegos, las misiones y las incursiones rechazadas, y baja con el tiempo. Influye en el impuesto, los precios del mercado y la gente que alojan sus casas.', // La popularité du héros\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.
+  'strings.vn_pop_tip': 'La popularidad {g:del héroe|de la heroína}\nSube con los juegos, las misiones y las incursiones rechazadas, y baja con el tiempo. Influye en el impuesto, los precios del mercado y la gente que alojan sus casas.', // La popularité {g:du héros|de l’héroïne}\nElle monte avec les jeux, les quêtes et les raids repoussés, et retombe avec le temps. Elle pèse sur l’impôt, les prix du marché et le monde que logent vos maisons.
   'strings.vn_play': 'Jugar: {title}', // Jouer : {title}
   'strings.vn_play_wait': 'Listo en {t}', // Prêt dans {t}
   'strings.vn_play_tip': '{title}\n{how}', // {title}\n{how}
@@ -767,6 +783,7 @@ I18N.add('es', {
   'strings.vn_keys': '↑ ↓ e Intro, o 1 · 2 · 3', // ↑ ↓ et Entrée, ou 1 · 2 · 3
   'strings.vn_gifts': 'Regalos activos', // Cadeaux en cours
   'strings.vn_no_gift': 'Ningún regalo activo: ¡juegue!', // Aucun cadeau en cours : jouez !
+  'strings.vn_gifts_more': '+ {n} más', // + {n} autres
   'strings.vn_card_wins': 'Premios', // À gagner
   'strings.vn_card_best': 'Récord: {n}', // Record : {n}
   'strings.vn_card_none': 'Nunca jugado', // Jamais joué
@@ -794,7 +811,7 @@ I18N.add('es', {
   'strings.vn_res_score': '{n} {unit}', // {n} {unit}
   'strings.vn_res_best': '¡Nuevo récord!', // Nouveau record !
   'strings.vn_res_best_old': 'Récord: {n}', // Record : {n}
-  'strings.vn_res_pop': 'Popularidad del héroe +{n}', // Popularité du héros +{n}
+  'strings.vn_res_pop': 'Popularidad {g:del héroe|de la heroína} +{n}', // Popularité {g:du héros|de l’héroïne} +{n}
   'strings.vn_res_nopop': 'Sin popularidad esta vez.', // Pas de popularité cette fois.
   'strings.vn_res_gift': '{text} durante {t}', // {text} pendant {t}
   'strings.vn_res_kept': '{text}: se conserva el regalo activo, que es mejor', // {text} : le cadeau en cours, meilleur, est gardé
@@ -810,8 +827,8 @@ I18N.add('es', {
   'strings.vn_tip_damaged': '{intro} {n} edificio(s) esperan aún reparaciones.', // {intro} {n} bâtiment(s) attendent encore des réparations.
   'strings.vn_tip_starved': '{intro} un taller está parado ({name}): le falta {res}.', // {intro} un atelier ne tourne plus ({name}) : il manque de {res}.
   'strings.vn_tip_raid': '{intro} los goblins se están reuniendo. Mantenga a sus soldados cerca de las puertas.', // {intro} les gobelins se rassemblent. Gardez vos soldats près des portes.
-  'strings.vn_tip_pop_low': '{intro} poco se habla del héroe estos días. Un juego o dos, y se sueltan las lenguas.', // {intro} l’on parle peu du héros en ce moment. Un jeu ou deux, et les langues se délient.
-  'strings.vn_tip_pop_high': '{intro} todo el mundo tiene el nombre del héroe en la boca. El impuesto entra mejor cuando se le quiere.', // {intro} tout le monde n’a que le nom du héros à la bouche. L’impôt rentre mieux quand on l’aime.
+  'strings.vn_tip_pop_low': '{intro} poco se habla {g:del héroe|de la heroína} estos días. Un juego o dos, y se sueltan las lenguas.', // {intro} l’on parle peu {g:du héros|de l’héroïne} en ce moment. Un jeu ou deux, et les langues se délient.
+  'strings.vn_tip_pop_high': '{intro} todo el mundo tiene el nombre {g:del héroe|de la heroína} en la boca. El impuesto entra mejor cuando se le quiere.', // {intro} tout le monde n’a que le nom {g:du héros|de l’héroïne} à la bouche. L’impôt rentre mieux quand on l’aime.
   'strings.vn_tip_game': '{intro} {name} tiene un juego listo para usted ({place}).', // {intro} {name} a un jeu tout prêt pour vous ({place}).
   'strings.vn_tip_fine': '{intro} la ciudad marcha bien. Aproveche para pensar en grande.', // {intro} la ville tourne rond. Profitez-en pour voir plus grand.
   'strings.cf_served': 'Propinas', // Pourboires
@@ -854,23 +871,50 @@ I18N.add('es', {
   'strings.fg_cold': '¡Muy frío!', // Trop froid !
   'strings.fg_hot': '¡Quema!', // Ça brûle !
   'strings.fg_early': 'Al aire', // Dans le vide
+  'strings.bk_score': 'Panes dorados', // Pains dorés
+  'strings.bk_burnt_n': 'Quemados', // Brûlés
+  'strings.bk_keys': 'Teclas 1 a {n}, o clic en un horno', // Touches 1 à {n}, ou clic sur un four
+  'strings.bk_perfect': '¡Perfecto! +{n}', // Parfait ! +{n}
+  'strings.bk_golden': 'Dorado +{n}', // Doré +{n}
+  'strings.bk_dark': 'Tostado +{n}', // Foncé +{n}
+  'strings.bk_pale': 'Demasiado pálido…', // Trop pâle…
+  'strings.bk_burnt': '¡Quemado!', // Brûlé !
+  'strings.bk_reload': 'Al horno…', // On enfourne…
+  'strings.bk_end_strikes': '¡La hornada se quemó!', // La fournée a brûlé !
+  'strings.bq_score': 'Paradas', // Parades
+  'strings.bq_hits_n': 'Golpes recibidos', // Coups reçus
+  'strings.bq_keys': 'Flechas del teclado, o clic en un lado', // Flèches du clavier, ou clic sur un côté
+  'strings.bq_quick': '¡Rápido! +{n}', // Vif ! +{n}
+  'strings.bq_good': 'Parado +{n}', // Paré +{n}
+  'strings.bq_wrong': '¡Lado equivocado!', // Mauvais côté !
+  'strings.bq_late': '¡Tocado!', // Touché !
+  'strings.bq_feinted': '¡Finta!', // Feinte !
+  'strings.bq_end_hits': '¡Demasiados golpes recibidos!', // Trop de coups reçus !
+  'strings.lg_score': 'Piedras puestas', // Pierres posées
+  'strings.lg_faults_n': 'Fallos', // Fautes
+  'strings.lg_keys': 'Teclas 1 a 4, o clic en una piedra', // Touches 1 à 4, ou clic sur une pierre
+  'strings.lg_chain': 'Cadena ×{n}', // Chaîne ×{n}
+  'strings.lg_set': 'Puesta +{n}', // Posée +{n}
+  'strings.lg_chained': '¡En cadena! +{n}', // En chaîne ! +{n}
+  'strings.lg_wrong': '¡No encaja!', // Elle n’entre pas !
+  'strings.lg_end_strikes': '¡El muro se ha derrumbado!', // Le mur s’est écroulé !
   'strings.ex_title': 'Exploración', // Exploration
   'strings.ex_known': 'Tierras conocidas: {pct} %', // Terres connues : {pct} %
-  'strings.ex_help': 'Fuera de la aldea, la bruma oculta las tierras. Sus edificios, sus soldados, el héroe y los exploradores la disipan y descubren lo que esconde.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, le héros et les éclaireurs la lèvent, et trouvent ce qu’elle cache.
+  'strings.ex_help': 'Fuera de la aldea, la bruma oculta las tierras. Sus edificios, sus soldados, {g:el héroe|la heroína} y los exploradores la disipan y descubren lo que esconde.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.
   'strings.ex_lvl': 'nv. {n}', // niv. {n}
   'strings.ex_far': '{n} casillas hacia {dir}', // {n} cases vers {dir}
   'strings.ex_far_short': '{n} casillas · {dir}', // {n} cases · {dir}
-  'strings.ex_trip': 'El héroe de viaje', // Le héros en expédition
+  'strings.ex_trip': '{g:El héroe|La heroína} de viaje', // {g:Le héros|L’héroïne} en expédition
   'strings.ex_trip_out': 'En camino hacia {name}', // En route vers {name}
   'strings.ex_trip_there': 'En el lugar: {name}', // Sur place : {name}
   'strings.ex_trip_back': 'De regreso', // Sur le chemin du retour
-  'strings.ex_trip_none': 'El héroe está en la aldea. Elija un lugar y envíelo.', // Le héros est au village. Choisissez un lieu et envoyez-le.
-  'strings.ex_trip_mission': 'El héroe está de expedición: partirá a su regreso.', // Le héros est en mission : il partira à son retour.
+  'strings.ex_trip_none': '{g:El héroe|La heroína} está en la aldea. Elija un lugar y {g:envíelo|envíela}.', // {g:Le héros|L’héroïne} est au village. Choisissez un lieu et envoyez-{g:le|la}.
+  'strings.ex_trip_mission': '{g:El héroe|La heroína} está de expedición: partirá a su regreso.', // {g:Le héros|L’héroïne} est en mission : {g:il|elle} partira à son retour.
   'strings.ex_open': 'Abrir el lugar', // Ouvrir le lieu
-  'strings.ex_see_hero': 'Centrar la vista en el héroe', // Amener la vue sur le héros
+  'strings.ex_see_hero': 'Centrar la vista en {g:el héroe|la heroína}', // Amener la vue sur {g:le héros|l’héroïne}
   'strings.ex_recall': 'Volver', // Rentrer
-  'strings.ex_recall_tip': 'Llamar al héroe a la aldea\nAl llegar, vuelve a montar guardia ante el ayuntamiento.', // Rappeler le héros au village\nIl reprend sa garde devant l’hôtel de ville en arrivant.
-  'strings.ex_arrived': '{hero} ha llegado: {name}. Abra la Exploración (E).', // {hero} est arrivé : {name}. Ouvrez l’Exploration (E).
+  'strings.ex_recall_tip': 'Llamar {g:al héroe|a la heroína} a la aldea\nAl llegar, vuelve a montar guardia ante el ayuntamiento.', // Rappeler {g:le héros|l’héroïne} au village\n{g:Il|Elle} reprend sa garde devant l’hôtel de ville en arrivant.
+  'strings.ex_arrived': '{hero} ha llegado: {name}. Abra la Exploración (E).', // {hero} est {g:arrivé|arrivée} : {name}. Ouvrez l’Exploration (E).
   'strings.ex_home': '{hero} ha vuelto a la aldea.', // {hero} est de retour au village.
   'strings.ex_lost': 'El lugar ya no es accesible: {hero} vuelve.', // Le lieu n’est plus accessible : {hero} rentre.
   'strings.ex_scouts': 'Exploradores ({n}/{max} fuera)', // Éclaireurs ({n}/{max} dehors)
@@ -905,7 +949,7 @@ I18N.add('es', {
   'strings.ex_open_tip': 'Abrir la ficha de este lugar', // Ouvrir la page de ce lieu
   'strings.ex_back': '‹ Todos los lugares', // ‹ Tous les lieux
   'strings.ex_go': 'Ir allí', // Y aller
-  'strings.ex_go_tip': 'Enviar al héroe\nTrayecto: {time}. Mientras tanto, deja de guardar la aldea.', // Envoyer le héros\nTrajet : {time}. Pendant ce temps, il ne garde plus le village.
+  'strings.ex_go_tip': 'Enviar {g:al héroe|a la heroína}\nTrayecto: {time}. Mientras tanto, deja de guardar la aldea.', // Envoyer {g:le héros|l’héroïne}\nTrajet : {time}. Pendant ce temps, {g:il|elle} ne garde plus le village.
   'strings.ex_coming': 'En camino', // En route
   'strings.ex_fight': 'Combatir', // Combattre
   'strings.ex_gift': 'Ofrecer', // Offrir
@@ -913,7 +957,7 @@ I18N.add('es', {
   'strings.ex_deliver': 'Entregar', // Livrer
   'strings.ex_deepen': 'Excavar', // Creuser
   'strings.ex_done_btn': 'Explorado', // Explorée
-  'strings.ex_need_hero': 'El héroe debe ir allí.', // Le héros doit s’y rendre.
+  'strings.ex_need_hero': '{g:El héroe|La heroína} debe ir allí.', // {g:Le héros|L’héroïne} doit s’y rendre.
   'strings.ex_go_time': 'Trayecto: {time}.', // Trajet : {time}.
   'strings.ex_foe_scale': 'fuerza +{pct} %', // force +{pct} %
   'strings.ex_lair_back': '{name}: guarida repoblada ({lvl}).', // {name} est repeuplée ({lvl}).
@@ -922,8 +966,8 @@ I18N.add('es', {
   'strings.ex_foes': 'Quién hay', // Qui s’y trouve
   'strings.ex_st_ruin': 'Hay saqueadores acampados', // Des pillards y campent
   'strings.ex_st_done': 'Explorado', // Explorée
-  'strings.ex_st_here': 'El héroe está allí', // Le héros est sur place
-  'strings.ex_st_coming': 'El héroe está en camino', // Le héros est en route
+  'strings.ex_st_here': '{g:El héroe|La heroína} está allí', // {g:Le héros|L’héroïne} est sur place
+  'strings.ex_st_coming': '{g:El héroe|La heroína} está en camino', // {g:Le héros|L’héroïne} est en route
   'strings.ex_st_lair': 'Hay monstruos anidando', // Des monstres y nichent
   'strings.ex_st_lair_again': 'Repoblada (vaciada {n} veces)', // Repeuplée ({n} fois vidée)
   'strings.ex_st_lair_wait': 'Vacía · repoblada en {time}', // Vide · repeuplée dans {time}

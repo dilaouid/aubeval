@@ -13,8 +13,22 @@ function heroName(of) {
   const n = (typeof state !== 'undefined' && state && state.hero && state.hero.name) || DATA.hero.name;
   return of ? DATA.strings[/^[aeiouyhàâäéèêëîïôöûüÿæœ]/i.test(n) ? 'hero_of_vowel' : 'hero_of'].split('{name}').join(n) : n;
 }
-/** Fills {hero} and {de_hero} in a line of text. */
-function withHero(s) { return s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName()); }
+/**
+ * The hero the player looks at, { id, name, g } from DATA.heroes: the one being picked (ui.heroPick, on the naming screen only), else the
+ * saved one on the title screen (read without loading the save), else the one of the game under way.
+ * An id nobody knows, or none, is Aldric.
+ */
+function heroLook() {
+  let id;
+  if (typeof scene !== 'undefined' && scene === 'naming' && typeof ui !== 'undefined' && ui && ui.heroPick) id = ui.heroPick; // a pick counts on the naming screen only
+  else if (typeof scene !== 'undefined' && scene === 'title' && typeof Save !== 'undefined') { const s = Save.hero(); id = s && s.look; }
+  else if (typeof state !== 'undefined' && state && state.hero) id = state.hero.look;
+  return DATA.heroes.find(h => h.id === id) || DATA.heroes[0];
+}
+/** Resolves the {g:masculine|feminine} holes of a text for the hero's gender. */
+function gendered(s) { return typeof s === 'string' && s.indexOf('{g:') >= 0 ? I18N.gender(s, heroLook().g) : s; }
+/** Fills {hero} and {de_hero} in a line of text, then its gender holes. */
+function withHero(s) { return gendered(s.indexOf('_hero}') < 0 && s.indexOf('{hero}') < 0 ? s : s.split('{de_hero}').join(heroName(true)).split('{hero}').join(heroName())); }
 /** A string from data/strings.js, with {holes} filled from vars, and the hero's name in its place. */
 function tr(key, vars) {
   let s = DATA.strings[key];
@@ -229,6 +243,7 @@ const UI = (() => {
   }
   /** Word-wrapped text. `align` 'center' makes x the middle of the block. Returns the y under the last line. */
   function wrap(str, x, y, maxW, size, color, lineH, bold, align = 'left') {
+    str = gendered(str); // the hole resolved before it is measured and cut into lines
     ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`;
     lineH = lineH || Math.round(size * 1.35);
     for (const para of String(str).split('\n')) {
@@ -242,7 +257,7 @@ const UI = (() => {
     }
     return y;
   }
-  function width(str, size, bold) { ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`; return ctx.measureText(str).width; }
+  function width(str, size, bold) { str = gendered(str); ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`; return ctx.measureText(str).width; }
   /** A sprite with its top-left at a logical point. scale 2 is the world's pixel size (the usual). */
   function sprite(id, x, y, scale = 2, frame = 0) { blit(Art.get(id, frame), x, y, scale / 2); }
   /** A gauge in a dark wooden groove with a brass rim; `ghost` is a pale trail behind a falling value. */
@@ -271,7 +286,7 @@ const UI = (() => {
     if (!tip) return;
     ctx.font = `15px ${FONT}`;
     const lines = [];
-    for (const para of tip.split('\n')) {
+    for (const para of gendered(tip).split('\n')) {
       let line = '';
       for (const word of para.split(' ')) {
         const t = line ? line + ' ' + word : word;

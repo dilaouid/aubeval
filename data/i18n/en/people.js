@@ -16,7 +16,7 @@ I18N.add('en', {
   'classes[merchant].desc': 'They add cloth, want the Market within reach and a pleasant street (beauty 4). They need a Town. They open the Goldsmith.', // Ajoutent les étoffes, veulent le Marché à portée et une rue plaisante (beauté 4). Il leur faut une Ville. Ils ouvrent l’Orfèvre.
   'classes[noble].name': 'Nobles', // Nobles
   'classes[noble].one': 'Noble', // Noble
-  'classes[noble].desc': 'Jewels too, and a splendid street (beauty 10): fountains, statues, trees and flowers. They need a City, and a hero beloved of his town.', // Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et un héros aimé de sa ville.
+  'classes[noble].desc': 'Jewels too, and a splendid street (beauty 10): fountains, statues, trees and flowers. They need a City, and a hero beloved of {g:his|her} town.', // Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et {g:un héros aimé|une héroïne aimée} de sa ville.
   'units.woodcutter.name': 'Woodcutter', // Bûcheron
   'units.woodcutter.plural': 'Woodcutters', // Bûcherons
   'units.woodcutter.desc': 'Cuts wood from the nearest tree and brings it back. A woodcutter’s hut near the forest shortens his trips.', // Coupe du bois à l’arbre le plus proche et le rapporte. Une cabane de bûcheron près de la forêt raccourcit ses trajets.
@@ -54,13 +54,13 @@ I18N.add('en', {
   'keepers.smith.title': 'Blacksmith', // Forgeron
   'keepers.smith.lines[0]': 'Good wood, good iron, and I’ll make you a legend.', // Du bon bois, du bon fer, et je vous fais une légende.
   'keepers.smith.lines[1]': 'A blade wants respect. And reinforcing.', // Une lame, ça se respecte. Et ça se renforce.
-  'keepers.smith.lines[2]': 'The hero breaks, I mend.', // Le héros casse, moi je répare.
+  'keepers.smith.lines[2]': 'The hero breaks, I mend.', // {g:Le héros|L’héroïne} casse, moi je répare.
   'keepers.smith.busy': 'Stand back, she’s hot! She’ll be ready soon.', // Reculez, ça chauffe ! Elle sera prête bientôt.
   'keepers.baker.name': 'Mélisande', // Mélisande
   'keepers.baker.title': 'Baker', // Boulangère
   'keepers.baker.lines[0]': 'A warm loaf and the world looks brighter.', // Une miche chaude et le monde va mieux.
   'keepers.baker.lines[1]': 'Your peasants eat for four. All the better!', // Vos paysans mangent comme quatre. Tant mieux !
-  'keepers.baker.lines[2]': 'Take some for the hero, he looks peaky.', // Emportez-en pour le héros, il a mauvaise mine.
+  'keepers.baker.lines[2]': 'Take some for the hero, {g:he|she} looks peaky.', // Emportez-en pour {g:le héros|l’héroïne}, {g:il|elle} a mauvaise mine.
   'keepers.baker.sad': 'Not a grain of wheat left… I can’t knead thin air.', // Plus un grain de blé… je ne peux pas pétrir du vent.
   'keepers.innkeeper.name': 'Gaspard', // Gaspard
   'keepers.innkeeper.title': 'Café Keeper', // Cafetier
@@ -82,4 +82,9 @@ I18N.add('en', {
   'keepers.captain.lines[2]': 'Select my soldiers, point, and off they go.', // Sélectionnez mes soldats, pointez, et ils y vont.
   'keepers.captain.busy': 'Hup, two! Hup, two! The recruit will be ready shortly.', // Un-deux, un-deux ! La recrue sera prête sous peu.
   'keepers.captain.raid': 'To your posts! Right-click where you want them!', // À vos postes ! Clic droit là où vous les voulez !
+  'keepers.guide.name': 'Aveline', // Aveline
+  'keepers.guide.title': 'Master Builder', // Maîtresse bâtisseuse
+  'keepers.guide.lines[0]': 'A straight wall, Mayor, is a wall that stands a hundred years. Just look at those joints!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints !
+  'keepers.guide.lines[1]': 'Before you lay a stone, you look at it. Then you look at it again.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore.
+  'keepers.guide.lines[2]': 'My plans are ready, Mayor: yours to build, mine to teach.', // Mes plans sont prêts, bourgmestre : à vous de bâtir, à moi de vous apprendre.
 });

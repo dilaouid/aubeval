@@ -10,8 +10,12 @@
 //   to the hall until the way is clear.
 //   A soldier is trained at the barracks, then selected and ordered by the player: he guards the
 //   point he was sent to and goes for any raider that comes near it. A foot soldier bars the way:
-//   raiders stop to fight him (js/raid.js). Struck down, he is carried to the barracks and stands
-//   again after a rest: nobody dies for good.
+//   raiders stop to fight him (js/raid.js). Struck down, he is lost for good: his citizen is free
+//   again, and another has to be trained in his place.
+//   The barracks trains one recruit at a time (b.train) and keeps the others ordered waiting in a
+//   line (b.queue, their kinds): each is paid for when ordered, and paid back when cancelled. A
+//   recruit walks out to the barracks' rally point (b.rally, a map point the player sets) when it
+//   has one, else stands before the barracks.
 //
 // Everything saved is in state.units (plain data). Units walk in straight lines: the village's own
 // people pass its gates and walls as they please.
@@ -38,11 +42,33 @@ const Units = (() => {
     const b = barracks(), p = b ? front(b) : hallDoor();
     return { x: p.x + ((i % 5) - 2) * 11, y: p.y + 6 + Math.floor(i / 5) * 10 };
   }
-  /** Citizens with no trade, the recruit at the barracks counted out. */
-  function free() { const b = barracks(); return Village.freeCitizens() - (b && b.train ? 1 : 0); }
+  /** The i-th recruit's post as he leaves the barracks: in rows around its rally point when it has one. */
+  function post(i) {
+    const b = barracks();
+    return b && b.rally ? { x: b.rally.x + ((i % 5) - 2) * 11, y: b.rally.y + Math.floor(i / 5) * 10 } : rally(i);
+  }
+  /** The first of those posts no soldier holds: the fallen leave gaps, and two men never share a spot. */
+  function freePost() {
+    const held = soldiers();
+    for (let i = 0; i < 200; i++) { const p = post(i); if (!held.some(u => Math.abs(u.gx - p.x) < 4 && Math.abs(u.gy - p.y) < 4)) return p; }
+    return post(held.length);
+  }
+  /** The barracks' training line: [{ kind, frac }], the recruit at drill first (frac: how far he is), then those waiting. */
+  function line(b = barracks()) {
+    if (!b) return [];
+    const out = b.train ? [{ kind: b.train.kind, frac: clamp(1 - b.train.left / b.train.total, 0, 1) }] : [];
+    for (const kind of b.queue || []) out.push({ kind, frac: 0 });
+    return out;
+  }
+  /** How many recruits the line holds: the one at drill, and `barracks_queue` waiting. */
+  const lineMax = () => 1 + tune.barracks_queue;
+  /** Citizens with no trade, the recruits in the barracks' line counted out. */
+  function free() { return Village.freeCitizens() - line().length; }
   /** What the barracks' level adds to every soldier. */
   function drill() { const b = barracks(); return (1 + ((b ? b.lvl : 1) - 1) * tune.soldier_level_step) * (1 + City.bonus('soldier')); } // THREAT hook: the city's bonus to soldiers (great works, legacy)
   const maxHp = u => Math.round(def(u).hp * drill());
+  /** What a soldier of this kind strikes for now: the barracks' drill, and the barracks' gift (« Bien drillés ») while it runs. Not his health. */
+  const atkOf = kind => U[kind].atk * drill() * (1 + Venue.buff('soldier'));
   const reset = () => { stale = true; };
   const touch = () => { stale = true; };
 
@@ -55,7 +81,7 @@ const Units = (() => {
       const b = barracks();
       if (!b) return tr('need_barracks');
       if (b.damaged) return tr('damaged');
-      if (b.train) return tr('train_busy');
+      if (line(b).length >= lineMax()) return tr('queue_full');
     }
     if (free() < 1) return tr('no_citizen');
     if (!Village.canAfford(cost(kind))) return tr('no_funds');
@@ -64,21 +90,49 @@ const Units = (() => {
   const cost = kind => Village.scaleCost(U[kind].cost, tune.cost_scale);
   function add(kind, x, y) {
     const u = { id: state.nextUnit++, kind, x, y, dx: 0, dy: 1 };
-    if (isSoldier(u)) { u.hp = maxHp(u); const r = rally(soldiers().length); u.gx = r.x; u.gy = r.y; }
+    if (isSoldier(u)) { u.hp = maxHp(u); const r = freePost(); u.gx = r.x; u.gy = r.y; }
     state.units.push(u); stale = true;
     return u;
   }
-  /** Trains one: a worker at once, at the hall's door; a soldier at the barracks, in his training time. */
-  function train(kind) {
-    const why = blocked(kind);
-    if (why) { toast(why, UI.C.bad); sfx('error'); return false; }
-    Village.pay(cost(kind));
+  /** Puts the head of the line at drill, when nobody is. */
+  function nextRecruit(b) {
+    if (b.train || !b.queue || !b.queue.length) return;
+    const kind = b.queue.shift(), d = U[kind];
+    b.train = { kind, left: d.time, total: d.time };
+  }
+  /**
+   * Trains one: a worker at once, at the hall's door; a soldier joins the barracks' line, paid for
+   * now, and `n` of them at once as far as the line, the free citizens and the stocks allow.
+   * Returns how many were ordered (0: refused, and the player is told why).
+   */
+  function train(kind, n = 1) {
     const d = U[kind];
-    if (d.role === 'soldier') { barracks().train = { kind, left: d.time, total: d.time }; sfx('forge'); return true; }
-    const p = hallDoor(); add(kind, p.x, p.y);
-    sfx('place'); events.push({ type: 'unit', kind });
+    let done = 0;
+    for (; done < (d.role === 'soldier' ? n : 1); done++) {
+      const why = blocked(kind);
+      if (why) { toast(why, UI.C.bad); if (!done) sfx('error'); break; } // cut short: said once, whatever was ordered stays ordered
+      Village.pay(cost(kind));
+      if (d.role === 'soldier') { const b = barracks(); (b.queue = b.queue || []).push(kind); nextRecruit(b); }
+      else { const p = hallDoor(); add(kind, p.x, p.y); events.push({ type: 'unit', kind }); }
+    }
+    if (done) sfx(d.role === 'soldier' ? 'forge' : 'place');
+    return done;
+  }
+  /** Takes the i-th recruit of the line (line()) out of it: his price comes back, and the next one starts his drill. */
+  function cancel(i, b = barracks()) {
+    const l = line(b);
+    if (!l[i]) return false;
+    if (b.train && i === 0) b.train = null; else b.queue.splice(i - (b.train ? 1 : 0), 1);
+    const c = cost(l[i].kind); for (const r in c) state.res[r] += c[r]; // given back, not earned: the totals do not move
+    if (!b.damaged) nextRecruit(b);
+    sfx('click');
     return true;
   }
+  /** A barracks pulled down: everyone in its line is paid back. */
+  function refund(b) { while (cancel(0, b)); }
+  /** The barracks' rally point: where its recruits go as they come out. */
+  function setRally(x, y) { const b = barracks(); if (!b) return false; b.rally = { x: Math.round(x), y: Math.round(y) }; return true; }
+  function clearRally() { const b = barracks(); if (b) delete b.rally; }
   /** Sends one of this kind back to the houses: a free citizen again. Nothing is paid back. */
   function dismiss(kind) {
     for (let i = state.units.length - 1; i >= 0; i--) if (state.units[i].kind === kind) {
@@ -197,26 +251,31 @@ const Units = (() => {
   }
 
   // ---- Soldiers ----
-  /** Hurts a soldier. Struck down, he is carried to the barracks and rests there. */
+  /** Hurts a soldier. Struck down, he is lost: out of the village's units, his citizen free again. */
   function hurt(u, dmg) {
-    if (u.down > 0) return;
+    if (u.dead) return; // already fallen in this step: whoever still holds him strikes nothing
     u.hp -= dmg * tune.armor_factor / (tune.armor_factor + def(u).armor); u.flash = 0.1;
     if (u.hp > 0) return;
-    u.hp = 0; u.down = tune.soldier_recover;
-    floatText(u.x, u.y, tr('unit_down'), UI.C.bad, 15, 18); sfx('hurt');
-    const r = rally(soldiers().indexOf(u)); u.x = r.x; u.y = r.y; u.moving = false;
+    u.hp = 0; u.dead = true;
+    const i = state.units.indexOf(u); if (i >= 0) state.units.splice(i, 1);
     if (ui.selU) ui.selU = ui.selU.filter(x => x !== u.id);
+    state.counters.soldiersLost = (state.counters.soldiersLost || 0) + 1;
+    const a = state.raid.active; if (a) a.lost = (a.lost || 0) + 1; // the raid's report counts them (js/raid.js finish)
+    floatText(u.x, u.y, tr('unit_dead'), UI.C.bad, 15, 18); sfx('hurt');
   }
   /** The foot soldier barring a raider's way, or null: the nearest one within reach. */
   function blocker(e) {
     let best = null, bd = tune.raid_engage_range;
-    for (const u of state.units) { if (!melee(u) || u.down > 0) continue; const d = Math.hypot(u.x - e.x, u.y - e.y); if (d < bd) { bd = d; best = u; } }
+    for (const u of state.units) { if (!melee(u)) continue; const d = Math.hypot(u.x - e.x, u.y - e.y); if (d < bd) { bd = d; best = u; } }
     return best;
   }
-  function soldierTick(u, dt, i) {
+  function soldierTick(u, dt) {
     const d = def(u), a = state.raid.active;
     if (u.flash > 0) u.flash -= dt;
-    if (u.down > 0) { u.down -= dt; if (u.down <= 0) { u.down = 0; u.hp = maxHp(u); const r = rally(i); u.gx = r.x; u.gy = r.y; } return; }
+    if (u.down != null) { // a save from when the fallen rested at the barracks: he is on his feet, and stays before it as he would have
+      if (u.down > 0) { u.hp = maxHp(u); const r = rally(soldiers().indexOf(u)); u.gx = r.x; u.gy = r.y; }
+      delete u.down;
+    }
     u.cd = (u.cd || 0) - dt;
     // the raider nearest to him among those near the point he guards, or within his own reach
     let target = null, bd = Infinity;
@@ -237,7 +296,7 @@ const Units = (() => {
     u.moving = false; u.dx = tx - u.x; u.dy = ty - u.y;
     if (u.cd <= 0) {
       u.cd = d.rate; u.swing = 0.18;
-      if (target) Raid.hurt(target, d.atk * drill(), false); else Camp.hit(at, d.atk * drill());
+      if (target) Raid.hurt(target, atkOf(u.kind), false); else Camp.hit(at, atkOf(u.kind));
       const p = target ? Raid.pos(target) : at;
       if (!melee(u)) { Raid.shots.push({ x0: u.x, y0: u.y, z0: 12, x1: p.x, y1: p.y, z1: 6, t: 0 }); sfx('arrow'); } else sfx('hit');
     }
@@ -246,23 +305,26 @@ const Units = (() => {
   function tick(dt) {
     ensure();
     const b = barracks();
-    if (b && b.train && !b.damaged) { // the recruit at drill
-      b.train.left -= dt * (1 + (b.lvl - 1) * 0.15);
-      if (b.train.left <= 0) { const k = b.train.kind, p = front(b); b.train = null; add(k, p.x, p.y); toast(tr('unit_ready', { name: U[k].name }), UI.C.good); sfx('level'); events.push({ type: 'unit', kind: k }); }
+    if (b && !b.damaged) { // the recruit at drill, then the next of the line
+      nextRecruit(b);
+      if (b.train) b.train.left -= dt * (1 + (b.lvl - 1) * 0.15);
+      if (b.train && b.train.left <= 0) {
+        const k = b.train.kind, p = front(b); b.train = null; add(k, p.x, p.y); nextRecruit(b);
+        toast(tr(b.rally ? 'unit_ready_rally' : 'unit_ready', { name: U[k].name }), UI.C.good); sfx('level'); events.push({ type: 'unit', kind: k });
+      }
     }
-    let si = 0;
     for (const u of state.units) {
       if (u.swing > 0) u.swing -= dt;
-      if (isSoldier(u)) soldierTick(u, dt, si++); else workerTick(u, dt);
+      if (isSoldier(u)) soldierTick(u, dt); else workerTick(u, dt);
     }
   }
-  /** After a raid: everyone on his feet, wounds dressed. */
-  function afterRaid() { for (const u of state.units) if (isSoldier(u)) { u.down = 0; u.hp = maxHp(u); } }
+  /** After a raid: the wounds of those still standing are dressed. */
+  function afterRaid() { for (const u of state.units) if (isSoldier(u)) u.hp = maxHp(u); }
 
   // ---- The player's orders ----
   /** Sends these soldiers to guard a map point, in rows around it. */
   function order(ids, mx, my) {
-    const list = ids.map(byId).filter(u => u && isSoldier(u) && !(u.down > 0));
+    const list = ids.map(byId).filter(u => u && isSoldier(u));
     if (!list.length) return false;
     const cols = Math.ceil(Math.sqrt(list.length));
     list.forEach((u, i) => { u.gx = mx + ((i % cols) - (cols - 1) / 2) * 12; u.gy = my + (Math.floor(i / cols) - (Math.ceil(list.length / cols) - 1) / 2) * 12; });
@@ -276,12 +338,12 @@ const Units = (() => {
     const p = World.iso(wx, wy);
     let best = null, bd = 12;
     for (const u of state.units) {
-      if (!isSoldier(u) || u.down > 0) continue;
+      if (!isSoldier(u)) continue;
       const q = World.iso(u.x, u.y), d = Math.hypot(q.x - p.x, (q.y - 9 - p.y) * 0.8);
       if (d < bd) { bd = d; best = u; }
     }
     return best;
   }
 
-  return { tick, rates, away, reset, touch, add, train, dismiss, blocked, cost, count, soldiers, byId, free, drill, maxHp, isSoldier, isWorker, melee, hurt, blocker, afterRaid, order, recall, pickAt, rally, barracks };
+  return { tick, rates, away, reset, touch, add, train, cancel, refund, line, lineMax, setRally, clearRally, dismiss, blocked, cost, count, soldiers, byId, free, drill, maxHp, atkOf, isSoldier, isWorker, melee, hurt, blocker, afterRaid, order, recall, pickAt, rally, barracks };
 })();

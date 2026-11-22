@@ -97,7 +97,7 @@ DATA.warlords = [
 ];
 // Each warlord is also an enemy of the card battle, under his own id (?scene=battle&foes=morgash&boss).
 for (const w of DATA.warlords) {
-  DATA.enemies[w.id] = { name: `${w.name} ${w.title}`, sprite: 'enemy.warlord', alt: 'enemy.grakk', icon: 'unit.grakk', boss: true, warlord: true, how: w.how, battle: w.battle };
+  DATA.enemies[w.id] = { name: `${w.name} ${w.title}`, sprite: 'enemy.' + w.id, alt: 'enemy.warlord', icon: 'unit.grakk', boss: true, warlord: true, how: w.how, battle: w.battle };
 }
 
 // The elite raids (js/raid.js): from the city rank config.js elite_rank, every raid (a siege too) comes

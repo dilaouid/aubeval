@@ -309,7 +309,7 @@ const World = (() => {
    */
   const ROW = [2, 1, 0, 7, 6, 5, 4, 3]; // octant() -> the sheet's row: south, south-east, east, north-east, north, north-west, west, south-west
   function unitSprite(kind, dx, dy, moving, clock) {
-    const id = 'iso.unit.' + kind, sh = Art.sheet(id);
+    const id = kind === 'hero' ? Hero.art('unit') : 'iso.unit.' + kind, sh = Art.sheet(id);
     if (!sh && !Art.defs['unit.' + kind] && kind !== 'villager') return unitSprite('villager', dx, dy, moving, clock); // no art of its own yet: the villager's
     if (!sh) return Art.get('unit.' + kind, moving ? Math.floor(clock * 6) % 2 : 0);
     const col = moving && sh.cols > 1 ? 1 + Math.floor(clock * tune.walk_fps) % (sh.cols - 1) : 0;
@@ -554,7 +554,6 @@ const World = (() => {
       list.push({ y: Y - 3, f: () => wg.drawImage(s, X - (s.width >> 1) - cx, Y + 6 - s.height - cy) });
     }
     for (const u of state.units) { // the villagers at work and the soldiers
-      if (u.down > 0) continue; // struck down: resting inside the barracks
       const X = Math.round(isoX(u.x, u.y)), Y = Math.round(isoY(u.x, u.y));
       if (X < cx - 40 || X > cx + VW + 40 || Y < cy - 40 || Y > cy + VH + 60) continue;
       const d = DATA.units[u.kind], sold = d.role === 'soldier', sel = !!look.units && look.units.has(u.id);
@@ -571,6 +570,11 @@ const World = (() => {
         if (sold && u.hp < Units.maxHp(u)) { wg.fillStyle = PAL.ink; wg.fillRect(x, y - 3, s.width, 3); wg.fillStyle = PAL.greenL; wg.fillRect(x + 1, y - 2, Math.round((s.width - 2) * clamp(u.hp / Units.maxHp(u), 0, 1)), 1); }
         if (sold && u.swing > 0 && Units.melee(u)) { wg.fillStyle = PAL.white; const sx = (u.dx || 0) - (u.dy || 0) >= 0 ? 1 : -1; wg.fillRect(X + sx * 9 - 3 - cx, Y - 13 - cy, 6, 1); wg.fillRect(X + sx * 11 - 3 - cx, Y - 10 - cy, 6, 1); }
       } });
+    }
+    const bk = look.sel != null && Units.barracks(); // the chosen barracks' rally point: a banner where its recruits go
+    if (bk && bk.uid === look.sel && bk.rally) {
+      const s = Art.get('iso.decor.banner'), X = Math.round(isoX(bk.rally.x, bk.rally.y)), Y = Math.round(isoY(bk.rally.x, bk.rally.y));
+      list.push({ y: Y + 1, f: () => { oval(X - cx, Y - cy, 9, 4, PAL.greenL); wg.drawImage(s, X - (s.width >> 1) - cx, Y + 3 - s.height - cy); } });
     }
     list.sort((p, q) => p.y - q.y);
     const shakes = Village.shakes;

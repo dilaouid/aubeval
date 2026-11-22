@@ -1,0 +1,10 @@
+image	pixellab job	candidate	what was asked
+# The four warlords' duel sprites, made on 2026-11-22 (tools/enemies/raw/, built by tools/make_enemies.py).
+# Each is one of the four candidates of a create_image_pro job, 96x96, no background, with the common warlord
+# (assets/sprites/enemy_warlord.png) as both reference and style image. Every request began with "a goblin warlord
+# battle sprite in the same style, size and three-quarter pose as the reference warlord, facing left:" and ended
+# with "no banner. Dark outline, saturated colours, feet on the bottom edge". Nothing was retouched.
+morgash	ccb9f455-7216-4502-88d2-7babaf6e186e	0	Morgash the Wall-Breaker, a massive broad-shouldered green goblin warlord in dark iron plate with a horned helmet, holding a huge two-handed stone war hammer, rubble and a broken brick hanging from his belt
+zhara	5022ba61-becc-474d-a45d-0f1961924f1a	2	Zhara the Bramble-Mother, a tall lean female green goblin shaman-chief in dark purple robes wrapped in thorny brambles, a crown of thorns and bones, holding a twisted bramble staff topped with a glowing violet crystal, bone charms on her belt
+urgak	ed3428bc-8240-4e8c-9a68-6026e4b37e92	0	Urgak the Brute-Driver, a very wide heavy green goblin warlord in spiked purple-grey plate armour like a brute, a horned iron helmet, holding a huge butcher's cleaver in one hand and a coiled whip in the other
+skrit	ef4ea7ea-452c-44b9-8f36-9c88f0292418	0	Skrit the Quick Blade, a lean wiry green goblin duelist-chief in light dark leather armour with a red scarf and a small hood, crouched ready to spring, a short curved blade in each hand

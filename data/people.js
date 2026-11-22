@@ -42,7 +42,7 @@ DATA.classes = [
     desc: 'Ajoutent les étoffes, veulent le Marché à portée et une rue plaisante (beauté 4). Il leur faut une Ville. Ils ouvrent l’Orfèvre.' },
   { id: 'noble', name: 'Nobles', one: 'Noble', pop: 12, tax: 12, needs: { bread: 2, coffee: 2, spice: 2, cloth: 1, jewel: 1 }, services: ['cafe', 'chapel', 'market'], beauty: 10, flag: 'violet',
     raise: { stone: 2500, planks: 1500, gold: 30000, jewel: 60 }, opens: { cls: { merchant: 14 }, popularity: 50 }, rank: 3,
-    desc: 'Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et un héros aimé de sa ville.' },
+    desc: 'Bijoux en plus, et une rue superbe (beauté 10) : fontaines, statues, arbres et fleurs. Il leur faut une Cité, et {g:un héros aimé|une héroïne aimée} de sa ville.' },
 ];
 
 // What a citizen can become. One unit takes one citizen (a free inhabitant).
@@ -129,10 +129,10 @@ DATA.keepers = {
     lines: ['Les registres sont à jour, messire. Presque.', 'Un village se compte en bouches à nourrir.', 'Des paysans repus font de bons artisans.'],
     raid: 'Aux abris ! Je garde les registres, gardez le reste.' },
   smith: { name: 'Bram', title: 'Forgeron',
-    lines: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', 'Le héros casse, moi je répare.'],
+    lines: ['Du bon bois, du bon fer, et je vous fais une légende.', 'Une lame, ça se respecte. Et ça se renforce.', '{g:Le héros|L’héroïne} casse, moi je répare.'],
     busy: 'Reculez, ça chauffe ! Elle sera prête bientôt.' },
   baker: { name: 'Mélisande', title: 'Boulangère',
-    lines: ['Une miche chaude et le monde va mieux.', 'Vos paysans mangent comme quatre. Tant mieux !', 'Emportez-en pour le héros, il a mauvaise mine.'],
+    lines: ['Une miche chaude et le monde va mieux.', 'Vos paysans mangent comme quatre. Tant mieux !', 'Emportez-en pour {g:le héros|l’héroïne}, {g:il|elle} a mauvaise mine.'],
     sad: 'Plus un grain de blé… je ne peux pas pétrir du vent.' },
   innkeeper: { name: 'Gaspard', title: 'Cafetier',
     lines: ['Une tasse noire et serrée, et la journée commence.', 'Un artisan sans café, c’est un paysan qui bâille.', 'Ici, on refait le monde. Et le village, parfois.', 'Les maisons à portée de mon comptoir s’élèvent plus vite.'],
@@ -144,4 +144,6 @@ DATA.keepers = {
     lines: ['Donnez-moi dix miliciens et je tiens la porte.', 'Un archer derrière un mur vaut trois lances.', 'Sélectionnez mes soldats, pointez, et ils y vont.'],
     busy: 'Un-deux, un-deux ! La recrue sera prête sous peu.',
     raid: 'À vos postes ! Clic droit là où vous les voulez !' },
+  guide: { name: 'Aveline', title: 'Maîtresse bâtisseuse',
+    lines: ['Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints !', 'Avant de poser une pierre, on la regarde. Puis on la regarde encore.', 'Mes plans sont prêts, bourgmestre : à vous de bâtir, à moi de vous apprendre.'] },
 };

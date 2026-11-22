@@ -20,6 +20,8 @@ I18N.add('en', {
   'cards.barricade.flavor': 'Planks from the sawmill, nailed up in haste.', // Des planches de la scierie, clouées à la hâte.
   'cards.thrust.name': 'Thrust', // Estoc
   'cards.thrust.flavor': 'The forge-tempered point slips between the plates.', // La pointe trempée à la forge passe entre les plaques.
+  'cards.brand.name': 'Red-hot Iron', // Fer rouge
+  'cards.brand.flavor': 'Iron fresh from the fire brands the target: it strikes half as hard.', // Le fer sorti du feu marque la cible : elle frappe deux fois moins fort.
   'cards.cheer.name': 'Cheers', // Acclamations
   'cards.cheer.flavor': 'The townsfolk shout the hero’s name from their windows.', // Les habitants crient son nom depuis les fenêtres.
   'cards.scythe.name': 'Great Scythe', // Grande faux
@@ -31,7 +33,7 @@ I18N.add('en', {
   'cards.volley.name': 'Arrow Volley', // Volée de flèches
   'cards.volley.flavor': 'The watchtower archers shoot over the hero’s shoulder.', // Les archers des tours de guet tirent par-dessus son épaule.
   'cards.spikes.name': 'Stakes', // Pieux
-  'cards.spikes.flavor': 'Whoever strikes is impaled on the palisade.', // Qui le frappe s’empale sur la palissade.
+  'cards.spikes.flavor': 'Whoever strikes is impaled on the palisade.', // Qui {g:le|la} frappe s’empale sur la palissade.
   'cards.bolt.name': 'Lightning', // Éclair
   'cards.bolt.flavor': 'The mage tower strikes the whole band with lightning.', // La tour de mage foudroie toute la bande.
   'cards.militia.name': 'Militia Aid', // Renfort de la milice

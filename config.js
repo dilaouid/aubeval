@@ -28,6 +28,7 @@ window.CONFIG = {
   refund_pct: { value: 0.7, min: 0, max: 1, step: 0.05 },            // share of the base price given back on demolish
   repair_pct: { value: 0.3, min: 0, max: 1, step: 0.05 },            // share of the base price to repair a damaged building
   plus_bonus: { value: 0.15, min: 0.05, max: 0.5, step: 0.01 },      // each +1 on a piece of gear adds this share of its stats
+  forge_temper_bonus: { value: 0.05, min: 0, max: 0.3, step: 0.01 }, // the forge's Trempe: added to plus_bonus once it reaches milestone_levels
   plus_cost_growth: { value: 1.5, min: 1.1, max: 3, step: 0.05 },    // each +1 costs x this
 
   // ---- Citizens: classes and needs (data/people.js) ----
@@ -48,8 +49,8 @@ window.CONFIG = {
   worker_search: { value: 40, min: 8, max: 120, step: 1 },           // tiles around his drop-off where a worker looks for a tree, a rock or a farm
   worker_fear: { value: 7, min: 0, max: 30, step: 1 },               // tiles: a raider this close sends a worker running to the town hall
   soldier_aggro: { value: 6, min: 1, max: 20, step: 0.5 },           // tiles around the point he guards within which a soldier goes for a raider
-  soldier_recover: { value: 25, min: 2, max: 300, step: 1 },         // seconds a soldier struck down rests at the barracks before he stands again
-  soldier_level_step: { value: 0.1, min: 0, max: 1, step: 0.01 },    // each barracks level adds this share to every soldier's health and damage
+  barracks_queue: { value: 8, min: 0, max: 30, step: 1 },            // recruits the barracks keeps waiting in its line, besides the one at drill
+  soldier_level_step: { value: 0.05, min: 0, max: 1, step: 0.01 },   // each barracks level adds this share to every soldier's health and damage
 
   // ---- Trade (data/people.js) ----
   trade_lot: { value: 10, min: 1, max: 100, step: 1 },               // units bought or sold by one click at the market
@@ -165,6 +166,7 @@ window.CONFIG = {
   venue_type_cps: { value: 55, min: 10, max: 400, step: 5 },         // letters per second as a keeper's line is written out
   venue_wait: { value: 240, min: 0, max: 1800, step: 10 },           // seconds before a place's game can be played again (the first game is free)
   venue_buff_time: { value: 300, min: 30, max: 1800, step: 10 },     // seconds a place's gift lasts after its game (what it is, per medal: data/venues.js)
+  lodge_level_time: { value: 20, min: 0, max: 120, step: 1 },         // seconds each level of the builders' lodge above the first adds to its own gift (data/venues.js perLevel)
   venue_pop_scale: { value: 1, min: 0, max: 5, step: 0.05 },         // multiplies the popularity every mini-game gives (per medal: data/venues.js)
   venue_streak_max: { value: 10, min: 0, max: 30, step: 1 },         // wins in a row at one place past which its game gets no harder
   venue_streak_pop: { value: 0.05, min: 0, max: 0.5, step: 0.01 },   // each win of that streak adds this share to the popularity the game gives
@@ -200,6 +202,27 @@ window.CONFIG = {
   forge_band: { value: 0.17, min: 0.05, max: 0.4, step: 0.01 },      // half-width of the band of good heat, as a share of the gauge
   forge_cold_mult: { value: 0.4, min: 0, max: 1, step: 0.05 },       // share of a blow's worth kept when the heat is out of its band
   forge_chain: { value: 5, min: 2, max: 20, step: 1 },               // good blows in a row that set the sparks flying (each then counts a tenth more)
+  bakery_time: { value: 36, min: 15, max: 90, step: 1 },             // bakery, « La fournée »: seconds the batch lasts
+  bakery_bake: { value: 5, min: 1, max: 20, step: 0.5 },             // seconds a miche takes to burn, before any streak (the other loaves: their `bake` in data/venues.js)
+  bakery_bake_min: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // ... and the least any loaf takes, deep in a streak
+  bakery_gold_from: { value: 0.55, min: 0.1, max: 0.9, step: 0.01 }, // where the golden window starts, as a share of the baking
+  bakery_gold_to: { value: 0.8, min: 0.2, max: 0.98, step: 0.01 },   // ... and where it ends (it narrows round its middle as the streak grows)
+  bakery_window_min: { value: 0.1, min: 0.02, max: 0.5, step: 0.01 }, // the narrowest the golden window ever gets, as a share of the baking
+  bakery_perfect: { value: 0.25, min: 0.05, max: 1, step: 0.05 },    // share of the golden window, in its middle, where a loaf is perfect
+  bakery_reload: { value: 0.5, min: 0, max: 3, step: 0.1 },          // seconds an oven stands empty before the next loaf goes in
+  bakery_strikes: { value: 4, min: 1, max: 10, step: 1 },            // loaves that may burn: at this many the batch is lost
+  barracks_time: { value: 36, min: 15, max: 90, step: 1 },           // barracks, « Parade ! »: seconds the drill lasts
+  barracks_lead: { value: 1.3, min: 0.3, max: 4, step: 0.05 },       // seconds between the side called and the blow landing, before any streak
+  barracks_lead_min: { value: 0.55, min: 0.2, max: 3, step: 0.05 },  // ... and the least it ever gets, deep in a streak
+  barracks_gap: { value: 0.45, min: 0, max: 3, step: 0.05 },         // seconds between a blow over and the next side called (none inside a double blow)
+  barracks_quick: { value: 0.33, min: 0.05, max: 1, step: 0.01 },    // share of the lead, from its start, in which a parry is « Vif ! »
+  barracks_feint: { value: 0.3, min: 0, max: 1, step: 0.05 },        // share of the blows that are feints, once they have come (data/venues.js ramp.feintFrom)
+  barracks_double: { value: 0.25, min: 0, max: 1, step: 0.05 },      // share of the blows that are double, once they have come (ramp.doubleFrom)
+  barracks_hits: { value: 5, min: 1, max: 10, step: 1 },             // blows that may land: at this many the drill is lost
+  lodge_time: { value: 36, min: 15, max: 90, step: 1 },              // builders' lodge, « La bonne pierre »: seconds the wall goes on rising
+  lodge_strikes: { value: 4, min: 1, max: 10, step: 1 },             // wrong stones that may be tried: at this many the wall comes down (the help text of DATA.venues.lodge names it: « Quatre mauvaises pierres »)
+  lodge_chain: { value: 3, min: 2, max: 10, step: 1 },               // right stones in a row from which each one is worth 2 (the help text of DATA.venues.lodge names it: « dès la troisième »)
+  lodge_chain_gap: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // seconds after a right stone past which the chain falls back
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----
   fog_cell: { value: 4, min: 2, max: 16, step: 1 },                  // tiles on one side of a cell of fog: a cell is seen or not, whole

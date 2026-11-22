@@ -602,10 +602,11 @@ const Raid = (() => {
       Village.gain('gold', gold); state.counters.raidsWon++;
       state.gained = tr(sg ? 'siege_won' : 'raid_won', { gold }); toast(state.gained, UI.C.good); sfx('fanfare');
     }
+    if (a.lost > 0) { const said = tr('raid_losses', { n: a.lost }); state.gained += ' ' + said; toast(said, UI.C.bad); } // the soldiers who fell: lost for good (js/units.js)
     const ry = r.royal;
     r.n++; r.active = null; r.timer = tune.raid_interval; r.warned = false; r.from = null; r.from2 = null; r.siege = null; r.elite = null;
     if (ry) royalAfter(ry, won);
-    r.traps = []; Units.afterRaid(); // the traps are cleared away, the soldiers on their feet again
+    r.traps = []; Units.afterRaid(); // the traps are cleared away, the soldiers still standing have their wounds dressed
     City.event('raid', { won, siege: sg }); // the city's orders and the hero's popularity read it
     Save.persist();
   }

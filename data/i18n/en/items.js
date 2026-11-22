@@ -3,7 +3,7 @@
 // null: still to translate. Written by node tools/i18n.js extract en; translations already here are kept.
 I18N.add('en', {
   'items.sword_1.name': 'Apprentice’s Blade', // Lame d'apprenti
-  'items.sword_1.desc': 'A plain blade on an ash hilt. It doubles the hero’s strength.', // Une lame simple sur un manche de frêne. Elle double la force du héros.
+  'items.sword_1.desc': 'A plain blade on an ash hilt. It doubles the hero’s strength.', // Une lame simple sur un manche de frêne. Elle double la force {g:du héros|de l’héroïne}.
   'items.armor_1.name': 'Oak Pavise', // Pavois de chêne
   'items.armor_1.desc': 'A shield of planks hooped with iron.', // Un bouclier de planches cerclé de fer.
   'items.sword_2.name': 'Aubeval Steel Sword', // Épée d'acier d'Aubeval

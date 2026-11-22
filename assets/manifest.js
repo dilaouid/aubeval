@@ -23,8 +23,6 @@
 const isoLooks = (kind, styles) => ({
   frames: (styles || [null]).flatMap(st => [1, 5, 10, 15].map(l => `sprites/iso/${kind}${st ? '_' + st : ''}_l${l}.png`)),
 });
-// A building with one look for all four tiers (the new chains of iteration 6: the tier looks are still to make).
-const oneLook = kind => ({ frames: [1, 1, 1, 1].map(() => `sprites/iso/${kind}_l1.png`) });
 // A house's looks follow its citizens' class (data/people.js): cottage, two-storey house, then the
 // townhouse, the merchant's house and the mansion made for iteration 6. Five per style, in class order.
 const classLooks = styles => ({ frames: styles.flatMap(st => ['l1', 'l10', 'c2', 'c3', 'c4'].map(l => `sprites/iso/house_${st}_${l}.png`)) });
@@ -45,8 +43,9 @@ window.ASSETS = {
   'iso.wall.hub': isoLooks('wall_hub'), 'iso.wall.n': isoLooks('wall_n'), 'iso.wall.e': isoLooks('wall_e'),
   'iso.wall.s': isoLooks('wall_s'), 'iso.wall.w': isoLooks('wall_w'),
   'iso.mage_tower': isoLooks('mage_tower'),
-  'iso.coffee_farm': oneLook('coffee_farm'), 'iso.roastery': oneLook('roastery'), 'iso.cafe': oneLook('cafe'), 'iso.chapel': oneLook('chapel'),
-  'iso.sheep_farm': oneLook('sheep_farm'), 'iso.weaver': oneLook('weaver'), 'iso.goldsmith': oneLook('goldsmith'),
+  // the chains of iteration 6: their looks at levels 5, 10 and 15 are states of the level 1 (tools/make_buildings.py, tools/buildings/ids.tsv)
+  'iso.coffee_farm': isoLooks('coffee_farm'), 'iso.roastery': isoLooks('roastery'), 'iso.cafe': isoLooks('cafe'), 'iso.chapel': isoLooks('chapel'),
+  'iso.sheep_farm': isoLooks('sheep_farm'), 'iso.weaver': isoLooks('weaver'), 'iso.goldsmith': isoLooks('goldsmith'), 'iso.lodge': isoLooks('lodge'),
   'iso.goblin_camp': 'sprites/iso/goblin_camp_l1.png', // the raids' camp, out in the wild (js/world.js)
   'iso.goblin_camp_ruin': 'sprites/iso/goblin_camp_ruin.png', // the same camp burnt down by the soldiers, until the next one rises (js/camp.js)
   'iso.market': isoLooks('market'),
@@ -101,6 +100,9 @@ window.ASSETS = {
   // west, south-west), the first column standing, then the walk. Without its line here a figure
   // falls back on its two drawn frames (unit.<kind>, below).
   'iso.unit.hero': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 },
+  'iso.unit.hero.aldric': { sheet: 'sprites/iso/unit_hero.png', cols: 7, rows: 8 },
+  // the other heroes on the map (data/world.js DATA.heroes, js/hero.js Hero.art): tools/make_heroes.py makes their sheets
+  ...Object.fromEntries(['tancrede', 'isaure', 'maelle'].map(k => ['iso.unit.hero.' + k, { sheet: `sprites/iso/unit_hero_${k}.png`, cols: 7, rows: 8 }])),
   'iso.unit.villager': { sheet: 'sprites/iso/unit_villager.png', cols: 7, rows: 8 },
   'iso.unit.gobelin': { sheet: 'sprites/iso/unit_gobelin.png', cols: 7, rows: 8 },
   'iso.unit.brute': { sheet: 'sprites/iso/unit_brute.png', cols: 7, rows: 8 },
@@ -119,20 +121,31 @@ window.ASSETS = {
   // the shopkeepers' half-body portraits (data/people.js DATA.keepers) and the tutorial's guide (data/tutorial.js): a strip of 64x64 frames, played in a loop
   // beside their building's panel (config.js portrait_fps). imagegen/pixellab/portraits/install_portraits.py makes them.
   ...Object.fromEntries(['merchant', 'smith', 'baker', 'innkeeper', 'captain', 'steward', 'guide'].map(k => ['portrait.' + k, { sheet: `sprites/portraits/${k}.png`, cols: 7, rows: 1 }])),
+  // the heroes' portraits (data/world.js DATA.heroes), the same strips of seven 64x64 frames: on the naming screen and in the hero's panel
+  // (js/hero.js Hero.art). tools/make_heroes.py makes them from tools/heroes/raw/.
+  ...Object.fromEntries(['aldric', 'tancrede', 'isaure', 'maelle'].map(k => ['portrait.hero.' + k, { sheet: `sprites/portraits/hero_${k}.png`, cols: 7, rows: 1 }])),
 
   // the places entered full screen (data/venues.js): the inside of each, 640x360, and its keeper from the waist up, a strip of
-  // eight 160x160 frames played in a loop. imagegen/pixellab/venue/install_venue.py makes them.
-  ...Object.fromEntries(['cafe', 'market', 'forge'].map(k => ['venue.bg.' + k, { file: `sprites/venue/bg_${k}.png`, w: 640, h: 360 }])),
-  ...Object.fromEntries(['innkeeper', 'merchant', 'smith'].map(k => ['venue.char.' + k, { sheet: `sprites/venue/char_${k}.png`, cols: 8, rows: 1 }])),
+  // eight 160x160 frames played in a loop. imagegen/pixellab/venue/install_venue.py made the first three, tools/make_venues.py
+  // builds the later ones from tools/venues/raw/.
+  ...Object.fromEntries(['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'].map(k => ['venue.bg.' + k, { file: `sprites/venue/bg_${k}.png`, w: 640, h: 360 }])),
+  ...Object.fromEntries(['innkeeper', 'merchant', 'smith', 'baker', 'captain', 'guide'].map(k => ['venue.char.' + k, { sheet: `sprites/venue/char_${k}.png`, cols: 8, rows: 1 }])),
 
-  'bg.battle': 'sprites/bg_battle.png',
+  'bg.battle': { frames: ['sprites/bg_battle.png', 'sprites/bg_battle_boss.png'] }, // the Ronces by day, and at dusk for a boss (tools/make_boss_backdrop.py grades the first into the second)
   'enemy.brute': 'sprites/enemy_brute.png',
   'enemy.chaman': 'sprites/enemy_chaman.png',
   'enemy.gobelin': 'sprites/enemy_gobelin.png',
   'enemy.grakk': 'sprites/enemy_grakk.png',
-  'enemy.warlord': { file: 'sprites/enemy_warlord.png', w: 96, h: 89 }, // the warlord in his duel: pixel for pixel, larger than Grakk
-  // un seul dessin pour les quatre armes, en attendant hero_battle_t0 / _t2 / _t3 (voir imagegen/PROMPTS.md, section 11)
-  'hero.battle': 'sprites/hero_battle.png',
+  'enemy.warlord': { file: 'sprites/enemy_warlord.png', w: 96, h: 89 }, // a warlord in his duel: pixel for pixel, larger than Grakk. The stand-in of the four below while theirs load
+  // each warlord of data/enemies.js DATA.warlords in his duel, at his own size (tools/make_enemies.py prints these lines)
+  'enemy.morgash': { file: 'sprites/enemy_morgash.png', w: 89, h: 79 }, 'enemy.zhara': { file: 'sprites/enemy_zhara.png', w: 78, h: 93 },
+  'enemy.urgak': { file: 'sprites/enemy_urgak.png', w: 92, h: 79 }, 'enemy.skrit': { file: 'sprites/enemy_skrit.png', w: 94, h: 86 },
+  'hero.battle': 'sprites/hero_battle.png', // Aldric's first battle sprite, one image whatever the sword: only the stand-in now, while a hero's own image loads (js/hero.js Hero.art)
+  // the four heroes in battle (tools/make_heroes.py): drawn at 44x50, in one pose and one hand. w and h: with no drawn sprite
+  // to size it, an image keeps its file's size. One image per weapon tier (js/hero.js Hero.weaponTier): no sword forged yet and
+  // the first sword share the hero's own sprite, then the steel sword (_t2) and the runic blade (_t3), the same sprite but for the sword
+  ...Object.fromEntries(['aldric', 'tancrede', 'isaure', 'maelle'].map(k => ['hero.battle.' + k, { w: 44, h: 50,
+    frames: [`sprites/hero_battle_${k}.png`, `sprites/hero_battle_${k}.png`, `sprites/hero_battle_${k}_t2.png`, `sprites/hero_battle_${k}_t3.png`] }])),
   'unit.brute': 'sprites/unit_brute.png',
   'unit.chaman': 'sprites/unit_chaman.png',
   'unit.gobelin': 'sprites/unit_gobelin.png',

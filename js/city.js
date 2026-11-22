@@ -110,8 +110,8 @@ const City = (() => {
   const popMarket = () => tune.pop_market_max * popularity() / 100;
   /** What the tax level of a house's class, the popularity and the legacy do to its tax. */
   const taxMult = b => taxMults()[taxLevel(Village.classOf(b))] * popTax() * (1 + bonus('tax'));
-  /** What one meal does to a house's satisfaction: faster under a low tax and near a cathedral. */
-  const mealSat = (b, ok) => ok ? tune.sat_step * (taxLevel(Village.classOf(b)) === 0 ? tune.tax_low_sat : 1) * (1 + bonus('sat')) : -tune.sat_step;
+  /** What one meal does to a house's satisfaction: faster under a low tax, near a cathedral and with the bakery's gift. */
+  const mealSat = (b, ok) => ok ? tune.sat_step * (taxLevel(Village.classOf(b)) === 0 ? tune.tax_low_sat : 1) * (1 + bonus('sat')) * (1 + Venue.buff('rise')) : -tune.sat_step;
   /** The most satisfaction a house can reach: a class on high tax never has what it takes to rise. */
   const satMax = b => taxLevel(Village.classOf(b)) === 2 ? tune.tax_high_sat_cap : 1;
   /** People the popularity brings to every house. */
@@ -426,7 +426,7 @@ const City = (() => {
   /** How many lines UI.wrap would take. */
   function linesOf(str, maxW, size) {
     ctx.font = `${size}px ${FONT}`; let n = 0;
-    for (const para of String(str).split('\n')) {
+    for (const para of String(gendered(str)).split('\n')) {
       let line = ''; n++;
       for (const word of para.split(' ')) { const t = line ? line + ' ' + word : word; if (ctx.measureText(t).width > maxW && line) { n++; line = word; } else line = t; }
     }

@@ -2,14 +2,20 @@
 // Question: Faire tourner les chaînes du village pour armer le héros, puis le voir gagner ses combats et repousser un raid, donne-t-il envie de revenir pendant vingt minutes ?
 // Date: 2026-11-19
 // The hero: his sheet, his gear (forged by the village), his levels and his idle missions.
+// Which hero the player chose, among DATA.heroes: Hero.art(kind, id) picks his or her sprite (the old one while an image
+// is missing), Hero.nameFor(current, id) the name the naming field shows after a change of hero.
 'use strict';
 
 const Hero = (() => {
   const I = DATA.items;
 
+  /** The forge's level (0 with none). A raid's damage does not lower it: the Trempe is in the gear already forged. */
+  function forgeLevel() { return state.buildings.reduce((n, b) => (b.kind === 'forge' ? Math.max(n, b.lvl || 1) : n), 0); }
+  /** What one +N is worth, as a share of a piece's stats: the Trempe adds to it once the forge reaches its first milestone. */
+  function plusBonus() { return tune.plus_bonus + (forgeLevel() >= tune.milestone_levels ? tune.forge_temper_bonus : 0); }
   /** What a forged piece adds, with its +N reinforcements. */
   function itemStats(id) {
-    const it = I[id], m = 1 + (state.hero.plus[id] || 0) * tune.plus_bonus;
+    const it = I[id], m = 1 + (state.hero.plus[id] || 0) * plusBonus();
     return { atk: (it.atk || 0) * m, def: (it.def || 0) * m, hp: (it.hp || 0) * m };
   }
   /** The hero's numbers right now: base, levels, gear. */
@@ -98,5 +104,20 @@ const Hero = (() => {
    */
   const nameChars = raw => [...String(raw || '').replace(/[^\p{L}\p{M}\s'’-]/gu, '').replace(/\s+/g, ' ').replace(/^ /, '')].slice(0, DATA.hero.nameMax).join('');
 
-  return { itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
+  // ---- Which hero ----
+  const ART = { portrait: ['portrait.hero.', null], battle: ['hero.battle.', 'hero.battle'], unit: ['iso.unit.hero.', 'iso.unit.hero'] };
+  /** The sprite id to draw for hero `id` (the chosen one by default): his or hers if the image is there, else Aldric's, else the old one (null for a portrait). */
+  function art(kind, id) {
+    const [pre, old] = ART[kind];
+    for (const k of [id || heroLook().id, 'aldric']) if (Art.loaded(pre + k)) return pre + k;
+    return old;
+  }
+  /** The name the field shows once it goes to hero `id`: his or hers if the field is empty or holds a hero's proposed name, else what the player typed. */
+  function nameFor(current, id) {
+    const c = String(current || '').trim();
+    if (c && !DATA.heroes.some(h => h.name === c)) return current;
+    return (DATA.heroes.find(h => h.id === id) || DATA.heroes[0]).name; // an id nobody knows is the first hero, as in heroLook
+  }
+
+  return { art, nameFor, forgeLevel, plusBonus, itemStats, stats, xpNeed, addXp, has, weaponTier, equip, craftCost, startCraft, finishCraft, away, startMission, tick, cleanName, nameChars };
 })();

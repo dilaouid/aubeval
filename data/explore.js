@@ -28,7 +28,7 @@ DATA.explore = {
     //   relic    sometimes found as well: its chance, and what it is worth at level 1
     ruin: {
       name: 'Ruine', sprite: 'iso.site.ruin', icon: 'icon.raid', weight: 3,
-      desc: 'De vieilles pierres que des pillards ont faites leurs. Le héros s’y rend, les en chasse, et fouille ce qu’ils gardaient.',
+      desc: 'De vieilles pierres que des pillards ont faites leurs. {g:Le héros|L’héroïne} s’y rend, les en chasse, et fouille ce qu’ils gardaient.',
       foes: [['gobelin', 'gobelin'], ['gobelin', 'gobelin', 'gobelin'], ['brute', 'gobelin'], ['gobelin', 'chaman', 'gobelin'], ['brute', 'chaman', 'gobelin'], ['brute', 'chaman', 'brute']],
       reward: { xp: 30, gold: 60, res: { shard: 1 } }, shardEvery: 2,
       pop: 3,
@@ -54,7 +54,7 @@ DATA.explore = {
     //   worth    gold value of the first delivery (market selling prices, data/people.js DATA.trade); x growth for each one after
     hamlet: {
       name: 'Hameau', sprite: 'iso.site.hamlet', icon: 'icon.trade', weight: 2, on: { grass: 1.6, autumn: 1.3, rock: 0.5 },
-      desc: 'Quelques toits loin de tout. Un premier présent, porté par le héros, ouvre une route de commerce qui rapporte de l’or chaque minute ; chaque livraison ensuite resserre l’amitié et grossit la route.',
+      desc: 'Quelques toits loin de tout. Un premier présent, porté par {g:le héros|l’héroïne}, ouvre une route de commerce qui rapporte de l’or chaque minute ; chaque livraison ensuite resserre l’amitié et grossit la route.',
       gift: { bread: 15, planks: 10 },
       pay: 8, wants: ['bread', 'planks', 'stone', 'wheat', 'coffee', 'wool', 'cloth', 'spice', 'jewel'], worth: 40, growth: 1.3,
       names: ['Hameau de Valbrume', 'Hameau des Trois-Chênes', 'Hameau de Pierrefeu', 'Hameau du Gué', 'Hameau de Hautefontaine', 'Hameau des Saules', 'Hameau de Combe-Dorée', 'Hameau du Bout-du-Monde', 'Hameau de Malval'],
@@ -65,7 +65,7 @@ DATA.explore = {
     //   veins           what lies there: `gives` a minute at depth 1 and level 1; minLvl: only from that level on
     deposit: {
       name: 'Gisement', sprite: 'iso.site.deposit', icon: 'icon.stone', weight: 2, on: { rock: 3, sand: 1.5 },
-      desc: 'Une veine à fleur de terre. Le héros la revendique pour le village : elle envoie alors sa récolte chaque minute. On peut la creuser, niveau après niveau.',
+      desc: 'Une veine à fleur de terre. {g:Le héros|L’héroïne} la revendique pour le village : elle envoie alors sa récolte chaque minute. On peut la creuser, niveau après niveau.',
       claim: { planks: 30, gold: 60 }, deepen: { planks: 20, stone: 20, gold: 50 }, growth: 1.5,
       veins: [
         { id: 'stone', name: 'Carrière abandonnée', gives: { stone: 9 }, weight: 4 },
@@ -79,19 +79,19 @@ DATA.explore = {
 Object.assign(DATA.strings, {
   ex_title: 'Exploration',
   ex_known: 'Terres connues : {pct} %',
-  ex_help: 'Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, le héros et les éclaireurs la lèvent, et trouvent ce qu’elle cache.',
+  ex_help: 'Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.',
   ex_lvl: 'niv. {n}',
   ex_far: '{n} cases vers {dir}', ex_far_short: '{n} cases · {dir}',
   // the hero's trip
-  ex_trip: 'Le héros en expédition',
+  ex_trip: '{g:Le héros|L’héroïne} en expédition',
   ex_trip_out: 'En route vers {name}',
   ex_trip_there: 'Sur place : {name}',
   ex_trip_back: 'Sur le chemin du retour',
-  ex_trip_none: 'Le héros est au village. Choisissez un lieu et envoyez-le.',
-  ex_trip_mission: 'Le héros est en mission : il partira à son retour.',
-  ex_open: 'Ouvrir le lieu', ex_see_hero: 'Amener la vue sur le héros',
-  ex_recall: 'Rentrer', ex_recall_tip: 'Rappeler le héros au village\nIl reprend sa garde devant l’hôtel de ville en arrivant.',
-  ex_arrived: '{hero} est arrivé : {name}. Ouvrez l’Exploration (E).',
+  ex_trip_none: '{g:Le héros|L’héroïne} est au village. Choisissez un lieu et envoyez-{g:le|la}.',
+  ex_trip_mission: '{g:Le héros|L’héroïne} est en mission : {g:il|elle} partira à son retour.',
+  ex_open: 'Ouvrir le lieu', ex_see_hero: 'Amener la vue sur {g:le héros|l’héroïne}',
+  ex_recall: 'Rentrer', ex_recall_tip: 'Rappeler {g:le héros|l’héroïne} au village\n{g:Il|Elle} reprend sa garde devant l’hôtel de ville en arrivant.',
+  ex_arrived: '{hero} est {g:arrivé|arrivée} : {name}. Ouvrez l’Exploration (E).',
   ex_home: '{hero} est de retour au village.',
   ex_lost: 'Le lieu n’est plus accessible : {hero} rentre.',
   // scouts
@@ -116,15 +116,15 @@ Object.assign(DATA.strings, {
   ex_see: 'Voir', ex_see_tip: 'Amener la vue sur ce lieu',
   ex_open_tip: 'Ouvrir la page de ce lieu',
   ex_back: '‹ Tous les lieux',
-  ex_go: 'Y aller', ex_go_tip: 'Envoyer le héros\nTrajet : {time}. Pendant ce temps, il ne garde plus le village.',
+  ex_go: 'Y aller', ex_go_tip: 'Envoyer {g:le héros|l’héroïne}\nTrajet : {time}. Pendant ce temps, {g:il|elle} ne garde plus le village.',
   ex_coming: 'En route',
   ex_fight: 'Combattre', ex_gift: 'Offrir', ex_claim: 'Revendiquer', ex_deliver: 'Livrer', ex_deepen: 'Creuser',
   ex_done_btn: 'Explorée',
-  ex_need_hero: 'Le héros doit s’y rendre.', ex_go_time: 'Trajet : {time}.',
+  ex_need_hero: '{g:Le héros|L’héroïne} doit s’y rendre.', ex_go_time: 'Trajet : {time}.',
   ex_foe_scale: 'force +{pct} %',
   ex_lair_back: '{name} est repeuplée ({lvl}).',
   ex_asks: 'Ce qu’il faut', ex_gives: 'Ce qu’on y gagne', ex_foes: 'Qui s’y trouve',
-  ex_st_ruin: 'Des pillards y campent', ex_st_done: 'Explorée', ex_st_here: 'Le héros est sur place', ex_st_coming: 'Le héros est en route',
+  ex_st_ruin: 'Des pillards y campent', ex_st_done: 'Explorée', ex_st_here: '{g:Le héros|L’héroïne} est sur place', ex_st_coming: '{g:Le héros|L’héroïne} est en route',
   ex_st_lair: 'Des monstres y nichent', ex_st_lair_again: 'Repeuplée ({n} fois vidée)', ex_st_lair_wait: 'Vide · repeuplée dans {time}',
   ex_st_hamlet: 'Attend un premier présent', ex_st_route: 'Amitié {n} · {gold} or/min',
   ex_st_deposit: 'À revendiquer', ex_st_mine: 'Profondeur {n} · {what}/min',

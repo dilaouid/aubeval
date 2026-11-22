@@ -152,7 +152,11 @@
     js/camp.js           the goblin camp: its garrison, the soldiers' assault, its fall and the next camp
     js/city.js           the city's rank, the citizens' orders, the hero's popularity, the taxes, the great works, the legacy tree (data/city.js)
     js/explore.js        the fog over the land, the places found in it, the expeditions (data/explore.js)
-    js/venue.js          the places entered full screen (café, market, forge), their keeper and their mini-games (data/venues.js)
+    js/venue.js          the places entered full screen (café, market, forge, bakery, barracks, builders' lodge), their keeper and their mini-games (data/venues.js)
+    js/minigame-bakery.js  the bakery's mini-game, « La fournée » (the other places' games: js/minigames.js)
+    js/minigame-barracks.js  the barracks' mini-game, « Parade ! »
+    js/stones.js         the builders' lodge's stones: shapes, turns, which stone fits a hole (pure)
+    js/minigame-lodge.js  the builders' lodge's mini-game, « La bonne pierre »
     js/cards.js          the hero's deck, read from the village (cards in data/cards.js)
     js/battle.js         the turn-based battle, played with those cards, and the parry
     js/world.js          drawing the village: ground by pieces, zoom, what stands on it
@@ -234,7 +238,7 @@ function blit(img, x, y, k = 1) { ctx.drawImage(img, snap(x), snap(y), img.width
 function clear(c) { ctx.fillStyle = c; ctx.fillRect(0, 0, W, H); }
 function text(s, x, y, size, c, align = 'center', bold = false, font = FONT) {
   ctx.fillStyle = c; ctx.font = `${bold ? 'bold ' : ''}${size}px ${font}`; ctx.textAlign = align;
-  ctx.textBaseline = 'middle'; ctx.fillText(s, x, y);
+  ctx.textBaseline = 'middle'; ctx.fillText(typeof gendered === 'function' ? gendered(s) : s, x, y); // {g:he|she}: resolved for the chosen hero where it is drawn (js/ui.js; text() only runs once that is loaded)
 }
 
 // ---- Input: keys by position (event.code), OS key repeat ignored ------------------------
@@ -350,6 +354,10 @@ let scene, state;
 <script src="js/explore.js"></script>
 <script src="js/venue.js"></script>
 <script src="js/minigames.js"></script>
+<script src="js/minigame-bakery.js"></script>
+<script src="js/minigame-barracks.js"></script>
+<script src="js/stones.js"></script>
+<script src="js/minigame-lodge.js"></script>
 <script src="js/battle.js"></script>
 <script src="js/world.js"></script>
 <script src="js/save.js"></script>
@@ -423,14 +431,16 @@ window.game = {
 reset();
 Art.loadOverrides(id => { World.forgetFlora(); if (id.startsWith('iso.tile')) World.reset(); }); // an image just loaded: the trees are placed again with it, a ground image's ground painted again
 scene = params.get('scene') || 'title';
+if (scene === 'naming' && Save.has()) scene = 'title'; // ?scene=naming for a screenshot of a new game's start; on a browser holding a save it would reach Save.begin() and overwrite it: the title offers the saved game instead
 if (params.get('demo')) { buildDemo(); if (scene === 'title') scene = 'play'; }
+if (!Save.enabled && DATA.heroes.some(h => h.id === params.get('hero'))) { state.hero.look = params.get('hero'); state.hero.name = Hero.nameFor(state.hero.name, state.hero.look); } // ?hero=isaure, only with the save off (?demo=1 or ?nosave): that hero, for a screenshot; with a save it is ignored, so a save never takes a forced look
 if (params.get('tuto')) { Tuto.jump(params.get('tuto')); if (scene === 'title') scene = 'play'; } // ?tuto=forge: a new game opened at that step of the tutorial
 if (params.get('lesson')) { Tuto.lessonNow(params.get('lesson')); if (scene === 'title') scene = 'play'; } // ?lesson=decor: that lesson of Aveline's opened at once (with &demo=1: on a grown village)
 TutoCheck.lines(TutoCheck.run(DATA)).forEach(l => console.warn(l)); // the tutorial must cover the whole game: what it misses is said here (js/tuto-check.js)
 if (scene === 'title' && ((!params.has('scene') && params.get('manual') !== '1' && !CHEAP) || params.has('loading'))) scene = 'loading'; // a player's start: the images first (js/screens.js), then the title. ?loading=0.45 holds it there, for a screenshot
 if (Number(params.get('zoom')) > 0) state.cam.k = Number(params.get('zoom')); // ?zoom=0.5: open at this zoom, for a screenshot of the wide map
 if (scene === 'battle') Battle.start((params.get('foes') || 'gobelin,brute,chaman').split(',').filter(id => DATA.enemies[id]), { title: 'Aperçu du combat', boss: params.has('boss') }); // ?scene=battle&foes=grakk&boss, with &demo=1 for a grown village's deck
-if (scene === 'venue') Venue.preview(params.get('venue'), params.get('game')); // ?scene=venue&venue=cafe|market|forge, &game=1 for its mini-game under way (js/venue.js preview lists the rest)
+if (scene === 'venue') Venue.preview(params.get('venue'), params.get('game')); // ?scene=venue&venue=cafe|market|forge|bakery|barracks|lodge, &game=1 for its mini-game under way (js/venue.js preview lists the rest)
 last = clock.now();
 if (params.get('manual') === '1') drawFrame();
 else { requestAnimationFrame(frame); setInterval(timer, 50); }

@@ -131,7 +131,7 @@ const Explore = (() => {
   }
   /** What those who walk see: each soldier on his feet, the hero at his post or on his way, the scouts. */
   function lookMoving() {
-    for (const u of state.units) if (Units.isSoldier(u) && !(u.down > 0)) reveal(u.x, u.y, tune.fog_sight_soldier);
+    for (const u of state.units) if (Units.isSoldier(u)) reveal(u.x, u.y, tune.fog_sight_soldier);
     const p = heroAt(), rh = Raid.hero;
     if (p) reveal(p.x, p.y, tune.fog_sight_hero);
     else if (!state.mission && (rh.x || rh.y)) reveal(rh.x, rh.y, tune.fog_sight_soldier);

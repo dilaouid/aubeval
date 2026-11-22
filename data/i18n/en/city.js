@@ -70,7 +70,7 @@ I18N.add('en', {
   'city.bonuses.trip.label': 'Expeditions: −{v}% time', // Expéditions : −{v} % de temps
   'city.bonuses.out.label': 'Production: +{v}%', // Production : +{v} %
   'city.bonuses.tax.label': 'Taxes: +{v}%', // Impôts : +{v} %
-  'city.bonuses.xp.label': 'Hero’s experience: +{v}%', // Expérience du héros : +{v} %
+  'city.bonuses.xp.label': 'Hero’s experience: +{v}%', // Expérience {g:du héros|de l’héroïne} : +{v} %
   'city.bonuses.bounty.label': 'Raid bounties: +{v}%', // Primes de raid : +{v} %
   'city.bonuses.orders.label': 'Order pay: +{v}%', // Paie des commandes : +{v} %
   'city.bonuses.stock.label': 'Starting stores', // Réserves de départ
@@ -82,13 +82,13 @@ I18N.add('en', {
   'legacy[tax].name': 'Royal Treasury', // Trésor royal
   'legacy[tax].desc': 'Every house pays more.', // Chaque maison paie davantage.
   'legacy[floor].name': 'Beloved Line', // Lignée aimée
-  'legacy[floor].desc': 'The hero’s popularity never falls as low.', // La popularité du héros ne tombe jamais plus bas.
+  'legacy[floor].desc': 'The hero’s popularity never falls as low.', // La popularité {g:du héros|de l’héroïne} ne tombe jamais plus bas.
   'legacy[stock].name': 'Full Granaries', // Greniers pleins
   'legacy[stock].desc': 'A New Start begins with stores.', // Un nouveau départ commence avec des réserves.
   'legacy[orders].name': 'Good Contacts', // Carnet d’adresses
   'legacy[orders].desc': 'Orders pay better.', // Les commandes paient mieux.
   'legacy[xp].name': '{de_hero} Chronicles', // Chroniques {de_hero}
-  'legacy[xp].desc': 'The hero learns faster.', // Le héros apprend plus vite.
+  'legacy[xp].desc': 'The hero learns faster.', // {g:Le héros|L’héroïne} apprend plus vite.
   'legacy[bounty].name': 'War Bounties', // Primes de guerre
   'legacy[bounty].desc': 'A repelled raid brings in more.', // Un raid repoussé rapporte plus.
   'legacy[guard].name': 'Old Ramparts', // Vieux remparts
