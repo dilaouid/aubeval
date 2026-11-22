@@ -14,7 +14,7 @@ Object.assign(DATA.strings, {
   vn_talk: 'Discuter', vn_talk_tip: 'Discuter\nUn mot de {name}, et ce qui se dit en ville.',
   vn_leave: 'Sortir (Échap)', vn_leave_tip: 'Sortir\nRetour au village.',
   vn_next: 'Espace ▸', vn_keys: '↑ ↓ et Entrée, ou 1 · 2 · 3',
-  vn_gifts: 'Cadeaux en cours', vn_no_gift: 'Aucun cadeau en cours : jouez !',
+  vn_gifts: 'Cadeaux en cours', vn_no_gift: 'Aucun cadeau en cours : jouez !', vn_gifts_more: '+ {n} autres',
   vn_card_wins: 'À gagner', vn_card_best: 'Record : {n}', vn_card_none: 'Jamais joué', vn_card_streak: 'Série : {n} · difficulté {lvl}',
   vn_card_ready: 'Prêt !', vn_medal_0: 'Perdu', vn_medal_1: 'Bronze', vn_medal_2: 'Argent', vn_medal_3: 'Or',
   vn_pop_gain: '+{n} popularité',

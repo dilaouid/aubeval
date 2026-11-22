@@ -782,6 +782,7 @@ I18N.add('en', {
   'strings.vn_keys': '↑ ↓ and Enter, or 1 · 2 · 3', // ↑ ↓ et Entrée, ou 1 · 2 · 3
   'strings.vn_gifts': 'Current gifts', // Cadeaux en cours
   'strings.vn_no_gift': 'No gift running: play!', // Aucun cadeau en cours : jouez !
+  'strings.vn_gifts_more': '+ {n} more', // + {n} autres
   'strings.vn_card_wins': 'To win', // À gagner
   'strings.vn_card_best': 'Best: {n}', // Record : {n}
   'strings.vn_card_none': 'Never played', // Jamais joué

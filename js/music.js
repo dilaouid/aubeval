@@ -7,7 +7,8 @@
 //   loading, title     menu
 //   play               world (the village), raid while a raid is on the map
 //   battle             battle (the card battle, the sieges' duel too)
-//   venue              the place's own theme: cafe, shop (market) or forge
+//   venue              the place's own theme: cafe, shop (market) or forge; a place without one
+//                      borrows another place's (trackOf)
 //   pause              the same track, quieter
 //   anything else      silence
 //
@@ -43,12 +44,19 @@ const Music = (() => {
     return tracks[id];
   }
 
+  /** A place's track: its own when it has one, else the one of the place its data names (data/venues.js `music`), else the village's. */
+  function trackOf(id) {
+    if (FILES[id]) return id;
+    const d = DATA.venues[id], lend = d && d.music;
+    return lend && FILES[lend] ? lend : 'world';
+  }
+
   /** The track this moment of the game asks for, or null for silence. */
   function want() {
     switch (scene) {
       case 'loading': case 'title': return 'menu';
       case 'battle': return 'battle';
-      case 'venue': return Venue.id;
+      case 'venue': return Venue.id ? trackOf(Venue.id) : null;
       case 'play': return state.raid && state.raid.active ? 'raid' : 'world';
       case 'pause': return cur; // the game goes quiet, the music with it
       case 'naming': return ui.nameEdit ? cur : null; // changing look from a running game: the track goes on; naming a new game is silent
@@ -77,5 +85,5 @@ const Music = (() => {
     }
   }
 
-  return { update, get current() { return cur; } };
+  return { update, trackOf, get current() { return cur; } };
 })();

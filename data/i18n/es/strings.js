@@ -782,6 +782,7 @@ I18N.add('es', {
   'strings.vn_keys': '↑ ↓ e Intro, o 1 · 2 · 3', // ↑ ↓ et Entrée, ou 1 · 2 · 3
   'strings.vn_gifts': 'Regalos activos', // Cadeaux en cours
   'strings.vn_no_gift': 'Ningún regalo activo: ¡juegue!', // Aucun cadeau en cours : jouez !
+  'strings.vn_gifts_more': '+ {n} más', // + {n} autres
   'strings.vn_card_wins': 'Premios', // À gagner
   'strings.vn_card_best': 'Récord: {n}', // Record : {n}
   'strings.vn_card_none': 'Nunca jugado', // Jamais joué

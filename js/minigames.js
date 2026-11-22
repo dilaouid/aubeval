@@ -10,6 +10,8 @@
 // A game is { update(dt, input), draw(), auto(dt, bot), score, done, lost, why }. `input` is
 // { act, alt }: Space or a click on nothing, and a right click; the keys are read with pressed().
 // Its content is in data/venues.js, its knobs in config.js. Nothing here is saved.
+// A place's game is registered with Minigames.add(id, factory); the games of other places live in
+// js/minigame-<place>.js and draw with the helpers of Minigames.kit.
 'use strict';
 
 const Minigames = (() => {
@@ -395,8 +397,18 @@ const Minigames = (() => {
     return Object.assign(g, { update, draw, auto });
   }
 
-  const MAKE = { cafe, market, forge };
+  const MAKE = Object.create(null); // place -> its game's factory, filled by add()
+  /** Registers a place's game: factory(o) gives a new game. A js/minigame-<place>.js file calls it for its own place. */
+  function add(id, factory) { MAKE[id] = factory; }
+  /** Whether a place has a game. */
+  function has(id) { return !!MAKE[id]; }
   /** A new game of a place: o = { level, d (its entry in data/venues.js), react(kind, word), away() } from js/venue.js. */
-  function make(id, o) { return MAKE[id](o); }
-  return { make };
+  function make(id, o) {
+    if (!MAKE[id]) throw new Error('no game for ' + id);
+    return MAKE[id](o);
+  }
+  add('cafe', cafe); add('market', market); add('forge', forge);
+  // What every game draws with, for the games of other files: their frame, their score, the words that rise.
+  const kit = { PANEL, BLUE, sprite, head, scoreBox, stepPops, drawPops, moodColor };
+  return { add, has, make, kit };
 })();
