@@ -755,6 +755,7 @@ DATA.tutorial = {
           say: [
             'La Loge se visite, comme le Café : « Entrer », et je vous y attends avec « {game:lodge} ». Un mur, un trou, quatre pierres taillées : à vous de trouver celle qui entre.',
             'Une médaille, et mes plans sont à vous un moment : constructions et améliorations moins chères. Chaque niveau de la Loge les fait durer plus longtemps.',
+            'Et la Loge elle-même, dès qu’elle est posée, vous fait bâtir un peu moins cher, réparer à meilleur compte et récupérer davantage en démolissant. Plus elle monte, plus c’est net.',
           ] },
       ] },
 

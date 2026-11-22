@@ -49,7 +49,7 @@ I18N.add('es', {
   'buildings.market.desc': 'Compre y venda sus reservas. Sus caravanas traen las especias de los Burgueses, y los Comerciantes lo quieren a su alcance.', // Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.
   'buildings.lodge.name': 'Logia de los constructores', // Loge des bâtisseurs
   'buildings.lodge.card': 'Logia', // Loge
-  'buildings.lodge.desc': 'La casa de los maestros constructores, donde Aveline traza los planos de Aubeval. Cada nivel de la Logia hace que sus planos duren más.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.
+  'buildings.lodge.desc': 'La casa de los maestros constructores, donde Aveline traza los planos de Aubeval. Una vez construida, hace construir y mejorar más barato, reparar a buen precio y devuelve más al demoler. Cada nivel refuerza estas ventajas y alarga los planos de Aveline, su regalo del juego.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Posée, elle fait bâtir et améliorer moins cher, réparer à bon compte et rend davantage à la démolition. Chaque niveau renforce ces avantages et allonge les plans d’Aveline, son cadeau de jeu.
   'buildings.sheep_farm.name': 'Redil', // Bergerie
   'buildings.sheep_farm.card': 'Redil', // Bergerie
   'buildings.sheep_farm.desc': 'Ovejas y su lana, para el taller de tejido.', // Des moutons et leur laine, pour l’atelier de tissage.

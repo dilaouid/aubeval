@@ -49,7 +49,7 @@ I18N.add('en', {
   'buildings.market.desc': 'Buy and sell your stores. Its caravans bring in the Burghers’ spices, and Merchants want it within reach.', // Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.
   'buildings.lodge.name': 'Builders’ Lodge', // Loge des bâtisseurs
   'buildings.lodge.card': 'Lodge', // Loge
-  'buildings.lodge.desc': 'The house of the master builders, where Aveline draws up the plans of Aubeval. Each level of the Lodge makes her plans last longer.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.
+  'buildings.lodge.desc': 'The house of the master builders, where Aveline draws up the plans of Aubeval. Once built, it makes building and upgrading cheaper, repairs cost less and demolitions give back more. Each level strengthens these perks and makes Aveline’s plans, her game gift, last longer.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Posée, elle fait bâtir et améliorer moins cher, réparer à bon compte et rend davantage à la démolition. Chaque niveau renforce ces avantages et allonge les plans d’Aveline, son cadeau de jeu.
   'buildings.sheep_farm.name': 'Sheepfold', // Bergerie
   'buildings.sheep_farm.card': 'Sheepfold', // Bergerie
   'buildings.sheep_farm.desc': 'Sheep and their wool, for the weaving workshop.', // Des moutons et leur laine, pour l’atelier de tissage.

@@ -616,6 +616,8 @@ const scenes = (() => {
     const rf = Village.refund(b);
     UI.button(ax + 112, by, 104, 40, tr('demolish'), () => { Village.demolish(b); closePanel(); }, { size: 14, icon: 'icon.demolish', tip: `${tr('demolish')}\n${lower(tr('refund'))} ${Object.keys(rf).map(r => rf[r] + ' ' + lower(RES[r].name)).join(', ')}` });
   }
+  /** The lodge's shares as the numbers its texts show, in percent. */
+  const lodgeTexts = p => ({ plans: fmtNum(p.plans * 100), repair: fmtNum(p.repair * 100), refund: fmtNum(Math.max(tune.refund_pct, Math.min(tune.refund_pct + p.refund, 1 - tune.lodge_plans_cap)) * 100), cap: fmtNum(tune.lodge_plans_cap * 100) });
   /** What the next level brings, in one or two lines (the upgrade button's tip, and the Infos tab). */
   function upgradeTip(b, d) {
     const ms = tune.milestone_levels, n = b.lvl + 1, out = [];
@@ -626,7 +628,7 @@ const scenes = (() => {
     if (d.train) out.push(tr('up_army', { pct: Math.round(tune.soldier_level_step * 100) }));
     if (d.service) out.push(tr('up_service', { n: fmtNum(tune.service_radius_step) }));
     if (b.kind === 'hall') out.push(tr('up_hall'));
-    if (b.kind === 'lodge') out.push(tr('up_lodge', { n: tune.lodge_level_time })); // each level makes its gift last longer (js/venue.js giftTime)
+    if (b.kind === 'lodge') { out.push(tr('up_lodge_perks', lodgeTexts(Venue.lodgePerks(n)))); out.push(tr('up_lodge', { n: tune.lodge_level_time })); } // the next level's standing effects (js/venue.js lodgePerks), and its gift lasting longer (giftTime)
     if (d.produces && n % ms === 0) out.push(tr('up_double'));
     if (b.kind === 'forge' && n === ms) out.push(tr('up_forge_perk'));
     if (!d.looks && !d.decor && World.tier(n) > World.tier(b.lvl)) out.push(tr('up_look'));
@@ -650,6 +652,7 @@ const scenes = (() => {
       if (World.tier(b.lvl) < 3 && !d.looks) y = UI.wrap(tr('next_look', { n: (World.tier(b.lvl) + 1) * ms }), x, y, w, 14, C.dim) + 2;
       y = UI.wrap(tr('next_level') + tr('colon') + upgradeTip(b, d).split('\n').join(' · '), x, y, w, 14, C.text) + 4;
     }
+    if (b.kind === 'lodge') { y = section(tr('sec_lodge'), x, y + 4, w); y = UI.wrap(tr('lodge_perks_now', lodgeTexts(Venue.lodgePerks(b.lvl))), x, y, w, 14, C.good) + 2; }
     if (d.service || d.beauty) {
       y = section(tr('sec_town'), x, y + 4, w);
       if (d.service) {

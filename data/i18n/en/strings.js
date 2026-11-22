@@ -399,9 +399,12 @@ I18N.add('en', {
   'strings.up_double': 'Milestone: production ×2!', // Palier : production ×2 !
   'strings.up_look': 'New look', // Nouvelle apparence
   'strings.up_lodge': 'Aveline’s Plans: +{n} s', // Plans d’Aveline : +{n} s
+  'strings.up_lodge_perks': 'Lodge: {plans} % discount, repairs −{repair} %, refund {refund} %', // Loge : rabais {plans} %, réparations −{repair} %, remboursement {refund} %
   'strings.sec_work': 'Work', // Travail
   'strings.sec_defense': 'Defence', // Défense
   'strings.sec_level': 'Level', // Niveau
+  'strings.sec_lodge': 'The Lodge’s plans', // Les plans de la Loge
+  'strings.lodge_perks_now': 'A standing {plans} % discount on buildings and upgrades (with Aveline’s gift, {cap} % at most). Repairs cost {repair} % less. Demolition gives back {refund} % of the price.', // Rabais permanent de {plans} % sur les constructions et les améliorations (avec le cadeau d’Aveline, {cap} % au plus). Réparations {repair} % moins chères. Démolition : {refund} % du prix rendus.
   'strings.sec_town': 'The neighbourhood', // Le quartier
   'strings.sec_road': 'Path', // Chemin
   'strings.serves': 'Serves houses within {r} tiles: {n} right now.', // Sert les maisons à {r} cases autour : {n} en ce moment.
