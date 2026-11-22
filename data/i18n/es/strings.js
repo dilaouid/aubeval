@@ -890,6 +890,14 @@ I18N.add('es', {
   'strings.bq_late': '¡Tocado!', // Touché !
   'strings.bq_feinted': '¡Finta!', // Feinte !
   'strings.bq_end_hits': '¡Demasiados golpes recibidos!', // Trop de coups reçus !
+  'strings.lg_score': 'Piedras puestas', // Pierres posées
+  'strings.lg_faults_n': 'Fallos', // Fautes
+  'strings.lg_keys': 'Teclas 1 a 4, o clic en una piedra', // Touches 1 à 4, ou clic sur une pierre
+  'strings.lg_chain': 'Cadena ×{n}', // Chaîne ×{n}
+  'strings.lg_set': 'Puesta +{n}', // Posée +{n}
+  'strings.lg_chained': '¡En cadena! +{n}', // En chaîne ! +{n}
+  'strings.lg_wrong': '¡No encaja!', // Elle n’entre pas !
+  'strings.lg_end_strikes': '¡El muro se ha derrumbado!', // Le mur s’est écroulé !
   'strings.ex_title': 'Exploración', // Exploration
   'strings.ex_known': 'Tierras conocidas: {pct} %', // Terres connues : {pct} %
   'strings.ex_help': 'Fuera de la aldea, la bruma oculta las tierras. Sus edificios, sus soldados, {g:el héroe|la heroína} y los exploradores la disipan y descubren lo que esconde.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.

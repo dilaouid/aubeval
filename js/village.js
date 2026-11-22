@@ -480,9 +480,11 @@ const Village = (() => {
     state.res[res] -= tune.trade_lot; gain('gold', sellPrice(res)); sfx('coin'); return true;
   }
   function scaleCost(c, k) { const o = {}; for (const r in c) o[r] = Math.max(1, Math.ceil(c[r] * k)); return o; }
+  /** What Aveline's plans (the lodge's gift, Venue.buff('build')) leave of a price: all of it for a great work, and when none runs. */
+  const plans = kind => B[kind].monument ? 1 : 1 - Venue.buff('build');
   /** The price of one more of this kind: each one already built raises it. */
-  function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale); }
-  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale); }
+  function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale * plans(kind)); }
+  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale * plans(b.kind)); }
   function refund(b) { return scaleCost(B[b.kind].cost, tune.refund_pct); }
   function repairCost(b) { return scaleCost(B[b.kind].cost, tune.repair_pct); }
   function canAfford(c) { for (const r in c) if (state.res[r] < c[r]) return false; return true; }

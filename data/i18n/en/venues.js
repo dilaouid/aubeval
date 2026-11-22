@@ -23,6 +23,9 @@ I18N.add('en', {
   'venueBuffs.soldier.name': 'Well Drilled', // Bien drillés
   'venueBuffs.soldier.text': 'Soldiers strike {n}% harder', // Les soldats frappent {n} % plus fort
   'venueBuffs.soldier.short': 'soldiers +{n}%', // soldats +{n} %
+  'venueBuffs.build.name': 'Aveline’s Plans', // Plans d’Aveline
+  'venueBuffs.build.text': 'Buildings and upgrades {n} % cheaper', // Constructions et améliorations {n} % moins chères
+  'venueBuffs.build.short': 'building −{n} %', // bâtir −{n} %
   'venues.cafe.name': 'The Aubeval Café', // Le Café d’Aubeval
   'venues.cafe.title': 'The Rush', // Le coup de feu
   'venues.cafe.unit': 'pennies in tips', // sous de pourboire
@@ -221,4 +224,36 @@ I18N.add('en', {
   'venues.barracks.after[1]': 'You can parry. Not a guard yet, but my recruits saw how a shield is held.', // Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.
   'venues.barracks.after[2]': 'Fine guard! The troop was watching, and it will strike harder for it. I won’t say it twice.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
   'venues.barracks.after[3]': 'A legendary guard! The whole barracks talks of nothing but you, and my soldiers strike as never before. I’m proud of them… and of you.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
+  'venues.lodge.name': 'The Builders’ Lodge', // La Loge des bâtisseurs
+  'venues.lodge.title': 'The Right Stone', // La bonne pierre
+  'venues.lodge.unit': 'stones set', // pierres posées
+  'venues.lodge.how': 'The wall goes up, and a hole is left in it. Of the four cut stones, only one fits: find it at a glance. A stone can be turned, never flipped over. Set quickly and without a fault, the right stones make a chain worth double. Four wrong stones and the wall comes down.', // Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne qui vaut double. Quatre mauvaises pierres, et le mur s’écroule.
+  'venues.lodge.keys': 'Keys 1 to 4, or click a stone. Right stone: 1, from the third of a chain on: 2. Wrong stone: a fault.', // Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1, dès la troisième d’une chaîne : 2. Mauvaise pierre : une faute.
+  'venues.lodge.greet': 'Welcome to the Lodge, burgomaster! This is where I draw up the plans of Aubeval. A good builder picks a stone at a glance: come and show me yours, and my plans will have you building for less.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
+  'venues.lodge.ready[0]': 'The wall is waiting for its next course. Have you got the eye, {g:hero|heroine}?', // Le mur attend sa prochaine assise. Vous avez l’œil, {g:héros|héroïne} ?
+  'venues.lodge.ready[1]': 'My journeymen have cut a whole heap of stones. Only one fits the hole, every time. Up to you to find it!', // Mes compagnons ont taillé tout un tas de pierres. Une seule entre dans le trou, à chaque fois. À vous de la trouver !
+  'venues.lodge.ready[2]': 'A wall goes up stone by stone, and without a moment’s doubt. Shall we?', // Un mur se monte pierre après pierre, et sans hésiter. On y va ?
+  'venues.lodge.wait[0]': 'My journeymen are cutting new stones. Come back in a while; the wall isn’t going anywhere.', // Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure, le mur ne bougera pas.
+  'venues.lodge.wait[1]': 'I’m going over my plans for a moment. Come back later, I’ll have a new wall to raise.', // Je reprends mes plans un moment. Revenez plus tard, j’aurai un nouveau mur à monter.
+  'venues.lodge.chat[0]': 'Before you lay a stone, you look at it. Then you look at it again.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore.
+  'venues.lodge.chat[1]': 'A straight wall, burgomaster, is a wall that stands a hundred years.', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans.
+  'venues.lodge.chat[2]': 'A stone turns in the hand, it never flips over: its dressed face must stay on the outside.', // Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors.
+  'venues.lodge.chat[3]': '{g:A hero|A heroine} who can raise a wall, you don’t see that often. My journeymen still talk about it.', // {g:Un héros|Une héroïne} qui sait monter un mur, on n’en voit pas souvent. Mes compagnons en parlent encore.
+  'venues.lodge.chat[4]': 'Bram forges my chisels, Lady Ysolde sells me my stone too dear. To each their trade.', // Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier.
+  'venues.lodge.tips[0]': 'On my plans, I see this:', // Sur mes plans, je vois ceci :
+  'venues.lodge.tips[1]': 'My journeymen flagged it:', // Mes compagnons me l’ont signalé :
+  'venues.lodge.tips[2]': 'A word of advice from a builder:', // Un conseil de bâtisseuse :
+  'venues.lodge.glad[0]': 'It fits!', // Elle entre !
+  'venues.lodge.glad[1]': 'Well spotted!', // Bien vu !
+  'venues.lodge.glad[2]': 'Spot on!', // Juste au millimètre !
+  'venues.lodge.glad[3]': 'That’s a course!', // Voilà une assise !
+  'venues.lodge.cross[0]': 'It doesn’t fit!', // Elle n’entre pas !
+  'venues.lodge.cross[1]': 'Look again!', // Regardez mieux !
+  'venues.lodge.cross[2]': 'Not that one!', // Pas celle-là !
+  'venues.lodge.chain[0]': 'What an eye!', // Quel coup d’œil !
+  'venues.lodge.chain[1]': 'The wall builds itself!', // Le mur monte tout seul !
+  'venues.lodge.after[0]': 'The wall came down… It’s only stone: we pick it up and start again.', // Le mur s’est écroulé… Ce n’est que de la pierre : on la ramasse, et on recommence.
+  'venues.lodge.after[1]': 'A few courses laid. My plans will save you a little on your building sites.', // Quelques rangs de posés. Mes plans vous feront gagner un peu sur vos chantiers.
+  'venues.lodge.after[2]': 'A fine wall! My plans are yours for a while: your building sites will cost less.', // Beau mur ! Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
+  'venues.lodge.after[3]': 'A master’s wall! My best plans are yours: all of Aubeval will build for less, and everyone will know whose eye picked those stones.', // Un mur de maître ! Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.
 });

@@ -16,7 +16,7 @@ const test = (name, fn) => tests.push({ name, fn });
 const colours = () => new Proxy({}, { get: (o, k) => typeof k === 'string' ? '#ffffff' : undefined });
 
 /**
- * The game's config, data, the real Venue and Minigames (and every js/minigame-*.js) in a sandbox.
+ * The game's config, data, the real Venue, Minigames and Stones (and every js/minigame-*.js) in a sandbox.
  * Stubbed: UI (its colours only), PAL, text, tr (gives back the key), sfx, pressed (never),
  * rng (a fixed seed), Music's switches (CHEAP, params). There is no document: nothing is drawn.
  * `games` lists the js/minigame-*.js files that were loaded.
@@ -39,12 +39,12 @@ function load() {
   ctx.tune = {};
   for (const k in ctx.CONFIG) if (ctx.CONFIG[k] && typeof ctx.CONFIG[k] === 'object') ctx.tune[k] = ctx.CONFIG[k].value;
   for (const f of T.I18N.files) run('data/' + f + '.js');
-  run('js/venue.js'); run('js/minigames.js');
+  run('js/venue.js'); run('js/minigames.js'); run('js/stones.js');
   const games = fs.readdirSync(path.join(ROOT, 'js')).filter(f => /^minigame-.+\.js$/.test(f)).sort();
   for (const f of games) run('js/' + f);
   run('js/music.js');
   const get = n => vm.runInContext(n, ctx);
-  return { ctx, DATA: ctx.DATA, tune: ctx.tune, Venue: get('Venue'), Minigames: get('Minigames'), Music: get('Music'), games };
+  return { ctx, DATA: ctx.DATA, tune: ctx.tune, Venue: get('Venue'), Minigames: get('Minigames'), Music: get('Music'), Stones: get('Stones'), games };
 }
 
 /**
@@ -309,6 +309,252 @@ test('bien drillés: a soldier deals 30 % more with the gold gift, has the same 
   assert.strictEqual(L.Venue.buff('soldier'), 0.3);
   assert.ok(Math.abs(Units.atkOf('militia') - 1.3 * atk) < 1e-12, 'with the gift: ' + Units.atkOf('militia') + ', without: ' + atk);
   assert.strictEqual(Units.maxHp(u), hp, 'health changed');
+});
+
+// ---- The stones of the lodge (js/stones.js) ----
+/** A seeded draw in 0..1 of its own, so that each seed gives the same stones every run. */
+function seeded(s) {
+  let a = (s * 2654435761 + 1) >>> 0;
+  return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+/** Whether the cells touch one another through their sides, all of them. */
+function connected(cells) {
+  const key = c => c[0] + ',' + c[1], all = new Set(cells.map(key)), seen = new Set([key(cells[0])]), todo = [cells[0]];
+  while (todo.length) {
+    const [x, y] = todo.pop();
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = (x + dx) + ',' + (y + dy); if (all.has(k) && !seen.has(k)) { seen.add(k); todo.push([x + dx, y + dy]); } }
+  }
+  return seen.size === all.size;
+}
+const LODGE_RAMP = L => L.DATA.venues.lodge.ramp;
+
+test('stones: a shape of n cells is connected and has n cells', () => {
+  const { Stones } = load();
+  for (let n = 4; n <= 7; n++) for (let s = 0; s < 500; s++) {
+    const c = Stones.shape(n, seeded(s));
+    assert.strictEqual(c.length, n, 'n=' + n + ' seed ' + s + ': ' + JSON.stringify(c));
+    assert.strictEqual(new Set(c.map(p => p.join(','))).size, n, 'a cell twice: ' + JSON.stringify(c));
+    assert.ok(connected(c), 'not connected: ' + JSON.stringify(c));
+  }
+});
+
+test('stones: four turns bring a stone back, a turned stone fits, a mirrored one does not unless it is its own mirror', () => {
+  const { Stones } = load();
+  let chiral = 0;
+  for (let s = 0; s < 300; s++) {
+    const c = Stones.shape(4 + s % 4, seeded(s));
+    let t = c;
+    for (let i = 0; i < 4; i++) { t = Stones.turn(t); if (i < 3) assert.ok(Stones.fits(c, t), 'a turned stone does not fit'); }
+    assert.ok(Stones.same(t, c), 'four turns do not bring it back: ' + JSON.stringify(c));
+    const m = Stones.mirror(c), own = [0, 1, 2, 3].some(k => { let u = m; for (let i = 0; i < k; i++) u = Stones.turn(u); return Stones.same(u, c); });
+    assert.strictEqual(Stones.fits(c, m), own, 'mirror of ' + JSON.stringify(c));
+    if (!own) chiral++;
+  }
+  assert.ok(chiral > 50, 'too few shapes that are not their own mirror: ' + chiral);
+  // the S and the Z of four cells: each the mirror of the other, neither fits the other; the O is its own mirror
+  const S = [[1, 0], [2, 0], [0, 1], [1, 1]], Z = [[0, 0], [1, 0], [1, 1], [2, 1]], O = [[0, 0], [1, 0], [0, 1], [1, 1]];
+  assert.ok(Stones.same(Stones.mirror(S), Z));
+  assert.strictEqual(Stones.fits(S, Z), false);
+  assert.ok(Stones.fits(O, Stones.mirror(O)));
+  assert.ok(Stones.same([[5, 5], [6, 5]], [[0, 0], [1, 0]]), 'same up to a move');
+  assert.strictEqual(Stones.same([[0, 0], [1, 0]], [[0, 0], [0, 1]]), false, 'a turn is not the same');
+});
+
+test('stones: in every round exactly one of the four stones fits', () => {
+  const L = load(), { Stones } = L, ramp = LODGE_RAMP(L);
+  for (let lvl = 0; lvl <= 10; lvl++) for (let s = 0; s < 500; s++) {
+    const r = Stones.round(lvl, ramp, seeded(s * 31 + lvl)), at = 'level ' + lvl + ' seed ' + s;
+    assert.strictEqual(r.stones.length, 4, at);
+    const n = Math.min(ramp.cellsMax, ramp.cells + Math.floor(lvl / ramp.cellsEvery));
+    assert.strictEqual(r.hole.length, n, at + ': hole of ' + r.hole.length);
+    const fit = r.stones.map((st, i) => Stones.fits(r.hole, st) ? i : -1).filter(i => i >= 0);
+    assert.deepStrictEqual(Array.from(fit), [r.right], at + ': fit ' + JSON.stringify(fit) + ', right ' + r.right);
+    for (const st of r.stones) assert.ok(connected(st), at + ': a stone in pieces');
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) assert.ok(!Stones.fits(r.stones[i], r.stones[j]), at + ': two stones are the same piece turned');
+  }
+});
+
+test('stones: a round ends, with one stone that fits, even on a draw that always says the same', () => {
+  const L = load(), { Stones } = L, ramp = LODGE_RAMP(L);
+  for (const v of [0, 0.5, 0.999999]) for (let lvl = 0; lvl <= 10; lvl++) {
+    const r = Stones.round(lvl, ramp, () => v), at = 'draw ' + v + ' level ' + lvl;
+    assert.deepStrictEqual(Array.from(r.stones.map((st, i) => Stones.fits(r.hole, st) ? i : -1).filter(i => i >= 0)), [r.right], at);
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) assert.ok(!Stones.fits(r.stones[i], r.stones[j]), at + ': two stones are the same piece');
+  }
+});
+
+test('stones: from the first win the stones are shown turned, from the third one of the wrong ones is the mirror of the right one', () => {
+  const L = load(), { Stones } = L, ramp = LODGE_RAMP(L);
+  const mirrored = r => r.stones.some((st, i) => i !== r.right && Stones.fits(Stones.mirror(r.hole), st));
+  const own = r => Stones.fits(r.hole, Stones.mirror(r.hole));
+  let turned = 0, checked = 0, mirrorEarly = 0, rounds = 0;
+  for (let s = 0; s < 500; s++) {
+    const r0 = Stones.round(0, ramp, seeded(s));
+    assert.ok(Stones.same(r0.hole, r0.stones[r0.right]), 'seed ' + s + ': the right stone is turned before the first win');
+    if (!own(r0) && mirrored(r0)) mirrorEarly++;
+    rounds++;
+    const r1 = Stones.round(ramp.turnFrom, ramp, seeded(s));
+    if (!Stones.same(r1.hole, r1.stones[r1.right])) turned++;
+    const r3 = Stones.round(ramp.mirrorFrom, ramp, seeded(s));
+    if (own(r3)) continue;
+    checked++;
+    assert.ok(mirrored(r3), 'seed ' + s + ': no mirror of ' + JSON.stringify(r3.hole) + ' in ' + JSON.stringify(r3.stones));
+  }
+  assert.ok(turned > 300, 'the right stone is shown turned in only ' + turned + ' rounds of 500');
+  assert.ok(checked > 200, 'too few shapes that are not their own mirror: ' + checked);
+  assert.ok(mirrorEarly < rounds, 'a mirror in every round already before the third win');
+});
+
+// ---- La bonne pierre (lodge) ----
+test('la bonne pierre: a sharp eye gets gold, and bronze at least deep in a streak', () => {
+  const bot = { pace: 0.05, err: 0 };
+  const r0 = play('lodge', { level: 0, bot }), r5 = play('lodge', { level: 5, bot }), r10 = play('lodge', { level: 10, bot });
+  assert.strictEqual(r0.medal, 3, 'level 0: ' + JSON.stringify(r0));
+  assert.ok(r5.medal >= 1, 'level 5: ' + JSON.stringify(r5));
+  assert.ok(r10.medal >= 1, 'level 10: ' + JSON.stringify(r10));
+});
+
+test('la bonne pierre: choosing nothing ends with no medal', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  for (let i = 0; i < 60 * 40 && !g.done; i++) g.update(STEP, NO_INPUT);
+  assert.strictEqual(g.done, true, 'not done');
+  assert.ok(g.score < L.DATA.venues.lodge.medals[0], 'a medal for nothing: ' + g.score);
+});
+
+test('la bonne pierre: ends on its own', () => {
+  const L = load(), r = play('lodge', { L, bot: { pace: 0.05, err: 0 }, secs: L.tune.lodge_time + 1 });
+  assert.strictEqual(L.tune.lodge_time, 36);
+  assert.strictEqual(r.done, true, 'not done by ' + (L.tune.lodge_time + 1) + ' s');
+  assert.strictEqual(r.lost, false, 'lost');
+});
+
+test('la bonne pierre: one press, one stone', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  for (let i = 0; i < 60 && !g.round; i++) g.update(STEP, NO_INPUT);
+  assert.ok(g.round, 'no hole to fill');
+  const key = 'Digit' + (g.round.right + 1);
+  L.ctx.pressed = k => k === key; // held down: the stub says so at every step
+  for (let i = 0; i < 120; i++) g.update(STEP, NO_INPUT);
+  L.ctx.pressed = () => false;
+  assert.strictEqual(g.set, 1, 'stones set');
+  assert.strictEqual(g.strikes, 0, 'the held key counted against the next hole');
+  assert.strictEqual(g.score, 1, 'score');
+  // by the mouse: choose() is what each of the four buttons calls
+  for (let i = 0; i < 60 && !g.round; i++) g.update(STEP, NO_INPUT);
+  g.choose(g.round.right);
+  assert.strictEqual(g.set, 2, 'a click sets a stone');
+  g.choose(0); g.choose(1); // while the stone goes in, nothing else counts
+  assert.strictEqual(g.set, 2); assert.strictEqual(g.strikes, 0);
+});
+
+test('la bonne pierre: four wrong stones bring the wall down', () => {
+  const L = load(), g = start(L, 'lodge', 0);
+  let tries = 0;
+  while (!g.done && tries++ < 200) {
+    for (let i = 0; i < 60 && !g.round; i++) g.update(STEP, NO_INPUT);
+    const r = g.round, wrong = [0, 1, 2, 3].find(i => i !== r.right && !(r.tried && r.tried[i]));
+    if (wrong === undefined) { g.choose(r.right); continue; }
+    g.choose(wrong); g.update(STEP, NO_INPUT);
+  }
+  assert.strictEqual(g.strikes, L.tune.lodge_strikes, 'strikes');
+  assert.strictEqual(g.lost, true, 'not lost');
+  assert.strictEqual(g.done, true, 'not done');
+  assert.ok(typeof g.why === 'string' && g.why.length > 0, 'no why');
+});
+
+test('la bonne pierre: a stone tried once is no second fault, and the chain falls on a fault or a slow stone', () => {
+  const L = load(), T = L.tune, g = start(L, 'lodge', 0);
+  const next = () => { for (let i = 0; i < 60 && !g.round; i++) g.update(STEP, NO_INPUT); return g.round; };
+  const wrong = next().right === 0 ? 1 : 0;
+  g.choose(wrong); g.choose(wrong);
+  assert.strictEqual(g.strikes, 1, 'the same wrong stone twice');
+  // quick right stones: the chain grows, and from lodge_chain on each is worth 2
+  let s = g.score;
+  for (let k = 1; k <= T.lodge_chain + 1; k++) { g.choose(next().right); assert.strictEqual(g.chain, k, 'chain'); }
+  assert.strictEqual(g.score - s, T.lodge_chain - 1 + 2 * 2, 'worth');
+  g.choose(next().right === 0 ? 1 : 0);
+  assert.strictEqual(g.chain, 0, 'a fault breaks the chain');
+  g.choose(g.round.right); next(); g.choose(g.round.right);
+  assert.strictEqual(g.chain, 2);
+  next();
+  for (let i = 0; i < 60 * (T.lodge_chain_gap + 0.5); i++) g.update(STEP, NO_INPUT);
+  s = g.score; g.choose(g.round.right);
+  assert.strictEqual(g.chain, 1, 'a slow stone starts the chain over');
+  assert.strictEqual(g.score - s, 1);
+});
+
+test('la bonne pierre: a hand that errs sometimes scores less than a sharp eye', () => {
+  const sharp = play('lodge', { level: 5, bot: { pace: 0.8, err: 0 } }), errs = play('lodge', { level: 5, bot: { pace: 0.8, err: 0.15 } });
+  assert.ok(errs.score < sharp.score, 'sharp ' + JSON.stringify(sharp) + ', errs ' + JSON.stringify(errs));
+});
+
+// ---- Plans d'Aveline (the lodge's gift) ----
+/** The real js/city.js and js/village.js in the sandbox L, over a village with nothing built yet. */
+function loadVillage(L) {
+  const City = loadCity(L);
+  L.ctx.MapGen = { pickSeed: s => s, SEED_MAX: 1e6 };
+  L.ctx.state.buildings = [];
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/village.js'), 'utf8'), L.ctx, { filename: 'js/village.js' });
+  return { City, Village: vm.runInContext('Village', L.ctx) };
+}
+const gift = (L, v) => { L.ctx.state.venue.buffs.build = { v, left: 100, total: 300, from: 'lodge' }; };
+const plain = o => JSON.parse(JSON.stringify(o));
+
+test('plans d\'Aveline: a building and an upgrade cost 15 % less with the gold gift, and the same without', () => {
+  const L = load(), { Village } = loadVillage(L), up = { kind: 'house', lvl: 3 };
+  assert.strictEqual(L.Venue.buff('build'), 0);
+  const c0 = plain(Village.cost('house')), u0 = plain(Village.upgradeCost(up));
+  const T = L.tune, B = L.DATA.buildings.house;
+  const full = k => { const o = {}; for (const r in B.cost) o[r] = Math.max(1, Math.ceil(B.cost[r] * k)); return o; };
+  assert.deepStrictEqual(c0, full(T.cost_scale), 'without the gift, a house is not what it was');
+  assert.deepStrictEqual(u0, full(T.upgrade_cost_base * Math.pow(T.upgrade_cost_growth, 2) * T.cost_scale), 'without the gift, an upgrade is not what it was');
+  gift(L, 0.15);
+  assert.strictEqual(L.Venue.buff('build'), 0.15);
+  const less = k => { const o = {}; for (const r in B.cost) o[r] = Math.max(1, Math.ceil(B.cost[r] * k * 0.85)); return o; };
+  assert.deepStrictEqual(plain(Village.cost('house')), less(T.cost_scale), 'a house with the gift');
+  assert.deepStrictEqual(plain(Village.upgradeCost(up)), less(T.upgrade_cost_base * Math.pow(T.upgrade_cost_growth, 2) * T.cost_scale), 'an upgrade with the gift');
+  assert.ok(Village.cost('house').wood < c0.wood, 'the wood of a house did not go down'); // 6 planks round back up to 6
+  // the gift runs out: the price is back to what it was
+  L.ctx.state.venue.buffs.build.left = 0;
+  assert.deepStrictEqual(plain(Village.cost('house')), c0, 'after the gift');
+  // a price of 1 stays 1
+  assert.deepStrictEqual(plain(Village.scaleCost({ gold: 1 }, 0.85)), { gold: 1 });
+});
+
+test('plans d\'Aveline: a great work\'s foundations and stages cost the same', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings;
+  const works = Object.keys(B).filter(k => B[k].monument);
+  assert.ok(works.includes('cathedral'), 'no cathedral');
+  const before = works.map(k => [plain(Village.cost(k)), plain(Village.upgradeCost({ kind: k, lvl: 1 })), plain(Village.upgradeCost({ kind: k, lvl: 3 }))]);
+  gift(L, 0.15);
+  works.forEach((k, i) => assert.deepStrictEqual([plain(Village.cost(k)), plain(Village.upgradeCost({ kind: k, lvl: 1 })), plain(Village.upgradeCost({ kind: k, lvl: 3 }))], before[i], k));
+});
+
+test('plans d\'Aveline: nothing is refunded for more than it was paid', () => {
+  const L = load(), { Village } = loadVillage(L), B = L.DATA.buildings;
+  gift(L, 0.15);
+  const before = {};
+  for (const k of L.DATA.buildOrder) {
+    if (!B[k] || B[k].decor) continue;
+    const paid = Village.cost(k), back = Village.refund({ kind: k });
+    for (const r in back) assert.ok(back[r] <= paid[r], k + ': ' + r + ' refunded ' + back[r] + ', paid ' + paid[r]);
+    before[k] = plain(back);
+  }
+  L.ctx.state.venue.buffs.build.left = 0;
+  for (const k in before) assert.deepStrictEqual(plain(Village.refund({ kind: k })), before[k], k + ': the refund changed with the gift');
+});
+
+test('plans d\'Aveline: the real lodge\'s gift lasts 300 s at level 1 and 580 s at level 15', () => {
+  const L = load();
+  assert.strictEqual(L.DATA.venues.lodge.perLevel, 'lodge_level_time');
+  L.ctx.state.buildings = [{ kind: 'lodge', lvl: 15 }];
+  assert.strictEqual(L.Venue.giftTime('lodge', 'build'), 580);
+  L.ctx.state.buildings = [{ kind: 'lodge', lvl: 1 }];
+  assert.strictEqual(L.Venue.giftTime('lodge', 'build'), 300);
+  L.ctx.state.buildings = undefined;
+  assert.strictEqual(L.Venue.giftTime('lodge', 'build'), L.tune.venue_buff_time, 'with no buildings at all');
+  assert.ok(L.DATA.venueBuffs.build && L.DATA.venueBuffs.build.name, 'no DATA.venueBuffs.build');
+  assert.deepStrictEqual(Array.from(L.DATA.venues.lodge.buffs.build), [0, 0.05, 0.1, 0.15]);
 });
 
 if (require.main === module) {

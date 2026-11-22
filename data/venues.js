@@ -63,6 +63,10 @@ Object.assign(DATA.strings, {
   bq_score: 'Parades', bq_hits_n: 'Coups reçus', bq_keys: 'Flèches du clavier, ou clic sur un côté',
   bq_quick: 'Vif ! +{n}', bq_good: 'Paré +{n}', bq_wrong: 'Mauvais côté !', bq_late: 'Touché !', bq_feinted: 'Feinte !',
   bq_end_hits: 'Trop de coups reçus !',
+  // La bonne pierre
+  lg_score: 'Pierres posées', lg_faults_n: 'Fautes', lg_keys: 'Touches 1 à 4, ou clic sur une pierre', lg_chain: 'Chaîne ×{n}',
+  lg_set: 'Posée +{n}', lg_chained: 'En chaîne ! +{n}', lg_wrong: 'Elle n’entre pas !',
+  lg_end_strikes: 'Le mur s’est écroulé !',
 });
 
 // What a place's gift is called and how it reads (`{n}` is the share, in percent). The key is what
@@ -75,12 +79,14 @@ DATA.venueBuffs = {
   forge: { name: 'Feu vif', text: 'Forge {n} % plus rapide', short: 'forge +{n} %', icon: 'icon.time', alt: 'icon.time' },
   rise: { name: 'Pain chaud', text: 'Satisfaction des maisons {n} % plus rapide', short: 'satisfaction +{n} %', icon: 'icon.bread', alt: 'icon.bread' },
   soldier: { name: 'Bien drillés', text: 'Les soldats frappent {n} % plus fort', short: 'soldats +{n} %', icon: 'icon.atk', alt: 'icon.atk' },
+  build: { name: 'Plans d’Aveline', text: 'Constructions et améliorations {n} % moins chères', short: 'bâtir −{n} %', icon: 'icon.build', alt: 'icon.stone' },
 };
 
 // The places, by the kind of building they are (data/buildings.js).
 //   keeper     who stands in the middle (data/people.js DATA.keepers)
 //   name       the place, on its plate
 //   music      for a place without a track of its own (js/music.js): the place whose track it plays
+//   perLevel   a config.js knob: seconds each level of the place's building above the first adds to its gift (Venue.giftTime)
 //   line       where a keeper's image stands on a backdrop image, as a share of the screen's height
 //              (the drawn interiors know their own counter); tall: how high he or she is, same share
 //   faces      frames of the keeper's big strip ('venue.char.<keeper>') held for a moment: glad (a good
@@ -234,5 +240,25 @@ DATA.venues = {
     feinted: ['Feinte ! L’ordre a changé.', 'Vous avez mordu !', 'Écoutez jusqu’au bout !'],
     after: ['Ce n’était pas un exercice, c’était une bagarre. Pansez-vous, et on reprend plus tard.', 'Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.', 'Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.', 'Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.'],
   },
+  lodge: {
+    keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 0, cross: 4 }, faces64: { glad: 0, cross: 4 },
+    title: 'La bonne pierre', unit: 'pierres posées',
+    how: 'Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne qui vaut double. Quatre mauvaises pierres, et le mur s’écroule.',
+    keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1, dès la troisième d’une chaîne : 2. Mauvaise pierre : une faute.',
+    medals: [14, 22, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
+    // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
+    // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
+    // (config.js lodge_chain and lodge_chain_gap: what a chain is; lodge_strikes: the wrong stones the wall bears)
+    ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3 },
+    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
+    ready: ['Le mur attend sa prochaine assise. Vous avez l’œil, {g:héros|héroïne} ?', 'Mes compagnons ont taillé tout un tas de pierres. Une seule entre dans le trou, à chaque fois. À vous de la trouver !', 'Un mur se monte pierre après pierre, et sans hésiter. On y va ?'],
+    wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure, le mur ne bougera pas.', 'Je reprends mes plans un moment. Revenez plus tard, j’aurai un nouveau mur à monter.'],
+    chat: ['Avant de poser une pierre, on la regarde. Puis on la regarde encore.', 'Un mur droit, bourgmestre, c’est un mur qui tient cent ans.', 'Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors.',
+      '{g:Un héros|Une héroïne} qui sait monter un mur, on n’en voit pas souvent. Mes compagnons en parlent encore.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier.'],
+    tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé :', 'Un conseil de bâtisseuse :'],
+    glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Elle n’entre pas !', 'Regardez mieux !', 'Pas celle-là !'],
+    chain: ['Quel coup d’œil !', 'Le mur monte tout seul !'],
+    after: ['Le mur s’est écroulé… Ce n’est que de la pierre : on la ramasse, et on recommence.', 'Quelques rangs de posés. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.'],
+  },
 };
-DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks'];
+DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'];

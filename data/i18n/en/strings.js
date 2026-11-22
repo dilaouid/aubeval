@@ -890,6 +890,14 @@ I18N.add('en', {
   'strings.bq_late': 'Hit!', // Touché !
   'strings.bq_feinted': 'Feint!', // Feinte !
   'strings.bq_end_hits': 'Too many hits taken!', // Trop de coups reçus !
+  'strings.lg_score': 'Stones set', // Pierres posées
+  'strings.lg_faults_n': 'Faults', // Fautes
+  'strings.lg_keys': 'Keys 1 to 4, or click a stone', // Touches 1 à 4, ou clic sur une pierre
+  'strings.lg_chain': 'Chain ×{n}', // Chaîne ×{n}
+  'strings.lg_set': 'Set +{n}', // Posée +{n}
+  'strings.lg_chained': 'In a chain! +{n}', // En chaîne ! +{n}
+  'strings.lg_wrong': 'It doesn’t fit!', // Elle n’entre pas !
+  'strings.lg_end_strikes': 'The wall came down!', // Le mur s’est écroulé !
   'strings.ex_title': 'Exploration', // Exploration
   'strings.ex_known': 'Known lands: {pct}%', // Terres connues : {pct} %
   'strings.ex_help': 'Beyond the village, the mist hides the land. Your buildings, your soldiers, the hero and the scouts lift it, and find what it hides.', // Hors du village, la brume cache les terres. Vos bâtiments, vos soldats, {g:le héros|l’héroïne} et les éclaireurs la lèvent, et trouvent ce qu’elle cache.
