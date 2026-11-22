@@ -166,6 +166,7 @@ window.CONFIG = {
   venue_type_cps: { value: 55, min: 10, max: 400, step: 5 },         // letters per second as a keeper's line is written out
   venue_wait: { value: 240, min: 0, max: 1800, step: 10 },           // seconds before a place's game can be played again (the first game is free)
   venue_buff_time: { value: 300, min: 30, max: 1800, step: 10 },     // seconds a place's gift lasts after its game (what it is, per medal: data/venues.js)
+  lodge_level_time: { value: 20, min: 0, max: 120, step: 1 },         // seconds each level of the builders' lodge above the first adds to its own gift (data/venues.js perLevel)
   venue_pop_scale: { value: 1, min: 0, max: 5, step: 0.05 },         // multiplies the popularity every mini-game gives (per medal: data/venues.js)
   venue_streak_max: { value: 10, min: 0, max: 30, step: 1 },         // wins in a row at one place past which its game gets no harder
   venue_streak_pop: { value: 0.05, min: 0, max: 0.5, step: 0.01 },   // each win of that streak adds this share to the popularity the game gives

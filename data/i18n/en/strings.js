@@ -398,6 +398,7 @@ I18N.add('en', {
   'strings.up_hall': 'Less plunder, wider safe zone', // Moins de pillage, zone sûre plus large
   'strings.up_double': 'Milestone: production ×2!', // Palier : production ×2 !
   'strings.up_look': 'New look', // Nouvelle apparence
+  'strings.up_lodge': 'Aveline’s Plans: +{n} s', // Plans d’Aveline : +{n} s
   'strings.sec_work': 'Work', // Travail
   'strings.sec_defense': 'Defence', // Défense
   'strings.sec_level': 'Level', // Niveau

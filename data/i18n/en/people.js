@@ -82,4 +82,9 @@ I18N.add('en', {
   'keepers.captain.lines[2]': 'Select my soldiers, point, and off they go.', // Sélectionnez mes soldats, pointez, et ils y vont.
   'keepers.captain.busy': 'Hup, two! Hup, two! The recruit will be ready shortly.', // Un-deux, un-deux ! La recrue sera prête sous peu.
   'keepers.captain.raid': 'To your posts! Right-click where you want them!', // À vos postes ! Clic droit là où vous les voulez !
+  'keepers.guide.name': 'Aveline', // Aveline
+  'keepers.guide.title': 'Master Builder', // Maîtresse bâtisseuse
+  'keepers.guide.lines[0]': 'A straight wall, Mayor, is a wall that stands a hundred years. Just look at those joints!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints !
+  'keepers.guide.lines[1]': 'Before you lay a stone, you look at it. Then you look at it again.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore.
+  'keepers.guide.lines[2]': 'My plans are ready, Mayor: yours to build, mine to teach.', // Mes plans sont prêts, bourgmestre : à vous de bâtir, à moi de vous apprendre.
 });

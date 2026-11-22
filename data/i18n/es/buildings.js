@@ -47,6 +47,9 @@ I18N.add('es', {
   'buildings.market.name': 'Mercado', // Marché
   'buildings.market.card': 'Mercado', // Marché
   'buildings.market.desc': 'Compre y venda sus reservas. Sus caravanas traen las especias de los Burgueses, y los Comerciantes lo quieren a su alcance.', // Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.
+  'buildings.lodge.name': 'Logia de los constructores', // Loge des bâtisseurs
+  'buildings.lodge.card': 'Logia', // Loge
+  'buildings.lodge.desc': 'La casa de los maestros constructores, donde Aveline traza los planos de Aubeval. Cada nivel de la Logia hace que sus planos duren más.', // La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.
   'buildings.sheep_farm.name': 'Redil', // Bergerie
   'buildings.sheep_farm.card': 'Redil', // Bergerie
   'buildings.sheep_farm.desc': 'Ovejas y su lana, para el taller de tejido.', // Des moutons et leur laine, pour l’atelier de tissage.

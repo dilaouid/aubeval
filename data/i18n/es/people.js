@@ -82,4 +82,9 @@ I18N.add('es', {
   'keepers.captain.lines[2]': 'Seleccione a mis soldados, señale, y allá van.', // Sélectionnez mes soldats, pointez, et ils y vont.
   'keepers.captain.busy': '¡Un-dos, un-dos! El recluta estará listo en breve.', // Un-deux, un-deux ! La recrue sera prête sous peu.
   'keepers.captain.raid': '¡A sus puestos! ¡Clic derecho donde los quiera!', // À vos postes ! Clic droit là où vous les voulez !
+  'keepers.guide.name': 'Aveline', // Aveline
+  'keepers.guide.title': 'Maestra constructora', // Maîtresse bâtisseuse
+  'keepers.guide.lines[0]': 'Un muro recto, burgomaestre, es un muro que aguanta cien años. ¡Mire qué juntas!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints !
+  'keepers.guide.lines[1]': 'Antes de poner una piedra, se mira. Y luego se vuelve a mirar.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore.
+  'keepers.guide.lines[2]': 'Mis planos están listos, burgomaestre: a usted le toca construir, a mí enseñarle.', // Mes plans sont prêts, bourgmestre : à vous de bâtir, à moi de vous apprendre.
 });

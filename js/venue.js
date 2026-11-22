@@ -54,8 +54,18 @@ const Venue = (() => {
   function buff(key) { const b = state && state.venue && state.venue.buffs ? state.venue.buffs[key] : null; return b && b.left > 0 ? Math.min(0.9, b.v) : 0; }
   /** Whether a building can be entered now: one of the places, standing whole, joined to the road, and no raid under way. */
   function has(b) { return !!b && !!V[b.kind] && !b.damaged && Village.onRoad(b) && !state.raid.active; }
-  /** Seconds the gift `key` won at the place `id` lasts. */
-  function giftTime(id, key) { return tune.venue_buff_time; }
+  /**
+   * Seconds the gift `key` won at the place `id` lasts: config venue_buff_time, plus, for a place
+   * whose `perLevel` names a config knob, that many seconds for each level of the highest building
+   * of its kind above the first (none when none stands).
+   */
+  function giftTime(id, key) {
+    const d = V[id], per = d && d.perLevel ? tune[d.perLevel] : 0;
+    if (!(per > 0)) return tune.venue_buff_time;
+    let top = 0;
+    for (const b of (state && state.buildings) || []) if (b.kind === id && b.lvl > top) top = b.lvl;
+    return tune.venue_buff_time + per * Math.max(0, top - 1);
+  }
   /** How hard a place's game is: its winning streak, up to config venue_streak_max. */
   function level(id) { return Math.min(S().streak[id] || 0, tune.venue_streak_max); }
   /** Seconds before a place's game can be played again; 0 when it is ready. */

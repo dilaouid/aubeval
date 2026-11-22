@@ -144,4 +144,6 @@ DATA.keepers = {
     lines: ['Donnez-moi dix miliciens et je tiens la porte.', 'Un archer derrière un mur vaut trois lances.', 'Sélectionnez mes soldats, pointez, et ils y vont.'],
     busy: 'Un-deux, un-deux ! La recrue sera prête sous peu.',
     raid: 'À vos postes ! Clic droit là où vous les voulez !' },
+  guide: { name: 'Aveline', title: 'Maîtresse bâtisseuse',
+    lines: ['Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints !', 'Avant de poser une pierre, on la regarde. Puis on la regarde encore.', 'Mes plans sont prêts, bourgmestre : à vous de bâtir, à moi de vous apprendre.'] },
 };

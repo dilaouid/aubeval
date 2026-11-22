@@ -115,6 +115,43 @@ test('a gift lasts venue_buff_time', () => {
   assert.strictEqual(Venue.giftTime('cafe', 'pop'), tune.venue_buff_time);
 });
 
+// ---- La Loge des bâtisseurs (the building, kept by Aveline) ----
+test('the lodge is a building one can place once, from the rank Ville', () => {
+  const { DATA } = load(), b = DATA.buildings.lodge;
+  assert.ok(b, 'no DATA.buildings.lodge');
+  for (const k of ['name', 'card', 'sprite', 'desc']) assert.ok(typeof b[k] === 'string' && b[k].length > 0, 'lodge.' + k);
+  assert.strictEqual(b.w, 2); assert.strictEqual(b.h, 2);
+  assert.deepStrictEqual(Object.assign({}, b.cost), { planks: 60, stone: 60, gold: 150 });
+  assert.strictEqual(b.unique, true, 'not unique');
+  assert.strictEqual(b.unlock && b.unlock.rank, 2, 'not opened at the rank Ville');
+  assert.strictEqual(b.keeper, 'guide');
+  assert.ok(DATA.buildOrder.includes('lodge'), 'not in DATA.buildOrder');
+  const city = DATA.buildTabs.find(t => t.id === 'city').items;
+  assert.strictEqual(city.indexOf('lodge'), city.indexOf('market') + 1, 'not right after the market in the city tab');
+});
+
+test('Aveline keeps it', () => {
+  const { DATA } = load();
+  assert.strictEqual(DATA.keepers.guide && DATA.keepers.guide.name, 'Aveline');
+});
+
+test('each level of the lodge adds lodge_level_time to its gift, and to no other', () => {
+  const L = load(), { Venue, DATA } = L;
+  DATA.venues.lodge = { perLevel: 'lodge_level_time' };
+  L.ctx.state.buildings = [{ kind: 'lodge', lvl: 1 }];
+  assert.strictEqual(Venue.giftTime('lodge', 'build'), 300, 'level 1');
+  L.ctx.state.buildings = [{ kind: 'lodge', lvl: 15 }];
+  assert.strictEqual(Venue.giftTime('lodge', 'build'), 580, 'level 15');
+  assert.strictEqual(Venue.giftTime('cafe', 'pop'), 300, 'another place');
+});
+
+test('a gift won with no lodge standing lasts the plain time', () => {
+  const L = load(), { Venue, DATA } = L;
+  DATA.venues.lodge = { perLevel: 'lodge_level_time' };
+  L.ctx.state.buildings = [];
+  assert.strictEqual(Venue.giftTime('lodge', 'build'), 300);
+});
+
 // ---- La fournée (bakery) ----
 /** A new game of a place at `level`, in the sandbox L, its keeper's words thrown away. */
 const start = (L, id, level) => L.Minigames.make(id, { level, d: L.DATA.venues[id], react: () => {}, away: () => {} });

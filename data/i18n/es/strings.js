@@ -398,6 +398,7 @@ I18N.add('es', {
   'strings.up_hall': 'Menos saqueo, zona segura más amplia', // Moins de pillage, zone sûre plus large
   'strings.up_double': '¡Hito: producción ×2!', // Palier : production ×2 !
   'strings.up_look': 'Nuevo aspecto', // Nouvelle apparence
+  'strings.up_lodge': 'Planos de Aveline: +{n} s', // Plans d’Aveline : +{n} s
   'strings.sec_work': 'Trabajo', // Travail
   'strings.sec_defense': 'Defensa', // Défense
   'strings.sec_level': 'Nivel', // Niveau

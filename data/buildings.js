@@ -121,6 +121,11 @@ DATA.buildings = {
     service: { radius: 14 }, unlock: { cls: { artisan: 4 } }, glow: true, keeper: 'merchant', beauty: 1,
     desc: 'Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.',
   },
+  lodge: {
+    name: 'Loge des bâtisseurs', card: 'Loge', sprite: 'iso.lodge', w: 2, h: 2,
+    cost: { planks: 60, stone: 60, gold: 150 }, unique: true, unlock: { rank: 2 }, glow: true, keeper: 'guide', beauty: 1,
+    desc: 'La maison des maîtres bâtisseurs, où Aveline dresse les plans d’Aubeval. Chaque niveau de la Loge fait durer ses plans plus longtemps.',
+  },
   sheep_farm: {
     name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,
     cost: { wood: 80, planks: 40, gold: 120 }, growth: 1.4, produces: { wool: 1 }, cycle: 4,
@@ -207,7 +212,7 @@ DATA.tools = {
 // A trap's card is only named here: it is looked up when the bar is drawn.
 DATA.buildTabs = [
   { id: 'build', name: 'Production', items: ['lumber_hut', 'sawmill', 'forge', 'farm', 'bakery', 'quarry', 'coffee_farm', 'roastery', 'sheep_farm', 'weaver', 'goldsmith'] },
-  { id: 'city', name: 'Habitat', items: ['house', 'cafe', 'chapel', 'market', 'tool:path'] },
+  { id: 'city', name: 'Habitat', items: ['house', 'cafe', 'chapel', 'market', 'lodge', 'tool:path'] },
   { id: 'defense', name: 'Défense', items: ['watchtower', 'palisade', 'mage_tower', 'barracks', 'trap:spikes', 'trap:tar', 'trap:powder'] },
   { id: 'works', name: 'Chantiers', items: ['cathedral', 'castle', 'lighthouse'] },
   { id: 'decor', name: 'Décor', items: ['fountain', 'well', 'statue', 'stall', 'lamp', 'banner', 'bench', 'flowers', 'barrels', 'hedge'] },
