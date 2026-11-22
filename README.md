@@ -140,6 +140,8 @@ python -m http.server 8000
 
 Then open <http://localhost:8000>. The game is saved in the browser (`localStorage`). Adding `?seed=123456` to the address starts a new game on that map.
 
+The online copy is minified: `.github/workflows/pages.yml` runs `npm ci && npm run build` ([tools/build.js](tools/build.js)) and publishes `dist/`. The source needs none of it. Minifying costs no speed; it is not a lock, a save is still the player's own file.
+
 ## Controls
 
 | Action | Control |

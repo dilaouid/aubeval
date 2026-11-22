@@ -1,0 +1,11 @@
+{
+  "name": "aubeval",
+  "private": true,
+  "description": "The game itself has no dependencies and no build step to play from source; esbuild is only used by tools/build.js to minify the published copy.",
+  "scripts": {
+    "build": "node tools/build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
