@@ -256,17 +256,17 @@ I18N.add('en', {
   'venues.barracks.after[2]': 'Fine guard! The troop was watching, and it will strike harder for it. I won’t say it twice.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
   'venues.barracks.after[3]': 'A legendary guard! The whole barracks talks of nothing but you, and my soldiers strike as never before. I’m proud of them… and of you.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
   'venues.lodge.name': 'The Builders’ Lodge', // La Loge des bâtisseurs
-  'venues.lodge.title': 'The Right Stone', // La bonne pierre
-  'venues.lodge.unit': 'stones set', // pierres posées
-  'venues.lodge.how': 'Pick the only stone that fits the hole in the wall.', // Choisissez la seule pierre qui entre dans le trou du mur.
-  'venues.lodge.say': 'A builder’s lesson, in three glances:', // Une leçon de bâtisseuse, en trois coups d’œil :
-  'venues.lodge.steps[0]': 'A hole is left', // Il reste un trou
-  'venues.lodge.steps[1]': 'Only one stone fits', // Une seule pierre y entre
-  'venues.lodge.steps[2]': '{n} faults: the wall falls', // {n} fautes : le mur tombe
-  'venues.lodge.news[turn].text': 'The stones come turned', // Les pierres arrivent tournées
-  'venues.lodge.news[mirror].text': 'Flipped, it never fits', // Retournée, elle n’entre jamais
-  'venues.lodge.legend[0]': 'Right stone: {n}', // Bonne pierre : {n}
-  'venues.lodge.legend[1]': 'Quick, in a chain: {n}', // Vite, en chaîne : {n}
+  'venues.lodge.title': 'Aveline’s Quarter', // Le quartier d’Aveline
+  'venues.lodge.unit': 'points', // points
+  'venues.lodge.how': 'Remember Aveline’s quarter, then rebuild it from memory.', // Retenez le quartier d’Aveline, puis rebâtissez-le de mémoire.
+  'venues.lodge.say': 'A builder’s lesson: look closely, then rebuild.', // Une leçon de bâtisseuse : regardez bien, puis rebâtissez.
+  'venues.lodge.steps[0]': 'Remember the quarter', // Retenez le quartier
+  'venues.lodge.steps[1]': 'Rebuild it from memory', // Rebâtissez-le de mémoire
+  'venues.lodge.steps[2]': 'Look again: −{n} points', // Revoir le plan : −{n} points
+  'venues.lodge.news[turn].text': 'Turned plan: follow the flag', // Plan tourné : suivez le drapeau
+  'venues.lodge.legend[0]': 'Right building: +{n}', // Bâtiment juste : +{n}
+  'venues.lodge.legend[1]': 'Wrong building: −{n}', // Bâtiment faux : −{n}
+  'venues.lodge.legend[2]': 'Perfect quarter: +{n}', // Quartier parfait : +{n}
   'venues.lodge.greet': 'Welcome to the Lodge, burgomaster! This is where I draw up the plans of Aubeval, and where my journeymen learn the trade. A good builder picks a stone at a glance: come and show me yours, and my plans will have you building for less.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
   'venues.lodge.ready[0]': 'The wall is waiting for its next course. Take a stone, burgomaster, and let’s see that eye of yours!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
   'venues.lodge.ready[1]': 'My journeymen have cut a whole heap of stones, and only one fits the hole. Up to you to find it, and quickly!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !

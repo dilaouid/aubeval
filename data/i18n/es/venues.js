@@ -256,17 +256,17 @@ I18N.add('es', {
   'venues.barracks.after[2]': '¡Buena guardia! La tropa ha mirado, y golpeará más fuerte. No lo diré dos veces.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
   'venues.barracks.after[3]': '¡Una guardia de leyenda! En todo el cuartel no se habla más que de usted, y mis soldados golpean como nunca. Estoy orgullosa de ellos… y de usted.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
   'venues.lodge.name': 'La Logia de los constructores', // La Loge des bâtisseurs
-  'venues.lodge.title': 'La piedra justa', // La bonne pierre
-  'venues.lodge.unit': 'piedras puestas', // pierres posées
-  'venues.lodge.how': 'Elija la única piedra que encaja en el hueco del muro.', // Choisissez la seule pierre qui entre dans le trou du mur.
-  'venues.lodge.say': 'Una lección de constructora, en tres vistazos:', // Une leçon de bâtisseuse, en trois coups d’œil :
-  'venues.lodge.steps[0]': 'Queda un hueco', // Il reste un trou
-  'venues.lodge.steps[1]': 'Solo una piedra encaja', // Une seule pierre y entre
-  'venues.lodge.steps[2]': '{n} fallos: el muro cae', // {n} fautes : le mur tombe
-  'venues.lodge.news[turn].text': 'Las piedras llegan giradas', // Les pierres arrivent tournées
-  'venues.lodge.news[mirror].text': 'Volteada, nunca encaja', // Retournée, elle n’entre jamais
-  'venues.lodge.legend[0]': 'Piedra correcta: {n}', // Bonne pierre : {n}
-  'venues.lodge.legend[1]': 'Rápido, en cadena: {n}', // Vite, en chaîne : {n}
+  'venues.lodge.title': 'El barrio de Aveline', // Le quartier d’Aveline
+  'venues.lodge.unit': 'puntos', // points
+  'venues.lodge.how': 'Memorice el barrio de Aveline y vuelva a construirlo de memoria.', // Retenez le quartier d’Aveline, puis rebâtissez-le de mémoire.
+  'venues.lodge.say': 'Una lección de constructora: mire bien y reconstruya.', // Une leçon de bâtisseuse : regardez bien, puis rebâtissez.
+  'venues.lodge.steps[0]': 'Memorice el barrio', // Retenez le quartier
+  'venues.lodge.steps[1]': 'Reconstrúyalo de memoria', // Rebâtissez-le de mémoire
+  'venues.lodge.steps[2]': 'Volver a ver: −{n} puntos', // Revoir le plan : −{n} points
+  'venues.lodge.news[turn].text': 'Plano girado: siga la bandera', // Plan tourné : suivez le drapeau
+  'venues.lodge.legend[0]': 'Edificio correcto: +{n}', // Bâtiment juste : +{n}
+  'venues.lodge.legend[1]': 'Edificio erróneo: −{n}', // Bâtiment faux : −{n}
+  'venues.lodge.legend[2]': 'Barrio perfecto: +{n}', // Quartier parfait : +{n}
   'venues.lodge.greet': '¡{g:Bienvenido|Bienvenida} a la Logia, burgomaestre! Aquí trazo los planos de Aubeval, y aquí aprenden el oficio mis oficiales. Un buen constructor elige su piedra de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
   'venues.lodge.ready[0]': 'El muro espera su próxima hilada. Tome una piedra, burgomaestre, ¡y veamos ese ojo!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
   'venues.lodge.ready[1]': 'Mis oficiales han tallado un montón de piedras, y solo una encaja en el hueco. ¡A usted le toca encontrarla, y deprisa!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !

@@ -1,176 +1,149 @@
 // PROTOTYPE - NOT FOR PRODUCTION
-// The builders' lodge's mini-game, « La bonne pierre » (js/venue.js hosts it, js/minigames.js registers it).
-// A wall is going up, with a hole left in its top course. Four cut stones lie below; exactly one fits
-// the hole (js/stones.js: turned is allowed, flipped over never). Its key (1 to 4) or a click on it sets
-// it: 1 point, the wall rises a course and a new hole is left. Right stones set quickly one after the
-// other (config lodge_chain_gap) make a chain, and from the lodge_chain-th on each is worth 2. A wrong
-// stone is a fault and breaks the chain; at config lodge_strikes the wall comes down. Each win in a row
-// grows the shapes, then shows the stones turned, then slips the right one's mirror among the wrong ones.
-// The rules (update, choose, auto) never draw: only draw() does.
+// The builders' lodge's mini-game, « Le quartier d'Aveline » (js/venue.js hosts it, js/minigames.js registers it).
+// Aveline shows a small quarter she built (js/blueprint.js draws it) for a few seconds, then hides it:
+// rebuild it from memory on an empty grid. Each building right is a point, each wrong one costs one, a
+// perfect quarter and a quick hand earn more. « Revoir le plan » shows it again for a moment, at a price.
+// Three quarters under half alike end the lesson. The streak grows the grid, the buildings and the
+// kinds, shortens the look, and from config'd wins shows the plan turned (a flag marks the same corner).
+// Phases: show (the plan) → build (the grid; peek shows the plan again) → reveal (both side by side,
+// the clock stopped) → show again. The rules (update, the actions, auto) never draw: only draw() does.
 // Content in data/venues.js (venues.lodge), knobs in config.js (lodge_*). Nothing here is saved.
 'use strict';
 
 (() => {
-  const { PANEL, head, scoreBox, stepPops, drawPops } = Minigames.kit;
-  const SET = 0.35;    // seconds a right stone takes to go in, before the next hole is left
-  const SHOWN = 0.35;  // seconds a wrong stone's flash shows
-  const CELL = 26, COLS = 11, ROWS = 14, HOLE_ROW = 6; // the wall, in cells: the hole's top is on HOLE_ROW
-  const WX = 300 - COLS * CELL / 2, WY = 520 - ROWS * CELL; // the wall's top left; the keeper stands in the screen's middle
-  const STONE = '#c8b48c', STONE_HI = '#e8d8b0', STONE_LO = '#8a7650', WALL = '#8a8274', WALL_HI = '#a8a090', WALL_LO = '#5a5448', DARK = '#1a1410';
-
-  /** One cell of masonry at (x, y), `s` pixels wide: its face, a light top and left, a dark bottom and right. */
-  function block(x, y, s, face, hi, lo) {
-    ctx.fillStyle = lo; ctx.fillRect(x, y, s, s);
-    ctx.fillStyle = face; ctx.fillRect(x + 1, y + 1, s - 3, s - 3);
-    ctx.fillStyle = hi; ctx.fillRect(x + 1, y + 1, s - 3, 2); ctx.fillRect(x + 1, y + 1, 2, s - 3);
-  }
-  /** The size of a list of cells: { w, h } in cells. */
-  function size(cells) { let w = 0, h = 0; for (const [x, y] of cells) { w = Math.max(w, x + 1); h = Math.max(h, y + 1); } return { w, h }; }
+  const { head, scoreBox, stepPops, drawPops } = Minigames.kit;
+  // the keys, by what they do: digits build the palette's buildings, these clear, the arrows move the cursor
+  const DIGITS = [1, 2, 3, 4, 5, 6].map(n => ['Digit' + n, 'Numpad' + n]);
+  const CLEAR = ['Digit0', 'Numpad0', 'Delete', 'Backspace'], ENTER = ['Enter', 'NumpadEnter'], PEEK = ['Space'];
+  const ARROWS = [['ArrowRight', 1, 0], ['ArrowLeft', -1, 0], ['ArrowDown', 0, 1], ['ArrowUp', 0, -1]];
 
   function lodge(o) {
-    const d = o.d, L = o.level, total = tune.lodge_time;
-    // round: the hole and its four stones ({ hole, stones, right, tried }); setting: a right stone going in;
-    // last: when the last right stone was set (the chain); keys: the digits held down at the last step
-    const g = { score: 0, done: false, lost: false, why: '', t: 0, set: 0, strikes: 0, chain: 0, last: -Infinity,
-      round: null, setting: null, pops: [], flash: null, keys: {}, bot: 0 };
-    /** A new hole and its stones, at the difficulty of the streak. */
-    function next() { const r = Stones.round(L, d.ramp, rng); r.tried = [false, false, false, false]; return r; }
-    g.round = next();
-    /** The wall's column of the hole's left edge: the hole is cut in the middle of the course. */
-    const holeCol = cells => Math.floor((COLS - size(cells).w) / 2);
-    const pop = (x, y, str, color) => g.pops.push({ x, y, str, color, size: 22, t: 0 });
+    const d = o.d, L = o.level, total = tune.lodge_time, sp = Blueprint.spec(L, d.ramp);
+    // plan: Aveline's (canonical; shown turned by plan.turn); grid: the player's, canonical; left: seconds left in
+    // the timed phase; built: seconds since the plan hid; keys: what was down at the last step; bot/botI: the auto's
+    const g = { score: 0, done: false, lost: false, why: '', t: 0, phase: 'show', plan: null, grid: null, cursor: { x: 0, y: 0 },
+      pick: 0, misses: 0, quarters: 0, last: null, built: 0, left: 0, pops: [], keys: {}, bot: 0, botI: 0 };
+    const pop = (str, color, size) => g.pops.push({ x: 640, y: 120, str, color, size: size || 24, t: 0 });
 
-    /** Stone `i` of the four is laid in the hole: it fits, or it is a fault. A stone tried once and refused counts no more. */
-    function choose(i) {
-      const r = g.round;
-      if (g.done || !r || !(i >= 0 && i < 4) || r.tried[i]) return;
-      if (i !== r.right) {
-        r.tried[i] = true; g.strikes++; g.chain = 0; g.flash = { i, t: SHOWN };
-        pop(300, WY + HOLE_ROW * CELL - 20, tr('lg_wrong'), UI.C.bad); sfx('error'); o.react('cross');
-        if (g.strikes >= tune.lodge_strikes) { g.done = true; g.lost = true; g.why = tr('lg_end_strikes'); sfx('hurt'); }
-        return;
-      }
-      g.chain = g.t - g.last <= tune.lodge_chain_gap ? g.chain + 1 : 1;
-      g.last = g.t;
-      const worth = g.chain >= tune.lodge_chain ? 2 : 1;
-      g.score += worth; g.set++;
-      if (worth > 1) { pop(300, WY + HOLE_ROW * CELL - 20, tr('lg_chained', { n: worth }), UI.C.gold); sfx('crit'); }
-      else { pop(300, WY + HOLE_ROW * CELL - 20, tr('lg_set', { n: worth }), UI.C.good); sfx('place'); }
-      o.react(g.chain === tune.lodge_chain ? 'chain' : 'glad');
-      g.setting = { hole: r.hole, t: SET }; g.round = null;
+    /** A new plan, shown; the grid emptied, the cursor in its middle. */
+    function next() {
+      g.plan = Blueprint.draw(L, d.ramp, d.kinds, rng, g.plan);
+      g.grid = new Array(g.plan.side * g.plan.side).fill(null);
+      g.phase = 'show'; g.left = sp.show; g.built = 0; g.bot = 0; g.botI = 0;
+      const mid = Math.floor(g.plan.side / 2); g.cursor = { x: mid, y: mid };
+      if (g.pick >= g.plan.kinds.length) g.pick = 0;
+    }
+    next();
+
+    /** « J'ai vu ! »: the plan hides and the grid waits. */
+    function seen() { if (g.done || g.phase !== 'show') return; g.phase = 'build'; g.built = 0; sfx('click'); }
+    /** The palette's building `k` is the one a click builds. */
+    function select(k) { if (!g.done && k >= 0 && k < g.plan.kinds.length) g.pick = k; }
+    /** Builds the palette's building `k` on the cell (x, y), or clears it with k = −1. */
+    function put(x, y, k) {
+      const n = g.plan.side;
+      if (g.done || g.phase !== 'build' || !(x >= 0 && x < n && y >= 0 && y < n)) return;
+      if (k === -1) { if (g.grid[y * n + x]) { g.grid[y * n + x] = null; sfx('click'); } return; }
+      if (!(k >= 0 && k < g.plan.kinds.length)) return;
+      g.grid[y * n + x] = g.plan.kinds[k]; sfx('place');
+    }
+    /** The cursor one cell over, never off the grid. */
+    function move(dx, dy) {
+      if (g.done || g.phase !== 'build') return;
+      const n = g.plan.side;
+      g.cursor = { x: clamp(g.cursor.x + dx, 0, n - 1), y: clamp(g.cursor.y + dy, 0, n - 1) };
+    }
+    /** « Revoir le plan »: it shows again for a moment, and costs points even at none. */
+    function peek() {
+      if (g.done || g.phase !== 'build') return;
+      g.score -= tune.lodge_peek_cost; g.phase = 'peek'; g.left = tune.lodge_peek_time; sfx('click');
+    }
+    /** « Valider »: the grid against the plan, the quarter's points; under half alike is a miss, and enough end the lesson. */
+    function validate() {
+      if (g.done || g.phase !== 'build') return;
+      const cmp = Blueprint.compare(g.plan.cells, g.grid), pts = Blueprint.points(cmp, g.built, g.plan.cells.filter(Boolean).length, tune);
+      g.score += pts.total; g.quarters++;
+      g.last = { cmp, pts }; g.phase = 'reveal'; g.left = tune.lodge_reveal_time;
+      if (cmp.likeness < 0.5) {
+        g.misses++; pop(tr('lg_miss'), UI.C.bad); sfx('error'); o.react('cross');
+        if (g.misses >= tune.lodge_misses) { g.done = true; g.lost = true; g.why = tr('lg_end_misses'); sfx('hurt'); }
+      } else if (cmp.likeness === 1) { pop(tr('lg_perfect', { n: pts.total }), UI.C.gold, 28); sfx('crit'); o.react('chain'); }
+      else { pop(tr('lg_quarter', { n: pts.total }), UI.C.good); sfx('place'); o.react('glad'); }
+    }
+
+    /** Whether one of the keys went down at this step (held down, it counts once). */
+    function hit(name, codes) {
+      const down = codes.some(c => pressed(c)), was = g.keys[name];
+      g.keys[name] = down;
+      return down && !was;
     }
     function update(dt) {
-      g.t += dt;
-      // a digit counts when it goes down: one held down sets one stone, and not the next hole's
-      for (let i = 0; i < 4; i++) { const down = !!(pressed('Digit' + (i + 1)) || pressed('Numpad' + (i + 1))); if (down && !g.keys[i]) choose(i); g.keys[i] = down; }
-      if (g.setting && (g.setting.t -= dt) <= 0) { g.setting = null; if (!g.done) g.round = next(); }
-      if (g.flash && (g.flash.t -= dt) <= 0) g.flash = null;
+      if (g.done) return;
+      // the keys, read at every step so that one held down counts once, whatever the phase
+      const enter = hit('enter', ENTER), space = hit('peek', PEEK), clear = hit('clear', CLEAR);
+      const digit = DIGITS.findIndex((codes, k) => hit('d' + k, codes)), arrow = ARROWS.find(([c]) => hit(c, [c]));
+      if (g.phase === 'show' && enter) seen();
+      else if (g.phase === 'build') {
+        if (enter) validate();
+        else if (space) peek();
+        else {
+          if (arrow) move(arrow[1], arrow[2]);
+          if (digit >= 0) { select(digit); put(g.cursor.x, g.cursor.y, digit); }
+          if (clear) put(g.cursor.x, g.cursor.y, -1);
+        }
+      }
+      // the clock, stopped while the quarters are compared
+      if (g.phase !== 'reveal') g.t += dt;
+      if (g.phase === 'build' || g.phase === 'peek') g.built += dt;
+      if (g.phase !== 'build' && (g.left -= dt) <= 0) {
+        if (g.phase === 'show' || g.phase === 'peek') g.phase = 'build';
+        else if (g.phase === 'reveal' && !g.done) next();
+      }
       stepPops(g.pops, dt);
-      if (g.t >= total) g.done = true;
+      if (g.t >= total) g.done = true; // a quarter not yet checked scores nothing, and is no miss
     }
-    /** A number in 0..1 that stays the same for the n-th stone laid: whether the game's own hand slips on it. */
+
+    /** A number in 0..1 that stays the same for the n-th building laid: whether the game's own hand slips on it. */
     const roll = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
-    /** The game's own hand: the right stone, or on `err` of the stones a wrong one; a stone every `pace` seconds at most. */
+    /**
+     * The game's own hand: looks at the plan `pace` seconds a building, then builds it cell by cell, one
+     * every `pace` seconds, the next kind of the palette instead on `err` of them, and checks; never peeks.
+     */
     function auto(dt, bot) {
-      g.bot -= dt;
-      const r = g.round;
-      if (g.bot > 0 || !r || g.done) return;
-      let i = r.right;
-      if (roll(g.set + g.strikes) < (bot.err || 0)) for (let k = 1; k < 4; k++) { const j = (r.right + k) % 4; if (!r.tried[j]) { i = j; break; } }
-      choose(i);
-      g.bot = bot.pace;
+      if (g.done) return;
+      g.bot += dt;
+      const cells = g.plan.cells, n = g.plan.side, todo = cells.map((k, i) => k ? i : -1).filter(i => i >= 0);
+      if (g.phase === 'show') { if (g.bot >= todo.length * bot.pace) { g.bot = 0; seen(); } return; }
+      if (g.phase !== 'build' || g.bot < bot.pace) return;
+      g.bot = 0;
+      if (g.botI >= todo.length) { validate(); return; }
+      const at = todo[g.botI], k = g.plan.kinds.indexOf(cells[at]), slip = roll(g.quarters * 16 + g.botI) < (bot.err || 0);
+      put(at % n, Math.floor(at / n), slip ? (k + 1) % g.plan.kinds.length : k);
+      g.botI++;
+      if (g.botI >= todo.length) validate();
     }
 
     function draw() {
-      const C = UI.C, r = g.round, hole = r ? r.hole : g.setting ? g.setting.hole : null;
-      head(d, total - g.t, total); scoreBox(d, tr('lg_score'), g.score);
-      UI.plate(1118, 78, 150, 34); UI.label(`${tr('lg_faults_n')}${tr('colon')}${g.strikes} / ${tune.lodge_strikes}`, 1193, 96, 14, g.strikes ? C.bad : C.dim);
-      // the wall: its courses from the hole's top down, the hole dark in them; the darker stones climb a course with each one set
-      const hc = hole ? holeCol(hole) : 0, cut = new Set(hole ? hole.map(([x, y]) => (hc + x) + ',' + (HOLE_ROW + y)) : []);
-      const going = g.setting && !r ? g.setting.t / SET : 0; // a right stone dropping in: 1 when just chosen, 0 once set
-      for (let row = HOLE_ROW; row < ROWS; row++) for (let col = 0; col < COLS; col++) {
-        const x = WX + col * CELL, y = WY + row * CELL;
-        if (cut.has(col + ',' + row)) {
-          if (g.setting && !r) block(x, y - going * 40, CELL, STONE, STONE_HI, STONE_LO); else { ctx.fillStyle = DARK; ctx.fillRect(x, y, CELL, CELL); }
-          continue;
-        }
-        const shade = (row + g.set + col * 3) % 4 === 0;
-        block(x, y, CELL, shade ? WALL_LO : WALL, WALL_HI, WALL_LO);
-      }
-      ctx.fillStyle = C.ink; ctx.fillRect(WX - 6, WY + ROWS * CELL, COLS * CELL + 12, 6);
-      text(tr('vn_res_score', { n: g.set, unit: d.unit }), 300, WY + ROWS * CELL + 26, 14, C.dim, 'center', true);
-      if (g.chain >= 2) text(tr('lg_chain', { n: g.chain }), 300, WY + HOLE_ROW * CELL - 50, 18, g.chain >= tune.lodge_chain ? C.gold : C.text, 'center', true);
-      text(tr('lg_keys'), 640, 546, 13, C.text, 'center', true);
-      UI.panel(PANEL.x, PANEL.y, PANEL.w, PANEL.h);
-      // the four stones, numbered: a click, or its digit
-      const bw = 290, gap = 14, x0 = 640 - (4 * bw + 3 * gap) / 2, y = 574, bh = 122;
-      for (let i = 0; i < 4; i++) {
-        const x = x0 + i * (bw + gap), st = r ? r.stones[i] : null, tried = !!(r && r.tried[i]);
-        UI.button(x, y, bw, bh, '', () => choose(i), { disabled: tried }); // while a stone goes in, choose() lets a click pass
-        if (g.flash && g.flash.i === i) { ctx.fillStyle = 'rgba(220,40,40,' + (0.5 * g.flash.t / SHOWN) + ')'; ctx.fillRect(x + 6, y + 6, bw - 12, bh - 12); }
-        if (st) {
-          const sz = size(st), s = Math.min(20, Math.floor(96 / Math.max(sz.w, sz.h))), sx = x + bw / 2 - sz.w * s / 2 + 12, sy = y + bh / 2 - sz.h * s / 2;
-          ctx.globalAlpha = tried ? 0.35 : 1;
-          for (const [cx, cy] of st) block(sx + cx * s, sy + cy * s, s, STONE, STONE_HI, STONE_LO);
-          ctx.globalAlpha = 1;
-          if (tried) { ctx.strokeStyle = C.bad; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x + bw / 2 - 30, y + 30); ctx.lineTo(x + bw / 2 + 30, y + bh - 30); ctx.moveTo(x + bw / 2 + 30, y + 30); ctx.lineTo(x + bw / 2 - 30, y + bh - 30); ctx.stroke(); }
-        }
-        UI.box(x + 10, y + 10, 26, 26, C.ink, C.lineL); UI.label(String(i + 1), x + 23, y + 24, 15, C.gold);
-      }
+      head(d, total - g.t, total); scoreBox(d, tr('lg_score'), Math.round(g.score));
       drawPops(g.pops);
     }
-    return Object.assign(g, { update, draw, auto, choose });
+    return Object.assign(g, { update, draw, auto, seen, select, put, move, peek, validate });
   }
 
-  /** The intro's cards: the hole, the one stone that fits, the faults that bring the wall down; turned stones and the mirror when they come. */
+  /** The intro's cards: look at the quarter, rebuild it from memory, a second look costs; the turned plan when it comes. */
   function howto(o) {
-    const d = o.d, R = d.ramp, C = UI.C, { fill, mark, keyBox } = Minigames.kit;
-    let seed = 0, r = null; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
-    for (let k = 7; k < 99; k++) { seed = k; r = Stones.round(0, R, rnd); if (!Stones.fits(r.hole, Stones.mirror(r.hole))) break; } // the same hole on every visit, one its mirror does not fit
-    const hole = r.hole;
-    /** A stone's cells at (x, y), `s` pixels a cell; `cx` true: (x, y) is its middle. */
-    function stone(cells, x, y, s, cx) {
-      const sz = size(cells), x0 = cx ? x - sz.w * s / 2 : x, y0 = cx ? y - sz.h * s / 2 : y;
-      for (const [a, b] of cells) block(x0 + a * s, y0 + b * s, s, STONE, STONE_HI, STONE_LO);
-    }
-    /** A piece of wall, `cols` wide and `rows` high, the hole cut in its top course; (x, y) its top left. */
-    function wall(x, y, s, cols, rows) {
-      const hs = size(hole), hc = Math.floor((cols - hs.w) / 2), cut = new Set(hole.map(([a, b]) => (hc + a) + ',' + b));
-      for (let row = 0; row < rows; row++) for (let col = 0; col < cols; col++) {
-        if (cut.has(col + ',' + row)) { ctx.fillStyle = DARK; ctx.fillRect(x + col * s, y + row * s, s, s); continue; }
-        block(x + col * s, y + row * s, s, (row + col * 3) % 4 ? WALL : WALL_LO, WALL_HI, WALL_LO);
-      }
-    }
-    const S = 16, cols = 9;
+    const d = o.d, R = d.ramp, C = UI.C, { fill, news, KEY } = Minigames.kit, sp = Blueprint.spec(o.level, R);
     const cards = [
-      { text: d.steps[0], keys: [], draw: (x, y, w, h) => wall(x + w / 2 - cols * S / 2, y + 14, S, cols, Math.floor((h - 20) / S)) },
-      { text: d.steps[1], keys: ['1–4', Minigames.kit.KEY.click()], draw(x, y, w, h) {
-        const step = (w - 8) / 4, x0 = x + w / 2 - 2 * step;
-        for (let i = 0; i < 4; i++) {
-          const cx = x0 + i * step + step / 2, cy = y + h / 2 - 6, sz = size(r.stones[i]), s = Math.min(16, Math.floor((step - 12) / Math.max(sz.w, sz.h)));
-          stone(r.stones[i], cx, cy, s, true); keyBox(cx - 11, y + 4, i + 1);
-          mark(i === r.right, cx, y + h - 22);
-        }
-      } },
-      { text: fill(d.steps[2], { n: tune.lodge_strikes }), keys: [], draw(x, y, w, h) {
-        for (let i = 0; i < 7; i++) { const a = i * 0.9, sx = x + w / 2 - 70 + i * 22, sy = y + h - 30 - (i % 3) * 14; ctx.save(); ctx.translate(sx, sy); ctx.rotate(a); block(-9, -9, 18, WALL, WALL_HI, WALL_LO); ctx.restore(); }
-        UI.label('× ' + tune.lodge_strikes, x + w / 2, y + 30, 20, C.bad);
-      } },
+      { text: d.steps[0], keys: [], draw() {} },
+      { text: d.steps[1], keys: ['1–' + sp.kinds, '←↑↓→', KEY.click()], draw() {} },
+      { text: fill(d.steps[2], { n: tune.lodge_peek_cost }), keys: [KEY.space()], draw() {} },
     ];
-    if (o.level >= R.turnFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'turn'), keys: [], draw(x, y, w, h) {
-      const cy = y + h / 2 - 6, s = 18, t = Stones.turn(hole);
-      stone(t, x + w / 2 - 60, cy, s, true);
-      ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(x + w / 2, cy, 16, Math.PI * 1.1, Math.PI * 2.3); ctx.stroke();
-      ctx.strokeStyle = C.gold; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x + w / 2, cy, 16, Math.PI * 1.1, Math.PI * 2.3); ctx.stroke();
-      stone(hole, x + w / 2 + 60, cy, s, true); mark(true, x + w / 2 + 60, y + h - 18);
-    } });
-    if (o.level >= R.mirrorFrom) cards.push({ fresh: true, text: Minigames.kit.news(d, 'mirror'), keys: [], draw(x, y, w, h) {
-      const cy = y + h / 2 - 6, s = 18;
-      stone(hole, x + w / 2 - 60, cy, s, true); mark(true, x + w / 2 - 60, y + h - 18);
-      ctx.fillStyle = C.lineL; ctx.fillRect(x + w / 2 - 1, y + 16, 3, h - 32); // the mirror's line
-      stone(Stones.mirror(hole), x + w / 2 + 60, cy, s, true); mark(false, x + w / 2 + 60, y + h - 18);
-    } });
-    return { cards, legend: [{ text: fill(d.legend[0], { n: 1 }) }, { text: fill(d.legend[1], { n: 2 }), color: C.gold }] };
+    if (o.level >= R.turnedFrom) cards.push({ fresh: true, text: news(d, 'turn'), keys: [], draw() {} });
+    return { cards, legend: [
+      { text: fill(d.legend[0], { n: 1 }) },
+      { text: fill(d.legend[1], { n: 1 }), color: C.bad },
+      { text: fill(d.legend[2], { n: tune.lodge_perfect }), color: C.gold },
+    ] };
   }
 
   Minigames.add('lodge', lodge, howto);

@@ -118,7 +118,7 @@ s'écroulait). Réglage `lodge_misses`.
   un plan parfait vaut le bonus, une main qui se trompe marque moins).
 
 ## Ce qui doit être vrai à la fin
-1. Le joueur automatique sans erreur, à un rythme humain rapide *(mon choix : `pace` 0,35 s)*, obtient
+1. Le joueur automatique sans erreur, à un rythme humain rapide *(mon choix : `pace` 0,8 s par bâtiment ; à 0,35 s il irait bien plus vite qu’une personne, et les médailles réglées sur lui seraient trop dures)*, obtient
    l'or au niveau 0 et au moins le bronze au niveau 10 ; les médailles sont réglées pour cela, puis
    vérifiées à la main pour qu'un humain attentif décroche l'argent au niveau 0.
 2. Le jeu se joue entièrement au clavier et entièrement à la souris, se met en pause (Échap),
@@ -131,4 +131,4 @@ s'écroulait). Réglage `lodge_misses`.
 ## Mes choix (à corriger si besoin)
 - Chrono arrêté pendant la comparaison ; drapeau plutôt que boussole ; seuils de vitesse par bâtiment ;
   score qui peut passer sous 0 ; quartier inachevé à la fin = 0, sans raté ; plafond de 60 % des cases ;
-  sortes de bâtiments de départ ; rythme du joueur automatique pour régler les médailles.
+  sortes de bâtiments de départ ; rythme du joueur automatique pour régler les médailles (0,8 s ; médailles 30 / 55 / 75).
