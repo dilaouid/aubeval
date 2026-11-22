@@ -127,7 +127,29 @@ def weld(base, redrawn):
     out = base.copy()
     box = (SEAM_X, 0, BW, SEAM_Y)
     out.paste(slid.crop(box), box)
+    # the handle and the pommel hang below the box: from its last row, follow the redraw's pixels down
+    # wherever the hero has none of his own
+    B, S, O = base.load(), slid.load(), out.load()
+    todo = [(x, SEAM_Y) for x in range(SEAM_X, BW) if S[x, SEAM_Y - 1][3] >= 40]
+    seen = set()
+    while todo:
+        x, y = todo.pop()
+        if (x, y) in seen or not (SEAM_X <= x < BW and SEAM_Y <= y < BH) or S[x, y][3] < 40 or B[x, y][3] > 0:
+            continue
+        seen.add((x, y))
+        O[x, y] = S[x, y]
+        todo += [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
     return out, (dx, dy), n
+
+
+def only_sword_differs(base, tier):
+    """A tier is its hero's battle sprite outside the sword's box, but for the handle that may hang below it where the hero has no pixel."""
+    base, tier = base.convert('RGBA'), tier.convert('RGBA')
+    if base.size != tier.size:
+        return False
+    B, T = base.load(), tier.load()
+    return all(B[x, y] == T[x, y] for y in range(BH) for x in range(BW)
+               if not (x >= SEAM_X and (y < SEAM_Y or B[x, y][3] == 0)))
 
 
 def battle_tiers(hero):
@@ -147,14 +169,8 @@ def battle_tiers(hero):
 
 
 def same_body(hero, path):
-    """A tier's sprite is its hero's battle sprite outside the sword's box."""
-    a, b = Image.open(BATTLE % hero).convert('RGBA'), Image.open(path).convert('RGBA')
-    if a.size != b.size:
-        return False
-    hole = Image.new('RGBA', (BW - SEAM_X, SEAM_Y), (0, 0, 0, 0))
-    a.paste(hole, (SEAM_X, 0))
-    b.paste(hole, (SEAM_X, 0))
-    return a.tobytes() == b.tobytes()
+    """A built tier is its hero's built battle sprite but for the sword."""
+    return os.path.exists(BATTLE % hero) and only_sword_differs(Image.open(BATTLE % hero), Image.open(path))
 
 
 def unit(hero):

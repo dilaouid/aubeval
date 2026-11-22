@@ -24,15 +24,17 @@ maelle	battle	job 1d427e99-5243-4f4e-bf9b-fea4a079ccc1, candidate 1	full body ch
 #   (made on 2026-11-22). Every request began with "exactly the same chibi knight battle sprite as the reference, redrawn pixel for pixel: same pose,
 #   same size, same face and hair, same armour, same cape, same shield [...] Only the sword changes:". The candidate kept is raw/<hero>/sword_tN.png,
 #   untouched; tools/make_heroes.py keeps its sword only and sets it on battle.png. Two first batches were dropped and asked again with a second
-#   reference image, another hero's finished sprite "for its sword only": Tancrède's steel sword (job 4341e81d: axes, spears, no sword) and Aldric's
-#   runic blade (job 7f13025c: every blade cut by the top edge).
-aldric	sword_t2	job aec07f68-7b92-4c38-9c49-dc8ed8127114, candidate 5 (c04)	a broader polished steel longsword held upright in the same hand, with a wide golden crossguard and a round golden pommel
+#   reference image, another hero's finished sprite "for its sword only": Tancrède's steel sword (job 4341e81d: axes, spears, no sword), Aldric's
+#   runic blade (job 7f13025c: every blade cut by the top edge) and Aldric's steel sword (job aec07f68: drawn two rows low, its tip on the top edge).
+#   The steel sword asked plainly, for Isaure and Maëlle: "a broader polished steel longsword held upright in the same hand, with a wide golden
+#   crossguard and a round golden pommel".
+aldric	sword_t2	job 89cbadf6-af08-45f3-9b25-1e1f7b9f03c1 (seed 5), candidate 3 (c02); second reference: Tancrède's built hero_battle_tancrede_t2.png	the steel longsword of the second reference, a broad polished steel blade with a pointed tip well below the top edge, a wide golden crossguard and a round golden pommel
 aldric	sword_t3	job 2ef8061d-2618-446d-9e69-dac20fd6a0af (seed 11), candidate 15 (c14); second reference: Tancrède's built hero_battle_tancrede_t3.png	the runic blade of the second reference, a broad blade engraved with runes glowing light cyan blue, with a pointed tip well below the top edge, a dark crossguard with a small blue gem
-tancrede	sword_t2	job d4a0b95e-683c-4cec-899c-57dbf5852ffe (seed 7), candidate 9 (c08); second reference: Aldric's built hero_battle_aldric_t2.png	the steel longsword of the second reference, a broad polished steel blade with a wide golden crossguard and a round golden pommel
+tancrede	sword_t2	job d4a0b95e-683c-4cec-899c-57dbf5852ffe (seed 7), candidate 9 (c08); second reference: Aldric's first steel sword welded on his sprite (job aec07f68, candidate 5, since replaced)	the steel longsword of the second reference, a broad polished steel blade with a wide golden crossguard and a round golden pommel
 tancrede	sword_t3	job 125e81ed-93c1-4e4b-bd42-3b48a58c778f, candidate 13 (c12)	a great runic blade held upright in the same hand, longer and wider, dark steel engraved with runes that glow light cyan blue, a glowing light blue cutting edge, a dark crossguard with a small blue gem
-isaure	sword_t2	job 37833db0-1e2f-47e2-97ab-63e0daf56ebd, candidate 14 (c13)	as Aldric's sword_t2
+isaure	sword_t2	job 37833db0-1e2f-47e2-97ab-63e0daf56ebd, candidate 14 (c13)	the steel sword asked plainly (above)
 isaure	sword_t3	job 56cf7ab9-576c-4960-91da-51815947d999, candidate 12 (c11)	as Tancrède's sword_t3
-maelle	sword_t2	job fe5e09cb-f2ab-4f6c-8b31-b77b5420ca8b, candidate 23 (c22)	as Aldric's sword_t2
+maelle	sword_t2	job fe5e09cb-f2ab-4f6c-8b31-b77b5420ca8b, candidate 23 (c22)	the steel sword asked plainly (above)
 maelle	sword_t3	job 15e4682f-1386-4202-a949-319c9a5f3f30, candidate 14 (c13)	as Tancrède's sword_t3
 # unit: create_character, mode v3, size 32, view low top-down, 8 directions. unit_walk: animate_character with the template 'walking' (6 frames a
 #   direction), as for Aldric (character 53719095-e735-4ef4-91c1-fbe00fbf11bd). The ZIP of each character is unpacked into raw/<hero>/unit/

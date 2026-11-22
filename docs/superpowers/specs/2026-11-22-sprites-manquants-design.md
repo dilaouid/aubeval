@@ -9,8 +9,10 @@ l'arme forgée ne se voit pas sur le héros. Les crédits PixelLab sont là : on
 ## Buts / non-buts
 - But : les sept bâtiments à un seul aspect (caféiers, brûlerie, café, chapelle, bergerie, tissage,
   orfèvre) changent d'allure aux niveaux 5, 10 et 15, comme la forge ou le marché.
-- But : Morgash, Zhara, Urgak et Skrit ont chacun leur sprite de duel, avec leur arme ; et les
-  chefs de guerre ont leur propre petite icône dans la file des tours.
+- But : Morgash, Zhara, Urgak et Skrit ont chacun leur sprite de duel, avec leur arme.
+  (Abandonné à l'exécution, le 2026-11-22 : « leur propre petite icône dans la file des tours ».
+  Le combat n'affiche pas de file des tours et rien ne lit l'`icon` d'un ennemi : l'image n'aurait
+  jamais été vue. À refaire le jour où une file des tours existe.)
 - But : les combats de boss se jouent dans un décor crépusculaire.
 - But : en combat, le héros tient l'arme qu'il a forgée (Épée d'acier, Fendeuse runique), pour les
   quatre héros.
