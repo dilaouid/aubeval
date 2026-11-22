@@ -274,7 +274,15 @@ DATA.venues = {
     // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
     // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
     // (config.js lodge_chain and lodge_chain_gap: what a chain is; lodge_strikes: the wrong stones the wall bears)
-    ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3 },
+    ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3,
+      // Aveline's quarter (js/blueprint.js): a `side` × `side` grid, one side more every `sideEvery` wins up to `sideMax`;
+      // `count` buildings, one more a win, at most `countMax` and `fill` of the cells; `kinds` kinds in the palette, one
+      // more every `kindsEvery` wins up to `kindsMax`; the plan shown `show` s, `showStep` less a win, `showMin` at least;
+      // shown turned from `turnedFrom` wins
+      side: 3, sideEvery: 3, sideMax: 5, count: 4, countMax: 9, fill: 0.6, kinds: 4, kindsEvery: 2, kindsMax: 6,
+      show: 5, showStep: 0.4, showMin: 2.5, turnedFrom: 3 },
+    // the buildings of Aveline's quarters, in the order of their keys (all 2 × 2 in the village, told apart at a glance)
+    kinds: ['house', 'bakery', 'forge', 'chapel', 'cafe', 'mage_tower'],
     greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
     ready: ['Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !', 'Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !', 'Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.'],
     wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],

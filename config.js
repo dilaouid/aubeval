@@ -229,6 +229,10 @@ window.CONFIG = {
   lodge_strikes: { value: 4, min: 1, max: 10, step: 1 },             // wrong stones that may be tried: at this many the wall comes down (the help text of DATA.venues.lodge names it: « Quatre mauvaises pierres »)
   lodge_chain: { value: 3, min: 2, max: 10, step: 1 },               // right stones in a row from which each one is worth 2 (the help text of DATA.venues.lodge names it: « dès la troisième »)
   lodge_chain_gap: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // seconds after a right stone past which the chain falls back
+  lodge_perfect: { value: 3, min: 0, max: 20, step: 1 },             // « Le quartier d'Aveline »: points a quarter rebuilt without a fault adds
+  lodge_quick_3: { value: 1.0, min: 0.2, max: 5, step: 0.1 },        // seconds per building of the plan within which a rebuilt quarter (half alike at least) earns 3 more
+  lodge_quick_2: { value: 1.6, min: 0.2, max: 5, step: 0.1 },        // ... 2 more
+  lodge_quick_1: { value: 2.2, min: 0.2, max: 5, step: 0.1 },        // ... 1 more
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----
   fog_cell: { value: 4, min: 2, max: 16, step: 1 },                  // tiles on one side of a cell of fog: a cell is seen or not, whole

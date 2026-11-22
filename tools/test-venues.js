@@ -39,12 +39,12 @@ function load() {
   ctx.tune = {};
   for (const k in ctx.CONFIG) if (ctx.CONFIG[k] && typeof ctx.CONFIG[k] === 'object') ctx.tune[k] = ctx.CONFIG[k].value;
   for (const f of T.I18N.files) run('data/' + f + '.js');
-  run('js/venue.js'); run('js/minigames.js'); run('js/stones.js');
+  run('js/venue.js'); run('js/minigames.js'); run('js/stones.js'); run('js/blueprint.js');
   const games = fs.readdirSync(path.join(ROOT, 'js')).filter(f => /^minigame-.+\.js$/.test(f)).sort();
   for (const f of games) run('js/' + f);
   run('js/music.js');
   const get = n => vm.runInContext(n, ctx);
-  return { ctx, DATA: ctx.DATA, tune: ctx.tune, Venue: get('Venue'), Minigames: get('Minigames'), Music: get('Music'), Stones: get('Stones'), games };
+  return { ctx, DATA: ctx.DATA, tune: ctx.tune, Venue: get('Venue'), Minigames: get('Minigames'), Music: get('Music'), Stones: get('Stones'), Blueprint: get('Blueprint'), games };
 }
 
 /**
@@ -451,6 +451,66 @@ test('stones: from the first win the stones are shown turned, from the third one
   assert.ok(turned > 300, 'the right stone is shown turned in only ' + turned + ' rounds of 500');
   assert.ok(checked > 200, 'too few shapes that are not their own mirror: ' + checked);
   assert.ok(mirrorEarly < rounds, 'a mirror in every round already before the third win');
+});
+
+// ---- The plans of Aveline's quarter (js/blueprint.js) ----
+const LR = L => L.DATA.venues.lodge;
+test('blueprint: the ramp grows as the spec says', () => {
+  const L = load(), { Blueprint } = L, R = LR(L).ramp, s = l => plain(Blueprint.spec(l, R));
+  assert.deepStrictEqual([0, 1, 2, 3, 4, 5, 6, 10].map(l => s(l).side), [3, 3, 3, 4, 4, 4, 5, 5]);
+  assert.deepStrictEqual([0, 1, 2, 3, 4, 5, 6, 10].map(l => s(l).count), [4, 5, 5, 7, 8, 9, 9, 9]);
+  assert.deepStrictEqual([0, 1, 2, 3, 4, 10].map(l => s(l).kinds), [4, 4, 5, 5, 6, 6]);
+  assert.strictEqual(s(0).show, 5); assert.strictEqual(s(10).show, 2.5);
+  assert.strictEqual(s(2).turned, false); assert.strictEqual(s(3).turned, true);
+});
+
+test('blueprint: every plan has its count, its kinds, two of a kind at most, and differs from the last', () => {
+  const L = load(), { Blueprint } = L, d = LR(L);
+  for (let lvl = 0; lvl <= 10; lvl++) {
+    let last;
+    for (let s = 0; s < 300; s++) {
+      const p = Blueprint.draw(lvl, d.ramp, d.kinds, seeded(s * 7 + lvl), last), sp = Blueprint.spec(lvl, d.ramp), at = lvl + '/' + s;
+      assert.strictEqual(p.side, sp.side, at); assert.strictEqual(p.cells.length, sp.side * sp.side, at);
+      const built = p.cells.filter(Boolean); assert.strictEqual(built.length, sp.count, at);
+      assert.deepStrictEqual(plain(p.kinds), plain(d.kinds.slice(0, sp.kinds)), at);
+      const n = {}; for (const k of built) { assert.ok(p.kinds.includes(k), at); n[k] = (n[k] || 0) + 1; }
+      assert.ok(Object.values(n).every(v => v <= 2), at + ' too many of a kind');
+      assert.ok(Object.keys(n).length >= Math.min(3, sp.kinds), at + ' too few kinds');
+      assert.ok(sp.turned ? p.turn >= 1 && p.turn <= 3 : p.turn === 0, at + ' turn');
+      if (last) assert.notDeepStrictEqual(Array.from(p.cells), Array.from(last.cells), at + ' same plan twice');
+      last = p;
+    }
+  }
+});
+
+test('blueprint: a draw that always says the same still ends, and still differs from the last', () => {
+  const L = load(), d = LR(L);
+  for (const v of [0, 0.5, 0.999999]) for (let lvl = 0; lvl <= 10; lvl++) {
+    const a = L.Blueprint.draw(lvl, d.ramp, d.kinds, () => v), b = L.Blueprint.draw(lvl, d.ramp, d.kinds, () => v, a);
+    assert.notDeepStrictEqual(Array.from(b.cells), Array.from(a.cells), 'draw ' + v + ' level ' + lvl);
+  }
+});
+
+test('blueprint: a quarter turn, and four of them', () => {
+  const { Blueprint } = load(), c = ['a', null, null, null, null, null, null, null, 'b']; // a at (0,0), b at (2,2)
+  const t = Blueprint.turn(c, 3, 1);
+  assert.strictEqual(t[0 * 3 + 2], 'a'); assert.strictEqual(t[2 * 3 + 0], 'b');
+  assert.deepStrictEqual(Array.from(Blueprint.turn(c, 3, 4)), c);
+});
+
+test('blueprint: compare and points', () => {
+  const L = load(), { Blueprint } = L, T = L.tune;
+  const plan = ['h', 'b', null, null], grid = ['h', 'f', 'h', null];
+  assert.deepStrictEqual(plain(Blueprint.compare(plan, grid)), { right: 1, wrong: 2, missed: 0, likeness: 1 / 3 });
+  assert.deepStrictEqual(plain(Blueprint.compare(plan, [null, null, null, null])), { right: 0, wrong: 0, missed: 2, likeness: 0 });
+  const perfect = Blueprint.compare(plan, plan.slice());
+  assert.deepStrictEqual(plain(Blueprint.points(perfect, 2 * T.lodge_quick_3, 2, T)), { base: 2, perfect: T.lodge_perfect, quick: 3, total: 2 + T.lodge_perfect + 3 });
+  assert.strictEqual(Blueprint.points(perfect, 2 * T.lodge_quick_2, 2, T).quick, 2);
+  assert.strictEqual(Blueprint.points(perfect, 2 * T.lodge_quick_1, 2, T).quick, 1);
+  assert.strictEqual(Blueprint.points(perfect, 2 * T.lodge_quick_1 + 0.01, 2, T).quick, 0);
+  assert.strictEqual(Blueprint.points(Blueprint.compare(plan, grid), 0, 2, T).quick, 0, 'no speed under 50 %');
+  assert.strictEqual(Blueprint.points(Blueprint.compare(plan, grid), 0, 2, T).base, 0, 'never below 0');
+  assert.strictEqual(Blueprint.points(Blueprint.compare(plan, grid), 0, 2, T).perfect, 0);
 });
 
 // ---- La bonne pierre (lodge) ----
