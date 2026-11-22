@@ -23,8 +23,6 @@
 const isoLooks = (kind, styles) => ({
   frames: (styles || [null]).flatMap(st => [1, 5, 10, 15].map(l => `sprites/iso/${kind}${st ? '_' + st : ''}_l${l}.png`)),
 });
-// A building with one look for all four tiers (the new chains of iteration 6: the tier looks are still to make).
-const oneLook = kind => ({ frames: [1, 1, 1, 1].map(() => `sprites/iso/${kind}_l1.png`) });
 // A house's looks follow its citizens' class (data/people.js): cottage, two-storey house, then the
 // townhouse, the merchant's house and the mansion made for iteration 6. Five per style, in class order.
 const classLooks = styles => ({ frames: styles.flatMap(st => ['l1', 'l10', 'c2', 'c3', 'c4'].map(l => `sprites/iso/house_${st}_${l}.png`)) });
@@ -45,8 +43,9 @@ window.ASSETS = {
   'iso.wall.hub': isoLooks('wall_hub'), 'iso.wall.n': isoLooks('wall_n'), 'iso.wall.e': isoLooks('wall_e'),
   'iso.wall.s': isoLooks('wall_s'), 'iso.wall.w': isoLooks('wall_w'),
   'iso.mage_tower': isoLooks('mage_tower'),
-  'iso.coffee_farm': oneLook('coffee_farm'), 'iso.roastery': oneLook('roastery'), 'iso.cafe': oneLook('cafe'), 'iso.chapel': oneLook('chapel'),
-  'iso.sheep_farm': oneLook('sheep_farm'), 'iso.weaver': oneLook('weaver'), 'iso.goldsmith': oneLook('goldsmith'),
+  // the chains of iteration 6: their looks at levels 5, 10 and 15 are states of the level 1 (tools/make_buildings.py, tools/buildings/ids.tsv)
+  'iso.coffee_farm': isoLooks('coffee_farm'), 'iso.roastery': isoLooks('roastery'), 'iso.cafe': isoLooks('cafe'), 'iso.chapel': isoLooks('chapel'),
+  'iso.sheep_farm': isoLooks('sheep_farm'), 'iso.weaver': isoLooks('weaver'), 'iso.goldsmith': isoLooks('goldsmith'),
   'iso.goblin_camp': 'sprites/iso/goblin_camp_l1.png', // the raids' camp, out in the wild (js/world.js)
   'iso.goblin_camp_ruin': 'sprites/iso/goblin_camp_ruin.png', // the same camp burnt down by the soldiers, until the next one rises (js/camp.js)
   'iso.market': isoLooks('market'),

@@ -34,7 +34,6 @@
 //                  works (produces, houses, serves, trades, forges, trains) needs one: a paved tile
 //                  beside it, joined by paths to a paved tile beside the hall (js/village.js Roads)
 //   looks          'class': a house's look follows its citizens' class, not its level (one look per class, per style);
-//                  'one': a single look at every level (its tier looks are still to make);
 //                  'stage': a great work's look follows the stage of its works (4 looks: foundations,
 //                  walls, roof, finished)
 //   monument       true: a great work (js/city.js). Placed like any building, which lays its
@@ -93,25 +92,25 @@ DATA.buildings = {
     desc: 'Taille la pierre, pour les armes du deuxième palier, les chapelles et les tours de mage. Bruyante : tenez-la loin des maisons.',
   },
   coffee_farm: {
-    looks: 'one', name: 'Plantation de caféiers', card: 'Caféiers', sprite: 'iso.coffee_farm', w: 3, h: 3,
+    name: 'Plantation de caféiers', card: 'Caféiers', sprite: 'iso.coffee_farm', w: 3, h: 3,
     cost: { wood: 60, planks: 30, gold: 60 }, growth: 1.4, produces: { beans: 1 }, cycle: 3,
     unlock: { pop: 24 }, beauty: 1,
     desc: 'Des rangées de caféiers aux cerises rouges : les grains que la brûlerie torréfie.',
   },
   roastery: {
-    looks: 'one', name: 'Brûlerie', card: 'Brûlerie', sprite: 'iso.roastery', w: 2, h: 2,
+    name: 'Brûlerie', card: 'Brûlerie', sprite: 'iso.roastery', w: 2, h: 2,
     cost: { planks: 50, stone: 20, gold: 60 }, growth: 1.5, consumes: { beans: 2 }, produces: { coffee: 1 }, cycle: 4,
     unlock: { pop: 24 }, glow: true, beauty: -1,
     desc: 'Torréfie les grains en café : ce qu’il faut à vos paysans pour devenir artisans.',
   },
   cafe: {
-    looks: 'one', name: 'Café', card: 'Café', sprite: 'iso.cafe', w: 2, h: 2,
+    name: 'Café', card: 'Café', sprite: 'iso.cafe', w: 2, h: 2,
     cost: { planks: 40, stone: 15, gold: 80 }, growth: 1.3, service: { radius: 10 },
     unlock: { pop: 24 }, glow: true, keeper: 'innkeeper', beauty: 1,
     desc: 'On s’y retrouve autour d’une tasse. Les maisons à sa portée ont leur café du coin : il le faut aux Artisans et au-dessus.',
   },
   chapel: {
-    looks: 'one', name: 'Chapelle', card: 'Chapelle', sprite: 'iso.chapel', w: 2, h: 2,
+    name: 'Chapelle', card: 'Chapelle', sprite: 'iso.chapel', w: 2, h: 2,
     cost: { stone: 120, planks: 60, gold: 250 }, growth: 1.4, service: { radius: 14 },
     unlock: { cls: { artisan: 4 } }, glow: true, beauty: 3,
     desc: 'Une cloche et un vitrail. Les Bourgeois et au-dessus la veulent à portée de leur maison.',
@@ -123,19 +122,19 @@ DATA.buildings = {
     desc: 'Achetez et vendez vos réserves. Ses caravanes importent les épices des Bourgeois, et les Négociants le veulent à portée.',
   },
   sheep_farm: {
-    looks: 'one', name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,
+    name: 'Bergerie', card: 'Bergerie', sprite: 'iso.sheep_farm', w: 3, h: 3,
     cost: { wood: 80, planks: 40, gold: 120 }, growth: 1.4, produces: { wool: 1 }, cycle: 4,
     unlock: { cls: { burgher: 4 } },
     desc: 'Des moutons et leur laine, pour l’atelier de tissage.',
   },
   weaver: {
-    looks: 'one', name: 'Atelier de tissage', card: 'Tissage', sprite: 'iso.weaver', w: 2, h: 2,
+    name: 'Atelier de tissage', card: 'Tissage', sprite: 'iso.weaver', w: 2, h: 2,
     cost: { planks: 100, stone: 50, gold: 200 }, growth: 1.5, consumes: { wool: 2 }, produces: { cloth: 1 }, cycle: 6,
     unlock: { cls: { burgher: 4 } }, glow: true, beauty: -1,
     desc: 'Tisse la laine en étoffes, que réclament les Négociants.',
   },
   goldsmith: {
-    looks: 'one', name: 'Orfèvre', card: 'Orfèvre', sprite: 'iso.goldsmith', w: 2, h: 2,
+    name: 'Orfèvre', card: 'Orfèvre', sprite: 'iso.goldsmith', w: 2, h: 2,
     cost: { stone: 200, planks: 100, gold: 800 }, growth: 1.6, consumes: { gold: 30, stone: 5 }, produces: { jewel: 1 }, cycle: 10,
     unlock: { cls: { merchant: 4 } }, glow: true,
     desc: 'Change l’or et la pierre fine en bijoux, le luxe des Nobles.',

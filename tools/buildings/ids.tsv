@@ -1,0 +1,26 @@
+image	pixellab object	made from	what was asked
+# The tier looks of the buildings whose levels 5, 10 and 15 were made on 2026-11-22 (tools/buildings/raw/, built by tools/make_buildings.py).
+# Each is a state (create_object_state) of the one before it, starting from the building's level-1 object, so that the four looks
+# stay one building on one ground. Every request began with "the same <building> ...: keep the same view, size and square ground base".
+# Two stray pixels left of the roastery's smoke (levels 10 and 15) were erased by hand; nothing else was touched.
+coffee_farm_l5	dc72dcce-9b13-4498-bec3-e9184ce8ad3f	l1 86d44a04-45cf-4855-8e1e-53a5fd79fb6a	a little richer: the shed gets a stone footing and a drying rack of red coffee cherries, bushes heavy with red cherries, a small wooden handcart with sacks on the path
+coffee_farm_l10	c9bb1ce4-136c-470c-ab06-8930ac99f657	l5	grown: the shed becomes a drying barn with an orange tiled roof and stone walls, flagstone paths, a low stone wall along the back, baskets of red cherries
+coffee_farm_l15	99986492-6556-4bf5-83e0-6b2dbb3915b2	l10	at its richest: a weathervane and a gilded sign with a coffee cherry on the barn, a small stone well, blue and gold pennants between two poles, trimmed bushes loaded with cherries, tidy flagstone paths
+roastery_l5	bf01aa0c-0b52-4ac3-8183-11cfac1a3fdf	l1 7c2bf872-cc1b-419f-8fcd-cc5d1a0700f9	a little richer: a bigger copper roasting drum, more sacks of coffee beans, a hanging sign with a coffee bean, a lit lantern by the door
+roastery_l10	d5b6f771-fcca-4470-afd4-114e641e8c42	l5	grown: a side annex with a second, taller brick chimney, a stone-paved yard, two copper roasting drums, a row of barrels
+roastery_l15	40524d44-c132-49a5-a279-015e89692ecd	l10	at its richest: brass bands on the copper drums, a gilded sign with a coffee bean, blue and gold pennants under the eaves, brass-capped chimneys, warm light in every window
+cafe_l5	b0315ee4-db49-4f86-8cc0-286b63c222a3	l1 ce69bbb5-b45c-4988-a17e-f3e3b61927ff	a little richer: flower boxes at the windows, one more table with cups, a hanging sign with a coffee cup, a lit lantern by the door
+cafe_l10	56b378be-6611-4f91-b867-63eb52a647b5	l5	grown: one storey taller with a small wooden balcony, striped awnings on both sides, a stone-paved terrace with more tables and a parasol
+cafe_l15	3702fab4-5945-49fe-8cbd-6e93efb77d02	l10	at its richest: a gilded sign with a steaming cup, blue and gold pennants along the balcony, lanterns on posts around the terrace, flowers on the balcony, a second parasol, warm light in every window
+chapel_l5	f4fa2040-310d-4f8d-b49a-8f24f78c143a	l1 6526f164-fdd9-4389-990d-34cee49ffe38	a little richer: a bronze bell in the steeple, a brighter stained-glass rose window, flower beds along the wall, a small stone path to the door
+chapel_l10	e6bb8869-114c-4b89-ae3b-bb4138fc4306	l5	grown: stone buttresses along the side walls, tall stained-glass windows on the side, a clock on the steeple, a stone-paved forecourt
+chapel_l15	83a2df8e-b760-4533-a5ee-a828b7a95fe0	l10	at its richest: a golden cross and gilded edges on the steeple, a large glowing rose window, two small stone statues by the door, lanterns along the forecourt, white flowers at the foot of the walls
+sheep_farm_l5	22e90418-a4e7-490d-ab95-9e3a3590ea82	l1 0092b24f-cade-4b87-ba33-cb348b2d882c	a little richer: two more sheep, a wooden water trough, more hay bales, baskets of white wool, a stone footing under the barn
+sheep_farm_l10	a37023af-140b-4831-93fc-b1503707a8c7	l5	grown: a bigger barn with a hayloft door, a stone wall in place of the back fence, a shearing lean-to with wool hanging to dry, a few more sheep
+sheep_farm_l15	4c93e4d4-dad6-47dd-874b-9f471fd5f17d	l10	at its richest: a ram weathervane on the barn, a gilded sign with a sheep, blue and gold pennants on the fence posts, big bales of white wool tied with ribbon, a stone water trough, a flock of plump sheep
+weaver_l5	5110f971-087a-45aa-a20a-112b391c9da5	l1 85ca7efc-7e05-4b8e-8ec4-30454b407a7a	a little richer: a wooden loom under a small awning, more rolls of coloured cloth, a hanging sign with a spool of thread, a lit lantern by the door
+weaver_l10	0314e85c-1f95-4b1d-a15a-1d063c7efae0	l5	grown: a half-timbered second storey, dyed cloths on a line between two poles, a stone-paved yard, wooden vats of coloured dye
+weaver_l15	27c5de8a-7f13-4781-b448-c6f2d651e055	l10	at its richest: long banners of fine cloth in blue and gold from the upper storey, a gilded sign with a spool, rich patterned fabrics on the stalls, lanterns by the door, warm light in every window
+goldsmith_l5	8e67babc-200e-42a8-8d4b-62716f3e919a	l1 a5c8943c-2967-456a-8aa5-254e55b3d3d2	a little richer: a display window with small jewels, a golden hanging sign with a ring, a lit lantern by the door, two trimmed potted shrubs
+goldsmith_l10	e91305c0-b3c3-47e5-a6ab-acd66de1b8b2	l5	grown: a second storey with a round gilded window, a small corner turret with a golden cap, a stone-paved forecourt, an iron strongbox by the door
+goldsmith_l15	ec27a729-b1ad-4970-a68d-a559fa5ca83a	l10	at its richest: gilded roof ridges and a golden weathervane, a jewelled crown above the door, glowing display windows full of gems, two golden lanterns, a small red carpet on the forecourt
