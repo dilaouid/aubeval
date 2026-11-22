@@ -227,33 +227,34 @@ I18N.add('es', {
   'venues.lodge.name': 'La Logia de los constructores', // La Loge des bâtisseurs
   'venues.lodge.title': 'La piedra justa', // La bonne pierre
   'venues.lodge.unit': 'piedras puestas', // pierres posées
-  'venues.lodge.how': 'El muro sube, y en él queda un hueco. De las cuatro piedras talladas, solo una encaja: encuéntrela de un vistazo. Una piedra se gira, nunca se le da la vuelta. Puestas deprisa y sin fallos, las piedras justas forman una cadena que vale el doble. Cuatro piedras equivocadas, y el muro se derrumba.', // Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne qui vaut double. Quatre mauvaises pierres, et le mur s’écroule.
+  'venues.lodge.how': 'El muro sube, y en él queda un hueco. De las cuatro piedras talladas, solo una encaja: encuéntrela de un vistazo. Una piedra se gira, nunca se le da la vuelta. Puestas deprisa y sin fallos, las piedras justas forman una cadena: desde la tercera, cada una vale el doble. Cuatro piedras equivocadas, y el muro se derrumba.', // Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne : dès la troisième, chacune vaut double. Quatre mauvaises pierres, et le mur s’écroule.
   'venues.lodge.keys': 'Teclas 1 a 4, o clic en una piedra. Piedra justa: 1, desde la tercera de una cadena: 2. Piedra equivocada: un fallo.', // Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1, dès la troisième d’une chaîne : 2. Mauvaise pierre : une faute.
-  'venues.lodge.greet': '¡Bienvenido a la Logia, burgomaestre! Aquí trazo los planos de Aubeval. Un buen constructor elige su piedra de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
-  'venues.lodge.ready[0]': 'El muro espera su próxima hilada. ¿Tiene buen ojo, {g:héroe|heroína}?', // Le mur attend sa prochaine assise. Vous avez l’œil, {g:héros|héroïne} ?
-  'venues.lodge.ready[1]': 'Mis oficiales han tallado un montón de piedras. Solo una encaja en el hueco, cada vez. ¡A usted le toca encontrarla!', // Mes compagnons ont taillé tout un tas de pierres. Une seule entre dans le trou, à chaque fois. À vous de la trouver !
-  'venues.lodge.ready[2]': 'Un muro se levanta piedra a piedra, y sin dudar. ¿Vamos?', // Un mur se monte pierre après pierre, et sans hésiter. On y va ?
-  'venues.lodge.wait[0]': 'Mis oficiales tallan piedras nuevas. Vuelva dentro de un rato, el muro no se moverá.', // Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure, le mur ne bougera pas.
-  'venues.lodge.wait[1]': 'Repaso mis planos un momento. Vuelva más tarde, tendré un muro nuevo que levantar.', // Je reprends mes plans un moment. Revenez plus tard, j’aurai un nouveau mur à monter.
-  'venues.lodge.chat[0]': 'Antes de poner una piedra, se mira. Y luego se vuelve a mirar.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore.
-  'venues.lodge.chat[1]': 'Un muro recto, burgomaestre, es un muro que aguanta cien años.', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans.
-  'venues.lodge.chat[2]': 'Una piedra se gira en la mano, nunca se le da la vuelta: su cara labrada debe quedar fuera.', // Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors.
-  'venues.lodge.chat[3]': '{g:Un héroe|Una heroína} que sabe levantar un muro, eso no se ve a menudo. Mis oficiales todavía hablan de ello.', // {g:Un héros|Une héroïne} qui sait monter un mur, on n’en voit pas souvent. Mes compagnons en parlent encore.
-  'venues.lodge.chat[4]': 'Bram me forja los cinceles, Doña Ysolde me vende la piedra demasiado cara. Cada cual con su oficio.', // Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier.
+  'venues.lodge.greet': '¡{g:Bienvenido|Bienvenida} a la Logia, burgomaestre! Aquí trazo los planos de Aubeval, y aquí aprenden el oficio mis oficiales. Un buen constructor elige su piedra de un vistazo: venga a enseñarme el suyo, y mis planos le harán construir por menos.', // Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.
+  'venues.lodge.ready[0]': 'El muro espera su próxima hilada. Tome una piedra, burgomaestre, ¡y veamos ese ojo!', // Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !
+  'venues.lodge.ready[1]': 'Mis oficiales han tallado un montón de piedras, y solo una encaja en el hueco. ¡A usted le toca encontrarla, y deprisa!', // Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !
+  'venues.lodge.ready[2]': '¿Le apetece una lección de constructora? Un muro se levanta piedra a piedra, sin dudar. Yo le enseño el hueco, usted elige la piedra.', // Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.
+  'venues.lodge.wait[0]': 'Mis oficiales tallan piedras nuevas. Vuelva dentro de un rato: el muro, al menos, no se moverá.', // Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.
+  'venues.lodge.wait[1]': 'Repaso mis planos un momento. Y amplíe la Logia, burgomaestre: con cada nivel, mis planos le sirven más tiempo.', // Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.
+  'venues.lodge.chat[0]': 'Antes de poner una piedra, se mira. Luego se vuelve a mirar. Y una vez puesta, ya no se mira: está en su sitio.', // Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.
+  'venues.lodge.chat[1]': 'Un muro recto, burgomaestre, es un muro que aguanta cien años. Mire estas juntas: ¡no cabría ni un pelo!', // Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !
+  'venues.lodge.chat[2]': 'Una piedra se gira en la mano, nunca se le da la vuelta: su cara labrada debe quedar fuera. Recuérdelo, y sabrá más que muchos albañiles.', // Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.
+  'venues.lodge.chat[3]': '{g:Un héroe|Una heroína} que sabe levantar un muro recto, eso no se ve a menudo. Mis oficiales todavía hablan de ello, y se mantienen más derechos que sus plomadas.', // {g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.
+  'venues.lodge.chat[4]': 'Bram me forja los cinceles, Doña Ysolde me vende la piedra demasiado cara. Cada cual con su oficio, y el mío es que todo se tenga en pie.', // Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.
   'venues.lodge.tips[0]': 'En mis planos veo esto:', // Sur mes plans, je vois ceci :
-  'venues.lodge.tips[1]': 'Mis oficiales me lo han señalado:', // Mes compagnons me l’ont signalé :
-  'venues.lodge.tips[2]': 'Un consejo de constructora:', // Un conseil de bâtisseuse :
+  'venues.lodge.tips[1]': 'Mis oficiales me lo han señalado desde lo alto del andamio:', // Mes compagnons me l’ont signalé du haut de l’échafaudage :
+  'venues.lodge.tips[2]': 'Un consejo de constructora, burgomaestre:', // Un conseil de bâtisseuse, bourgmestre :
   'venues.lodge.glad[0]': '¡Encaja!', // Elle entre !
   'venues.lodge.glad[1]': '¡Bien visto!', // Bien vu !
   'venues.lodge.glad[2]': '¡Al milímetro!', // Juste au millimètre !
   'venues.lodge.glad[3]': '¡Eso es una hilada!', // Voilà une assise !
-  'venues.lodge.cross[0]': '¡No encaja!', // Elle n’entre pas !
-  'venues.lodge.cross[1]': '¡Mire mejor!', // Regardez mieux !
-  'venues.lodge.cross[2]': '¡Esa no!', // Pas celle-là !
+  'venues.lodge.cross[0]': '¡Mire mejor!', // Regardez mieux !
+  'venues.lodge.cross[1]': '¡Esa no!', // Pas celle-là !
+  'venues.lodge.cross[2]': '¡Primero el hueco, luego la piedra!', // Le trou d’abord, la pierre ensuite !
   'venues.lodge.chain[0]': '¡Qué ojo!', // Quel coup d’œil !
   'venues.lodge.chain[1]': '¡El muro sube solo!', // Le mur monte tout seul !
-  'venues.lodge.after[0]': 'El muro se ha derrumbado… Solo es piedra: se recoge y se vuelve a empezar.', // Le mur s’est écroulé… Ce n’est que de la pierre : on la ramasse, et on recommence.
-  'venues.lodge.after[1]': 'Unas cuantas hiladas puestas. Mis planos le harán ahorrar un poco en sus obras.', // Quelques rangs de posés. Mes plans vous feront gagner un peu sur vos chantiers.
-  'venues.lodge.after[2]': '¡Buen muro! Mis planos son suyos un tiempo: sus obras costarán menos.', // Beau mur ! Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
-  'venues.lodge.after[3]': '¡Un muro de maestro! Mis mejores planos son suyos: todo Aubeval construirá por menos, y todos sabrán qué ojo eligió esas piedras.', // Un mur de maître ! Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.
+  'venues.lodge.chain[2]': '¡Eso es aprender el oficio!', // Voilà le métier qui rentre !
+  'venues.lodge.after[0]': 'El muro se ha derrumbado… Solo es piedra, burgomaestre: se recoge y se vuelve a empezar. Todo maestro ha visto caer su primer muro.', // Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.
+  'venues.lodge.after[1]': 'Unas cuantas hiladas puestas, y rectas además. Mis planos le harán ahorrar un poco en sus obras.', // Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.
+  'venues.lodge.after[2]': '¡Buen muro! Las juntas apretadas, el aplomo justo. Mis planos son suyos un tiempo: sus obras costarán menos.', // Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.
+  'venues.lodge.after[3]': '¡Un muro de maestro! No cabría ni la hoja de un cuchillo. Mis mejores planos son suyos: todo Aubeval construirá por menos, y todos sabrán qué ojo eligió esas piedras.', // Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.
 });

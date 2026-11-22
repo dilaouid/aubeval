@@ -535,7 +535,7 @@ test('plans d\'Aveline: nothing is refunded for more than it was paid', () => {
   gift(L, 0.15);
   const before = {};
   for (const k of L.DATA.buildOrder) {
-    if (!B[k] || B[k].decor) continue;
+    if (!B[k]) continue;
     const paid = Village.cost(k), back = Village.refund({ kind: k });
     for (const r in back) assert.ok(back[r] <= paid[r], k + ': ' + r + ' refunded ' + back[r] + ', paid ' + paid[r]);
     before[k] = plain(back);

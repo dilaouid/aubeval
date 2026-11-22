@@ -220,8 +220,8 @@ window.CONFIG = {
   barracks_double: { value: 0.25, min: 0, max: 1, step: 0.05 },      // share of the blows that are double, once they have come (ramp.doubleFrom)
   barracks_hits: { value: 5, min: 1, max: 10, step: 1 },             // blows that may land: at this many the drill is lost
   lodge_time: { value: 36, min: 15, max: 90, step: 1 },              // builders' lodge, « La bonne pierre »: seconds the wall goes on rising
-  lodge_strikes: { value: 4, min: 1, max: 10, step: 1 },             // wrong stones that may be tried: at this many the wall comes down
-  lodge_chain: { value: 3, min: 2, max: 10, step: 1 },               // right stones in a row from which each one is worth 2
+  lodge_strikes: { value: 4, min: 1, max: 10, step: 1 },             // wrong stones that may be tried: at this many the wall comes down (the help text of DATA.venues.lodge names it: « Quatre mauvaises pierres »)
+  lodge_chain: { value: 3, min: 2, max: 10, step: 1 },               // right stones in a row from which each one is worth 2 (the help text of DATA.venues.lodge names it: « dès la troisième »)
   lodge_chain_gap: { value: 2.5, min: 0.5, max: 10, step: 0.1 },     // seconds after a right stone past which the chain falls back
 
   // ---- Exploration: the fog, the places found, the expeditions (js/explore.js, data/explore.js) ----

@@ -241,24 +241,24 @@ DATA.venues = {
     after: ['Ce n’était pas un exercice, c’était une bagarre. Pansez-vous, et on reprend plus tard.', 'Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.', 'Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.', 'Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.'],
   },
   lodge: {
-    keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 0, cross: 4 }, faces64: { glad: 0, cross: 4 },
+    keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 2 }, faces64: { glad: 0, cross: 4 },
     title: 'La bonne pierre', unit: 'pierres posées',
-    how: 'Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne qui vaut double. Quatre mauvaises pierres, et le mur s’écroule.',
+    how: 'Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne : dès la troisième, chacune vaut double. Quatre mauvaises pierres, et le mur s’écroule.',
     keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1, dès la troisième d’une chaîne : 2. Mauvaise pierre : une faute.',
-    medals: [14, 22, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
+    medals: [10, 20, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
     // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
     // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
     // (config.js lodge_chain and lodge_chain_gap: what a chain is; lodge_strikes: the wrong stones the wall bears)
     ramp: { cells: 4, cellsEvery: 3, cellsMax: 7, turnFrom: 1, mirrorFrom: 3 },
-    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
-    ready: ['Le mur attend sa prochaine assise. Vous avez l’œil, {g:héros|héroïne} ?', 'Mes compagnons ont taillé tout un tas de pierres. Une seule entre dans le trou, à chaque fois. À vous de la trouver !', 'Un mur se monte pierre après pierre, et sans hésiter. On y va ?'],
-    wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure, le mur ne bougera pas.', 'Je reprends mes plans un moment. Revenez plus tard, j’aurai un nouveau mur à monter.'],
-    chat: ['Avant de poser une pierre, on la regarde. Puis on la regarde encore.', 'Un mur droit, bourgmestre, c’est un mur qui tient cent ans.', 'Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors.',
-      '{g:Un héros|Une héroïne} qui sait monter un mur, on n’en voit pas souvent. Mes compagnons en parlent encore.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier.'],
-    tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé :', 'Un conseil de bâtisseuse :'],
-    glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Elle n’entre pas !', 'Regardez mieux !', 'Pas celle-là !'],
-    chain: ['Quel coup d’œil !', 'Le mur monte tout seul !'],
-    after: ['Le mur s’est écroulé… Ce n’est que de la pierre : on la ramasse, et on recommence.', 'Quelques rangs de posés. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.'],
+    greet: 'Bienvenue à la Loge, bourgmestre ! C’est ici que je dresse les plans d’Aubeval, et que mes compagnons apprennent le métier. Un bon bâtisseur choisit sa pierre d’un coup d’œil : venez me montrer le vôtre, et mes plans vous feront bâtir à moindres frais.',
+    ready: ['Le mur attend sa prochaine assise. Prenez une pierre, bourgmestre, et voyons ce coup d’œil !', 'Mes compagnons ont taillé tout un tas de pierres, et une seule entre dans le trou. À vous de la trouver, et vite !', 'Une leçon de bâtisseuse, ça vous dit ? Un mur se monte pierre après pierre, sans hésiter. Je vous montre le trou, vous choisissez la pierre.'],
+    wait: ['Mes compagnons taillent de nouvelles pierres. Repassez tout à l’heure : le mur, lui, ne bougera pas.', 'Je reprends mes plans un moment. Et agrandissez donc la Loge, bourgmestre : à chaque niveau, mes plans vous servent plus longtemps.'],
+    chat: ['Avant de poser une pierre, on la regarde. Puis on la regarde encore. Et une fois posée, on ne la regarde plus : elle est à sa place.', 'Un mur droit, bourgmestre, c’est un mur qui tient cent ans. Regardez-moi ces joints : pas un cheveu n’y passerait !', 'Une pierre se tourne dans la main, elle ne se retourne pas : sa face taillée doit rester dehors. Retenez ça, et vous en saurez plus que bien des maçons.',
+      '{g:Un héros|Une héroïne} qui sait monter un mur droit, on n’en voit pas souvent. Mes compagnons en parlent encore, et se tiennent plus droits que leurs fils à plomb.', 'Bram me forge mes ciseaux, Dame Ysolde me vend ma pierre trop cher. Chacun son métier, et le mien, c’est que tout tienne debout.'],
+    tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé du haut de l’échafaudage :', 'Un conseil de bâtisseuse, bourgmestre :'],
+    glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Regardez mieux !', 'Pas celle-là !', 'Le trou d’abord, la pierre ensuite !'],
+    chain: ['Quel coup d’œil !', 'Le mur monte tout seul !', 'Voilà le métier qui rentre !'],
+    after: ['Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.', 'Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.'],
   },
 };
 DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'];
