@@ -170,6 +170,32 @@ test('a gift won with no lodge standing lasts the plain time', () => {
   assert.strictEqual(Venue.giftTime('lodge', 'build'), 300);
 });
 
+// ---- Les avantages de la Loge (Venue.lodgePerks: what a standing lodge does, whatever the gift) ----
+const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, (msg || '') + ': ' + a + ' is not ' + b);
+const perks = (L, lvl, extra) => { L.ctx.state.buildings = lvl == null ? [] : [Object.assign({ kind: 'lodge', lvl }, extra)]; return plain(L.Venue.lodgePerks()); };
+
+test('lodge perks: none without a lodge', () => {
+  const L = load();
+  assert.deepStrictEqual(perks(L, null), { plans: 0, repair: 0, refund: 0 });
+  L.ctx.state.buildings = undefined;
+  assert.deepStrictEqual(plain(L.Venue.lodgePerks()), { plans: 0, repair: 0, refund: 0 }, 'no buildings at all');
+  assert.deepStrictEqual(plain(L.Venue.lodgePerks(0)), { plans: 0, repair: 0, refund: 0 }, 'level 0');
+});
+
+test('lodge perks: level 1 and level 15', () => {
+  const L = load(), p1 = perks(L, 1), p15 = perks(L, 15);
+  near(p1.plans, 0.02, 'plans 1'); near(p1.repair, 0.5 / 15, 'repair 1'); near(p1.refund, 0.04 / 15, 'refund 1');
+  near(p15.plans, 0.09, 'plans 15'); near(p15.repair, 0.5, 'repair 15'); near(p15.refund, 0.04, 'refund 15');
+  const q = L.Venue.lodgePerks(15);
+  near(q.plans, 0.09, 'plans given a level'); near(q.repair, 0.5, 'repair given a level'); near(q.refund, 0.04, 'refund given a level');
+});
+
+test('lodge perks: no more past level 15, and a damaged lodge keeps them', () => {
+  const L = load(), p15 = perks(L, 15);
+  assert.deepStrictEqual(perks(L, 40), p15, 'level 40');
+  assert.deepStrictEqual(perks(L, 15, { damaged: true }), p15, 'damaged');
+});
+
 // ---- La fournée (bakery) ----
 /** A new game of a place at `level`, in the sandbox L, its keeper's words thrown away. */
 const start = (L, id, level) => L.Minigames.make(id, { level, d: L.DATA.venues[id], react: () => {}, away: () => {} });
