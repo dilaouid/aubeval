@@ -135,7 +135,10 @@ window.ASSETS = {
   'enemy.chaman': 'sprites/enemy_chaman.png',
   'enemy.gobelin': 'sprites/enemy_gobelin.png',
   'enemy.grakk': 'sprites/enemy_grakk.png',
-  'enemy.warlord': { file: 'sprites/enemy_warlord.png', w: 96, h: 89 }, // the warlord in his duel: pixel for pixel, larger than Grakk
+  'enemy.warlord': { file: 'sprites/enemy_warlord.png', w: 96, h: 89 }, // a warlord in his duel: pixel for pixel, larger than Grakk. The stand-in of the four below while theirs load
+  // each warlord of data/enemies.js DATA.warlords in his duel, at his own size (tools/make_enemies.py prints these lines)
+  'enemy.morgash': { file: 'sprites/enemy_morgash.png', w: 89, h: 79 }, 'enemy.zhara': { file: 'sprites/enemy_zhara.png', w: 78, h: 93 },
+  'enemy.urgak': { file: 'sprites/enemy_urgak.png', w: 92, h: 79 }, 'enemy.skrit': { file: 'sprites/enemy_skrit.png', w: 94, h: 86 },
   // un seul dessin pour les quatre armes, en attendant hero_battle_t0 / _t2 / _t3 (voir imagegen/PROMPTS.md, section 11)
   'hero.battle': 'sprites/hero_battle.png', // Aldric's first battle sprite: only the stand-in now, while a hero's own image loads (js/hero.js Hero.art)
   // the four heroes in battle (tools/make_heroes.py): drawn at 44x50, in one pose and one hand. w and h: with no drawn sprite
