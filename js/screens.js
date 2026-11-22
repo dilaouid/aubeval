@@ -628,7 +628,7 @@ const scenes = (() => {
     if (d.train) out.push(tr('up_army', { pct: Math.round(tune.soldier_level_step * 100) }));
     if (d.service) out.push(tr('up_service', { n: fmtNum(tune.service_radius_step) }));
     if (b.kind === 'hall') out.push(tr('up_hall'));
-    if (b.kind === 'lodge') { out.push(tr('up_lodge_perks', lodgeTexts(Venue.lodgePerks(n)))); out.push(tr('up_lodge', { n: tune.lodge_level_time })); } // the next level's standing effects (js/venue.js lodgePerks), and its gift lasting longer (giftTime)
+    if (b.kind === 'lodge') { if (n <= tune.lodge_max_level) out.push(tr('up_lodge_perks', lodgeTexts(Venue.lodgePerks(n)))); out.push(tr('up_lodge', { n: tune.lodge_level_time })); } // the next level's standing effects (js/venue.js lodgePerks, none past its top level), and its gift lasting longer (giftTime)
     if (d.produces && n % ms === 0) out.push(tr('up_double'));
     if (b.kind === 'forge' && n === ms) out.push(tr('up_forge_perk'));
     if (!d.looks && !d.decor && World.tier(n) > World.tier(b.lvl)) out.push(tr('up_look'));

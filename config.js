@@ -170,7 +170,7 @@ window.CONFIG = {
   lodge_max_level: { value: 15, min: 1, max: 30, step: 1 },           // the level of the lodge past which its standing effects stop growing (the last level that changes its look)
   lodge_plans_base: { value: 0.02, min: 0, max: 0.2, step: 0.005 },   // share off buildings and upgrades a lodge of level 1 gives, whatever the gift
   lodge_plans_step: { value: 0.005, min: 0, max: 0.05, step: 0.0025 }, // ... and what each level above the first adds to it
-  lodge_plans_cap: { value: 0.25, min: 0, max: 0.9, step: 0.01 },     // the most the lodge and Aveline's gift take off together; a demolition never gives back more than 1 minus this (so buying then demolishing never pays)
+  lodge_plans_cap: { value: 0.25, min: 0, max: 0.9, step: 0.01 },     // the most the lodge and Aveline's gift take off together; what the lodge adds to a demolition's refund never takes it above 1 minus this (so, with refund_pct and the discounts as shipped, buying then demolishing never pays)
   lodge_repair_cut: { value: 0.5, min: 0, max: 1, step: 0.05 },       // share off the price of a repair at the lodge's top level (in proportion below)
   lodge_refund_gain: { value: 0.04, min: 0, max: 0.3, step: 0.01 },   // added to refund_pct for a demolition at the lodge's top level (in proportion below)
   venue_pop_scale: { value: 1, min: 0, max: 5, step: 0.05 },         // multiplies the popularity every mini-game gives (per medal: data/venues.js)
