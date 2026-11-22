@@ -485,12 +485,32 @@ const Village = (() => {
    * together, at most config lodge_plans_cap off. All of it for a great work, and when neither runs.
    */
   const plans = kind => B[kind].monument ? 1 : 1 - Math.min(tune.lodge_plans_cap, Venue.buff('build') + Venue.lodgePerks().plans);
+  /** What a demolition gives back, as a share of the base price: refund_pct, the lodge adding a little (`gain`, the standing lodge's when left out), never past 1 minus the discount cap. */
+  const refundShare = (gain = Venue.lodgePerks().refund) => Math.max(tune.refund_pct, Math.min(tune.refund_pct + gain, 1 - tune.lodge_plans_cap));
+  /**
+   * `c` at the share `k` of its base price, times `m` (what the plans leave). With a lodge standing and `cut` set, the lodge always
+   * takes at least one unit off each resource (rounding would hide a small cut), but never down to what a demolition gives back
+   * (so buying then demolishing never pays) nor to under 1.
+   */
+  function priced(c, k, m, cut) {
+    const out = scaleCost(c, k * m);
+    if (!cut || !(Venue.lodgePerks().plans > 0)) return out;
+    const full = scaleCost(c, k), back = scaleCost(c, refundShare());
+    for (const r in out) out[r] = Math.min(full[r], Math.max(back[r], Math.min(out[r], full[r] - 1)));
+    return out;
+  }
   /** The price of one more of this kind: each one already built raises it. */
-  function cost(kind) { const d = B[kind]; return scaleCost(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale * plans(kind)); }
-  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return scaleCost(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale * plans(b.kind)); }
-  /** A demolition gives back refund_pct of the base price, the lodge adding a little, never more than 1 minus the discount cap (buying then demolishing never pays). */
-  function refund(b) { return scaleCost(B[b.kind].cost, Math.max(tune.refund_pct, Math.min(tune.refund_pct + Venue.lodgePerks().refund, 1 - tune.lodge_plans_cap))); }
-  function repairCost(b) { return scaleCost(B[b.kind].cost, tune.repair_pct * (1 - Venue.lodgePerks().repair)); }
+  function cost(kind) { const d = B[kind]; return priced(d.cost, Math.pow(d.growth || tune.cost_growth, count(kind)) * tune.cost_scale, plans(kind), !d.monument); }
+  function upgradeCost(b) { if (B[b.kind].monument) return City.stageCost(b); return priced(B[b.kind].cost, tune.upgrade_cost_base * Math.pow(tune.upgrade_cost_growth, b.lvl - 1) * tune.cost_scale, plans(b.kind), true); }
+  function refund(b) { return scaleCost(B[b.kind].cost, refundShare()); }
+  /** A repair: repair_pct of the base price, the lodge taking up to half off, and at least one unit of each resource when it stands. */
+  function repairCost(b) {
+    const c = B[b.kind].cost, perks = Venue.lodgePerks(), out = scaleCost(c, tune.repair_pct * (1 - perks.repair));
+    if (!(perks.plans > 0)) return out;
+    const full = scaleCost(c, tune.repair_pct);
+    for (const r in out) out[r] = Math.max(1, Math.min(out[r], full[r] - 1));
+    return out;
+  }
   function canAfford(c) { for (const r in c) if (state.res[r] < c[r]) return false; return true; }
   function pay(c) { if (!canAfford(c)) return false; for (const r in c) state.res[r] -= c[r]; return true; }
   /** Adds to the stock (and to the lifetime totals the quests and the new start read). */
@@ -718,7 +738,7 @@ const Village = (() => {
 
   return {
     sync, fresh, drawSeed, sharedSeed, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
-    safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, repairCost, canAfford, pay, gain,
+    safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, refundShare, repairCost, canAfford, pay, gain,
     levelMult, milestoneMult, renownMult, outMult, wallMax, pillagePct, isUnlocked, refreshUnlocks, nextPopUnlock,
     size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartAll, rampartCost, rampartRepairCost, rampartRefund, upgradeRampart, repairRampart, demolishRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,
     needsRoad, onRoad, roadAt, serviceRadius, refreshTown, touchTown, autoRoads, servicesOf, servicesAt, missingServices, beauty, beautyAt, beautyMult, raiseSteps, campMid, raiseCamp, CAMP,

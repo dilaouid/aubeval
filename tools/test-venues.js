@@ -592,11 +592,11 @@ test('plans d\'Aveline: nothing is refunded for more than it was paid', () => {
 const withLodge = (L, lvl, extra) => { L.ctx.state.buildings = lvl ? [Object.assign({ uid: 1, kind: 'lodge', lvl, x: 0, y: 0 }, extra)] : []; };
 
 test('lodge: a standing lodge makes buildings and upgrades cheaper, up to a cap with the gift', () => {
-  const L = load(), { Village } = loadVillage(L), T = L.tune, B = L.DATA.buildings.house, up = { kind: 'house', lvl: 3 };
+  const L = load(), { Village } = loadVillage(L), T = L.tune, B = L.DATA.buildings.chapel, up = { kind: 'chapel', lvl: 3 }; // a dear building: the lodge's one-unit minimum never binds on it
   const cost = k => plain(Village.scaleCost(B.cost, k * T.cost_scale));
   const upCost = k => plain(Village.scaleCost(B.cost, k * T.upgrade_cost_base * Math.pow(T.upgrade_cost_growth, 2) * T.cost_scale));
   const check = (what, k) => {
-    assert.deepStrictEqual(plain(Village.cost('house')), cost(k), what + ': a house');
+    assert.deepStrictEqual(plain(Village.cost('chapel')), cost(k), what + ': a chapel');
     assert.deepStrictEqual(plain(Village.upgradeCost(up)), upCost(k), what + ': an upgrade');
   };
   withLodge(L, 0); check('no lodge', 1);
@@ -606,6 +606,36 @@ test('lodge: a standing lodge makes buildings and upgrades cheaper, up to a cap 
   gift(L, 0.5); check('level 15 with a strong gift', 0.75);
   withLodge(L, 15, { damaged: true }); check('a damaged lodge', 0.75);
   withLodge(L, 40); check('level 40', 0.75);
+});
+
+test('lodge: a standing lodge takes at least one unit off each resource, never down to the refund', () => {
+  const L = load(), { Village } = loadVillage(L);
+  withLodge(L, 0);
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 20, planks: 6 }, 'no lodge: the plain price the cases below start from');
+  withLodge(L, 1); // 2 %: 19.6 and 5.9 would round back up to 20 and 6
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 19, planks: 5 }, 'level 1');
+  gift(L, 0.15);
+  assert.deepStrictEqual(plain(Village.cost('house')), { wood: 17, planks: 5 }, 'level 1 with the gift: a bigger cut still counts');
+  L.ctx.state.venue.buffs.build.left = 0;
+  // a price of 1 stays 1, and a lodge never makes a demolition pay: a cap set far too high is held at the refund
+  L.tune.lodge_plans_cap = 0.9; L.tune.lodge_plans_base = 0.8; withLodge(L, 15);
+  const B = L.DATA.buildings;
+  for (const k of L.DATA.buildOrder) {
+    if (!B[k] || B[k].monument) continue;
+    const paid = Village.cost(k), back = Village.refund({ kind: k });
+    for (const r in paid) assert.ok(paid[r] >= 1 && paid[r] >= back[r], k + ': ' + r + ' paid ' + paid[r] + ', back ' + back[r]);
+  }
+  withLodge(L, 0); L.tune.lodge_plans_base = 0.02;
+});
+
+test('lodge: repairs lose at least one unit of each resource too', () => {
+  const L = load(), { Village } = loadVillage(L);
+  withLodge(L, 0);
+  assert.deepStrictEqual(plain(Village.repairCost({ kind: 'forge' })), plain(Village.scaleCost(L.DATA.buildings.forge.cost, 0.3)), 'no lodge');
+  withLodge(L, 1);
+  const plainCost = plain(Village.scaleCost(L.DATA.buildings.forge.cost, 0.3)), got = plain(Village.repairCost({ kind: 'forge' }));
+  for (const r in plainCost) assert.strictEqual(got[r], Math.max(1, plainCost[r] - 1), 'forge ' + r);
+  assert.deepStrictEqual(plain(Village.scaleCost({ gold: 1 }, 0.3)), { gold: 1 });
 });
 
 test('lodge: a great work costs the same with the lodge standing', () => {

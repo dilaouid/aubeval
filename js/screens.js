@@ -617,7 +617,7 @@ const scenes = (() => {
     UI.button(ax + 112, by, 104, 40, tr('demolish'), () => { Village.demolish(b); closePanel(); }, { size: 14, icon: 'icon.demolish', tip: `${tr('demolish')}\n${lower(tr('refund'))} ${Object.keys(rf).map(r => rf[r] + ' ' + lower(RES[r].name)).join(', ')}` });
   }
   /** The lodge's shares as the numbers its texts show, in percent. */
-  const lodgeTexts = p => ({ plans: fmtNum(p.plans * 100), repair: fmtNum(p.repair * 100), refund: fmtNum(Math.max(tune.refund_pct, Math.min(tune.refund_pct + p.refund, 1 - tune.lodge_plans_cap)) * 100), cap: fmtNum(tune.lodge_plans_cap * 100) });
+  const lodgeTexts = p => ({ plans: fmtNum(p.plans * 100), repair: fmtNum(p.repair * 100), refund: fmtNum(Village.refundShare(p.refund) * 100), cap: fmtNum(tune.lodge_plans_cap * 100) });
   /** What the next level brings, in one or two lines (the upgrade button's tip, and the Infos tab). */
   function upgradeTip(b, d) {
     const ms = tune.milestone_levels, n = b.lvl + 1, out = [];

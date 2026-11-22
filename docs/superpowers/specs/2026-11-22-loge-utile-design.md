@@ -25,6 +25,12 @@ niveau qui change d'aspect. Rien n'entre dans la sauvegarde.
 restent sous 100 % (74 + 25 = 99). Le code borne le gain de remboursement à `1 − plafond`, et un test le
 vérifie, pour qu'un réglage ne rouvre pas la faille.
 
+**Au moins une unité (choix du joueur) :** les prix étant arrondis à l'unité au-dessus, un petit rabais ne
+changerait rien sur un bâtiment bon marché. Quand une Loge est debout, elle retire donc au moins 1 de chaque
+ressource d'une construction, d'une amélioration et d'une réparation, sans jamais descendre sous 1, ni, pour
+une construction ou une amélioration, sous ce que la démolition rend (même garde-fou contre l'achat-démolition).
+Sans Loge, le cadeau seul garde son arrondi d'avant.
+
 ## Où cela se voit
 - **Description du bâtiment** : elle dit ce que font les plans, en clair (rabais permanent, réparations,
   remboursement, cadeau qui dure plus longtemps).
