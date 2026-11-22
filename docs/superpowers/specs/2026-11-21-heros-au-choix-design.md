@@ -73,7 +73,7 @@ Le joueur a laissé le choix du « comment » : ces trois choix sont ceux du con
 | id | Nom proposé | Genre | Apparence |
 |---|---|---|---|
 | `aldric` | Aldric | m | jeune chevalier, cheveux bruns courts, harnois d'acier, cape rouge, bouclier bleu marine à ombon doré (l'actuel) |
-| `tancrede` | Tancrède | m | peau foncée, cheveux noirs courts, harnois d'acier, cape bleue, bouclier doré |
+| `tancrede` | Tancrède | m | peau bronzée, cheveux brun foncé mi-longs, barbe pleine, harnois d'acier à liserés de bronze, cape bleue, bouclier doré (redessiné le 2026-11-22 à la demande du joueur : il était d'abord à la peau foncée) |
 | `isaure` | Isaure | f | rousse, longue tresse, harnois d'acier, cape blanche, bouclier vert |
 | `maelle` | Maëlle | f | cheveux noirs courts, armure d'acier noirci, cape or, bouclier noir |
 
