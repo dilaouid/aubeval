@@ -216,8 +216,8 @@ DATA.venues = {
   barracks: {
     keeper: 'captain', name: 'La Caserne', music: 'forge', line: 0.78, tall: 0.72, faces: { glad: 5, cross: 3 }, faces64: { glad: 2, cross: 4 },
     title: 'Parade !', unit: 'parades',
-    how: 'La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Plus vous gagnez, plus ça se corse : viennent les feintes, où l’ordre change en route et qui a déjà paré est touché, puis les coups doubles. Cinq coups reçus, et l’exercice est perdu.',
-    keys: 'Les flèches du clavier, ou clic sur un côté. Bon côté : 2, dans le premier tiers : 3. Mauvais côté, ou trop tard : touché.',
+    how: 'La capitaine annonce un côté : levez le bouclier de ce côté avant que l’anneau se referme. Plus vous gagnez, plus ça se corse : feintes, où l’ordre change en route et qui a déjà paré est touché, puis coups doubles. Cinq coups reçus, et l’exercice est perdu.',
+    keys: 'Flèches ou clic sur un côté. Mauvais côté, ou trop tard : touché.',
     medals: [22, 34, 46], pop: [0, 2, 4, 6], buffs: { soldier: [0, 0.1, 0.2, 0.3] },
     // the right side parried is worth `good`, in the first part of the wait (config.js barracks_quick) `quick`.
     // each win takes `lead` (a share) off the wait; feints come from `feintFrom` wins, double blows from `doubleFrom`
@@ -243,8 +243,8 @@ DATA.venues = {
   lodge: {
     keeper: 'guide', name: 'La Loge des bâtisseurs', music: 'market', perLevel: 'lodge_level_time', line: 0.78, tall: 0.72, faces: { glad: 1, cross: 2 }, faces64: { glad: 0, cross: 4 },
     title: 'La bonne pierre', unit: 'pierres posées',
-    how: 'Le mur monte, et il y reste un trou. Des quatre pierres taillées, une seule y entre : trouvez-la d’un coup d’œil. Une pierre se tourne, elle ne se retourne jamais. Posées vite et sans faute, les bonnes pierres font une chaîne : dès la troisième, chacune vaut double. Quatre mauvaises pierres, et le mur s’écroule.',
-    keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1, dès la troisième d’une chaîne : 2. Mauvaise pierre : une faute.',
+    how: 'Le mur monte, et il y reste un trou : des quatre pierres taillées, une seule y entre. Une pierre se tourne, elle ne se retourne jamais. Quatre mauvaises pierres, et le mur s’écroule.',
+    keys: 'Touches 1 à 4, ou clic sur une pierre. Bonne pierre : 1 ; vite et sans faute, dès la troisième d’une chaîne : 2.',
     medals: [10, 20, 30], pop: [0, 2, 4, 6], buffs: { build: [0, 0.05, 0.1, 0.15] },
     // the hole (js/stones.js): `cells` cells, one more every `cellsEvery` wins, `cellsMax` at most; the stones
     // are shown turned from `turnFrom` wins, and from `mirrorFrom` one of the wrong ones is the right one flipped
@@ -258,7 +258,7 @@ DATA.venues = {
     tips: ['Sur mes plans, je vois ceci :', 'Mes compagnons me l’ont signalé du haut de l’échafaudage :', 'Un conseil de bâtisseuse, bourgmestre :'],
     glad: ['Elle entre !', 'Bien vu !', 'Juste au millimètre !', 'Voilà une assise !'], cross: ['Regardez mieux !', 'Pas celle-là !', 'Le trou d’abord, la pierre ensuite !'],
     chain: ['Quel coup d’œil !', 'Le mur monte tout seul !', 'Voilà le métier qui rentre !'],
-    after: ['Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.', 'Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : tout Aubeval bâtira moins cher, et chacun saura quel œil a choisi ces pierres.'],
+    after: ['Le mur s’est écroulé… Ce n’est que de la pierre, bourgmestre : on la ramasse, et on recommence. Tous les maîtres ont vu tomber leur premier mur.', 'Quelques rangs de posés, et droits avec ça. Mes plans vous feront gagner un peu sur vos chantiers.', 'Beau mur ! Les joints sont serrés, l’aplomb est juste. Mes plans sont à vous un moment : vos chantiers coûteront moins cher.', 'Un mur de maître ! Je n’y glisserais pas une lame de couteau. Mes meilleurs plans sont à vous : vos chantiers coûteront bien moins cher, et chacun saura quel œil a choisi ces pierres.'],
   },
 };
 DATA.venueOrder = ['cafe', 'market', 'forge', 'bakery', 'barracks', 'lodge'];

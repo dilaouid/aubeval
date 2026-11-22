@@ -84,6 +84,24 @@ test('every place of venueOrder has its building, its keeper, its game, and well
   }
 });
 
+// « Jouer » has the keeper say how + ' ' + keys in her box (js/venue.js offer()): four lines, a fifth runs over the key hint
+const RULES_MAX = 330;
+test('a place\'s rules fit the keeper\'s box, in the three languages', () => {
+  const { DATA } = load(), long = [];
+  const langs = { fr: id => [DATA.venues[id].how, DATA.venues[id].keys] };
+  for (const lang of ['en', 'es']) {
+    const layer = Object.assign({}, ...Object.values(T.readLayers(lang)));
+    langs[lang] = id => [layer['venues.' + id + '.how'], layer['venues.' + id + '.keys']];
+  }
+  for (const id of DATA.venueOrder) for (const lang in langs) {
+    const [how, keys] = langs[lang](id);
+    assert.ok(how && keys, id + ' (' + lang + '): no how or keys');
+    const n = (how + ' ' + keys).length;
+    if (n > RULES_MAX) long.push(id + ' (' + lang + '): ' + n);
+  }
+  assert.deepStrictEqual(long, [], 'longer than ' + RULES_MAX + ' characters: ' + long.join(', '));
+});
+
 test('an unknown place has no game', () => {
   const { Minigames } = load();
   assert.strictEqual(Minigames.has('nowhere'), false);
