@@ -139,11 +139,12 @@ window.ASSETS = {
   // each warlord of data/enemies.js DATA.warlords in his duel, at his own size (tools/make_enemies.py prints these lines)
   'enemy.morgash': { file: 'sprites/enemy_morgash.png', w: 89, h: 79 }, 'enemy.zhara': { file: 'sprites/enemy_zhara.png', w: 78, h: 93 },
   'enemy.urgak': { file: 'sprites/enemy_urgak.png', w: 92, h: 79 }, 'enemy.skrit': { file: 'sprites/enemy_skrit.png', w: 94, h: 86 },
-  // un seul dessin pour les quatre armes, en attendant hero_battle_t0 / _t2 / _t3 (voir imagegen/PROMPTS.md, section 11)
-  'hero.battle': 'sprites/hero_battle.png', // Aldric's first battle sprite: only the stand-in now, while a hero's own image loads (js/hero.js Hero.art)
+  'hero.battle': 'sprites/hero_battle.png', // Aldric's first battle sprite, one image whatever the sword: only the stand-in now, while a hero's own image loads (js/hero.js Hero.art)
   // the four heroes in battle (tools/make_heroes.py): drawn at 44x50, in one pose and one hand. w and h: with no drawn sprite
-  // to size it, an image keeps its file's size
-  ...Object.fromEntries(['aldric', 'tancrede', 'isaure', 'maelle'].map(k => ['hero.battle.' + k, { file: `sprites/hero_battle_${k}.png`, w: 44, h: 50 }])),
+  // to size it, an image keeps its file's size. One image per weapon tier (js/hero.js Hero.weaponTier): no sword forged yet and
+  // the first sword share the hero's own sprite, then the steel sword (_t2) and the runic blade (_t3), the same sprite but for the sword
+  ...Object.fromEntries(['aldric', 'tancrede', 'isaure', 'maelle'].map(k => ['hero.battle.' + k, { w: 44, h: 50,
+    frames: [`sprites/hero_battle_${k}.png`, `sprites/hero_battle_${k}.png`, `sprites/hero_battle_${k}_t2.png`, `sprites/hero_battle_${k}_t3.png`] }])),
   'unit.brute': 'sprites/unit_brute.png',
   'unit.chaman': 'sprites/unit_chaman.png',
   'unit.gobelin': 'sprites/unit_gobelin.png',

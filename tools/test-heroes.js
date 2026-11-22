@@ -75,6 +75,22 @@ test('every hero has its three sprites, listed in the manifest and on disk', () 
   }
 });
 
+test('every hero has a battle image per weapon tier, all 44x50: the first sword\'s twice, then the second\'s and the third\'s', () => {
+  const { DATA, ctx } = load();
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'assets/manifest.js'), 'utf8'), ctx, { filename: 'assets/manifest.js' });
+  for (const h of DATA.heroes) {
+    const e = ctx.ASSETS['hero.battle.' + h.id], t1 = `sprites/hero_battle_${h.id}.png`;
+    assert.deepStrictEqual([...(e.frames || [])], [t1, t1, `sprites/hero_battle_${h.id}_t2.png`, `sprites/hero_battle_${h.id}_t3.png`], h.id);
+    assert.deepStrictEqual([e.w, e.h], [44, 50], h.id);
+    for (const f of new Set(e.frames)) {
+      const p = path.join(ROOT, 'assets', f);
+      assert.ok(fs.existsSync(p), f + ' is not under assets/');
+      const png = fs.readFileSync(p); // a PNG's width and height: two big-endian integers at bytes 16 and 20
+      assert.deepStrictEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [44, 50], f);
+    }
+  }
+});
+
 test('withHero fills the name, then the gender', () => {
   const L = load({ name: 'Bea', look: 'isaure' });
   assert.strictEqual(L.withHero('{hero} est {g:prêt|prête}'), 'Bea est prête');
