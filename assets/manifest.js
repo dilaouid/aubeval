@@ -128,8 +128,8 @@ window.ASSETS = {
   // the places entered full screen (data/venues.js): the inside of each, 640x360, and its keeper from the waist up, a strip of
   // eight 160x160 frames played in a loop. imagegen/pixellab/venue/install_venue.py made the first three, tools/make_venues.py
   // builds the later ones from tools/venues/raw/.
-  ...Object.fromEntries(['cafe', 'market', 'forge', 'bakery'].map(k => ['venue.bg.' + k, { file: `sprites/venue/bg_${k}.png`, w: 640, h: 360 }])),
-  ...Object.fromEntries(['innkeeper', 'merchant', 'smith', 'baker'].map(k => ['venue.char.' + k, { sheet: `sprites/venue/char_${k}.png`, cols: 8, rows: 1 }])),
+  ...Object.fromEntries(['cafe', 'market', 'forge', 'bakery', 'barracks'].map(k => ['venue.bg.' + k, { file: `sprites/venue/bg_${k}.png`, w: 640, h: 360 }])),
+  ...Object.fromEntries(['innkeeper', 'merchant', 'smith', 'baker', 'captain'].map(k => ['venue.char.' + k, { sheet: `sprites/venue/char_${k}.png`, cols: 8, rows: 1 }])),
 
   'bg.battle': { frames: ['sprites/bg_battle.png', 'sprites/bg_battle_boss.png'] }, // the Ronces by day, and at dusk for a boss (tools/make_boss_backdrop.py grades the first into the second)
   'enemy.brute': 'sprites/enemy_brute.png',

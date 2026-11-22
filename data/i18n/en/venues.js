@@ -180,7 +180,7 @@ I18N.add('en', {
   'venues.barracks.name': 'The Barracks', // La Caserne
   'venues.barracks.title': 'Parry!', // Parade !
   'venues.barracks.unit': 'parries', // parades
-  'venues.barracks.how': 'The captain calls a side, and a recruit’s blow comes from there when the ring closes. Raise your shield on the right side before it lands, early if you can. Beware of feints: the order can change halfway. Five hits taken and the drill is lost.', // La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Gare aux feintes : l’ordre peut changer en route. Cinq coups reçus, et l’exercice est perdu.
+  'venues.barracks.how': 'The captain calls a side, and a recruit’s blow comes from there when the ring closes. Raise your shield on the right side before it lands, early if you can. The more you win, the harder it gets: feints come, where the order changes on the way and whoever has already parried is hit, then double blows. Five hits taken and the drill is lost.', // La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Plus vous gagnez, plus ça se corse : viennent les feintes, où l’ordre change en route et qui a déjà paré est touché, puis les coups doubles. Cinq coups reçus, et l’exercice est perdu.
   'venues.barracks.keys': 'Arrow keys, or click a side. Right side: 2, in the first third: 3. Wrong side, or too late: hit.', // Les flèches du clavier, ou clic sur un côté. Bon côté : 2, dans le premier tiers : 3. Mauvais côté, ou trop tard : touché.
   'venues.barracks.sides[up].name': 'Up', // Haut
   'venues.barracks.sides[up].shout': 'High!', // En haut !
@@ -190,34 +190,35 @@ I18N.add('en', {
   'venues.barracks.sides[down].shout': 'Low!', // En bas !
   'venues.barracks.sides[left].name': 'Left', // Gauche
   'venues.barracks.sides[left].shout': 'Left!', // À gauche !
-  'venues.barracks.greet': 'Attention! Ah, it’s the hero. Nobody comes in here to watch: you take a shield. My recruits strike, you parry, and the troops learn by watching you.', // Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et la troupe apprend en vous voyant faire.
-  'venues.barracks.ready[0]': 'A recruit is waiting his turn, wooden sword in hand. Will you take the shield?', // Une recrue attend son tour, l’épée de bois à la main. Vous prenez le bouclier ?
-  'venues.barracks.ready[1]': 'Shield on your arm, hero! I call the side, you parry.', // Bouclier au bras, {g:héros|héroïne} ! J’annonce le côté, vous parez.
-  'venues.barracks.ready[2]': 'My recruits need to see how a parry is done. Will you show them?', // Mes recrues ont besoin de voir comment on pare. Vous leur montrez ?
-  'venues.barracks.wait[0]': 'The troops are catching their breath. We’ll drill again in a while.', // La troupe souffle. On reprend l’exercice tout à l’heure.
-  'venues.barracks.wait[1]': 'I’m calling the roll. Come back shortly, the shield will be waiting.', // Je fais l’appel. Repassez dans un moment, le bouclier vous attend.
+  'venues.barracks.greet': 'Attention! Ah, it’s the hero. Nobody comes in here to watch: you take a shield. My recruits strike, you parry, and the whole troop learns by watching you.', // Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et toute la troupe apprend en vous voyant faire.
+  'venues.barracks.ready[0]': 'A recruit is waiting his turn, wooden sword in hand. Shield on your arm, and take your position!', // Une recrue attend son tour, l’épée de bois au poing. Bouclier au bras, et en position !
+  'venues.barracks.ready[1]': 'The horn has sounded? Then no time to lose: a drill before the goblins arrive, and my soldiers will strike harder.', // La corne a sonné ? Alors pas de temps à perdre : un exercice avant que les gobelins n’arrivent, et mes soldats frapperont plus fort.
+  'venues.barracks.ready[2]': 'My recruits need to see how a parry is done. Show them, hero. I call, you parry.', // Mes recrues ont besoin de voir comment on pare. Montrez-leur, {g:héros|héroïne}. J’annonce, vous parez.
+  'venues.barracks.wait[0]': 'The troop is catching its breath. At ease, but not for long: we drill again in a while.', // La troupe souffle. Repos, mais pas trop longtemps : on reprend l’exercice tout à l’heure.
+  'venues.barracks.wait[1]': 'I’m calling the roll and counting the bruises. Come back shortly, the shield will be waiting.', // Je fais l’appel et je compte les bosses. Repassez dans un moment, le bouclier vous attend.
   'venues.barracks.chat[0]': 'One parry is worth two bandages.', // Une parade vaut mieux que deux bandages.
-  'venues.barracks.chat[1]': 'When the horn sounds, come and see me: a drill at the sound of the horn, and my soldiers will strike harder when the goblins arrive.', // Quand le cor sonne, venez me voir : un exercice au son du cor, et mes soldats frapperont plus fort quand les gobelins arriveront.
-  'venues.barracks.chat[2]': 'The militiaman holds the gate, the archer holds the wall, and I hold them both.', // Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.
-  'venues.barracks.chat[3]': 'A hero who parries alongside the troops puts heart into the youngest.', // {g:Un héros|Une héroïne} qui pare avec la troupe, ça donne du cœur aux plus jeunes.
-  'venues.barracks.chat[4]': 'Bram forges the blades, Mélisande feeds the troops. Me, I teach them all to stay alive.', // Bram forge les lames, Mélisande nourrit la troupe. Moi, j’apprends à tout ce monde à rester en vie.
+  'venues.barracks.chat[1]': 'The militiaman holds the gate, the archer holds the wall, and I hold them both.', // Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.
+  'venues.barracks.chat[2]': 'My recruits come in farmhands and leave soldiers. In between, there’s me.', // Mes recrues arrivent paysans et repartent soldats. Entre les deux, il y a moi.
+  'venues.barracks.chat[3]': 'A hero who takes up the shield with the troop is worth all my speeches. Even the youngest stand up straighter.', // {g:Un héros|Une héroïne} qui prend le bouclier avec la troupe, ça vaut tous mes discours. Même les plus jeunes se tiennent plus droit.
+  'venues.barracks.chat[4]': 'Bram forges the blades, Mélisande feeds the troop. Me, I teach them all to stay alive.', // Bram forge les lames, Mélisande nourrit la troupe. Moi, j’apprends à tout ce monde à rester en vie.
   'venues.barracks.tips[0]': 'Guard report:', // Rapport de la garde :
   'venues.barracks.tips[1]': 'My sentries flagged it:', // Mes sentinelles me l’ont signalé :
-  'venues.barracks.tips[2]': 'At morning muster, they were saying', // Au rassemblement du matin, on disait que
-  'venues.barracks.glad[0]': 'Quick!', // Vif !
+  'venues.barracks.tips[2]': 'At morning muster, the word in the ranks was:', // Au rassemblement du matin, ça se disait dans les rangs :
+  'venues.barracks.glad[0]': 'Well spotted!', // Bien vu !
   'venues.barracks.glad[1]': 'Fine parry!', // Belle parade !
   'venues.barracks.glad[2]': 'Now that’s a shield!', // Voilà un bouclier !
+  'venues.barracks.glad[3]': 'Not bad. Not bad at all.', // Pas mal. Pas mal du tout.
   'venues.barracks.cross[0]': 'The other side!', // L’autre côté !
   'venues.barracks.cross[1]': 'Listen to the order!', // Écoutez l’ordre !
   'venues.barracks.cross[2]': 'Not that way!', // Pas par là !
-  'venues.barracks.lost[0]': 'Hit!', // Touché !
-  'venues.barracks.lost[1]': 'Too slow!', // Trop lent !
-  'venues.barracks.lost[2]': 'Your shield, come on!', // Le bouclier, voyons !
-  'venues.barracks.feinted[0]': 'Feint! Wait for the order.', // Feinte ! Attendez l’ordre.
+  'venues.barracks.lost[0]': 'Too slow!', // Trop lent !
+  'venues.barracks.lost[1]': 'Your shield, come on!', // Le bouclier, voyons !
+  'venues.barracks.lost[2]': 'Asleep, are we?', // On dort ?
+  'venues.barracks.feinted[0]': 'Feint! The order changed.', // Feinte ! L’ordre a changé.
   'venues.barracks.feinted[1]': 'You took the bait!', // Vous avez mordu !
-  'venues.barracks.feinted[2]': 'No parrying before the order!', // On ne pare pas avant l’ordre !
-  'venues.barracks.after[0]': 'Five hits taken… Patch yourself up, and we’ll go again later.', // Cinq coups reçus… Pansez-vous, et on recommence plus tard.
-  'venues.barracks.after[1]': 'You can parry. My recruits saw how a shield is held.', // Ça pare. Mes recrues ont vu comment on tient un bouclier.
-  'venues.barracks.after[2]': 'Fine guard! The troops were watching, and they’ll strike harder for it.', // Belle garde ! La troupe a regardé, et elle frappera plus fort.
-  'venues.barracks.after[3]': 'A legendary guard! The whole barracks talks of nothing but you, and my soldiers strike as never before.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais.
+  'venues.barracks.feinted[2]': 'Hear the order out!', // Écoutez jusqu’au bout !
+  'venues.barracks.after[0]': 'That wasn’t a drill, that was a brawl. Patch yourself up, and we’ll go again later.', // Ce n’était pas un exercice, c’était une bagarre. Pansez-vous, et on reprend plus tard.
+  'venues.barracks.after[1]': 'You can parry. Not a guard yet, but my recruits saw how a shield is held.', // Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.
+  'venues.barracks.after[2]': 'Fine guard! The troop was watching, and it will strike harder for it. I won’t say it twice.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
+  'venues.barracks.after[3]': 'A legendary guard! The whole barracks talks of nothing but you, and my soldiers strike as never before. I’m proud of them… and of you.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
 });

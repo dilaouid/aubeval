@@ -180,7 +180,7 @@ I18N.add('es', {
   'venues.barracks.name': 'El Cuartel', // La Caserne
   'venues.barracks.title': '¡En guardia!', // Parade !
   'venues.barracks.unit': 'paradas', // parades
-  'venues.barracks.how': 'La capitana anuncia un lado, y el golpe de un recluta llega por ahí cuando el anillo se cierra. Alce el escudo del lado correcto antes del impacto, pronto si puede. Cuidado con las fintas: la orden puede cambiar a medio camino. Cinco golpes recibidos y el ejercicio está perdido.', // La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Gare aux feintes : l’ordre peut changer en route. Cinq coups reçus, et l’exercice est perdu.
+  'venues.barracks.how': 'La capitana anuncia un lado, y el golpe de un recluta llega por ahí cuando el anillo se cierra. Alce el escudo del lado correcto antes del impacto, pronto si puede. Cuanto más gane, más se complica: llegan las fintas, en las que la orden cambia a medio camino y quien ya ha parado recibe el golpe, y luego los golpes dobles. Cinco golpes recibidos y el ejercicio está perdido.', // La capitaine annonce un côté, et le coup d’une recrue en arrive quand l’anneau se referme. Levez le bouclier du bon côté avant l’impact, tôt si vous pouvez. Plus vous gagnez, plus ça se corse : viennent les feintes, où l’ordre change en route et qui a déjà paré est touché, puis les coups doubles. Cinq coups reçus, et l’exercice est perdu.
   'venues.barracks.keys': 'Flechas del teclado, o clic en un lado. Lado correcto: 2, en el primer tercio: 3. Lado equivocado, o demasiado tarde: tocado.', // Les flèches du clavier, ou clic sur un côté. Bon côté : 2, dans le premier tiers : 3. Mauvais côté, ou trop tard : touché.
   'venues.barracks.sides[up].name': 'Arriba', // Haut
   'venues.barracks.sides[up].shout': '¡Arriba!', // En haut !
@@ -190,34 +190,35 @@ I18N.add('es', {
   'venues.barracks.sides[down].shout': '¡Abajo!', // En bas !
   'venues.barracks.sides[left].name': 'Izquierda', // Gauche
   'venues.barracks.sides[left].shout': '¡A la izquierda!', // À gauche !
-  'venues.barracks.greet': '¡Firmes! Ah, es {g:el héroe|la heroína}. Aquí no se entra a mirar: se toma un escudo. Mis reclutas golpean, usted para, y la tropa aprende viéndole hacer.', // Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et la troupe apprend en vous voyant faire.
-  'venues.barracks.ready[0]': 'Un recluta espera su turno, espada de madera en mano. ¿Toma el escudo?', // Une recrue attend son tour, l’épée de bois à la main. Vous prenez le bouclier ?
-  'venues.barracks.ready[1]': '¡Escudo al brazo, {g:héroe|heroína}! Yo anuncio el lado, usted para.', // Bouclier au bras, {g:héros|héroïne} ! J’annonce le côté, vous parez.
-  'venues.barracks.ready[2]': 'Mis reclutas necesitan ver cómo se para un golpe. ¿Se lo enseña?', // Mes recrues ont besoin de voir comment on pare. Vous leur montrez ?
-  'venues.barracks.wait[0]': 'La tropa recobra el aliento. Seguimos con el ejercicio dentro de un rato.', // La troupe souffle. On reprend l’exercice tout à l’heure.
-  'venues.barracks.wait[1]': 'Estoy pasando lista. Vuelva dentro de un momento, el escudo le espera.', // Je fais l’appel. Repassez dans un moment, le bouclier vous attend.
+  'venues.barracks.greet': '¡Firmes! Ah, es {g:el héroe|la heroína}. Aquí no se entra a mirar: se toma un escudo. Mis reclutas golpean, usted para, y toda la tropa aprende viéndole hacer.', // Garde à vous ! Ah, c’est {g:le héros|l’héroïne}. Ici, on n’entre pas pour regarder : on prend un bouclier. Mes recrues frappent, vous parez, et toute la troupe apprend en vous voyant faire.
+  'venues.barracks.ready[0]': 'Un recluta espera su turno, espada de madera en el puño. ¡Escudo al brazo, y a su puesto!', // Une recrue attend son tour, l’épée de bois au poing. Bouclier au bras, et en position !
+  'venues.barracks.ready[1]': '¿Ha sonado el cuerno? Entonces no hay tiempo que perder: un ejercicio antes de que lleguen los goblins, y mis soldados golpearán más fuerte.', // La corne a sonné ? Alors pas de temps à perdre : un exercice avant que les gobelins n’arrivent, et mes soldats frapperont plus fort.
+  'venues.barracks.ready[2]': 'Mis reclutas necesitan ver cómo se para un golpe. Enséñeselo, {g:héroe|heroína}. Yo anuncio, usted para.', // Mes recrues ont besoin de voir comment on pare. Montrez-leur, {g:héros|héroïne}. J’annonce, vous parez.
+  'venues.barracks.wait[0]': 'La tropa recobra el aliento. Descanso, pero no mucho: seguimos con el ejercicio dentro de un rato.', // La troupe souffle. Repos, mais pas trop longtemps : on reprend l’exercice tout à l’heure.
+  'venues.barracks.wait[1]': 'Estoy pasando lista y contando los chichones. Vuelva dentro de un momento, el escudo le espera.', // Je fais l’appel et je compte les bosses. Repassez dans un moment, le bouclier vous attend.
   'venues.barracks.chat[0]': 'Una parada vale más que dos vendas.', // Une parade vaut mieux que deux bandages.
-  'venues.barracks.chat[1]': 'Cuando suene el cuerno, venga a verme: un ejercicio al son del cuerno, y mis soldados golpearán más fuerte cuando lleguen los goblins.', // Quand le cor sonne, venez me voir : un exercice au son du cor, et mes soldats frapperont plus fort quand les gobelins arriveront.
-  'venues.barracks.chat[2]': 'El miliciano guarda la puerta, el arquero guarda la muralla, y yo los guardo a los dos.', // Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.
-  'venues.barracks.chat[3]': '{g:Un héroe|Una heroína} que para golpes con la tropa les da valor a los más jóvenes.', // {g:Un héros|Une héroïne} qui pare avec la troupe, ça donne du cœur aux plus jeunes.
+  'venues.barracks.chat[1]': 'El miliciano guarda la puerta, el arquero guarda la muralla, y yo los guardo a los dos.', // Le milicien tient la porte, l’archer tient le mur, et moi je les tiens tous les deux.
+  'venues.barracks.chat[2]': 'Mis reclutas llegan campesinos y se van soldados. Entre una cosa y otra, estoy yo.', // Mes recrues arrivent paysans et repartent soldats. Entre les deux, il y a moi.
+  'venues.barracks.chat[3]': '{g:Un héroe|Una heroína} que toma el escudo con la tropa vale más que todos mis discursos. Hasta los más jóvenes se ponen más derechos.', // {g:Un héros|Une héroïne} qui prend le bouclier avec la troupe, ça vaut tous mes discours. Même les plus jeunes se tiennent plus droit.
   'venues.barracks.chat[4]': 'Bram forja las hojas, Mélisande alimenta a la tropa. Yo les enseño a todos a seguir con vida.', // Bram forge les lames, Mélisande nourrit la troupe. Moi, j’apprends à tout ce monde à rester en vie.
   'venues.barracks.tips[0]': 'Informe de la guardia:', // Rapport de la garde :
   'venues.barracks.tips[1]': 'Mis centinelas me lo han señalado:', // Mes sentinelles me l’ont signalé :
-  'venues.barracks.tips[2]': 'En la formación de la mañana se decía que', // Au rassemblement du matin, on disait que
-  'venues.barracks.glad[0]': '¡Rápido!', // Vif !
+  'venues.barracks.tips[2]': 'En la formación de la mañana, se comentaba en las filas:', // Au rassemblement du matin, ça se disait dans les rangs :
+  'venues.barracks.glad[0]': '¡Bien visto!', // Bien vu !
   'venues.barracks.glad[1]': '¡Buena parada!', // Belle parade !
   'venues.barracks.glad[2]': '¡Eso es un escudo!', // Voilà un bouclier !
+  'venues.barracks.glad[3]': 'No está mal. Nada mal.', // Pas mal. Pas mal du tout.
   'venues.barracks.cross[0]': '¡El otro lado!', // L’autre côté !
   'venues.barracks.cross[1]': '¡Escuche la orden!', // Écoutez l’ordre !
   'venues.barracks.cross[2]': '¡Por ahí no!', // Pas par là !
-  'venues.barracks.lost[0]': '¡Tocado!', // Touché !
-  'venues.barracks.lost[1]': '¡Demasiado lento!', // Trop lent !
-  'venues.barracks.lost[2]': '¡El escudo, vamos!', // Le bouclier, voyons !
-  'venues.barracks.feinted[0]': '¡Finta! Espere la orden.', // Feinte ! Attendez l’ordre.
+  'venues.barracks.lost[0]': '¡Demasiado lento!', // Trop lent !
+  'venues.barracks.lost[1]': '¡El escudo, vamos!', // Le bouclier, voyons !
+  'venues.barracks.lost[2]': '¿Nos dormimos?', // On dort ?
+  'venues.barracks.feinted[0]': '¡Finta! La orden ha cambiado.', // Feinte ! L’ordre a changé.
   'venues.barracks.feinted[1]': '¡Ha mordido el anzuelo!', // Vous avez mordu !
-  'venues.barracks.feinted[2]': '¡No se para antes de la orden!', // On ne pare pas avant l’ordre !
-  'venues.barracks.after[0]': 'Cinco golpes recibidos… Cúrese, y volvemos a empezar más tarde.', // Cinq coups reçus… Pansez-vous, et on recommence plus tard.
-  'venues.barracks.after[1]': 'Sabe parar. Mis reclutas han visto cómo se sostiene un escudo.', // Ça pare. Mes recrues ont vu comment on tient un bouclier.
-  'venues.barracks.after[2]': '¡Buena guardia! La tropa ha mirado, y golpeará más fuerte.', // Belle garde ! La troupe a regardé, et elle frappera plus fort.
-  'venues.barracks.after[3]': '¡Una guardia de leyenda! En todo el cuartel no se habla más que de usted, y mis soldados golpean como nunca.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais.
+  'venues.barracks.feinted[2]': '¡Escuche la orden hasta el final!', // Écoutez jusqu’au bout !
+  'venues.barracks.after[0]': 'Eso no era un ejercicio, era una pelea. Cúrese, y volvemos a empezar más tarde.', // Ce n’était pas un exercice, c’était une bagarre. Pansez-vous, et on reprend plus tard.
+  'venues.barracks.after[1]': 'Sabe parar. Todavía no es una guardia, pero mis reclutas han visto cómo se sostiene un escudo.', // Ça pare. Pas encore une garde, mais mes recrues ont vu comment on tient un bouclier.
+  'venues.barracks.after[2]': '¡Buena guardia! La tropa ha mirado, y golpeará más fuerte. No lo diré dos veces.', // Belle garde ! La troupe a regardé, et elle frappera plus fort. Je ne le dirai pas deux fois.
+  'venues.barracks.after[3]': '¡Una guardia de leyenda! En todo el cuartel no se habla más que de usted, y mis soldados golpean como nunca. Estoy orgullosa de ellos… y de usted.', // Une garde de légende ! Toute la caserne ne parle que de vous, et mes soldats frappent comme jamais. Je suis fière d’eux… et de vous.
 });
