@@ -248,16 +248,50 @@
   /** The intro's cards: look at the quarter, rebuild it from memory, a second look costs; the turned plan when it comes. */
   function howto(o) {
     const d = o.d, R = d.ramp, C = UI.C, { fill, news, KEY, fakeButton, arrow } = Minigames.kit, sp = Blueprint.spec(o.level, R);
-    let seed = 7; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
-    const plan = Blueprint.draw(0, R, d.kinds, rnd), n = plan.side; // the same small plan on every visit
-    /** A small quarter in a card: its middle at x, its top at y, `span` wide at most; the buildings scaled to fit. */
-    const small = (x, y, span, cells, tone, turn, under) => { const lay = layout(n, x, y, span, span); quarter(lay, cells, tone, turn, lay.cw / 72, under); return lay; };
-    const fit = (w, h) => Math.min(w - 24, (h - 34) * 2);
+    // the same small plan on every visit: four buildings spread round the quarter's middle (a drawn one could
+    // crowd into a corner and leave the card lopsided), not symmetrical, so that turning it still shows
+    const n = Blueprint.spec(0, R).side;
+    const spr = k => Art.get(DATA.buildings[k].sprite);
+    const foot = (k, s) => 16 * s + Math.max(0, Math.round((spr(k).width - 64) / 4)) * s; // as in building(): how far under its cell's middle a building stands
+    /** The plan: the tallest building in front (a tall one at the back would climb out of its card). */
+    const planCells = () => {
+      const cells = new Array(n * n).fill(null), kinds = d.kinds.slice(0, 4).sort((a, b) => spr(a).height - spr(b).height);
+      [[0, 0], [0, 1], [2, 0], [1, 2]].forEach(([x, y], i) => { cells[y * n + x] = kinds[i % kinds.length]; });
+      return cells;
+    };
+    /** How far above its top corner and below its bottom one the quarter(s) `views` ({ cells, turn }) reach at a cell `cw` wide: buildings and flag. */
+    const reach = (cw, views) => {
+      const h = cw / 2, s = cw / 72, fs = cw >= 60 ? 2 : 1;
+      let top = 0, bottom = n * h;
+      for (const v of views) {
+        Blueprint.turn(v.cells, n, v.turn).forEach((k, i) => {
+          if (!k) return;
+          const cy = ((i % n) + Math.floor(i / n)) * h / 2 + h / 2;
+          top = Math.min(top, cy + foot(k, s) - spr(k).height * s); bottom = Math.max(bottom, cy + foot(k, s));
+        });
+        const q = ((v.turn % 4) + 4) % 4, fy = [0, n * h / 2, n * h, n * h / 2][q] + [-2, 0, 8, 0][q];
+        top = Math.min(top, fy - 26 * fs); bottom = Math.max(bottom, fy);
+      }
+      return { top, bottom };
+    };
+    /** The biggest cell (`room` wide for a whole quarter, `h` high for what stands on it) that fits, and where the top corner goes to centre the picture in (y, h). */
+    const fit = (y, h, room, views) => {
+      let cw = 16;
+      for (let c = CELL; c > 16; c -= 2) if (n * c <= room && (r => r.bottom - r.top <= h - 8)(reach(c, views))) { cw = c; break; }
+      const r = reach(cw, views);
+      return { cw, top: y + (h - (r.bottom - r.top)) / 2 - r.top };
+    };
+    /** A quarter in a card: its middle at x, its top corner at `top`, cells `cw` wide; the buildings scaled to fit. */
+    const small = (x, top, cw, cells, tone, turn, under) => { const lay = layout(n, x, top, n * cw, cw); quarter(lay, cells, tone, turn, cw / 72, under); return lay; };
     const cards = [
-      { text: d.steps[0], keys: [], draw: (x, y, w, h) => small(x + w / 2, y + 22, fit(w, h), plan.cells, PARCH, 0) },
+      { text: d.steps[0], keys: [], draw(x, y, w, h) {
+        const cells = planCells(), f = fit(y, h, w - 24, [{ cells, turn: 0 }]);
+        small(x + w / 2, f.top, f.cw, cells, PARCH, 0);
+      } },
       { text: d.steps[1], keys: ['1–' + sp.kinds, '←↑↓→', KEY.click()], draw(x, y, w, h) {
-        const some = plan.cells.map((k, i) => i < 5 ? k : null), at = plan.cells.findIndex((k, i) => k && i >= 5);
-        small(x + w / 2, y + 22, fit(w, h), some, GRASS, 0, lay => { if (at < 0) return; const c = lay.at(at % n, Math.floor(at / n)); diamond(c.x, c.y, lay.cw - 2, lay.h - 1, null, C.gold, 3); });
+        const cells = planCells(), some = cells.map((k, i) => i < 5 ? k : null), at = cells.findIndex((k, i) => k && i >= 5);
+        const f = fit(y, h, w - 24, [{ cells, turn: 0 }]); // as big as the full plan, so that both cards match
+        small(x + w / 2, f.top, f.cw, some, GRASS, 0, lay => { if (at < 0) return; const c = lay.at(at % n, Math.floor(at / n)); diamond(c.x, c.y, lay.cw - 2, lay.h - 1, null, C.gold, 3); });
       } },
       { text: fill(d.steps[2], { n: tune.lodge_peek_cost }), keys: [KEY.space()], draw(x, y, w, h) {
         const bw = Math.min(w - 30, 200);
@@ -266,10 +300,10 @@
       } },
     ];
     if (o.level >= R.turnedFrom) cards.push({ fresh: true, text: news(d, 'turn'), keys: [], draw(x, y, w, h) {
-      const span = Math.min((w - 60) / 2, (h - 34) * 2);
-      small(x + w / 4 + 6, y + 26, span, plan.cells, PARCH, 1);
+      const cells = planCells(), f = fit(y, h, (w - 60) / 2, [{ cells, turn: 1 }, { cells, turn: 0 }]);
+      small(x + w / 4 + 6, f.top, f.cw, cells, PARCH, 1);
       arrow(x + w / 2 - 14, y + h / 2, 28);
-      small(x + 3 * w / 4 - 6, y + 26, span, plan.cells, GRASS, 0);
+      small(x + 3 * w / 4 - 6, f.top, f.cw, cells, GRASS, 0);
     } });
     return { cards, legend: [
       { text: fill(d.legend[0], { n: 1 }) },
