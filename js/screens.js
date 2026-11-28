@@ -110,17 +110,30 @@ const scenes = (() => {
     }
     return out;
   }
-  /** Builds a drawn rampart, tile by tile in its order, until the stocks run out. */
+  /** Builds a drawn rampart, tile by tile in its order, until the stocks or the town's room for walls run out. */
   function buildWall(kind, plan) {
-    let n = 0, broke = false;
+    let n = 0, broke = false, full = false, thick = false;
     for (const t of plan) {
-      if (!Village.canPlace(kind, t.tx, t.ty)) continue;
+      if (!Village.canPlace(kind, t.tx, t.ty)) { thick = thick || Village.canPlace(kind, t.tx, t.ty, undefined, 0, true); continue; }
+      if (!Village.wallRoom()) { full = true; break; }
       if (!Village.canAfford(Village.cost(kind))) { broke = true; break; }
       if (Village.place(kind, t.tx, t.ty, false, true)) n++;
     }
-    if (broke) toast(tr('no_funds'), UI.C.bad);
+    if (full) toast(tr('wall_cap', { max: Village.wallCap() }), UI.C.bad);
+    else if (broke) toast(tr('no_funds'), UI.C.bad);
+    else if (thick && !n) toast(tr('wall_thick'), UI.C.bad);
     else if (!n && plan.length) sfx('error');
     return n;
+  }
+  /** Which tiles of a drawn rampart would be built, in its order: free, one wall thick with what goes down before them, and within the town's room for walls. */
+  function wallTiles(kind, plan) {
+    const on = new Set(), also = (x, y) => on.has(x + ',' + y);
+    let room = Village.wallRoom();
+    return plan.map(t => {
+      const ok = room > 0 && Village.canPlace(kind, t.tx, t.ty) && Village.wallFits(t.tx, t.ty, also);
+      if (ok) { on.add(t.tx + ',' + t.ty); room--; }
+      return { tx: t.tx, ty: t.ty, ok };
+    });
   }
   function worldClick(x, y) {
     const p = World.toWorld(x, y);
@@ -403,11 +416,13 @@ const scenes = (() => {
       const raids = state.raid.timer != null || !!state.raid.active || state.raid.n > 0; // the traps' cards open with the first raid
       const open = trap ? raids : tool ? true : Village.isUnlocked(k), done = !tool && !!d.unique && Village.count(k) > 0;
       const price = tool ? (fl ? Village.toolCost(fl.plant) : d.cost ? Village.toolCost(d.cost) : {}) : Village.cost(k);
-      const can = open && !done && armed && Village.canAfford(price), on = tool ? ui.tool === tool : ui.placing === k;
-      const tip = open ? [d.name, d.desc].concat(tool ? [] : prodText(d)).join('\n') : '????\n' + (trap ? tr('trap_locked') : tr('need') + tr('colon') + Quests.describe(d.unlock).map(p => p.text).join(', '));
+      const walls = !tool && d.wall ? { n: Village.wallCount(), max: Village.wallCap() } : null, full = !!walls && walls.n >= walls.max; // a town has room for so many walls
+      const can = open && !done && !full && armed && Village.canAfford(price), on = tool ? ui.tool === tool : ui.placing === k;
+      const tip = open ? [d.name, d.desc].concat(tool ? [] : prodText(d), walls ? [tr('wall_cap_tip', { n: fmt(walls.n), max: fmt(walls.max), step: tune.wall_cap_step })] : []).join('\n') : '????\n' + (trap ? tr('trap_locked') : tr('need') + tr('colon') + Quests.describe(d.unlock).map(p => p.text).join(', '));
       const hov = UI.region(x, y, w, h, () => {
         if (!open || done) { sfx('error'); return; }
         if (!armed) { toast(tr('trap_wait'), C.accent); sfx('error'); return; }
+        if (full && !on) { toast(tr('wall_cap', { max: walls.max }), C.bad); sfx('error'); return; }
         sfx('click'); ui.placing = tool || on ? null : k; ui.tool = tool && !on ? tool : null; ui.moving = null; closePanel();
       }, tip);
       const look = !open ? 'card_locked' : on ? 'card_on' : hov ? 'card_hover' : 'card';
@@ -426,6 +441,7 @@ const scenes = (() => {
       }
       UI.label(d.card, x + w / 2, y + 76, 13, on ? C.gold : C.text);
       if (trap && !armed) UI.icon('icon.time', x + w - 16, y + 16, 16); // waits for the horn
+      if (walls) text(fmt(walls.n) + '/' + fmt(walls.max), x + w - 8, y + 14, 12, full ? C.bad : C.dim, 'right', true); // how many stand, of how many the hall allows
       if (done) { UI.icon('icon.check', x + w / 2 - 30, y + 96, 16); text(tr('built'), x + w / 2 + 8, y + 97, 13, C.good, 'center', true); }
       else {
         const keys = Object.keys(price), two = keys.length > 2;
@@ -627,7 +643,7 @@ const scenes = (() => {
     if (d.wall) out.push(tr('up_wall'));
     if (d.train) out.push(tr('up_army', { pct: Math.round(tune.soldier_level_step * 100) }));
     if (d.service) out.push(tr('up_service', { n: fmtNum(tune.service_radius_step) }));
-    if (b.kind === 'hall') out.push(tr('up_hall'));
+    if (b.kind === 'hall') { out.push(tr('up_hall')); if (tune.wall_cap_step) out.push(tr('up_hall_walls', { n: tune.wall_cap_step })); }
     if (b.kind === 'lodge') { if (n <= tune.lodge_max_level) out.push(tr('up_lodge_perks', lodgeTexts(Venue.lodgePerks(n)))); out.push(tr('up_lodge', { n: tune.lodge_level_time })); } // the next level's standing effects (js/venue.js lodgePerks, none past its top level), and its gift lasting longer (giftTime)
     if (d.produces && n % ms === 0) out.push(tr('up_double'));
     if (b.kind === 'forge' && n === ms) out.push(tr('up_forge_perk'));
@@ -1106,7 +1122,7 @@ const scenes = (() => {
     const mv = ui.moving && Village.byUid(ui.moving), kind = ui.placing || (mv && mv.kind);
     const plan = ui.wall && ui.placing ? ui.wallShape || wallPlan() : null;
     if (plan) { // the rampart being drawn: each tile, free or not, and what it all costs
-      view.wall = { kind: ui.placing, tiles: plan.map(t => ({ tx: t.tx, ty: t.ty, ok: Village.canPlace(ui.placing, t.tx, t.ty) })) };
+      view.wall = { kind: ui.placing, tiles: wallTiles(ui.placing, plan) };
     } else if (kind && mouse.y > TOP && mouse.y < BOTTOM && !ui.away && !ui.banner) {
       const p = World.toWorld(mouse.x, mouse.y), g = World.ghostTile(kind, p.x, p.y, ui.rot);
       view.ghost = { kind, tx: g.tx, ty: g.ty, rot: ui.rot, ok: Village.canPlace(kind, g.tx, g.ty, mv ? mv.uid : undefined, ui.rot), uid: mv ? mv.uid : 0 };

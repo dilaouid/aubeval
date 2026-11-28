@@ -34,6 +34,7 @@ const Village = (() => {
   const paved = new Uint8Array(N);             // 1 where the player paved a path
   const occ = new Int32Array(N);               // what stands on each tile: 0 free, -1 blocked, -2 paved, >0 a building's uid
   const walls = new Uint8Array(N);             // 1 where a standing (unbroken) wall is: the walls join their neighbours (js/world.js)
+  const wallBase = new Uint8Array(N);          // 1 where any wall is, broken or not: a rampart is one wall thick (wallFits)
   const camp = new Uint8Array(N);              // 1 on the goblin camp and the bare ground around it: nothing is built there
   const net = new Uint8Array(N);               // 1 on every paved tile joined by paths to the town hall (Roads, below)
   const shakes = new Map();                    // tile index -> seconds left of a tree's shake: drawn only
@@ -233,7 +234,7 @@ const Village = (() => {
   /** Writes a building's footprint on the tiles: its uid, or with no value what the bare tiles are. */
   function stamp(b, v) {
     const d = dims(b), wall = v != null && !!B[b.kind].wall && !b.damaged ? 1 : 0;
-    for (let y = 0; y < d.h; y++) for (let x = 0; x < d.w; x++) if (inMap(b.x + x, b.y + y)) { const i = idx(b.x + x, b.y + y); occ[i] = v == null ? tileBase(i) : v; walls[i] = wall; }
+    for (let y = 0; y < d.h; y++) for (let x = 0; x < d.w; x++) if (inMap(b.x + x, b.y + y)) { const i = idx(b.x + x, b.y + y); occ[i] = v == null ? tileBase(i) : v; walls[i] = wall; wallBase[i] = v != null && B[b.kind].wall ? 1 : 0; }
   }
   /** Whether an unbroken wall stands on a tile. */
   const wallAt = (x, y) => inMap(x, y) && walls[idx(x, y)] === 1;
@@ -246,8 +247,28 @@ const Village = (() => {
     const w = (a, b) => wallAt(a, b) || (also ? also(a, b) : false);
     return (w(x, y - 1) ? 1 : 0) | (w(x + 1, y) ? 2 : 0) | (w(x, y + 1) ? 4 : 0) | (w(x - 1, y) ? 8 : 0);
   }
+  /**
+   * Whether a wall on (x, y) keeps its rampart one wall thick: it would not close a 2×2 square of
+   * walls (broken ones too: they stand again once repaired). `also`, when given, says whether a tile
+   * counts as a wall as well (the rampart still being drawn); `skip`, a tile that does not (a wall
+   * being moved away from it).
+   */
+  function wallFits(x, y, also, skip) {
+    const w = (a, b) => !(skip && skip.x === a && skip.y === b) && ((inMap(a, b) && wallBase[idx(a, b)] === 1) || (also ? also(a, b) : false));
+    for (const [dx, dy] of [[-1, -1], [0, -1], [-1, 0], [0, 0]]) {
+      const X = x + dx, Y = y + dy, sq = [[X, Y], [X + 1, Y], [X, Y + 1], [X + 1, Y + 1]].filter(([a, b]) => a !== x || b !== y);
+      if (sq.every(([a, b]) => w(a, b))) return false;
+    }
+    return true;
+  }
+  /** How many walls may stand: config wall_cap_base, and wall_cap_step more per town hall level above 1. */
+  function wallCap() { const h = state.buildings.find(b => b.kind === 'hall'); return tune.wall_cap_base + ((h ? h.lvl : 1) - 1) * tune.wall_cap_step; }
+  /** How many walls stand, broken ones included. */
+  const wallCount = () => state.buildings.reduce((n, b) => n + (B[b.kind].wall ? 1 : 0), 0);
+  /** How many more walls may be built (none, or below, when a town already has more). */
+  const wallRoom = () => Math.max(0, wallCap() - wallCount());
   function rebuildOcc() {
-    walls.fill(0);
+    walls.fill(0); wallBase.fill(0);
     for (let i = 0; i < N; i++) occ[i] = tileBase(i);
     for (const b of state.buildings) stamp(b, b.uid);
   }
@@ -601,8 +622,8 @@ const Village = (() => {
   }
 
   // ---- Placing ----
-  /** Whether a building of this kind fits with its top-left tile at (tx, ty). */
-  function canPlace(kind, tx, ty, ignoreUid, rot) {
+  /** Whether a building of this kind fits with its top-left tile at (tx, ty). `loose`: a wall's thickness is not looked at. */
+  function canPlace(kind, tx, ty, ignoreUid, rot, loose) {
     const d = size(kind, rot);
     for (let y = 0; y < d.h; y++) for (let x = 0; x < d.w; x++) {
       if (!inMap(tx + x, ty + y)) return false;
@@ -610,13 +631,15 @@ const Village = (() => {
       if (o !== 0 && o !== ignoreUid) return false;
       if (!Explore.seen(tx + x, ty + y)) return false; // under the fog: nothing is built there yet
     }
+    if (B[kind].wall && !loose) { const m = ignoreUid && byUid(ignoreUid); if (!wallFits(tx, ty, null, m || null)) return false; } // one wall thick
     return true;
   }
   /** Builds one. `free`: nothing is paid. `quiet`: no word when it cannot (a stroke of the pointer drawing a wall). `rot`: 1 turned. */
   function place(kind, tx, ty, free, quiet, rot) {
     const d = B[kind];
     if (d.unique && count(kind) > 0) return false;
-    if (!canPlace(kind, tx, ty, undefined, rot)) { if (!quiet) toast(tr('bad_spot'), UI.C.bad); return false; }
+    if (d.wall && !free && !wallRoom()) { if (!quiet) toast(tr('wall_cap', { max: wallCap() }), UI.C.bad); return false; }
+    if (!canPlace(kind, tx, ty, undefined, rot)) { if (!quiet) toast(tr(d.wall && canPlace(kind, tx, ty, undefined, rot, true) ? 'wall_thick' : 'bad_spot'), UI.C.bad); return false; }
     if (!free && !pay(cost(kind))) { if (!quiet) toast(tr('no_funds'), UI.C.bad); return false; }
     const b = { uid: state.nextUid++, kind, x: tx, y: ty, lvl: 1, prog: 0 };
     if (rot && canTurn(kind)) b.rot = 1;
@@ -740,7 +763,7 @@ const Village = (() => {
     sync, fresh, drawSeed, sharedSeed, rebuildOcc, migrateV1, tick, rates, count, byUid, pop, housed, freeCitizens, classOf, nextClass, satOf, taxMult, classCount, raiseCost, canRaise, raise,
     safeRadius, inSafe, market, buyPrice, sellPrice, buy, sell, scaleCost, cost, upgradeCost, refund, refundShare, repairCost, canAfford, pay, gain,
     levelMult, milestoneMult, renownMult, outMult, wallMax, pillagePct, isUnlocked, refreshUnlocks, nextPopUnlock,
-    size, dims, canTurn, wallAt, wallMask, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartAll, rampartCost, rampartRepairCost, rampartRefund, upgradeRampart, repairRampart, demolishRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,
+    size, dims, canTurn, wallAt, wallMask, wallFits, wallCap, wallCount, wallRoom, stamp, canPlace, place, move, demolish, upgrade, rampart, rampartAll, rampartCost, rampartRepairCost, rampartRefund, upgradeRampart, repairRampart, demolishRampart, setStyle, repair, chop, clearTile, plant, pave, toolCost, renownGain, newStart,
     needsRoad, onRoad, roadAt, serviceRadius, refreshTown, touchTown, autoRoads, servicesOf, servicesAt, missingServices, beauty, beautyAt, beautyMult, raiseSteps, campMid, raiseCamp, CAMP,
     idx, inMap, groundAt, floraAt, walkable, biomeAt, hallMid, flora, occ, shakes, net,
     GROUND, FLORA,

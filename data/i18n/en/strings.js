@@ -140,6 +140,9 @@ I18N.add('en', {
   'strings.tool_hint': 'Click a tile, or drag to draw. Right-click or Esc to put away.', // Cliquez une case, ou glissez pour tracer. Clic droit ou Échap pour ranger.
   'strings.wall_hint': 'Drag and release: a line of rampart. Shift + drag: an enclosure. Right-click: cancel.', // Glissez puis relâchez : une ligne de rempart. Maj + glisser : une enceinte. Clic droit : annuler.
   'strings.wall_count': '{n} sections', // {n} tronçons
+  'strings.wall_cap': 'No room for more rampart: {max} palisades at most. Upgrade the town hall.', // Plus de place pour un rempart : {max} palissades au plus. Améliorez l’hôtel de ville.
+  'strings.wall_thick': 'A rampart is only one palisade thick', // Un rempart n’a qu’une palissade d’épaisseur
+  'strings.wall_cap_tip': 'Palisades: {n} / {max}. Each town hall level allows {step} more. A rampart is only one palisade thick.', // Palissades : {n} / {max}. Chaque niveau de l’hôtel de ville en permet {step} de plus. Un rempart n’a qu’une palissade d’épaisseur.
   'strings.turn': 'Rotate (R)', // Tourner (R)
   'strings.turn_hint': 'R: rotate.', // R : tourner.
   'strings.turn_tip': 'Rotate the building before placing it (key R):\nthe entrance moves to the other side.', // Tourner le bâtiment avant de le poser (touche R) :\nl’entrée passe de l’autre côté.
@@ -396,6 +399,7 @@ I18N.add('en', {
   'strings.up_army': 'Soldiers +{pct}%', // Soldats +{pct} %
   'strings.up_service': '+{n} tile of reach', // +{n} case de portée
   'strings.up_hall': 'Less plunder, wider safe zone', // Moins de pillage, zone sûre plus large
+  'strings.up_hall_walls': '+{n} palisades allowed', // +{n} palissades permises
   'strings.up_double': 'Milestone: production ×2!', // Palier : production ×2 !
   'strings.up_look': 'New look', // Nouvelle apparence
   'strings.up_lodge': 'Aveline’s Plans: +{n} s', // Plans d’Aveline : +{n} s

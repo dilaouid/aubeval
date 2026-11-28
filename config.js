@@ -87,6 +87,8 @@ window.CONFIG = {
   raid_engage_range: { value: 14, min: 6, max: 40, step: 1 },        // pixels within which a raider stops to fight a foot soldier in his way
   trap_max: { value: 12, min: 1, max: 60, step: 1 },                 // traps that can lie on the ground at once during one raid
   raid_wall_cost: { value: 14, min: 1, max: 60, step: 1 },           // tiles of detour a raider accepts before breaking through a new wall instead
+  wall_cap_base: { value: 80, min: 10, max: 1000, step: 10 },        // palisades that may stand at town hall level 1 (broken ones count)
+  wall_cap_step: { value: 20, min: 0, max: 200, step: 5 },          // each town hall level above 1 allows this many more
   raid_building_cost: { value: 45, min: 5, max: 200, step: 5 },      // the same, before breaking through a building: a last resort
   raid_building_hp: { value: 120, min: 20, max: 600, step: 10 },     // how much breaking it takes before a building in their way is damaged and lets them pass
   raid_forest_cost: { value: 2, min: 1, max: 6, step: 0.5 },         // how many open tiles one tile of trees or rocks is worth to them

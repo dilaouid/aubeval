@@ -140,6 +140,9 @@ I18N.add('es', {
   'strings.tool_hint': 'Haga clic en una casilla, o arrastre para trazar. Clic derecho o Esc para terminar.', // Cliquez une case, ou glissez pour tracer. Clic droit ou Échap pour ranger.
   'strings.wall_hint': 'Arrastre y suelte: una línea de muralla. Mayús + arrastrar: un recinto. Clic derecho: cancelar.', // Glissez puis relâchez : une ligne de rempart. Maj + glisser : une enceinte. Clic droit : annuler.
   'strings.wall_count': '{n} tramos', // {n} tronçons
+  'strings.wall_cap': 'No caben más murallas: {max} empalizadas como máximo. Mejore el ayuntamiento.', // Plus de place pour un rempart : {max} palissades au plus. Améliorez l’hôtel de ville.
+  'strings.wall_thick': 'Una muralla solo tiene una empalizada de grosor', // Un rempart n’a qu’une palissade d’épaisseur
+  'strings.wall_cap_tip': 'Empalizadas: {n} / {max}. Cada nivel del ayuntamiento permite {step} más. Una muralla solo tiene una empalizada de grosor.', // Palissades : {n} / {max}. Chaque niveau de l’hôtel de ville en permet {step} de plus. Un rempart n’a qu’une palissade d’épaisseur.
   'strings.turn': 'Girar (R)', // Tourner (R)
   'strings.turn_hint': 'R: girar.', // R : tourner.
   'strings.turn_tip': 'Girar el edificio antes de colocarlo (tecla R):\nla entrada pasa al otro lado.', // Tourner le bâtiment avant de le poser (touche R) :\nl’entrée passe de l’autre côté.
@@ -396,6 +399,7 @@ I18N.add('es', {
   'strings.up_army': 'Soldados +{pct} %', // Soldats +{pct} %
   'strings.up_service': '+{n} casilla de alcance', // +{n} case de portée
   'strings.up_hall': 'Menos saqueo, zona segura más amplia', // Moins de pillage, zone sûre plus large
+  'strings.up_hall_walls': '+{n} empalizadas permitidas', // +{n} palissades permises
   'strings.up_double': '¡Hito: producción ×2!', // Palier : production ×2 !
   'strings.up_look': 'Nuevo aspecto', // Nouvelle apparence
   'strings.up_lodge': 'Planos de Aveline: +{n} s', // Plans d’Aveline : +{n} s
