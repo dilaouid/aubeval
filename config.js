@@ -59,7 +59,7 @@ window.CONFIG = {
 
   // ---- Idle ----
   offline_cap_hours: { value: 8, min: 1, max: 48, step: 1 },         // longest absence that still earns
-  offline_rate: { value: 1, min: 0.1, max: 1, step: 0.05 },          // share of normal output earned while away
+  offline_rate: { value: 0.05, min: 0, max: 1, step: 0.01 },         // share of normal output earned while away: a small token, so the next day's start is not a cheat
   autosave_seconds: { value: 10, min: 2, max: 60, step: 1 },
 
   // ---- Raids ----
